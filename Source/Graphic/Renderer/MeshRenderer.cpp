@@ -1,13 +1,13 @@
 #include "MeshRenderer.h"
 
-#include "../../Shape/Mesh.h"
-#include "../Material/Material.h"
-#include "../../Scene/Scene.h"
-#include "../../Graphic/Camera/Camera.h"
-#include "../../Time/Time.h"
-#include "../../Graphic/Graphics.h"
-#include "../../Graphic/Lighting/PointLight.h"
-#include "../../Graphic/Texture2D.h"
+#include "Shape/Mesh.h"
+#include "Graphic/Material/Material.h"
+#include "Scene/Scene.h"
+#include "Graphic/Camera/Camera.h"
+#include "Time/Time.h"
+#include "Graphic/Graphics.h"
+#include "Graphic/Lighting/PointLight.h"
+#include "Graphic/Texture2D.h"
 
 // ... shader variable names.
 namespace {
@@ -70,5 +70,5 @@ void MeshRenderer::reuploadVertexDataToGPU()
 	glEnableVertexAttribArray(0); // Positions.
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, dataSize, 0);
 	glEnableVertexAttribArray(1); // Normals.
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, VertexData::normal));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, normal));
 }

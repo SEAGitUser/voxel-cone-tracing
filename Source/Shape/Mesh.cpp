@@ -1,9 +1,10 @@
-#include "Mesh.h"
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <gtc/type_ptr.hpp>
+
+#include "OpenGL_Includes.h"
+
+#include "glm/gtc/type_ptr.hpp"
+
+#include "Mesh.h"
 
 Mesh::Mesh() { }
 

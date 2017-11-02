@@ -1,15 +1,14 @@
+#include "OpenGL_Includes.h"
+
 #include "GlassScene.h"
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <gtx/rotate_vector.hpp>
+#include "glm/gtx/rotate_vector.hpp"
 
-#include "../../Graphic/Lighting/PointLight.h"
-#include "../../Time/Time.h"
-#include "../../Utility/ObjLoader.h"
-#include "../../Graphic/Renderer/MeshRenderer.h"
-#include "../../Graphic/Material/MaterialSetting.h"
+#include "Graphic/Lighting/PointLight.h"
+#include "Time/Time.h"
+#include "Utility/ObjLoader.h"
+#include "Graphic/Renderer/MeshRenderer.h"
+#include "Graphic/Material/MaterialSetting.h"
 
 namespace {
 	unsigned int lightCubeIndex = 0;

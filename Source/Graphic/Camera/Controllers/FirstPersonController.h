@@ -1,16 +1,16 @@
 #pragma once
 
+#include "OpenGL_Includes.h"
+
 #include <iostream> // TODO: Remove.
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <gtx/rotate_vector.hpp>
 
-#include "../../Camera/Camera.h"
-#include "../../../Time/Time.h"
-#include "../../Camera\PerspectiveCamera.h"
-#include "../../../Application.h"
+#include "glm/gtx/rotate_vector.hpp"
+
+#include "Graphic/Camera/Camera.h"
+#include "Time/Time.h"
+#include "Graphic/Camera/PerspectiveCamera.h"
+#include "Application.h"
 
 /// <summary> A first person controller that can be attached to a camera. </summary>
 class FirstPersonController {
@@ -45,7 +45,7 @@ public:
 		double xpos, ypos;
 		double xmid, ymid;
 
-		GLFWwindow * window = Application::getInstance().currentWindow;
+        GLFWwindow * window = Application::getInstance().currentWindow;
 
 		glfwGetWindowSize(window, &xwidth, &yheight);
 		glfwGetCursorPos(window, &xpos, &ypos);

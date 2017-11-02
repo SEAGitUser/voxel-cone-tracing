@@ -1,13 +1,15 @@
 #pragma once
 
-#include "../Source/Shape/Transform.h"
-#include "../Material/MaterialSetting.h"
+#include "OpenGL_Includes.h"
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <gtc/type_ptr.hpp>
-#include <glm.hpp>
+#include "Shape/Transform.h"
+#include "Graphic/Material/MaterialSetting.h"
+
+
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
+
+#include <string>
 
 class Mesh;
 

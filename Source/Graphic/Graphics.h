@@ -1,19 +1,19 @@
 #pragma once
 
+#include "OpenGL_Includes.h"
+
 #include <vector>
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
 
-#include "..\Scene\Scene.h"
-#include "Material\Material.h"
-#include "FBO\FBO.h"
-#include "Camera\OrthographicCamera.h"
-#include "../Shape/Mesh.h"
+
+#include "Scene/Scene.h"
+#include "Graphic/FBO/FBO.h"
+#include "Graphic/Camera/OrthographicCamera.h"
+#include "Shape/Mesh.h"
 #include "Texture3D.h"
 
 class MeshRenderer;
+class Material;
 class Shape;
 
 /// <summary> A graphical context used for rendering. </summary>

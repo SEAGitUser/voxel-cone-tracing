@@ -1,10 +1,10 @@
 #pragma once
 
+#include "OpenGL_Includes.h"
+
 #include <string>
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
+
 
 /// <summary> Represents a shader program. </summary>
 class Shader {

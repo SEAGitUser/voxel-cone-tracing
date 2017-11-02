@@ -1,14 +1,16 @@
-#pragma once;
+#pragma once
+
+#include "OpenGL_Includes.h"
+
+#include "glm/glm.hpp"
 
 #include <string>
 #include <vector>
 #include <memory>
 #include <unordered_map>
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <glm\glm.hpp>
+
+
 
 class Shader;
 
