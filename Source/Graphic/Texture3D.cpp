@@ -1,6 +1,67 @@
 #include "Texture3D.h"
 
+#include <string>
 #include <vector>
+
+#include <assert.h>
+
+
+#ifdef __APPLE__
+
+
+void Texture3D::glTexStorage3D(	GLenum target,
+                        GLsizei levels,
+                        GLenum internalformat,
+                        GLsizei width,
+                        GLsizei height,
+                        GLsizei depth)
+{
+    //based off of https://www.khronos.org/opengl/wiki/GLAPI/glTexStorage3D
+    
+    assert(target == GL_TEXTURE_3D || target == GL_PROXY_TEXTURE_3D && "update implementation of glTexStorate3D to support the texture target");
+
+    for (GLsizei i = 0; i < levels; i++)
+    {
+        GLuint pixelFormat = GL_RGBA;
+        GLuint dataType = GL_FLOAT;
+        glTexImage3D(target, i, internalformat, width, height, depth, 0, pixelFormat, dataType, NULL);
+        width = std::max(1, (width / 2));
+        height = std::max(1, (height / 2));
+        depth = std::max(1, (depth / 2));
+    }
+    glError();
+}
+
+
+void Texture3D::glClearTexImage(	GLuint texture,
+                     GLint level,
+                     GLenum format,
+                     GLenum type,
+                     const void * data)
+{
+    //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
+    GLsizei levels = 7;
+    
+    GLint tempWidth = width;
+    GLint tempHeight = height;
+    GLint tempDepth = depth;
+    for (GLint i = 0; i < levels; i++)
+    {
+        GLuint pixelFormat = GL_RGBA;
+        GLuint dataType = GL_FLOAT;
+        
+        static std::vector<GLubyte> emptyData(width * height * depth *4, 0);
+        //glBindTexture(GL_TEXTURE_2D, texture);
+        glTexSubImage3D(GL_TEXTURE_3D, i, 0, 0, 0, tempWidth, tempHeight, tempDepth, pixelFormat, dataType, &emptyData[0]);
+        
+        //glTexImage3D(target, i, internalformat, width, height, depth, 0, pixelFormat, dataType, NULL);
+        tempWidth = std::max(1, (tempWidth / 2));
+        tempHeight = std::max(1, (tempHeight / 2));
+        tempDepth = std::max(1, (tempDepth / 2));
+    }
+}
+
+#endif
 
 Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const int _width, const int _height, const int _depth, const bool generateMipmaps) :
 	width(_width), height(_height), depth(_depth), clearData(4 * _width * _height * _depth, 0.0f)
@@ -39,6 +100,7 @@ void Texture3D::Clear(GLfloat clearColor[4])
 	GLint previousBoundTextureID;
 	glGetIntegerv(GL_TEXTURE_BINDING_3D, &previousBoundTextureID);
 	glBindTexture(GL_TEXTURE_3D, textureID);
+    
 	glClearTexImage(textureID, 0, GL_RGBA, GL_FLOAT, &clearColor);
 	glBindTexture(GL_TEXTURE_3D, previousBoundTextureID);
 }

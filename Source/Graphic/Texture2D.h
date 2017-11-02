@@ -2,10 +2,9 @@
 
 #include <string>
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <SOIL\SOIL.h>
+#include "OpenGL_Includes.h"
+
+#include "SOIL/SOIL.h"
 
 /// <summary> A 2D texture wrapper class. Handles important OpenGL calls. </summary>
 class Texture2D {

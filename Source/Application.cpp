@@ -6,17 +6,15 @@
 #include <time.h>
 
 // External.
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
+#include "OpenGL_Includes.h"
 
 // Internal.
-#include "Scene\Scene.h"
-#include "Scene\ScenePack.h"
-#include "Graphic\Graphics.h"
-#include "Graphic\Material\MaterialStore.h"
-#include "Graphic\Renderer\MeshRenderer.h"
-#include "Time\Time.h"
+#include "Scene/Scene.h"
+#include "Scene/ScenePack.h"
+#include "Graphic/Graphics.h"
+#include "Graphic/Material/MaterialStore.h"
+#include "Graphic/Renderer/MeshRenderer.h"
+#include "Time/Time.h"
 
 #define __LOG_INTERVAL 0 /* How often we should log frame rate info to the console. = 0 means don't log. */
 #if __LOG_INTERVAL > 0
@@ -42,10 +40,19 @@ void Application::init() {
 	}
 	double timeElapsed = glfwGetTime();
 
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+#else
 	// OpenGL version 4.5 with core profile.
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE); // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+#endif
 	glfwWindowHint(GLFW_SAMPLES, MSAA_SAMPLES);
 
 	// Create a new window and set window mode accordingly (including title, size and mode).
@@ -57,6 +64,7 @@ void Application::init() {
 #endif
 	std::cout << "[0] : GLFW initialized." << std::endl;
 
+#ifndef __APPLE__
 	// -------------------------------------
 	// Initialize GLEW.
 	// -------------------------------------
@@ -84,7 +92,7 @@ void Application::init() {
 			getchar();
 		}
 	}
-
+#endif
 	// -------------------------------------
 	// Initialize graphics.
 	// -------------------------------------
@@ -103,56 +111,6 @@ void Application::init() {
 	scene->init(w, h);
 	std::cout << "[3] : Scene initialized." << std::endl;
 
-	// -------------------------------------
-	// Initialize AntTweakBar.
-	// -------------------------------------
-	TwInit(TW_OPENGL_CORE, NULL);
-	int invTwWindowScale = 1;
-	TwWindowSize(invTwWindowScale * w, invTwWindowScale * h);
-
-	// Main bar.
-	mainTweakBar = TwNewBar("Rendering settings");
-	TwType renderingMode = TwDefineEnum("RenderingMode", NULL, 0);
-	for (auto * meshRenderer : scene->renderers) if (meshRenderer->tweakable) tweakableRenderers.push_back(meshRenderer);
-	TwAddVarRW(mainTweakBar, "Application state", TW_TYPE_INT32, &state, "label='State' group=Rendering");
-	TwAddVarRW(mainTweakBar, "Rendering mode", renderingMode, &currentRenderingMode, "enum='0 {Voxel Visualization}, 1 {Voxel Cone Tracing}' group=Rendering");
-	auto temp = "mainsep1";
-	TwAddSeparator(mainTweakBar, temp, NULL);
-	TwAddVarRW(mainTweakBar, "Shadows", TW_TYPE_BOOL8, &graphics.shadows, "group=Settings");
-	TwAddVarRW(mainTweakBar, "Direct light", TW_TYPE_BOOL8, &graphics.directLight, "group=Settings");
-	TwAddVarRW(mainTweakBar, "Indirect diffuse light", TW_TYPE_BOOL8, &graphics.indirectDiffuseLight, "group=Settings");
-	TwAddVarRW(mainTweakBar, "Indirect specular light", TW_TYPE_BOOL8, &graphics.indirectSpecularLight, "group=Settings");
-
-	temp = "mainsep2";
-	TwAddSeparator(mainTweakBar, temp, NULL);
-	TwAddVarRW(mainTweakBar, "Autogen voxelization", TW_TYPE_BOOL8, &graphics.automaticallyVoxelize, "group=Voxelization");
-	TwAddVarRW(mainTweakBar, "Queue voxelization gen", TW_TYPE_BOOL8, &graphics.voxelizationQueued, "group=Voxelization");
-	TwAddVarRW(mainTweakBar, "Voxelization sparsity", TW_TYPE_INT32, &graphics.voxelizationSparsity, "group=Voxelization");
-	TwAddVarRW(mainTweakBar, "Autogen mipmap", TW_TYPE_BOOL8, &graphics.automaticallyRegenerateMipmap, "group=Voxelization");
-	TwAddVarRW(mainTweakBar, "Queue mipmap gen", TW_TYPE_BOOL8, &graphics.regenerateMipmapQueued, "group=Voxelization");
-
-	// Point lights.
-	TwStructMember pointMembers[] = {
-		{ "X", TW_TYPE_FLOAT, sizeof(glm::float32) * 0, " Min=-2 Max=2 Step=0.01 " },
-		{ "Y", TW_TYPE_FLOAT, sizeof(glm::float32) * 1, " Min=-2 Max=2 Step=0.01 " },
-		{ "Z", TW_TYPE_FLOAT, sizeof(glm::float32) * 2, " Min=-2 Max=2 Step=0.01 " } };
-	TwType pointType = TwDefineStruct("POINT", pointMembers, 3, sizeof(glm::vec3), NULL, NULL);
-	if (scene->pointLights.size() > 0) {
-		int pp = 0;
-		for (auto & p : scene->pointLights) {
-			if (!p.tweakable) continue;
-			std::string group = "Point Light " + std::to_string(pp);
-			std::string setting = "group='" + group + "'";
-			TwAddVarRW(mainTweakBar, "color", TW_TYPE_COLOR3F, &p.color, setting.c_str());
-			TwAddVarRW(mainTweakBar, "position", pointType, &p.position, setting.c_str());
-			pp++;
-		}
-	}
-
-	// Objects.
-	UpdateObjectTweakbar();
-
-	std::cout << "[4] : AntTweakBar initialized." << std::endl;
 
 	// -------------------------------------
 	// Initialize input.
@@ -177,73 +135,7 @@ void Application::init() {
 	std::cout << "Using OpenGL version " << glGetString(GL_VERSION) << std::endl;
 }
 
-void Application::UpdateObjectTweakbar() {
-	if (objectTweakBar != nullptr) TwDeleteBar(objectTweakBar);
-	int N = tweakableRenderers.size();
-	if (N <= 0) return;
 
-	TwStructMember vec3members[] = {
-		{ "X", TW_TYPE_FLOAT, sizeof(glm::float32) * 0, " Min=-2 Max=2 Step=0.01 " },
-		{ "Y", TW_TYPE_FLOAT, sizeof(glm::float32) * 1, " Min=-2 Max=2 Step=0.01 " },
-		{ "Z", TW_TYPE_FLOAT, sizeof(glm::float32) * 2, " Min=-2 Max=2 Step=0.01 " }
-	};
-	TwType pointType = TwDefineStruct("VEC3", vec3members, 3, sizeof(glm::vec3), NULL, NULL);
-
-	TwBar * t = objectTweakBar = TwNewBar("Renderers");
-
-	int xpos = DEFAULT_WINDOW_WIDTH - 215;
-	int ypos = 16;
-	std::string move = " Renderers position='" + std::to_string(xpos) + " " + std::to_string(ypos) + std::string("'");
-	TwDefine(move.c_str());
-
-	for (int i = 0; i < N; ++i) {
-		MeshRenderer * meshRenderer = tweakableRenderers[i];
-		MaterialSetting * materialSetting = meshRenderer->materialSetting;
-		Transform * transform = &meshRenderer->transform;
-
-		std::string groupName = "group='" + meshRenderer->name + " " + std::to_string(i) + "' ";
-		std::string temp;
-
-		// Enabled.
-		temp = groupName + "label=Enabled";
-		TwAddVarRW(t, "Enabled" + i, TW_TYPE_BOOL8, &meshRenderer->enabled, temp.c_str());
-
-		// Diffuse.
-		temp = groupName + "label='Diffuse color'";
-		TwAddVarRW(t, "Diffuse color" + i, TW_TYPE_COLOR3F, &materialSetting->diffuseColor, temp.c_str());
-		temp = groupName + "label='Diffuse reflectivity'" + " min=0 max=1 step=0.01";
-		TwAddVarRW(t, "Diffuse reflectivity" + i, TW_TYPE_FLOAT, &materialSetting->diffuseReflectivity, temp.c_str());
-
-		// Specular.
-		temp = groupName + "label='Specular color'";
-		TwAddVarRW(t, "Specular color" + i, TW_TYPE_COLOR3F, &materialSetting->specularColor, temp.c_str());
-		temp = groupName + "label='Specular reflectivity'" + " min=0 max=1 step=0.01";
-		TwAddVarRW(t, "Specular reflectivity" + i, TW_TYPE_FLOAT, &materialSetting->specularReflectivity, temp.c_str());
-		temp = groupName + "label='Specular diffusion'" + " min=1.8 max=8 step=0.10";
-		TwAddVarRW(t, "Specular diffusion" + i, TW_TYPE_FLOAT, &materialSetting->specularDiffusion, temp.c_str());
-
-		// Transparency.
-		temp = groupName + "label='Transparency'" + " min=0 max=1 step = 0.01";
-		TwAddVarRW(t, "Transparency" + i, TW_TYPE_FLOAT, &materialSetting->transparency, temp.c_str());
-		temp = groupName + "label='Refractive index'" + " min=1 max=3 step=0.01";
-		TwAddVarRW(t, "Refractive Index" + i, TW_TYPE_FLOAT, &materialSetting->refractiveIndex, temp.c_str());
-
-		// Other.
-		temp = groupName + "label='Emissivity'" + " min=0 max=0.9999 step=0.01";
-		TwAddVarRW(t, "Emissivity" + i, TW_TYPE_FLOAT, &materialSetting->emissivity, temp.c_str());
-
-		temp = groupName + "sep1";
-		TwAddSeparator(t, temp.c_str(), NULL);
-
-		// Transform.
-		temp = groupName + "label='Position'";
-		TwAddVarRW(t, "Position" + i, pointType, &transform->position, temp.c_str());
-		temp = groupName + "label='Scale'";
-		TwAddVarRW(t, "Scale" + i, pointType, &transform->scale, temp.c_str());
-		temp = groupName + "label='Rotation'";
-		TwAddVarRW(t, "Rotation" + i, TW_TYPE_DIR3F, &transform->rotation, temp.c_str());
-	}
-}
 
 void Application::run()
 {
@@ -303,10 +195,6 @@ void Application::run()
 
 		}
 
-		// --------------------------------------------------
-		// Tweakbar.
-		// --------------------------------------------------
-		TwDraw(); // Draw AntTweakBar.
 
 		// --------------------------------------------------
 		// Swap buffers and update timers.
@@ -409,8 +297,6 @@ void Application::SetWindowMode(int quadWidth, int quadHeight, bool fullscreen =
 
 Application::~Application() {
 	delete scene;
-	if (mainTweakBar != nullptr) TwDeleteBar(mainTweakBar);
-	if (objectTweakBar != nullptr) TwDeleteBar(objectTweakBar);
 }
 
 Application::Application() : exitQueued(false) {
@@ -424,25 +310,18 @@ void Application::OnWindowResize(GLFWwindow* window, int quadWidth, int quadHeig
 
 void Application::GLFWMousePositionCallback(GLFWwindow * window, double x, double y)
 {
-	if (!TwEventMousePosGLFW(int(x), int(y))) {
 
-	}
 }
 
 void Application::GLFWMouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
 {
-	if (!TwEventMouseButtonGLFW(button, action)) {
 
-	}
 }
 
 void Application::GLFWKeyCallback(GLFWwindow * window, int key, int scanmode, int action, int mods)
 {
 	auto & app = Application::getInstance();
 
-	if (!TwEventKeyGLFW(key, action)) {
-
-	}
 
 	// Button was pressed down this frame.
 	if (action == 1) {

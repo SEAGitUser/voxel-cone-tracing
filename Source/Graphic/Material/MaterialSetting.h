@@ -1,10 +1,9 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <gtc/type_ptr.hpp>
-#include <glm.hpp>
+#include "OpenGL_Includes.h"
+
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
 
 namespace {
 	const char * diffuseColorName = "material.diffuseColor";

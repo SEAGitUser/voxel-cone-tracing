@@ -1,18 +1,17 @@
+#include "OpenGL_Includes.h"
+
+#include "glm/gtx/rotate_vector.hpp"
+
 #include "MultipleObjectsScene.h"
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
-#include <gtx/rotate_vector.hpp>
-
-#include "../../Graphic/Lighting/PointLight.h"
-#include "../../Graphic/Camera/Camera.h"
-#include "../../Graphic/Camera/PerspectiveCamera.h"
-#include "../../Time/Time.h"
-#include "../../Utility/ObjLoader.h"
-#include "../../Graphic/Renderer/MeshRenderer.h"
-#include "../../Graphic/Material/MaterialSetting.h"
-#include "../../Application.h"
+#include "Graphic/Lighting/PointLight.h"
+#include "Graphic/Camera/Camera.h"
+#include "Graphic/Camera/PerspectiveCamera.h"
+#include "Time/Time.h"
+#include "Utility/ObjLoader.h"
+#include "Graphic/Renderer/MeshRenderer.h"
+#include "Graphic/Material/MaterialSetting.h"
+#include "Application.h"
 
 namespace { MaterialSetting * objectMaterialSetting; }
 

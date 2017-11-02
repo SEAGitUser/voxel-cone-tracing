@@ -6,21 +6,22 @@
 #include <vector>
 
 // External.
-#include <glm.hpp>
-#include <gtc/type_ptr.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 // Internal.
 #include "Texture2D.h"
-#include "Material\Material.h"
-#include "Camera\OrthographicCamera.h"
-#include "Material\MaterialStore.h"
-#include "../Time/Time.h"
-#include "../Shape/Mesh.h"
-#include "../Shape/StandardShapes.h"
-#include "Renderer\MeshRenderer.h"
-#include "../Utility/ObjLoader.h"
-#include "../Shape/Shape.h"
-#include "../Application.h"
+#include "Material/Material.h"
+#include "Camera/OrthographicCamera.h"
+#include "Material/MaterialStore.h"
+#include "Time/Time.h"
+#include "Shape/Mesh.h"
+#include "Shape/StandardShapes.h"
+#include "Renderer/MeshRenderer.h"
+#include "Utility/ObjLoader.h"
+#include "Shape/Shape.h"
+#include "Application.h"
+#include "Graphic/Graphics.h"
 
 // ----------------------
 // Rendering pipeline.
@@ -109,7 +110,7 @@ void Graphics::uploadRenderingSettings(const GLuint glProgram) const
 
 void Graphics::uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const
 {
-	glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), Application::getInstance().state);
+	//glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), Application::getInstance().state);
 	glm::vec2 screenSize(viewportWidth, viewportHeight);
 }
 
@@ -167,7 +168,8 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 
 	// Texture.
 	voxelTexture->Activate(material->program, "texture3D", 0);
-	glBindImageTexture(0, voxelTexture->textureID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	//glBindImageTexture(0, voxelTexture->textureID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
+
 
 	// Lighting.
 	uploadLighting(renderingScene, material->program);

@@ -1,23 +1,27 @@
-#include "ObjLoader.h"
+
 
 #define __UTILITY_LOG_LOADING_TIME true
+
+#if __UTILITY_LOG_LOADING_TIME
+
+#include <iostream>
+#include <iomanip>
+#include "OpenGL_Includes.h"
+
+#include "Time/Time.h"
+#endif
+
+#include "ObjLoader.h"
 
 #include <fstream>
 #include <vector>
 #include <algorithm>
 
-#if __UTILITY_LOG_LOADING_TIME
-#define GLEW_STATIC
-#include <iostream>
-#include <iomanip>
-#include <glew.h>
-#include <glfw3.h>
-#include "../time/Time.h"
-#endif
+
 
 #include "External/tiny_obj_loader.h"
-#include "../Shape/VertexData.h"
-#include "../Shape/Mesh.h"
+#include "Shape/VertexData.h"
+#include "Shape/Mesh.h"
 
 Shape * ObjLoader::loadObjFile(const std::string path) {
 #if __UTILITY_LOG_LOADING_TIME

@@ -1,12 +1,13 @@
 // Author:	Fredrik Präntare <prantare@gmail.com> (student at Linköping University)
 // Date:	11/26/2016
+
+#include "OpenGL_Includes.h"
+
 #include "StandardShapes.h"
 
 #include <vector>
 
-#define GLEW_STATIC
-#include <glew.h>
-#include <glfw3.h>
+
 
 #include "Mesh.h"
 

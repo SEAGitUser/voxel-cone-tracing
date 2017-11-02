@@ -9,8 +9,8 @@ class MaterialStore {
 public:
 	static MaterialStore& getInstance();
 	std::vector<Material*> materials;
-	Material * MaterialStore::findMaterialWithName(std::string name);
-	Material * MaterialStore::findMaterialWithProgramID(unsigned int programID);
+	Material * findMaterialWithName(std::string name);
+	Material * findMaterialWithProgramID(unsigned int programID);
 	void AddNewMaterial(
 		std::string name, const char * vertexPath = nullptr, const char * fragmentPath = nullptr,
 		const char * geometryPath = nullptr, const char * tessEvalPath = nullptr, const char * tessCtrlPath = nullptr);
