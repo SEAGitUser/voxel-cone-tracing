@@ -11,6 +11,8 @@
 
 int main(int argc, const char * argv[]) {
     
+    
+    printf("%s\n", argv[0]);
     Application &app = Application::getInstance();
     app.init();
     

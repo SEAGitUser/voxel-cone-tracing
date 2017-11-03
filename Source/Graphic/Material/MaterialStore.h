@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-
+#include <string>
 class Material;
 
 /// <summary> Manages all loaded materials and shader programs. </summary>
@@ -16,6 +16,8 @@ public:
 		const char * geometryPath = nullptr, const char * tessEvalPath = nullptr, const char * tessCtrlPath = nullptr);
 	~MaterialStore();
 private:
+    
+    std::string resourceRoot;
 	MaterialStore();
 	MaterialStore(MaterialStore const &) = delete;
 	void operator=(MaterialStore const &) = delete;

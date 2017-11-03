@@ -7,15 +7,21 @@
 
 MaterialStore::MaterialStore()
 {
+#ifdef __APPLE__
+    resourceRoot = "../Resources";
+#else
+    resourceRoot = "./";
+#endif
+    
 	// Voxelization.
-	AddNewMaterial("voxelization", "Voxelization\\voxelization.vert", "Voxelization\\voxelization.frag", "Voxelization\\voxelization.geom");
+	AddNewMaterial("voxelization", "Voxelization/voxelization.vert", "Voxelization/voxelization.frag", "Voxelization/voxelization.geom");
 
 	// Voxelization visualization.
-	AddNewMaterial("voxel_visualization", "Voxelization\\Visualization\\voxel_visualization.vert", "Voxelization\\Visualization\\voxel_visualization.frag");
-	AddNewMaterial("world_position", "Voxelization\\Visualization\\world_position.vert", "Voxelization\\Visualization\\world_position.frag");
+	AddNewMaterial("voxel_visualization", "Voxelization/Visualization/voxel_visualization.vert", "Voxelization/Visualization/voxel_visualization.frag");
+	AddNewMaterial("world_position", "Voxelization/Visualization/world_position.vert", "Voxelization/Visualization/world_position.frag");
 
 	// Cone tracing.
-	AddNewMaterial("voxel_cone_tracing", "Voxel Cone Tracing\\voxel_cone_tracing.vert", "Voxel Cone Tracing\\voxel_cone_tracing.frag");
+	AddNewMaterial("voxel_cone_tracing", "Voxel Cone Tracing/voxel_cone_tracing.vert", "Voxel Cone Tracing/voxel_cone_tracing.frag");
 }
 
 void MaterialStore::AddNewMaterial(
@@ -26,7 +32,8 @@ void MaterialStore::AddNewMaterial(
 	using ST = Shader::ShaderType;
 	Shader *v, *f, *g, *te, *tc;
 	v = f = g = te = tc = nullptr;
-	const std::string shaderPath = "Shaders\\";
+
+	const std::string shaderPath = resourceRoot + "/Shaders/";
 	if (vertexPath) { v = new Shader(shaderPath + vertexPath, ST::VERTEX); }
 	if (fragmentPath) { f = new Shader(shaderPath + fragmentPath, ST::FRAGMENT); }
 	if (geometryPath) { g = new Shader(shaderPath + geometryPath, ST::GEOMETRY); }

@@ -19,7 +19,7 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	FirstPersonScene::init(viewportWidth, viewportHeight);
 
 	// Cornell box.
-	Shape * cornell = ObjLoader::loadObjFile("Assets\\Models\\cornell.obj");
+	Shape * cornell = ObjLoader::loadObjFile("Assets/Models/cornell.obj");
 	shapes.push_back(cornell);
 	for (unsigned int i = 0; i < cornell->meshes.size(); ++i) {
 		renderers.push_back(new MeshRenderer(&(cornell->meshes[i])));

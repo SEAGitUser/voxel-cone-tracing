@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B9AEF0771FA6DD64005888EA /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0761FA6DD64005888EA /* main.mm */; };
 		B9AEF07C1FA6DD64005888EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AEF07B1FA6DD64005888EA /* Assets.xcassets */; };
-		B9AEF07F1FA6DD64005888EA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9AEF07D1FA6DD64005888EA /* Main.storyboard */; };
 		B9AEF08A1FA6DD64005888EA /* voxel_cone_tracing_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0891FA6DD64005888EA /* voxel_cone_tracing_macTests.m */; };
 		B9AEF0951FA6DD64005888EA /* voxel_cone_tracing_macUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0941FA6DD64005888EA /* voxel_cone_tracing_macUITests.m */; };
 		B9F4FAE91FA844D00020A3DC /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F97E1FA843FC0020A3DC /* Application.cpp */; };
@@ -332,6 +331,8 @@
 		B9F4FC2B1FA8456E0020A3DC /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0801FA6DD64005888EA /* Info.plist */; };
 		B9FA1C8B1FAAEFFD00C2C68D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FA1C8A1FAAEFFD00C2C68D /* CoreVideo.framework */; };
 		B9FA1C8D1FAAF02300C2C68D /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FA1C8C1FAAF02300C2C68D /* AppKit.framework */; };
+		B9FA1CBB1FAB71F500C2C68D /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = B9FA1CBA1FAB71F500C2C68D /* Shaders */; };
+		B9FA1CBD1FAC779300C2C68D /* Models in Resources */ = {isa = PBXBuildFile; fileRef = B9FA1CBC1FAC779300C2C68D /* Models */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -355,7 +356,6 @@
 		B9AEF06F1FA6DD64005888EA /* voxel-cone-tracing-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxel-cone-tracing-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AEF0761FA6DD64005888EA /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		B9AEF07B1FA6DD64005888EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B9AEF07E1FA6DD64005888EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B9AEF0801FA6DD64005888EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B9AEF0851FA6DD64005888EA /* voxel-cone-tracing-macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "voxel-cone-tracing-macTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AEF0891FA6DD64005888EA /* voxel_cone_tracing_macTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voxel_cone_tracing_macTests.m; sourceTree = "<group>"; };
@@ -684,6 +684,8 @@
 		B9FA1C801FA9C18C00C2C68D /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
 		B9FA1C8A1FAAEFFD00C2C68D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		B9FA1C8C1FAAF02300C2C68D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		B9FA1CBA1FAB71F500C2C68D /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shaders; path = ../Shaders; sourceTree = "<group>"; };
+		B9FA1CBC1FAC779300C2C68D /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Models; path = ../Assets/Models; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -716,6 +718,8 @@
 		B9AEF0661FA6DD64005888EA = {
 			isa = PBXGroup;
 			children = (
+				B9FA1CBC1FAC779300C2C68D /* Models */,
+				B9FA1CBA1FAB71F500C2C68D /* Shaders */,
 				B9F4F97D1FA843FC0020A3DC /* Source */,
 				B9F4F9C01FA843FC0020A3DC /* Includes */,
 				B9AEF0711FA6DD64005888EA /* voxel-cone-tracing-mac */,
@@ -740,7 +744,6 @@
 			isa = PBXGroup;
 			children = (
 				B9AEF07B1FA6DD64005888EA /* Assets.xcassets */,
-				B9AEF07D1FA6DD64005888EA /* Main.storyboard */,
 				B9AEF0801FA6DD64005888EA /* Info.plist */,
 				B9AEF0751FA6DD64005888EA /* Supporting Files */,
 			);
@@ -776,6 +779,7 @@
 		B9F4F97D1FA843FC0020A3DC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B9FA1C7D1FA9C06400C2C68D /* OpenGL_Includes.h */,
 				B9F4F97E1FA843FC0020A3DC /* Application.cpp */,
 				B9F4F97F1FA843FC0020A3DC /* Application.h */,
 				B9F4F9801FA843FC0020A3DC /* Graphic */,
@@ -783,7 +787,6 @@
 				B9F4F9AE1FA843FC0020A3DC /* Shape */,
 				B9F4F9B71FA843FC0020A3DC /* Time */,
 				B9F4F9BA1FA843FC0020A3DC /* Utility */,
-				B9FA1C7D1FA9C06400C2C68D /* OpenGL_Includes.h */,
 			);
 			name = Source;
 			path = ../Source;
@@ -1391,8 +1394,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9FA1CBD1FAC779300C2C68D /* Models in Resources */,
+				B9FA1CBB1FAB71F500C2C68D /* Shaders in Resources */,
 				B9AEF07C1FA6DD64005888EA /* Assets.xcassets in Resources */,
-				B9AEF07F1FA6DD64005888EA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1769,17 +1773,6 @@
 			targetProxy = B9AEF0911FA6DD64005888EA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		B9AEF07D1FA6DD64005888EA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B9AEF07E1FA6DD64005888EA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B9AEF0971FA6DD64005888EA /* Debug */ = {
