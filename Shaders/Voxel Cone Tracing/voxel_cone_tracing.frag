@@ -13,7 +13,7 @@
 //                                                                                              // 
 // Course project in TSBK03 (Techniques for Advanced Game Programming) at Linköping University. //
 // ---------------------------------------------------------------------------------------------//
-#version 450 core
+#version 410 core
 #define TSQRT2 2.828427
 #define SQRT2 1.414213
 #define ISQRT2 0.707106
@@ -108,7 +108,7 @@ float traceShadowCone(vec3 from, vec3 direction, float targetDistance){
 
 	float dist = 3 * VOXEL_SIZE;
 	// I'm using a pretty big margin here since I use an emissive light ball with a pretty big radius in my demo scenes.
-	const float STOP = targetDistance - 16 * VOXEL_SIZE;
+	float STOP = targetDistance - 16 * VOXEL_SIZE;
 
 	while(dist < STOP && acc < 1){	
 		vec3 c = from + dist * direction;
@@ -128,7 +128,7 @@ float traceShadowCone(vec3 from, vec3 direction, float targetDistance){
 vec3 traceDiffuseVoxelCone(const vec3 from, vec3 direction){
 	direction = normalize(direction);
 	
-	const float CONE_SPREAD = 0.325;
+	float CONE_SPREAD = 0.325;
 
 	vec4 acc = vec4(0.0f);
 
@@ -155,8 +155,8 @@ vec3 traceDiffuseVoxelCone(const vec3 from, vec3 direction){
 vec3 traceSpecularVoxelCone(vec3 from, vec3 direction){
 	direction = normalize(direction);
 
-	const float OFFSET = 8 * VOXEL_SIZE;
-	const float STEP = VOXEL_SIZE;
+	float OFFSET = 8 * VOXEL_SIZE;
+	float STEP = VOXEL_SIZE;
 
 	from += OFFSET * normal;
 	
@@ -183,21 +183,22 @@ vec3 traceSpecularVoxelCone(vec3 from, vec3 direction){
 // The current implementation uses 9 cones. I think 5 cones should be enough, but it might generate
 // more aliasing and bad blur.
 vec3 indirectDiffuseLight(){
-	const float ANGLE_MIX = 0.5f; // Angle mix (1.0f => orthogonal direction, 0.0f => direction of normal).
+	float ANGLE_MIX = 0.5f; // Angle mix (1.0f => orthogonal direction, 0.0f => direction of normal).
 
-	const float w[3] = {1.0, 1.0, 1.0}; // Cone weights.
+    float w[3];// Cone weights.
+    w[0] = w[1] = w[2] = 1.0f;
 
 	// Find a base for the side cones with the normal as one of its base vectors.
-	const vec3 ortho = normalize(orthogonal(normal));
-	const vec3 ortho2 = normalize(cross(ortho, normal));
+	vec3 ortho = normalize(orthogonal(normal));
+	vec3 ortho2 = normalize(cross(ortho, normal));
 
 	// Find base vectors for the corner cones too.
-	const vec3 corner = 0.5f * (ortho + ortho2);
-	const vec3 corner2 = 0.5f * (ortho - ortho2);
+	vec3 corner = 0.5f * (ortho + ortho2);
+	vec3 corner2 = 0.5f * (ortho - ortho2);
 
 	// Find start position of trace (start with a bit of offset).
-	const vec3 N_OFFSET = normal * (1 + 4 * ISQRT2) * VOXEL_SIZE;
-	const vec3 C_ORIGIN = worldPositionFrag + N_OFFSET;
+	vec3 N_OFFSET = normal * (1 + 4 * ISQRT2) * VOXEL_SIZE;
+	vec3 C_ORIGIN = worldPositionFrag + N_OFFSET;
 
 	// Accumulate indirect diffuse light.
 	vec3 acc = vec3(0);
@@ -205,16 +206,16 @@ vec3 indirectDiffuseLight(){
 	// We offset forward in normal direction, and backward in cone direction.
 	// Backward in cone direction improves GI, and forward direction removes
 	// artifacts.
-	const float CONE_OFFSET = -0.01;
+	float CONE_OFFSET = -0.01;
 
 	// Trace front cone
 	acc += w[0] * traceDiffuseVoxelCone(C_ORIGIN + CONE_OFFSET * normal, normal);
 
 	// Trace 4 side cones.
-	const vec3 s1 = mix(normal, ortho, ANGLE_MIX);
-	const vec3 s2 = mix(normal, -ortho, ANGLE_MIX);
-	const vec3 s3 = mix(normal, ortho2, ANGLE_MIX);
-	const vec3 s4 = mix(normal, -ortho2, ANGLE_MIX);
+	vec3 s1 = mix(normal, ortho, ANGLE_MIX);
+	vec3 s2 = mix(normal, -ortho, ANGLE_MIX);
+	vec3 s3 = mix(normal, ortho2, ANGLE_MIX);
+	vec3 s4 = mix(normal, -ortho2, ANGLE_MIX);
 
 	acc += w[1] * traceDiffuseVoxelCone(C_ORIGIN + CONE_OFFSET * ortho, s1);
 	acc += w[1] * traceDiffuseVoxelCone(C_ORIGIN - CONE_OFFSET * ortho, s2);
@@ -222,10 +223,10 @@ vec3 indirectDiffuseLight(){
 	acc += w[1] * traceDiffuseVoxelCone(C_ORIGIN - CONE_OFFSET * ortho2, s4);
 
 	// Trace 4 corner cones.
-	const vec3 c1 = mix(normal, corner, ANGLE_MIX);
-	const vec3 c2 = mix(normal, -corner, ANGLE_MIX);
-	const vec3 c3 = mix(normal, corner2, ANGLE_MIX);
-	const vec3 c4 = mix(normal, -corner2, ANGLE_MIX);
+	vec3 c1 = mix(normal, corner, ANGLE_MIX);
+	vec3 c2 = mix(normal, -corner, ANGLE_MIX);
+	vec3 c3 = mix(normal, corner2, ANGLE_MIX);
+	vec3 c4 = mix(normal, -corner2, ANGLE_MIX);
 
 	acc += w[2] * traceDiffuseVoxelCone(C_ORIGIN + CONE_OFFSET * corner, c1);
 	acc += w[2] * traceDiffuseVoxelCone(C_ORIGIN - CONE_OFFSET * corner, c2);
@@ -238,14 +239,14 @@ vec3 indirectDiffuseLight(){
 
 // Calculates indirect specular light using voxel cone tracing.
 vec3 indirectSpecularLight(vec3 viewDirection){
-	const vec3 reflection = normalize(reflect(viewDirection, normal));
+	vec3 reflection = normalize(reflect(viewDirection, normal));
 	return material.specularReflectivity * material.specularColor * traceSpecularVoxelCone(worldPositionFrag, reflection);
 }
 
 // Calculates refractive light using voxel cone tracing.
 vec3 indirectRefractiveLight(vec3 viewDirection){
-	const vec3 refraction = refract(viewDirection, normal, 1.0 / material.refractiveIndex);
-	const vec3 cmix = mix(material.specularColor, 0.5 * (material.specularColor + vec3(1)), material.transparency);
+	vec3 refraction = refract(viewDirection, normal, 1.0 / material.refractiveIndex);
+	vec3 cmix = mix(material.specularColor, 0.5 * (material.specularColor + vec3(1)), material.transparency);
 	return cmix * traceSpecularVoxelCone(worldPositionFrag, refraction);
 }
 
@@ -253,9 +254,9 @@ vec3 indirectRefractiveLight(vec3 viewDirection){
 // Uses shadow cone tracing for soft shadows.
 vec3 calculateDirectLight(const PointLight light, const vec3 viewDirection){
 	vec3 lightDirection = light.position - worldPositionFrag;
-	const float distanceToLight = length(lightDirection);
+	float distanceToLight = length(lightDirection);
 	lightDirection = lightDirection / distanceToLight;
-	const float lightAngle = dot(normal, lightDirection);
+	float lightAngle = dot(normal, lightDirection);
 	
 	// --------------------
 	// Diffuse lighting.
@@ -266,12 +267,12 @@ vec3 calculateDirectLight(const PointLight light, const vec3 viewDirection){
 	// Specular lighting.
 	// --------------------
 #if (SPECULAR_MODE == 0) /* Blinn-Phong. */
-	const vec3 halfwayVector = normalize(lightDirection + viewDirection);
+	vec3 halfwayVector = normalize(lightDirection + viewDirection);
 	float specularAngle = max(dot(normal, halfwayVector), 0.0f);
 #endif
 	
 #if (SPECULAR_MODE == 1) /* Perfect reflection. */
-	const vec3 reflection = normalize(reflect(viewDirection, normal));
+	vec3 reflection = normalize(reflect(viewDirection, normal));
 	float specularAngle = max(0, dot(reflection, lightDirection));
 #endif
 
@@ -295,20 +296,20 @@ vec3 calculateDirectLight(const PointLight light, const vec3 viewDirection){
 	// --------------------
 	diffuseAngle = min(shadowBlend, diffuseAngle);
 	specularAngle = min(shadowBlend, max(specularAngle, refractiveAngle));
-	const float df = 1.0f / (1.0f + 0.25f * material.specularDiffusion); // Diffusion factor.
-	const float specular = SPECULAR_FACTOR * pow(specularAngle, df * SPECULAR_POWER);
-	const float diffuse = diffuseAngle * (1.0f - material.transparency);
+	float df = 1.0f / (1.0f + 0.25f * material.specularDiffusion); // Diffusion factor.
+	float specular = SPECULAR_FACTOR * pow(specularAngle, df * SPECULAR_POWER);
+	float diffuse = diffuseAngle * (1.0f - material.transparency);
 
-	const vec3 diff = material.diffuseReflectivity * material.diffuseColor * diffuse;
-	const vec3 spec = material.specularReflectivity * material.specularColor * specular;
-	const vec3 total = light.color * (diff + spec);
+	vec3 diff = material.diffuseReflectivity * material.diffuseColor * diffuse;
+	vec3 spec = material.specularReflectivity * material.specularColor * specular;
+	vec3 total = light.color * (diff + spec);
 	return attenuate(distanceToLight) * total;
-};
+}
 
 // Sums up all direct light from point lights (both diffuse and specular).
 vec3 directLight(vec3 viewDirection){
 	vec3 direct = vec3(0.0f);
-	const uint maxLights = min(numberOfLights, MAX_LIGHTS);
+	uint maxLights = min(numberOfLights, MAX_LIGHTS);
 	for(uint i = 0; i < maxLights; ++i) direct += calculateDirectLight(pointLights[i], viewDirection);
 	direct *= DIRECT_LIGHT_INTENSITY;
 	return direct;
@@ -316,7 +317,7 @@ vec3 directLight(vec3 viewDirection){
 
 void main(){
 	color = vec4(0, 0, 0, 1);
-	const vec3 viewDirection = normalize(worldPositionFrag - cameraPosition);
+	vec3 viewDirection = normalize(worldPositionFrag - cameraPosition);
 
 	// Indirect diffuse light.
 	if(settings.indirectDiffuseLight && material.diffuseReflectivity * (1.0f - material.transparency) > 0.01f) 

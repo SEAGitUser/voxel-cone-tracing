@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B970D5CB1FAE8D0D00208298 /* AssetStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */; };
+		B970D5CD1FAE914D00208298 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = B970D5CC1FAE914D00208298 /* Assets */; };
 		B9AEF0771FA6DD64005888EA /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0761FA6DD64005888EA /* main.mm */; };
 		B9AEF07C1FA6DD64005888EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AEF07B1FA6DD64005888EA /* Assets.xcassets */; };
 		B9AEF08A1FA6DD64005888EA /* voxel_cone_tracing_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0891FA6DD64005888EA /* voxel_cone_tracing_macTests.m */; };
@@ -332,7 +334,6 @@
 		B9FA1C8B1FAAEFFD00C2C68D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FA1C8A1FAAEFFD00C2C68D /* CoreVideo.framework */; };
 		B9FA1C8D1FAAF02300C2C68D /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FA1C8C1FAAF02300C2C68D /* AppKit.framework */; };
 		B9FA1CBB1FAB71F500C2C68D /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = B9FA1CBA1FAB71F500C2C68D /* Shaders */; };
-		B9FA1CBD1FAC779300C2C68D /* Models in Resources */ = {isa = PBXBuildFile; fileRef = B9FA1CBC1FAC779300C2C68D /* Models */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -353,6 +354,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B970D5C91FAE870E00208298 /* AssetStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetStore.h; sourceTree = "<group>"; };
+		B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetStore.cpp; sourceTree = "<group>"; };
+		B970D5CC1FAE914D00208298 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Assets; path = ../Assets; sourceTree = "<group>"; };
 		B9AEF06F1FA6DD64005888EA /* voxel-cone-tracing-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxel-cone-tracing-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AEF0761FA6DD64005888EA /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		B9AEF07B1FA6DD64005888EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -685,7 +689,6 @@
 		B9FA1C8A1FAAEFFD00C2C68D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		B9FA1C8C1FAAF02300C2C68D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		B9FA1CBA1FAB71F500C2C68D /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shaders; path = ../Shaders; sourceTree = "<group>"; };
-		B9FA1CBC1FAC779300C2C68D /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Models; path = ../Assets/Models; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -718,7 +721,7 @@
 		B9AEF0661FA6DD64005888EA = {
 			isa = PBXGroup;
 			children = (
-				B9FA1CBC1FAC779300C2C68D /* Models */,
+				B970D5CC1FAE914D00208298 /* Assets */,
 				B9FA1CBA1FAB71F500C2C68D /* Shaders */,
 				B9F4F97D1FA843FC0020A3DC /* Source */,
 				B9F4F9C01FA843FC0020A3DC /* Includes */,
@@ -936,6 +939,8 @@
 				B9F4F9BB1FA843FC0020A3DC /* External */,
 				B9F4F9BE1FA843FC0020A3DC /* ObjLoader.cpp */,
 				B9F4F9BF1FA843FC0020A3DC /* ObjLoader.h */,
+				B970D5C91FAE870E00208298 /* AssetStore.h */,
+				B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1394,8 +1399,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9FA1CBD1FAC779300C2C68D /* Models in Resources */,
 				B9FA1CBB1FAB71F500C2C68D /* Shaders in Resources */,
+				B970D5CD1FAE914D00208298 /* Assets in Resources */,
 				B9AEF07C1FA6DD64005888EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1433,6 +1438,7 @@
 				B9F4FC271FA8456E0020A3DC /* stbi_DDS_aug_c.h in Sources */,
 				B9F4FC2A1FA8456E0020A3DC /* Assets.xcassets in Sources */,
 				B9F4FC2B1FA8456E0020A3DC /* Info.plist in Sources */,
+				B970D5CB1FAE8D0D00208298 /* AssetStore.cpp in Sources */,
 				B9F4FB1D1FA845210020A3DC /* CMakeLists.txt in Sources */,
 				B9F4FB1E1FA845210020A3DC /* common.hpp in Sources */,
 				B9F4FB1F1FA845210020A3DC /* _features.hpp in Sources */,
