@@ -26,7 +26,7 @@ void Texture3D::glTexStorage3D(	GLenum target,
     {
         GLuint pixelFormat = GL_RGBA;
         GLuint dataType = GL_FLOAT;
-        glTexImage3D(target, i, internalformat, width, height, depth, 0, pixelFormat, dataType, NULL);
+        glTexImage3D(target, i, internalformat, tempWidth, tempHeight, tempDepth, 0, pixelFormat, dataType, NULL);
         tempWidth = std::max(1, (tempWidth / 2));
         tempHeight = std::max(1, (tempHeight / 2));
         tempDepth = std::max(1, (tempDepth / 2));
@@ -52,11 +52,10 @@ void Texture3D::glClearTexImage(	GLuint texture,
         GLuint pixelFormat = GL_RGBA;
         GLuint dataType = GL_FLOAT;
         
-        static std::vector<GLubyte> emptyData(width * height * depth *4, 0);
-        //glBindTexture(GL_TEXTURE_2D, texture);
+        static std::vector<GLubyte> emptyData(width * height * depth *4 * sizeof(GLfloat), 0);
+        
         glTexSubImage3D(GL_TEXTURE_3D, i, 0, 0, 0, tempWidth, tempHeight, tempDepth, pixelFormat, dataType, &emptyData[0]);
         
-        //glTexImage3D(target, i, internalformat, width, height, depth, 0, pixelFormat, dataType, NULL);
         tempWidth = std::max(1, (tempWidth / 2));
         tempHeight = std::max(1, (tempHeight / 2));
         tempDepth = std::max(1, (tempDepth / 2));
