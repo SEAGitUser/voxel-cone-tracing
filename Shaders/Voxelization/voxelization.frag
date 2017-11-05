@@ -1,7 +1,7 @@
 // Lit (diffuse) fragment voxelization shader.
 // Author:	Fredrik Präntare <prantare@gmail.com> 
 // Date:	11/26/2016
-#version 450 core
+#version 410 core
 
 // Lighting settings.
 #define POINT_LIGHT_INTENSITY 1
@@ -34,38 +34,50 @@ uniform Material material;
 uniform PointLight pointLights[MAX_LIGHTS];
 uniform int numberOfLights;
 uniform vec3 cameraPosition;
-layout(RGBA8) uniform image3D texture3D;
+uniform sampler3D sampler3Dims;
 
 in vec3 worldPositionFrag;
 in vec3 normalFrag;
 
-vec3 calculatePointLight(const PointLight light){
-	const vec3 direction = normalize(light.position - worldPositionFrag);
-	const float distanceToLight = distance(light.position, worldPositionFrag);
-	const float attenuation = attenuate(distanceToLight);
-	const float d = max(dot(normalize(normalFrag), direction), 0.0f);
+out vec3 color;
+
+vec3 calculatePointLight(const PointLight light)
+{
+    
+	vec3 direction = normalize(light.position - worldPositionFrag);
+	float distanceToLight = distance(light.position, worldPositionFrag);
+	float attenuation = attenuate(distanceToLight);
+	float d = max(dot(normalize(normalFrag), direction), 0.0f);
 	return d * POINT_LIGHT_INTENSITY * attenuation * light.color;
-};
+    
+}
 
 vec3 scaleAndBias(vec3 p) { return 0.5f * p + vec3(0.5f); }
 
 bool isInsideCube(const vec3 p, float e) { return abs(p.x) < 1 + e && abs(p.y) < 1 + e && abs(p.z) < 1 + e; }
 
 void main(){
-	vec3 color = vec3(0.0f);
+	color = vec3(0.0f);
 	if(!isInsideCube(worldPositionFrag, 0)) return;
 
 	// Calculate diffuse lighting fragment contribution.
-	const uint maxLights = min(numberOfLights, MAX_LIGHTS);
-	for(uint i = 0; i < maxLights; ++i) color += calculatePointLight(pointLights[i]);
+	uint maxLights = min(numberOfLights, MAX_LIGHTS);
+	for(uint i = 0; i < maxLights; ++i)
+        color += calculatePointLight(pointLights[i]);
 	vec3 spec = material.specularReflectivity * material.specularColor;
 	vec3 diff = material.diffuseReflectivity * material.diffuseColor;
 	color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
 
+    //TODO: the function imageStore is not guaranteed to be atomic (documentation doesn't mention anything about it, so we don't know)
+    //for this reason, the way this is written will not always work (flicker may show up), we'll come up with a different way of doing this.
+    //for now we'll just output the color, which will be eventually written to a 3d texture.
+    
+    /*
 	// Output lighting to 3D texture.
 	vec3 voxel = scaleAndBias(worldPositionFrag);
-	ivec3 dim = imageSize(texture3D);
+	ivec3 dim = textureSize(sampler3Dims,0);
 	float alpha = pow(1 - material.transparency, 4); // For soft shadows to work better with transparent materials.
 	vec4 res = alpha * vec4(vec3(color), 1);
-    imageStore(texture3D, ivec3(dim * voxel), res);
+    imageStore(sampler3Dims, ivec3(dim * voxel), res);
+    */
 }

@@ -7,11 +7,6 @@
 
 MaterialStore::MaterialStore()
 {
-#ifdef __APPLE__
-    resourceRoot = "../Resources";
-#else
-    resourceRoot = "./";
-#endif
     
 	// Voxelization.
 	AddNewMaterial("voxelization", "Voxelization/voxelization.vert", "Voxelization/voxelization.frag", "Voxelization/voxelization.geom");
