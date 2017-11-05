@@ -1,6 +1,6 @@
 // Author:	Fredrik Präntare <prantare@gmail.com>
 // Date:	11/26/2016
-#version 410 core
+#version 450 core
 
 in vec3 worldPosition;
 

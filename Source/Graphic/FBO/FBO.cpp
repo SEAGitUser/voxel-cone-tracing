@@ -1,7 +1,6 @@
 #include "FBO.h"
 
 #include <iostream>
-#include <assert.h>
 
 FBO::FBO(GLuint w, GLuint h, GLenum magFilter, GLenum minFilter, GLint internalFormat, GLint format, GLint wrap)
 	: width(w), height(h)
@@ -36,7 +35,7 @@ FBO::FBO(GLuint w, GLuint h, GLenum magFilter, GLenum minFilter, GLint internalF
 
 GLuint FBO::generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap)
 {
-	GLenum attachment_type = 0;
+	GLenum attachment_type;
 	if (!depth && !stencil) {
 		attachment_type = GL_RGB;
 	}
@@ -46,8 +45,6 @@ GLuint FBO::generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean st
 	else if (!depth && stencil) {
 		attachment_type = GL_STENCIL_INDEX;
 	}
-    
-    assert(attachment_type != 0);
 	GLuint textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);

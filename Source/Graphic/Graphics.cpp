@@ -28,10 +28,9 @@
 // ----------------------
 void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
 {
-    
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
 	voxelConeTracingMaterial = MaterialStore::getInstance().findMaterialWithName("voxel_cone_tracing");
-    glError();
 	voxelCamera = OrthographicCamera(viewportWidth / float(viewportHeight));
 	initVoxelization();
 	initVoxelVisualization(viewportWidth, viewportHeight);
@@ -201,7 +200,7 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 	vvfbo2 = new FBO(viewportHeight, viewportWidth);
 
 	// Rendering cube.
-	cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
+	cubeShape = ObjLoader::loadObjFile("Assets\\Models\\cube.obj");
 	assert(cubeShape->meshes.size() == 1);
 	cubeMeshRenderer = new MeshRenderer(&cubeShape->meshes[0]);
 

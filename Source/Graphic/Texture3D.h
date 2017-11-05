@@ -33,7 +33,10 @@ public:
     
     void glTexStorage3D(	GLenum target,
                         GLsizei levels,
-                        GLenum internalformat);
+                        GLenum internalformat,
+                        GLsizei width,
+                        GLsizei height,
+                        GLsizei depth);
     
     void glClearTexImage(	GLuint texture,
                          GLint level,
@@ -43,6 +46,6 @@ public:
 #endif
     
 private:
-	GLint width, height, depth;
+	int width, height, depth;
 	std::vector<GLfloat> clearData;
 };

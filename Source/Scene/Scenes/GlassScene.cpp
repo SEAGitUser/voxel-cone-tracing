@@ -21,7 +21,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	FirstPersonScene::init(viewportWidth, viewportHeight);
 
 	// Cornell box.
-	Shape * cornell = ObjLoader::loadObjFile("/Assets/Models/cornell.obj");
+	Shape * cornell = ObjLoader::loadObjFile("Assets\\Models\\cornell.obj");
 	shapes.push_back(cornell);
 	for (unsigned int i = 0; i < cornell->meshes.size(); ++i) {
 		renderers.push_back(new MeshRenderer(&(cornell->meshes[i])));
@@ -33,7 +33,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	}
 
 	// Light cube.
-	Shape * lightCube = ObjLoader::loadObjFile("/Assets/Models/sphere.obj");
+	Shape * lightCube = ObjLoader::loadObjFile("Assets\\Models\\sphere.obj");
 	shapes.push_back(lightCube);
 	for (unsigned int i = 0; i < lightCube->meshes.size(); ++i) {
 		renderers.push_back(new MeshRenderer(&(lightCube->meshes[i])));
@@ -54,7 +54,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
 	// Buddha.
 	int buddhaIndex = renderers.size();
-	Shape * buddha = ObjLoader::loadObjFile("/Assets/Models/buddha.obj");
+	Shape * buddha = ObjLoader::loadObjFile("Assets\\Models\\buddha.obj");
 	shapes.push_back(buddha);
 	for (unsigned int i = 0; i < buddha->meshes.size(); ++i) {
 		renderers.push_back(new MeshRenderer(&(buddha->meshes[i])));
@@ -88,7 +88,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
 	// An additional wall (behind the camera).
 	int backWallIndex = renderers.size();
-	Shape * backWall = ObjLoader::loadObjFile("/Assets/Models/quadn.obj");
+	Shape * backWall = ObjLoader::loadObjFile("Assets\\Models\\quadn.obj");
 	shapes.push_back(backWall);
 	for (unsigned int i = 0; i < backWall->meshes.size(); ++i) {
 		renderers.push_back(new MeshRenderer(&(backWall->meshes[i])));

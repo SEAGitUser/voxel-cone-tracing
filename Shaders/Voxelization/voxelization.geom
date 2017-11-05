@@ -3,7 +3,7 @@
 // https://github.com/otaku690/SparseVoxelOctree/blob/master/WIN/SVO/shader/voxelize.geom.glsl.
 // Author:	Fredrik Präntare <prantare@gmail.com>
 // Date:	11/26/2016
-#version 410 core
+#version 450 core
 
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
@@ -15,9 +15,9 @@ out vec3 worldPositionFrag;
 out vec3 normalFrag;
 
 void main(){
-	vec3 p1 = worldPositionGeom[1] - worldPositionGeom[0];
-	vec3 p2 = worldPositionGeom[2] - worldPositionGeom[0];
-	vec3 p = abs(cross(p1, p2)); 
+	const vec3 p1 = worldPositionGeom[1] - worldPositionGeom[0];
+	const vec3 p2 = worldPositionGeom[2] - worldPositionGeom[0];
+	const vec3 p = abs(cross(p1, p2)); 
 	for(uint i = 0; i < 3; ++i){
 		worldPositionFrag = worldPositionGeom[i];
 		normalFrag = normalGeom[i];

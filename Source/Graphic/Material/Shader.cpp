@@ -21,14 +21,12 @@ GLuint Shader::compile() {
 		glGetShaderInfoLog(id, 1024, nullptr, log);
 		std::cerr << "- Failed to compile shader '" << path << "' : " << shaderType << typeName << "!" << std::endl;
 		std::cerr << "LOG: " << std::endl << log << std::endl;
-        //the line std::getchar() makes xcode behave oddly,I'll put an assert instead
-        assert(false);
+		std::getchar();
 		return 0;
 	}
 	if (id == 0) {
 		std::cerr << "- Could not compile shader '" << path << "' : " << shaderType << typeName << "!" << std::endl;
-		//std::getchar();
-        assert(false);
+		std::getchar();
 		return 0;
 	}
 	std::cout << "- Shader '" << path << "' : " << shaderType << typeName << " compiled successfully." << std::endl;

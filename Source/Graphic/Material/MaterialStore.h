@@ -2,13 +2,10 @@
 
 #include <vector>
 #include <string>
-#include "Utility/AssetStore.h"
-
 class Material;
 
 /// <summary> Manages all loaded materials and shader programs. </summary>
-class MaterialStore : public AssetStore
-{
+class MaterialStore {
 public:
 	static MaterialStore& getInstance();
 	std::vector<Material*> materials;
@@ -20,6 +17,7 @@ public:
 	~MaterialStore();
 private:
     
+    std::string resourceRoot;
 	MaterialStore();
 	MaterialStore(MaterialStore const &) = delete;
 	void operator=(MaterialStore const &) = delete;
