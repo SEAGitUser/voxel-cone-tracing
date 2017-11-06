@@ -21,7 +21,7 @@ public:
     const unsigned int DEFAULT_WINDOW_HEIGHT = 720;
     const char * DEFAULT_TITLE = "Voxel Cone Tracing by Rafael Sabino";
     const unsigned int DEFAULT_FULLSCREEN = 0; // 0 is window, 1 is fullscreen, 2 is borderless fullscreen.
-    const int DEFAULT_VSYNC = 0; // 0 is no vSync, can also use negative vSync (check GLFW docs).
+    const int DEFAULT_VSYNC = 1; // 0 is no vSync, can also use negative vSync (check GLFW docs).
     
     int state = 0; // Used to simplify debugging. Sent to all shaders continuously.
     Graphics::RenderingMode currentRenderingMode = Graphics::RenderingMode::VOXEL_CONE_TRACING;
