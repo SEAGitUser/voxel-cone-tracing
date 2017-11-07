@@ -255,3 +255,7 @@ Libraries/Mac/Debug/\.DS_Store
 Libraries/Mac/\.DS_Store
 
 Libraries/Windows/\.DS_Store
+
+voxel-cone-tracing-mac/voxel-cone-tracing-mac\.xcodeproj/project\.xcworkspace/xcuserdata/Hullabaloo\.xcuserdatad/UserInterfaceState\.xcuserstate
+
+*.xcuserstate
