@@ -5,38 +5,44 @@
 #include <fstream>
 #include <vector>
 
+
+const std::string Shader::shaderResourcePath = Resource::resourceRoot + "/Shaders/";
+
 GLuint Shader::compile() {
 	// Create and compile shader.
-	GLuint id = glCreateShader(shaderType);
+	shaderID = glCreateShader(shaderType);
 	const char * source = rawShader.c_str();
-	glShaderSource(id, 1, &source, nullptr);
-	glCompileShader(id);
+	glShaderSource(shaderID, 1, &source, nullptr);
+	glCompileShader(shaderID);
 
 	// Check if we succeeded.
 	std::string typeName = " (" + GetShaderTypeName() + ")";
 	GLint success;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		GLchar log[1024];
-		glGetShaderInfoLog(id, 1024, nullptr, log);
+		glGetShaderInfoLog(shaderID, 1024, nullptr, log);
 		std::cerr << "- Failed to compile shader '" << path << "' : " << shaderType << typeName << "!" << std::endl;
 		std::cerr << "LOG: " << std::endl << log << std::endl;
         //the line std::getchar() makes xcode behave oddly,I'll put an assert instead
         assert(false);
 		return 0;
 	}
-	if (id == 0) {
+	if (shaderID == 0) {
 		std::cerr << "- Could not compile shader '" << path << "' : " << shaderType << typeName << "!" << std::endl;
 		//std::getchar();
         assert(false);
 		return 0;
 	}
 	std::cout << "- Shader '" << path << "' : " << shaderType << typeName << " compiled successfully." << std::endl;
-	return id;
+	return shaderID;
 }
 
-Shader::Shader(std::string _path, ShaderType _type) : path(_path), shaderType(_type) {
-	// Load the shader instantly.
+Shader::Shader(const char* _path, ShaderType _type) :  shaderType(_type) {
+	
+    // Load the shader instantly.
+    path = shaderResourcePath + _path;
+    
 	std::ifstream fileStream(path, std::ios::in);
 	if (!fileStream.is_open()) {
 		std::cerr << "Couldn't load shader '" + std::string(path) + "'." << std::endl;
@@ -50,9 +56,16 @@ Shader::Shader(std::string _path, ShaderType _type) : path(_path), shaderType(_t
 		rawShader.append(line + "\n");
 	}
 	fileStream.close();
+    
+    compile();
 }
 
-std::string Shader::GetShaderTypeName()
+Shader::~Shader()
+{
+    glDeleteShader(shaderID);
+}
+
+const std::string Shader::GetShaderTypeName() const
 {
 	switch (shaderType) {
 	case ShaderType::FRAGMENT:					return "fragment";

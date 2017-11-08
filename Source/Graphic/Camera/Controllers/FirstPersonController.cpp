@@ -28,26 +28,10 @@ void FirstPersonController::update() {
         mouseYStart = ypos;
     }
     
-    static GLint x = 0;
-    
-    if(x == 1)
-    {
-        printf("here\n");
-    }
-    
-    ++x;
-
-    
-    //xmid = xwidth / 2.0;
-    //ymid = yheight / 2.0;
-    
     // ----------
     // Rotation.
     // ----------
-    /*
-    float xDelta = float(xmid - xpos);
-    float yDelta = float(ymid - ypos);
-    */
+
     float xDelta = mouseXStart - xpos;
     float yDelta = mouseYStart - ypos;
     

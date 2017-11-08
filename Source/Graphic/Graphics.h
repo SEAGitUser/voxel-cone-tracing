@@ -15,6 +15,10 @@
 class MeshRenderer;
 class Material;
 class Shape;
+class VoxelizationConeTracingMaterial;
+class VoxelizationMaterial;
+class WorldPositionMaterial;
+class VoxelVisualizationMaterial;
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
@@ -77,15 +81,15 @@ private:
 	// ----------------
 	// Voxel cone tracing.
 	// ----------------
-	Material * voxelConeTracingMaterial;
+	VoxelizationConeTracingMaterial * voxelConeTracingMaterial;
 
 	// ----------------
 	// Voxelization.
 	// ----------------
 	int ticksSinceLastVoxelization = voxelizationSparsity;
 	GLuint voxelTextureSize = 64; // Must be set to a power of 2.
-	OrthographicCamera voxelCamera;
-	Material * voxelizationMaterial;
+	//OrthographicCamera voxelCamera;
+	VoxelizationMaterial * voxelizationMaterial;
 	Texture3D * voxelTexture = nullptr;
 	void initVoxelization();
 	void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
@@ -96,7 +100,8 @@ private:
 	void initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight);
 	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
 	FBO *vvfbo1, *vvfbo2;
-	Material * worldPositionMaterial, *voxelVisualizationMaterial;
+    WorldPositionMaterial * worldPositionMaterial;
+    VoxelVisualizationMaterial * voxelVisualizationMaterial;
 	// --- Screen quad. ---
 	MeshRenderer * quadMeshRenderer;
 	Mesh quad;

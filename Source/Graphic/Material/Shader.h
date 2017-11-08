@@ -3,11 +3,11 @@
 #include "OpenGL_Includes.h"
 
 #include <string>
-
+#include "Resource.h"
 
 
 /// <summary> Represents a shader program. </summary>
-class Shader {
+class Shader : public Resource{
 public:
 	enum ShaderType {
 		VERTEX = GL_VERTEX_SHADER,
@@ -17,19 +17,31 @@ public:
 		TESSELATION_CONTROL = GL_TESS_CONTROL_SHADER
 	};
 
-	ShaderType shaderType;
+    static const std::string shaderResourcePath;
+	const ShaderType shaderType;
 
 	/// <summary> Returns the name of the shader type of this shader. </summary>
-	std::string GetShaderTypeName();
+	const std::string GetShaderTypeName() const;
+    
+    const GLint ShaderID() const { return shaderID; };
+    
+    /// <summary> Creates and loads a shader from disk. Does not compile it. </summary>
+    Shader(const char* _path, ShaderType _type);
+    
+    /// <summary> Compiles the shader. Returns the OpenGL shader ID. </summary>
+    GLuint compile();
 
+    
+    ~Shader();
+protected:
 	/// <summary> The shader path. </summary>
 	std::string path;
+    
+    GLint shaderID;
 
-	/// <summary> Compiles the shader. Returns the OpenGL shader ID. </summary>
-	GLuint compile();
 
-	/// <summary> Creates and loads a shader from disk. Does not compile it. </summary>
-	Shader(std::string path, ShaderType shaderType);
+
+
 private:
 	std::string rawShader;
 	Shader();

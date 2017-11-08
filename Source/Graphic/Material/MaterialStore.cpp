@@ -5,62 +5,48 @@
 #include "Material.h"
 #include "Shader.h"
 
+#include <unordered_map>
+#include <string>
+#include <utility>
+
+
+static std::unordered_map<const char*, Shader*> shaderDatabase;
+
+
 MaterialStore::MaterialStore()
 {
+    AddShader("Voxelization/voxelization.vert", Shader::ShaderType::VERTEX);
+    AddShader("Voxelization/Visualization/voxel_visualization.vert", Shader::ShaderType::VERTEX);
+    AddShader("Voxelization/Visualization/world_position.vert", Shader::ShaderType::VERTEX);
+    AddShader("Voxel Cone Tracing/voxel_cone_tracing.vert", Shader::ShaderType::VERTEX);
     
-	// Voxelization.
-	AddNewMaterial("voxelization", "Voxelization/voxelization.vert", "Voxelization/voxelization.frag", "Voxelization/voxelization.geom");
+    AddShader("Voxelization/voxelization.geom", Shader::ShaderType::GEOMETRY);
+    
+    AddShader("Voxelization/voxelization.frag", Shader::ShaderType::FRAGMENT);
+    AddShader("Voxel Cone Tracing/voxel_cone_tracing.frag", Shader::ShaderType::FRAGMENT);
+    AddShader("Voxelization/Visualization/voxel_visualization.frag", Shader::ShaderType::FRAGMENT);
+    AddShader("Voxelization/Visualization/world_position.frag", Shader::ShaderType::FRAGMENT);
 
-	// Voxelization visualization.
-	AddNewMaterial("voxel_visualization", "Voxelization/Visualization/voxel_visualization.vert", "Voxelization/Visualization/voxel_visualization.frag");
-	AddNewMaterial("world_position", "Voxelization/Visualization/world_position.vert", "Voxelization/Visualization/world_position.frag");
-
-	// Cone tracing.
-	AddNewMaterial("voxel_cone_tracing", "Voxel Cone Tracing/voxel_cone_tracing.vert", "Voxel Cone Tracing/voxel_cone_tracing.frag");
 }
 
-void MaterialStore::AddNewMaterial(
-	std::string name, const char * vertexPath, const char * fragmentPath,
-	const char * geometryPath, const char * tessEvalPath, const char * tessCtrlPath)
+void MaterialStore::AddShader(const char *shaderPath, Shader::ShaderType shaderType)
 {
-	// std::cout << vertexPath << ", " << fragmentPath << ", " << geometryPath << ", " << (tessEvalPath == nullptr) << ", " << (tessCtrlPath == nullptr) << std:: endl;
-	using ST = Shader::ShaderType;
-	Shader *v, *f, *g, *te, *tc;
-	v = f = g = te = tc = nullptr;
+    if(shaderDatabase.count(shaderPath) == 0)
+    {
+        Shader* shader = new Shader(shaderPath, shaderType);
+        shaderDatabase[shaderPath] = shader;
+    }
 
-	const std::string shaderPath = resourceRoot + "/Shaders/";
-	if (vertexPath) { v = new Shader(shaderPath + vertexPath, ST::VERTEX); }
-	if (fragmentPath) { f = new Shader(shaderPath + fragmentPath, ST::FRAGMENT); }
-	if (geometryPath) { g = new Shader(shaderPath + geometryPath, ST::GEOMETRY); }
-	if (tessEvalPath) { te = new Shader(shaderPath + tessEvalPath, ST::TESSELATION_EVALUATION); }
-	if (tessCtrlPath) { tc = new Shader(shaderPath + tessCtrlPath, ST::TESSELATION_CONTROL); }
-	materials.push_back(new Material(name, v, f, g, te, tc));
-	delete v, f, g, te, tc;
 }
 
-Material * MaterialStore::findMaterialWithName(std::string name)
+Shader const *  MaterialStore::findShaderUsingPath(const GLchar* path)const
 {
-	for (unsigned int i = 0; i < materials.size(); ++i) {
-		if (materials[i]->name == name) {
-			return materials[i];
-		}
-	}
-	std::cerr << "Couldn't find material with name " << name << std::endl;
-	return nullptr;
+    assert(shaderDatabase.count(path) != 0);
+    return shaderDatabase[path];
 }
 
-Material * MaterialStore::findMaterialWithProgramID(unsigned int programID)
-{
-	for (unsigned int i = 0; i < materials.size(); ++i) {
-		if (materials[i]->program == programID) {
-			return materials[i];
-		}
-	}
-	std::cerr << "Couldn't find material with program ID " << programID << std::endl;
-	return nullptr;
-}
 
-MaterialStore& MaterialStore::getInstance()
+MaterialStore const& MaterialStore::getInstance()
 {
 	static MaterialStore instance;
 	return instance;
@@ -71,4 +57,9 @@ MaterialStore::~MaterialStore() {
 	{
 		delete materials[i];
 	}
+    
+    for (std::pair<std::string, Shader* > pair : shaderDatabase)
+    {
+        delete pair.second;
+    }
 }

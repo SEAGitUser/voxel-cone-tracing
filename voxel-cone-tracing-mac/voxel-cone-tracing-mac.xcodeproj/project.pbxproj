@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B9175F821FB2BED40061CB1C /* VoxelizationMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F801FB2BED40061CB1C /* VoxelizationMaterial.cpp */; };
+		B9175F851FB2D1000061CB1C /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F841FB2D1000061CB1C /* Resource.cpp */; };
+		B9175F881FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F861FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.cpp */; };
+		B9175F8B1FB2F3A10061CB1C /* WorldPositionMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F891FB2F3A10061CB1C /* WorldPositionMaterial.cpp */; };
+		B9175F8E1FB2F79E0061CB1C /* VoxelVisualizationMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F8C1FB2F79E0061CB1C /* VoxelVisualizationMaterial.cpp */; };
 		B94F67261FAFFE6A00EAF59A /* FirstPersonController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B94F67251FAFFE6A00EAF59A /* FirstPersonController.cpp */; };
 		B970D5CB1FAE8D0D00208298 /* AssetStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */; };
 		B970D5CD1FAE914D00208298 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = B970D5CC1FAE914D00208298 /* Assets */; };
@@ -355,6 +360,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B9175F801FB2BED40061CB1C /* VoxelizationMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizationMaterial.cpp; sourceTree = "<group>"; };
+		B9175F811FB2BED40061CB1C /* VoxelizationMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelizationMaterial.h; sourceTree = "<group>"; };
+		B9175F831FB2CFB60061CB1C /* Resource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
+		B9175F841FB2D1000061CB1C /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
+		B9175F861FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizationConeTracingMaterial.cpp; sourceTree = "<group>"; };
+		B9175F871FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelizationConeTracingMaterial.h; sourceTree = "<group>"; };
+		B9175F891FB2F3A10061CB1C /* WorldPositionMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldPositionMaterial.cpp; sourceTree = "<group>"; };
+		B9175F8A1FB2F3A10061CB1C /* WorldPositionMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldPositionMaterial.h; sourceTree = "<group>"; };
+		B9175F8C1FB2F79E0061CB1C /* VoxelVisualizationMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelVisualizationMaterial.cpp; sourceTree = "<group>"; };
+		B9175F8D1FB2F79E0061CB1C /* VoxelVisualizationMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelVisualizationMaterial.h; sourceTree = "<group>"; };
 		B94F67251FAFFE6A00EAF59A /* FirstPersonController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirstPersonController.cpp; sourceTree = "<group>"; };
 		B970D5C91FAE870E00208298 /* AssetStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetStore.h; sourceTree = "<group>"; };
 		B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetStore.cpp; sourceTree = "<group>"; };
@@ -865,6 +880,16 @@
 				B9F4F9961FA843FC0020A3DC /* MaterialStore.h */,
 				B9F4F9971FA843FC0020A3DC /* Shader.cpp */,
 				B9F4F9981FA843FC0020A3DC /* Shader.h */,
+				B9175F801FB2BED40061CB1C /* VoxelizationMaterial.cpp */,
+				B9175F811FB2BED40061CB1C /* VoxelizationMaterial.h */,
+				B9175F831FB2CFB60061CB1C /* Resource.h */,
+				B9175F841FB2D1000061CB1C /* Resource.cpp */,
+				B9175F861FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.cpp */,
+				B9175F871FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.h */,
+				B9175F891FB2F3A10061CB1C /* WorldPositionMaterial.cpp */,
+				B9175F8A1FB2F3A10061CB1C /* WorldPositionMaterial.h */,
+				B9175F8C1FB2F79E0061CB1C /* VoxelVisualizationMaterial.cpp */,
+				B9175F8D1FB2F79E0061CB1C /* VoxelVisualizationMaterial.h */,
 			);
 			path = Material;
 			sourceTree = "<group>";
@@ -1583,9 +1608,11 @@
 				B9F4FBA81FA845210020A3DC /* dual_quaternion.hpp in Sources */,
 				B9F4FBA91FA845210020A3DC /* dual_quaternion.inl in Sources */,
 				B9F4FBAA1FA845210020A3DC /* euler_angles.hpp in Sources */,
+				B9175F851FB2D1000061CB1C /* Resource.cpp in Sources */,
 				B9F4FBAB1FA845210020A3DC /* euler_angles.inl in Sources */,
 				B9F4FBAC1FA845210020A3DC /* extend.hpp in Sources */,
 				B9F4FBAD1FA845220020A3DC /* extend.inl in Sources */,
+				B9175F8E1FB2F79E0061CB1C /* VoxelVisualizationMaterial.cpp in Sources */,
 				B9F4FBAE1FA845220020A3DC /* extented_min_max.hpp in Sources */,
 				B9F4FBAF1FA845220020A3DC /* extented_min_max.inl in Sources */,
 				B9F4FBB01FA845220020A3DC /* fast_exponential.hpp in Sources */,
@@ -1605,6 +1632,7 @@
 				B9F4FBBD1FA845220020A3DC /* integer.inl in Sources */,
 				B9F4FBBE1FA845220020A3DC /* intersect.hpp in Sources */,
 				B9F4FBBF1FA845220020A3DC /* intersect.inl in Sources */,
+				B9175F8B1FB2F3A10061CB1C /* WorldPositionMaterial.cpp in Sources */,
 				B9F4FBC01FA845220020A3DC /* io.hpp in Sources */,
 				B9F4FBC11FA845220020A3DC /* io.inl in Sources */,
 				B9F4FBC21FA845220020A3DC /* log_base.hpp in Sources */,
@@ -1659,6 +1687,7 @@
 				B9F4FBF31FA845220020A3DC /* simd_mat4.inl in Sources */,
 				B9F4FBF41FA845220020A3DC /* simd_quat.hpp in Sources */,
 				B9F4FBF51FA845220020A3DC /* simd_quat.inl in Sources */,
+				B9175F821FB2BED40061CB1C /* VoxelizationMaterial.cpp in Sources */,
 				B9F4FBF61FA845220020A3DC /* simd_vec4.hpp in Sources */,
 				B9F4FBF71FA845220020A3DC /* simd_vec4.inl in Sources */,
 				B9F4FBF81FA845220020A3DC /* spline.hpp in Sources */,
@@ -1740,6 +1769,7 @@
 				B9F4FB121FA844DE0020A3DC /* StandardShapes.cpp in Sources */,
 				B9F4FB131FA844DE0020A3DC /* StandardShapes.h in Sources */,
 				B9F4FB141FA844DE0020A3DC /* Transform.cpp in Sources */,
+				B9175F881FB2EBC80061CB1C /* VoxelizationConeTracingMaterial.cpp in Sources */,
 				B9F4FB151FA844DE0020A3DC /* Transform.h in Sources */,
 				B9F4FB161FA844DE0020A3DC /* VertexData.h in Sources */,
 				B9F4FB171FA844DE0020A3DC /* Time.cpp in Sources */,

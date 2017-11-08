@@ -22,6 +22,10 @@
 #include "Shape/Shape.h"
 #include "Application.h"
 #include "Graphic/Graphics.h"
+#include "Graphic/Material/VoxelizationConeTracingMaterial.h"
+#include "Graphic/Material/VoxelizationMaterial.h"
+#include "Graphic/Material/WorldPositionMaterial.h"
+#include "Graphic/Material/VoxelVisualizationMaterial.h"
 
 // ----------------------
 // Rendering pipeline.
@@ -30,9 +34,9 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
 {
     
 	glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
-	voxelConeTracingMaterial = MaterialStore::getInstance().findMaterialWithName("voxel_cone_tracing");
+    voxelConeTracingMaterial = new VoxelizationConeTracingMaterial("voxelization_cone_tracing");
     glError();
-	voxelCamera = OrthographicCamera(viewportWidth / float(viewportHeight));
+	//voxelCamera = OrthographicCamera(viewportWidth / float(viewportHeight));
 	initVoxelization();
 	initVoxelVisualization(viewportWidth, viewportHeight);
 }
@@ -67,7 +71,7 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	// Fetch references.
 	auto & camera = *renderingScene.renderingCamera;
 	const Material * material = voxelConeTracingMaterial;
-	const GLuint program = material->program;
+	const GLuint program = material->ProgramID();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(program);
@@ -93,7 +97,7 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	uploadRenderingSettings(program);
 
 	// Render.
-	renderQueue(renderingScene.renderers, material->program, true);
+	renderQueue(renderingScene.renderers, material->ProgramID(), true);
 }
 
 void Graphics::uploadLighting(Scene & renderingScene, const GLuint program) const
@@ -144,7 +148,7 @@ void Graphics::renderQueue(RenderingQueue renderingQueue, const GLuint program, 
 // ----------------------
 void Graphics::initVoxelization()
 {
-	voxelizationMaterial = MaterialStore::getInstance().findMaterialWithName("voxelization");
+    voxelizationMaterial = new VoxelizationMaterial("voxelization");//MaterialStore::getInstance().findMaterialWithName("voxelization");
 
 	assert(voxelizationMaterial != nullptr);
 
@@ -161,7 +165,7 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 
 	Material * material = voxelizationMaterial;
 
-	glUseProgram(material->program);
+	glUseProgram(material->ProgramID());
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Settings.
@@ -172,15 +176,16 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 	glDisable(GL_BLEND);
 
 	// Texture.
-	voxelTexture->Activate(material->program, "texture3D", 0);
+	voxelTexture->Activate(material->ProgramID(), "texture3D", 0);
+    //TODO: YOU NEED TO ATTACH THIS TEXTURE TO THE SHADER!
 	//glBindImageTexture(0, voxelTexture->textureID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
 
 
 	// Lighting.
-	uploadLighting(renderingScene, material->program);
+	uploadLighting(renderingScene, material->ProgramID());
 
 	// Render.
-	renderQueue(renderingScene.renderers, material->program, true);
+	renderQueue(renderingScene.renderers, material->ProgramID(), true);
 	if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
 		glGenerateMipmap(GL_TEXTURE_3D);
 		regenerateMipmapQueued = false;
@@ -194,8 +199,8 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight)
 {
 	// Materials.
-	worldPositionMaterial = MaterialStore::getInstance().findMaterialWithName("world_position");
-	voxelVisualizationMaterial = MaterialStore::getInstance().findMaterialWithName("voxel_visualization");
+    worldPositionMaterial = new WorldPositionMaterial("world_position");//MaterialStore::getInstance().findMaterialWithName("world_position");
+    voxelVisualizationMaterial = new VoxelVisualizationMaterial("voxel_visualization");//MaterialStore::getInstance().findMaterialWithName("voxel_visualization");
 
 	assert(worldPositionMaterial != nullptr);
 	assert(voxelVisualizationMaterial != nullptr);
@@ -220,7 +225,7 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	// Render cube to FBOs.
 	// -------------------------------------------------------
 	Camera & camera = *renderingScene.renderingCamera;
-	auto program = worldPositionMaterial->program;
+	auto program = worldPositionMaterial->ProgramID();
 	glUseProgram(program);
 	uploadCamera(camera, program);
 
@@ -246,14 +251,14 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	// -------------------------------------------------------
 	// Render 3D texture to screen.
 	// -------------------------------------------------------
-	program = voxelVisualizationMaterial->program;
+	program = voxelVisualizationMaterial->ProgramID();
 	glUseProgram(program);
 	uploadCamera(camera, program);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Settings.
-	uploadGlobalConstants(voxelVisualizationMaterial->program, viewportWidth, viewportHeight);
+	uploadGlobalConstants(voxelVisualizationMaterial->ProgramID(), viewportWidth, viewportHeight);
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
@@ -276,4 +281,7 @@ Graphics::~Graphics()
 	if (cubeMeshRenderer) delete cubeMeshRenderer;
 	if (cubeShape) delete cubeShape;
 	if (voxelTexture) delete voxelTexture;
+    delete voxelConeTracingMaterial;
+    delete voxelizationMaterial;
+    delete worldPositionMaterial;
 }

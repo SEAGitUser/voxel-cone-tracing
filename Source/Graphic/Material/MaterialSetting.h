@@ -5,6 +5,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
 
+
 namespace {
 	const char * diffuseColorName = "material.diffuseColor";
 	const char * specularColorName = "material.specularColor";
@@ -17,7 +18,9 @@ namespace {
 }
 
 /// <summary> Represents a setting for a material that can be used along with voxel cone tracing GI. </summary>
-struct MaterialSetting {
+class MaterialSetting {
+    
+public:
 	glm::vec3 diffuseColor, specularColor = glm::vec3(1);
 	float specularReflectivity, diffuseReflectivity, emissivity, specularDiffusion = 2.0f;
 	float transparency = 0.0f, refractiveIndex = 1.4f;
