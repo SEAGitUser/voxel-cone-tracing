@@ -17,8 +17,8 @@ class Application {
 public:
     enum InputState { FREE_LOOK = 0, TWEAK_BAR = 1 };
     const unsigned int MSAA_SAMPLES = 0;
-    const unsigned int DEFAULT_WINDOW_WIDTH = 1280;
-    const unsigned int DEFAULT_WINDOW_HEIGHT = 720;
+    const unsigned int DEFAULT_WINDOW_WIDTH = 1024;
+    const unsigned int DEFAULT_WINDOW_HEIGHT = 768;
     const char * DEFAULT_TITLE = "Voxel Cone Tracing by Rafael Sabino";
     const unsigned int DEFAULT_FULLSCREEN = 0; // 0 is window, 1 is fullscreen, 2 is borderless fullscreen.
     const int DEFAULT_VSYNC = 1; // 0 is no vSync, can also use negative vSync (check GLFW docs).

@@ -63,6 +63,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 // ----------------------
 void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
 {
+
 	// Fetch references.
 	auto & camera = *renderingScene.renderingCamera;
 	const Material * material = voxelConeTracingMaterial;
@@ -71,8 +72,11 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(program);
 
+    GLint frameBufferWidth, frameBufferHeight;
+    GLFWwindow * window = Application::getInstance().currentWindow;
+    glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
 	// GL Settings.
-	glViewport(0, 0, viewportWidth, viewportHeight);
+	glViewport(0, 0, frameBufferWidth, frameBufferHeight);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
