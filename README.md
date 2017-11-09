@@ -1,8 +1,6 @@
-A voxel cone tracing implementation for real-time global illumination. 
-Voxel cone tracing is used to create effects such as transparency (by refraction), reflections (diffuse and specular) and soft shadows.
-The implementation traces cones through a 3D texture. The 3D texture represents a directly lit voxelized scene.
+Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.
 
-See following URL for a video demo: https://youtu.be/cuCwyIBOapY
+
 <p align="center">
 <a href="https://youtu.be/cuCwyIBOapY">
 <img src="https://github.com/Friduric/voxel-cone-tracing/blob/master/Assets/Screenshots/vct2s.png">
@@ -17,6 +15,5 @@ https://research.nvidia.com/sites/default/files/publications/GIVoxels-pg2011-aut
 Course project in TSBK03 (Advanced Game Programming) at Linköping University by Fredrik Präntare. See the report here:
 https://prantare.files.wordpress.com/2016/12/frepr183_voxel_cone_tracing.pdf
 
-This demo requires OpenGL 4.4 to run.
 
-Feel free to use, modify and share. Sharing is caring!
+
