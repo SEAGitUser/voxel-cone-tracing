@@ -1,11 +1,6 @@
 Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.
 
 
-<p align="center">
-<a href="https://youtu.be/cuCwyIBOapY">
-<img src="https://github.com/Friduric/voxel-cone-tracing/blob/master/Assets/Screenshots/vct2s.png">
-</a>
-</p>
 Inspired by "Interactive Indirect Illumination Using Voxel Cone Tracing" by Crassin et al.
 
 (Cyril Crassin, Fabrice Neyret, Miguel Saintz, Simon Green and Elmar Eisemann)
