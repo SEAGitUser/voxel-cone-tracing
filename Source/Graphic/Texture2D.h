@@ -15,8 +15,16 @@ public:
 	/// <summary> Activates this texture and passes it on to a texture unit on the GPU. </summary>
 	void Activate(int shaderProgram, int textureUnit = 0);
 
-	Texture2D(const std::string shaderTextureSamplerName, const std::string path, const bool generateMipmaps = true, const int force_channels = SOIL_LOAD_RGB);
-	~Texture2D();
+    Texture2D();
+	Texture2D(const std::string shaderTextureSamplerName, const std::string &path, const bool generateMipmaps = true, const int force_channels = SOIL_LOAD_RGB);
+	
+    
+    ~Texture2D();
+    
+private:
+    void InitializeOpenGLTexture(const bool generateMipmaps = false);
+    
+    
 private:
 	int width, height, channels;
 };

@@ -15,6 +15,9 @@
 		B94F67261FAFFE6A00EAF59A /* FirstPersonController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B94F67251FAFFE6A00EAF59A /* FirstPersonController.cpp */; };
 		B970D5CB1FAE8D0D00208298 /* AssetStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */; };
 		B970D5CD1FAE914D00208298 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = B970D5CC1FAE914D00208298 /* Assets */; };
+		B99482371FB5A34D009B0D26 /* ColorMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B99482351FB5A34D009B0D26 /* ColorMaterial.cpp */; };
+		B994823A1FB69169009B0D26 /* FBO_3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B99482381FB69169009B0D26 /* FBO_3D.cpp */; };
+		B994823D1FB69314009B0D26 /* FBO_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B994823B1FB69314009B0D26 /* FBO_2D.cpp */; };
 		B9AEF0771FA6DD64005888EA /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0761FA6DD64005888EA /* main.mm */; };
 		B9AEF07C1FA6DD64005888EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AEF07B1FA6DD64005888EA /* Assets.xcassets */; };
 		B9AEF08A1FA6DD64005888EA /* voxel_cone_tracing_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0891FA6DD64005888EA /* voxel_cone_tracing_macTests.m */; };
@@ -374,6 +377,12 @@
 		B970D5C91FAE870E00208298 /* AssetStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetStore.h; sourceTree = "<group>"; };
 		B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetStore.cpp; sourceTree = "<group>"; };
 		B970D5CC1FAE914D00208298 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Assets; path = ../Assets; sourceTree = "<group>"; };
+		B99482351FB5A34D009B0D26 /* ColorMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorMaterial.cpp; sourceTree = "<group>"; };
+		B99482361FB5A34D009B0D26 /* ColorMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMaterial.h; sourceTree = "<group>"; };
+		B99482381FB69169009B0D26 /* FBO_3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FBO_3D.cpp; sourceTree = "<group>"; };
+		B99482391FB69169009B0D26 /* FBO_3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO_3D.h; sourceTree = "<group>"; };
+		B994823B1FB69314009B0D26 /* FBO_2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FBO_2D.cpp; sourceTree = "<group>"; };
+		B994823C1FB69314009B0D26 /* FBO_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO_2D.h; sourceTree = "<group>"; };
 		B9AEF06F1FA6DD64005888EA /* voxel-cone-tracing-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxel-cone-tracing-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AEF0761FA6DD64005888EA /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		B9AEF07B1FA6DD64005888EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -858,6 +867,10 @@
 			children = (
 				B9F4F98B1FA843FC0020A3DC /* FBO.cpp */,
 				B9F4F98C1FA843FC0020A3DC /* FBO.h */,
+				B99482381FB69169009B0D26 /* FBO_3D.cpp */,
+				B99482391FB69169009B0D26 /* FBO_3D.h */,
+				B994823B1FB69314009B0D26 /* FBO_2D.cpp */,
+				B994823C1FB69314009B0D26 /* FBO_2D.h */,
 			);
 			path = FBO;
 			sourceTree = "<group>";
@@ -890,6 +903,8 @@
 				B9175F8A1FB2F3A10061CB1C /* WorldPositionMaterial.h */,
 				B9175F8C1FB2F79E0061CB1C /* VoxelVisualizationMaterial.cpp */,
 				B9175F8D1FB2F79E0061CB1C /* VoxelVisualizationMaterial.h */,
+				B99482351FB5A34D009B0D26 /* ColorMaterial.cpp */,
+				B99482361FB5A34D009B0D26 /* ColorMaterial.h */,
 			);
 			path = Material;
 			sourceTree = "<group>";
@@ -1454,6 +1469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B994823A1FB69169009B0D26 /* FBO_3D.cpp in Sources */,
 				B9F4FC1C1FA8456E0020A3DC /* image_DXT.c in Sources */,
 				B9F4FC1D1FA8456E0020A3DC /* image_DXT.h in Sources */,
 				B9F4FC1E1FA8456E0020A3DC /* image_helper.c in Sources */,
@@ -1481,6 +1497,7 @@
 				B9F4FB291FA845210020A3DC /* func_exponential.inl in Sources */,
 				B9F4FB2A1FA845210020A3DC /* func_geometric.hpp in Sources */,
 				B9F4FB2B1FA845210020A3DC /* func_geometric.inl in Sources */,
+				B99482371FB5A34D009B0D26 /* ColorMaterial.cpp in Sources */,
 				B9F4FB2C1FA845210020A3DC /* func_integer.hpp in Sources */,
 				B9F4FB2D1FA845210020A3DC /* func_integer.inl in Sources */,
 				B9F4FB2E1FA845210020A3DC /* func_matrix.hpp in Sources */,
@@ -1594,6 +1611,7 @@
 				B9F4FB9A1FA845210020A3DC /* bit.hpp in Sources */,
 				B9F4FB9B1FA845210020A3DC /* bit.inl in Sources */,
 				B9F4FB9C1FA845210020A3DC /* closest_point.hpp in Sources */,
+				B994823D1FB69314009B0D26 /* FBO_2D.cpp in Sources */,
 				B9F4FB9D1FA845210020A3DC /* closest_point.inl in Sources */,
 				B9F4FB9E1FA845210020A3DC /* color_space.hpp in Sources */,
 				B9F4FB9F1FA845210020A3DC /* color_space.inl in Sources */,

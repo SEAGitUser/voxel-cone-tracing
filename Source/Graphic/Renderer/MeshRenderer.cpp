@@ -7,7 +7,7 @@
 #include "Time/Time.h"
 #include "Graphic/Graphics.h"
 #include "Graphic/Lighting/PointLight.h"
-#include "Graphic/Texture2D.h"
+#include "Graphic/Material/Material.h"
 
 // ... shader variable names.
 namespace {

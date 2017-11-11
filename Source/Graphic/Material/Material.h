@@ -26,17 +26,11 @@ public:
 		Shader * tessEvaluationShader = nullptr,
 		Shader * tessControlShader = nullptr);
 
-    Material(const GLchar *name): name(name)
-    {}
-    
+    Material(const GLchar *name): name(name){}
     
     virtual void Activate(){}
     
     GLuint ProgramID()const { return program;}
-    
-
-    
-    
     
 protected:
     

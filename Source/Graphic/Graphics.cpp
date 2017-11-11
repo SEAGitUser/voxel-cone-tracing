@@ -10,7 +10,6 @@
 #include "glm/gtc/type_ptr.hpp"
 
 // Internal.
-#include "Texture2D.h"
 #include "Material/Material.h"
 #include "Camera/OrthographicCamera.h"
 #include "Material/MaterialStore.h"
@@ -26,6 +25,7 @@
 #include "Graphic/Material/VoxelizationMaterial.h"
 #include "Graphic/Material/WorldPositionMaterial.h"
 #include "Graphic/Material/VoxelVisualizationMaterial.h"
+#include "Graphic/FBO/FBO_2D.h"
 
 // ----------------------
 // Rendering pipeline.
@@ -148,7 +148,7 @@ void Graphics::renderQueue(RenderingQueue renderingQueue, const GLuint program, 
 // ----------------------
 void Graphics::initVoxelization()
 {
-    voxelizationMaterial = new VoxelizationMaterial("voxelization");//MaterialStore::getInstance().findMaterialWithName("voxelization");
+    voxelizationMaterial = new VoxelizationMaterial("voxelization");
 
 	assert(voxelizationMaterial != nullptr);
 
@@ -158,6 +158,7 @@ void Graphics::initVoxelization()
 
 void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 {
+    //TODO: YOU'LL HAVE TO CHANGE THIS FUNCTION TO RENDER TO 3D TEXTURE
 	if (clearVoxelization) {
 		GLfloat clearColor[4] = { 0, 0, 0, 0 };
 		voxelTexture->Clear(clearColor);
@@ -166,7 +167,9 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 	Material * material = voxelizationMaterial;
 
 	glUseProgram(material->ProgramID());
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    static const GLint defaultFrameBuffer = 0;
+	glBindFramebuffer(GL_FRAMEBUFFER, defaultFrameBuffer);
 
 	// Settings.
 	glViewport(0, 0, voxelTextureSize, voxelTextureSize);
@@ -199,15 +202,15 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight)
 {
 	// Materials.
-    worldPositionMaterial = new WorldPositionMaterial("world_position");//MaterialStore::getInstance().findMaterialWithName("world_position");
-    voxelVisualizationMaterial = new VoxelVisualizationMaterial("voxel_visualization");//MaterialStore::getInstance().findMaterialWithName("voxel_visualization");
+    worldPositionMaterial = new WorldPositionMaterial("world_position");
+    voxelVisualizationMaterial = new VoxelVisualizationMaterial("voxel_visualization");
 
 	assert(worldPositionMaterial != nullptr);
 	assert(voxelVisualizationMaterial != nullptr);
 
 	// FBOs.
-	vvfbo1 = new FBO(viewportHeight, viewportWidth);
-	vvfbo2 = new FBO(viewportHeight, viewportWidth);
+	vvfbo1 = new FBO_2D(viewportHeight, viewportWidth);
+	vvfbo2 = new FBO_2D(viewportHeight, viewportWidth);
 
 	// Rendering cube.
 	cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");

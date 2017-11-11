@@ -23,7 +23,7 @@ Material(_name)
 }
 
 
-void WorldPositionMaterial::Activate()
+void WorldPositionMaterial::Activate() 
 {
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));

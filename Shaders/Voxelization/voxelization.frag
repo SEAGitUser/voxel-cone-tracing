@@ -68,9 +68,7 @@ void main(){
 	vec3 diff = material.diffuseReflectivity * material.diffuseColor;
 	color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
 
-    //TODO: the function imageStore is not guaranteed to be atomic (documentation doesn't mention anything about it, so we don't know)
-    //for this reason, the way this is written will not always work (flicker may show up), we'll come up with a different way of doing this.
-    //for now we'll just output the color, which will be eventually written to a 3d texture.
+    //TODO: imageStore is an atomic operation, but it is not supported on 4.1, we need to re-write a different way
     
     /*
 	// Output lighting to 3D texture.

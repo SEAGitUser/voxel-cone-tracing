@@ -12,16 +12,18 @@
 #include <string>
 
 class Mesh;
+class Material;
 
 /// <summary> A renderer that can be used to render a mesh. </summary>
 class MeshRenderer {
 public:
 	bool enabled = true;
 	bool tweakable = false; // Automatically adds a window for this mesh renderer.
-	std::string name = "Mesh renderer"; // Is displayed in the tweak bar.
+	std::string name = "Mesh renderer";
 
 	Transform transform;
 	Mesh * mesh;
+    Material* material;
 
 	// Constr/destr.
 	MeshRenderer(Mesh *, MaterialSetting * = nullptr);

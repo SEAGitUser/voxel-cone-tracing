@@ -17,16 +17,7 @@ public:
     
     std::vector<Shader*> shaders;
     
-	Material * findMaterialWithName(std::string name);
-	Material * findMaterialWithProgramID(unsigned int programID);
-    
-    
     Shader const * findShaderUsingPath(const GLchar* path)const ;
-    
-	void AddNewMaterial(
-		std::string name, const char * vertexPath = nullptr, const char * fragmentPath = nullptr,
-		const char * geometryPath = nullptr, const char * tessEvalPath = nullptr, const char * tessCtrlPath = nullptr);
-    
     
 	~MaterialStore();
 private:
