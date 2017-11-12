@@ -8,10 +8,14 @@
 
 #pragma once
 
+#include <array>
 #include "OpenGL_Includes.h"
 #include "FBO.h"
-#include "Graphic/Texture2D.h"
-#include <array>
+#include <vector>
+
+
+
+class Texture3D;
 
 class FBO_3D : public FBO
 {
@@ -25,12 +29,13 @@ public:
     
     ~FBO_3D();
     
+    virtual GLint AddRenderTarget() override;
 private:
     
     GLuint depth;
     GLuint generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
     
-    std::array<Texture2D, MAX_RENDER_TARGETS> renderTargets;
+    std::vector<Texture3D*> renderTargets;
 };
 
 

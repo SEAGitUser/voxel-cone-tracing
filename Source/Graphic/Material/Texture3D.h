@@ -4,11 +4,11 @@
 #include <vector>
 
 #include "OpenGL_Includes.h"
-
+#include "Texture.h"
 #include "SOIL/SOIL.h"
 
 /// <summary> A 3D texture wrapper class. Handles important OpenGL calls. </summary>
-class Texture3D {
+class Texture3D : public Texture{
 public:
 	unsigned char * textureBuffer = nullptr;
 	GLuint textureID;
@@ -25,11 +25,15 @@ public:
 		const bool generateMipmaps = true
 	);
     
+    Texture3D();
+    
+    virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
+    
+    
 #ifdef __APPLE__
     
     //these functions are here because Apple supports up to OpenGL 4.1, so I will implement them myself in hopes one day
-    //I won't need this.  I won't put them in a header file as I don't see these functions being called anywhere else in the code.
-    //Also, this implementation is very specific to how it's called in this class, do not use it anywhere else
+    //I won't need this.  These implementations are very specific to how it's called in this class, do not use it anywhere else
     
     void glTexStorage3D(	GLenum target,
                         GLsizei levels,
@@ -43,6 +47,7 @@ public:
 #endif
     
 private:
-	GLint width, height, depth;
+
+    GLint depth;
 	std::vector<GLfloat> clearData;
 };

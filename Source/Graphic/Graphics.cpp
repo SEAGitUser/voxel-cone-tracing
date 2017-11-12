@@ -154,6 +154,7 @@ void Graphics::initVoxelization()
 
 	const std::vector<GLfloat> texture3D(4 * voxelTextureSize * voxelTextureSize * voxelTextureSize, 0.0f);
 	voxelTexture = new Texture3D(texture3D, voxelTextureSize, voxelTextureSize, voxelTextureSize, true);
+    voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
 void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
@@ -209,8 +210,8 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 	assert(voxelVisualizationMaterial != nullptr);
 
 	// FBOs.
-	vvfbo1 = new FBO_2D(viewportHeight, viewportWidth);
-	vvfbo2 = new FBO_2D(viewportHeight, viewportWidth);
+	vvfbo1 = new FBO_2D(viewportWidth, viewportHeight);
+	vvfbo2 = new FBO_2D(viewportWidth, viewportHeight);
 
 	// Rendering cube.
 	cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
@@ -239,17 +240,20 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 
 	// Back.
 	glCullFace(GL_FRONT);
-	glBindFramebuffer(GL_FRAMEBUFFER, vvfbo1->frameBuffer);
-	glViewport(0, 0, vvfbo1->width, vvfbo1->height);
+	glBindFramebuffer(GL_FRAMEBUFFER, vvfbo1->getFrameBufferID());
+	glViewport(0, 0, vvfbo1->getWidth(), vvfbo1->getHeight());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	cubeMeshRenderer->render(program);
 
+    glError();
 	// Front.
 	glCullFace(GL_BACK);
-	glBindFramebuffer(GL_FRAMEBUFFER, vvfbo2->frameBuffer);
-	glViewport(0, 0, vvfbo2->width, vvfbo2->height);
+	glBindFramebuffer(GL_FRAMEBUFFER, vvfbo2->getFrameBufferID());
+	glViewport(0, 0, vvfbo2->getWidth(), vvfbo2->getHeight());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	cubeMeshRenderer->render(program);
+    
+    glError();
 
 	// -------------------------------------------------------
 	// Render 3D texture to screen.

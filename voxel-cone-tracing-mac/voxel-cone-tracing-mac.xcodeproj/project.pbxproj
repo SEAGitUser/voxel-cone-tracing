@@ -18,6 +18,9 @@
 		B99482371FB5A34D009B0D26 /* ColorMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B99482351FB5A34D009B0D26 /* ColorMaterial.cpp */; };
 		B994823A1FB69169009B0D26 /* FBO_3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B99482381FB69169009B0D26 /* FBO_3D.cpp */; };
 		B994823D1FB69314009B0D26 /* FBO_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B994823B1FB69314009B0D26 /* FBO_2D.cpp */; };
+		B9A75E431FB7A4A3008FD457 /* Texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9A75E3F1FB7A4A3008FD457 /* Texture2D.cpp */; };
+		B9A75E441FB7A4A3008FD457 /* Texture3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9A75E411FB7A4A3008FD457 /* Texture3D.cpp */; };
+		B9A75E471FB7DDFA008FD457 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9A75E451FB7DDFA008FD457 /* Texture.cpp */; };
 		B9AEF0771FA6DD64005888EA /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0761FA6DD64005888EA /* main.mm */; };
 		B9AEF07C1FA6DD64005888EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AEF07B1FA6DD64005888EA /* Assets.xcassets */; };
 		B9AEF08A1FA6DD64005888EA /* voxel_cone_tracing_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9AEF0891FA6DD64005888EA /* voxel_cone_tracing_macTests.m */; };
@@ -45,10 +48,6 @@
 		B9F4FAFD1FA844DD0020A3DC /* Shader.h in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F9981FA843FC0020A3DC /* Shader.h */; };
 		B9F4FAFE1FA844DD0020A3DC /* MeshRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F99A1FA843FC0020A3DC /* MeshRenderer.cpp */; };
 		B9F4FAFF1FA844DD0020A3DC /* MeshRenderer.h in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F99B1FA843FC0020A3DC /* MeshRenderer.h */; };
-		B9F4FB001FA844DD0020A3DC /* Texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F99C1FA843FC0020A3DC /* Texture2D.cpp */; };
-		B9F4FB011FA844DD0020A3DC /* Texture2D.h in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F99D1FA843FC0020A3DC /* Texture2D.h */; };
-		B9F4FB021FA844DD0020A3DC /* Texture3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F99E1FA843FC0020A3DC /* Texture3D.cpp */; };
-		B9F4FB031FA844DD0020A3DC /* Texture3D.h in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F99F1FA843FC0020A3DC /* Texture3D.h */; };
 		B9F4FB041FA844DD0020A3DC /* Scene.h in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F9A11FA843FC0020A3DC /* Scene.h */; };
 		B9F4FB051FA844DD0020A3DC /* ScenePack.h in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F9A21FA843FC0020A3DC /* ScenePack.h */; };
 		B9F4FB061FA844DD0020A3DC /* CornellScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9F4F9A41FA843FC0020A3DC /* CornellScene.cpp */; };
@@ -383,6 +382,12 @@
 		B99482391FB69169009B0D26 /* FBO_3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO_3D.h; sourceTree = "<group>"; };
 		B994823B1FB69314009B0D26 /* FBO_2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FBO_2D.cpp; sourceTree = "<group>"; };
 		B994823C1FB69314009B0D26 /* FBO_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO_2D.h; sourceTree = "<group>"; };
+		B9A75E3F1FB7A4A3008FD457 /* Texture2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture2D.cpp; sourceTree = "<group>"; };
+		B9A75E401FB7A4A3008FD457 /* Texture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
+		B9A75E411FB7A4A3008FD457 /* Texture3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture3D.cpp; sourceTree = "<group>"; };
+		B9A75E421FB7A4A3008FD457 /* Texture3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture3D.h; sourceTree = "<group>"; };
+		B9A75E451FB7DDFA008FD457 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		B9A75E461FB7DDFA008FD457 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		B9AEF06F1FA6DD64005888EA /* voxel-cone-tracing-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxel-cone-tracing-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AEF0761FA6DD64005888EA /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		B9AEF07B1FA6DD64005888EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -416,10 +421,6 @@
 		B9F4F9981FA843FC0020A3DC /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		B9F4F99A1FA843FC0020A3DC /* MeshRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MeshRenderer.cpp; sourceTree = "<group>"; };
 		B9F4F99B1FA843FC0020A3DC /* MeshRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshRenderer.h; sourceTree = "<group>"; };
-		B9F4F99C1FA843FC0020A3DC /* Texture2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Texture2D.cpp; sourceTree = "<group>"; };
-		B9F4F99D1FA843FC0020A3DC /* Texture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
-		B9F4F99E1FA843FC0020A3DC /* Texture3D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Texture3D.cpp; sourceTree = "<group>"; };
-		B9F4F99F1FA843FC0020A3DC /* Texture3D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Texture3D.h; sourceTree = "<group>"; };
 		B9F4F9A11FA843FC0020A3DC /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		B9F4F9A21FA843FC0020A3DC /* ScenePack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenePack.h; sourceTree = "<group>"; };
 		B9F4F9A41FA843FC0020A3DC /* CornellScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CornellScene.cpp; sourceTree = "<group>"; };
@@ -831,10 +832,6 @@
 				B9F4F98F1FA843FC0020A3DC /* Lighting */,
 				B9F4F9911FA843FC0020A3DC /* Material */,
 				B9F4F9991FA843FC0020A3DC /* Renderer */,
-				B9F4F99C1FA843FC0020A3DC /* Texture2D.cpp */,
-				B9F4F99D1FA843FC0020A3DC /* Texture2D.h */,
-				B9F4F99E1FA843FC0020A3DC /* Texture3D.cpp */,
-				B9F4F99F1FA843FC0020A3DC /* Texture3D.h */,
 			);
 			path = Graphic;
 			sourceTree = "<group>";
@@ -886,6 +883,10 @@
 		B9F4F9911FA843FC0020A3DC /* Material */ = {
 			isa = PBXGroup;
 			children = (
+				B9A75E3F1FB7A4A3008FD457 /* Texture2D.cpp */,
+				B9A75E401FB7A4A3008FD457 /* Texture2D.h */,
+				B9A75E411FB7A4A3008FD457 /* Texture3D.cpp */,
+				B9A75E421FB7A4A3008FD457 /* Texture3D.h */,
 				B9F4F9921FA843FC0020A3DC /* Material.cpp */,
 				B9F4F9931FA843FC0020A3DC /* Material.h */,
 				B9F4F9941FA843FC0020A3DC /* MaterialSetting.h */,
@@ -905,6 +906,8 @@
 				B9175F8D1FB2F79E0061CB1C /* VoxelVisualizationMaterial.h */,
 				B99482351FB5A34D009B0D26 /* ColorMaterial.cpp */,
 				B99482361FB5A34D009B0D26 /* ColorMaterial.h */,
+				B9A75E451FB7DDFA008FD457 /* Texture.cpp */,
+				B9A75E461FB7DDFA008FD457 /* Texture.h */,
 			);
 			path = Material;
 			sourceTree = "<group>";
@@ -1545,6 +1548,7 @@
 				B9F4FB581FA845210020A3DC /* type_mat3x3.inl in Sources */,
 				B9F4FB591FA845210020A3DC /* type_mat3x4.hpp in Sources */,
 				B9F4FB5A1FA845210020A3DC /* type_mat3x4.inl in Sources */,
+				B9A75E441FB7A4A3008FD457 /* Texture3D.cpp in Sources */,
 				B9F4FB5B1FA845210020A3DC /* type_mat4x2.hpp in Sources */,
 				B9F4FB5C1FA845210020A3DC /* type_mat4x2.inl in Sources */,
 				B9F4FB5D1FA845210020A3DC /* type_mat4x3.hpp in Sources */,
@@ -1706,6 +1710,7 @@
 				B9F4FBF41FA845220020A3DC /* simd_quat.hpp in Sources */,
 				B9F4FBF51FA845220020A3DC /* simd_quat.inl in Sources */,
 				B9175F821FB2BED40061CB1C /* VoxelizationMaterial.cpp in Sources */,
+				B9A75E431FB7A4A3008FD457 /* Texture2D.cpp in Sources */,
 				B9F4FBF61FA845220020A3DC /* simd_vec4.hpp in Sources */,
 				B9F4FBF71FA845220020A3DC /* simd_vec4.inl in Sources */,
 				B9F4FBF81FA845220020A3DC /* spline.hpp in Sources */,
@@ -1760,16 +1765,13 @@
 				B9F4FAF71FA844DD0020A3DC /* Material.cpp in Sources */,
 				B9F4FAF81FA844DD0020A3DC /* Material.h in Sources */,
 				B9F4FAF91FA844DD0020A3DC /* MaterialSetting.h in Sources */,
+				B9A75E471FB7DDFA008FD457 /* Texture.cpp in Sources */,
 				B9F4FAFA1FA844DD0020A3DC /* MaterialStore.cpp in Sources */,
 				B9F4FAFB1FA844DD0020A3DC /* MaterialStore.h in Sources */,
 				B9F4FAFC1FA844DD0020A3DC /* Shader.cpp in Sources */,
 				B9F4FAFD1FA844DD0020A3DC /* Shader.h in Sources */,
 				B9F4FAFE1FA844DD0020A3DC /* MeshRenderer.cpp in Sources */,
 				B9F4FAFF1FA844DD0020A3DC /* MeshRenderer.h in Sources */,
-				B9F4FB001FA844DD0020A3DC /* Texture2D.cpp in Sources */,
-				B9F4FB011FA844DD0020A3DC /* Texture2D.h in Sources */,
-				B9F4FB021FA844DD0020A3DC /* Texture3D.cpp in Sources */,
-				B9F4FB031FA844DD0020A3DC /* Texture3D.h in Sources */,
 				B9F4FB041FA844DD0020A3DC /* Scene.h in Sources */,
 				B9F4FB051FA844DD0020A3DC /* ScenePack.h in Sources */,
 				B9F4FB061FA844DD0020A3DC /* CornellScene.cpp in Sources */,

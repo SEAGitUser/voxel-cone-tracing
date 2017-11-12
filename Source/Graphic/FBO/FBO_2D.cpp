@@ -1,5 +1,5 @@
 #include "FBO_2D.h"
-
+#include "Graphic/Material/Texture2D.h"
 #include <iostream>
 #include <assert.h>
 
@@ -13,17 +13,8 @@ FBO_2D::FBO_2D(GLuint w, GLuint h, GLenum magFilter, GLenum minFilter, GLint int
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     
-    glGenTextures(1, &textureColorBuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
-    
-    // Texture parameters.
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, w, h, 0, GL_RGBA, format, NULL);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
+    textureColorBuffer = AddRenderTarget();
+
     
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
@@ -33,7 +24,12 @@ FBO_2D::FBO_2D(GLuint w, GLuint h, GLenum magFilter, GLenum minFilter, GLint int
     glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) { std::cerr << "FBO failed to initialize correctly." << std::endl; }
 }
-
+/*
+ 
+THIS CODE IS NOT USED ANYWHERE, NOT SURE THAT I NEED IT, I WILL LEAVE IT HERE FOR REFERENCE PURPOSES, BUT MAY DELETE IN THE FUTURE IF I DON'T FIND
+USE FOR IT
+ 
+ 
 GLuint FBO_2D::generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap)
 {
     GLenum attachment_type = 0;
@@ -65,6 +61,7 @@ GLuint FBO_2D::generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean
     
     return textureID;
 }
+ */
 
 void FBO_2D::ActivateAsTexture(const int shaderProgram, const std::string glSamplerName, const int textureUnit)
 {
@@ -73,8 +70,29 @@ void FBO_2D::ActivateAsTexture(const int shaderProgram, const std::string glSamp
     glUniform1i(glGetUniformLocation(shaderProgram, glSamplerName.c_str()), textureUnit);
 }
 
+
+GLint FBO_2D::AddRenderTarget()
+{
+    assert(renderTargets.size() < MAX_RENDER_TARGETS);
+
+    Texture2D *target = new Texture2D();
+    renderTargets.push_back(target);
+    
+    GLint targetID = FBO::AddRenderTarget(target);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (renderTargets.size() -1), GL_TEXTURE_2D, targetID, 0);
+    return targetID;
+
+}
+
 FBO_2D::~FBO_2D()
 {
-    glDeleteTextures(1, &textureColorBuffer);
+    for(Texture2D* texture : renderTargets)
+    {
+        delete texture;
+    }
+    
     glDeleteFramebuffers(1, &frameBuffer);
+    
+
+    
 }
