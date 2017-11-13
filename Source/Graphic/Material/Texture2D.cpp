@@ -1,6 +1,8 @@
 #include "Texture2D.h"
 
 #include <iostream>
+#include <vector>
+#include "glm/glm.hpp"
 
 Texture2D::Texture2D(
 	const std::string _shaderTextureName,
@@ -75,6 +77,47 @@ void Texture2D::Activate(int shaderProgram, int textureUnit)
 	glUniform1i(glGetUniformLocation(shaderProgram, shaderTextureSamplerName.c_str()), textureUnit);
 }
 
+
+#if __APPLE__
+
+void Texture2D::glClearTexImage(	GLuint texture,
+                             GLint level,
+                             GLenum format,
+                             GLenum type,
+                             const void * data)
+{
+    //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
+    //TODO: this function has potential to be a performance bottleneck, make sure to profile
+    GLsizei levels = 7;
+    
+    GLint tempWidth = width;
+    GLint tempHeight = height;
+    for (GLint i = 0; i < levels; i++)
+    {
+        //TODO: lots of memory here, good enough for now. the number 16384 is  as big as the driver can handle on the mac
+        static std::vector<GLubyte> emptyData(16384 * 16384  *4 * sizeof(GLfloat), 0);
+        
+        glTexSubImage2D(GL_TEXTURE_2D, i, 0, 0, tempWidth, tempHeight, pixelFormat, dataType, &emptyData[0]);
+        
+        tempWidth = std::max(1, (tempWidth / 2));
+        tempHeight = std::max(1, (tempHeight / 2));
+    }
+}
+
+#endif
+
+
+
+void Texture2D::Clear()
+{
+    glm::vec4 clearColor(0,0,0,0);
+    GLint previousBoundTextureID;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousBoundTextureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    
+    glClearTexImage(textureID, 0, GL_RGBA, GL_FLOAT, &clearColor);
+    glBindTexture(GL_TEXTURE_2D, previousBoundTextureID);
+}
 Texture2D::~Texture2D()
 {
     

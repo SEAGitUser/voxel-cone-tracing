@@ -25,6 +25,11 @@ Material::Material(
     AssembleProgram(vertexShader, fragmentShader, geometryShader, tessControlShader, tessControlShader);
 }
 
+void Material::Activate()
+{
+    glUseProgram(program);
+}
+
 void Material::AssembleProgram(
                               const Shader * vertexShader,
                               const Shader * fragmentShader,

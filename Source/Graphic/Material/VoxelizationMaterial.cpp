@@ -8,11 +8,14 @@
 
 
 #include "Graphic/Material/VoxelizationMaterial.h"
+#include "Graphic/Material/Texture3D.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
 
 
+const std::vector<GLfloat> VoxelizationMaterial::initTextureBuffer = std::vector<GLfloat>(4 * VoxelizationMaterial::voxelTextureSize *
+                                                                   VoxelizationMaterial::voxelTextureSize * VoxelizationMaterial::voxelTextureSize, 0.0f);
 
 VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name):
 Material(_name)
@@ -23,11 +26,19 @@ Material(_name)
     
     AssembleProgram(voxelVert, voxelFrag, voxelGeom, nullptr, nullptr);
     
+    voxelTexture = new Texture3D(initTextureBuffer, voxelTextureSize, voxelTextureSize, voxelTextureSize, true);
+    voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
+    
 }
 
+void VoxelizationMaterial::ClearVoxels()
+{
+    voxelTexture->Clear();
+}
 
 void VoxelizationMaterial::Activate()
 {
+    Material::Activate();
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));
     glUniform3fv(glGetUniformLocation(program, specularColorName), 1, glm::value_ptr(specularColor));
@@ -39,4 +50,6 @@ void VoxelizationMaterial::Activate()
     glUniform1f(glGetUniformLocation(program, specularDiffusionName), specularDiffusion);
     glUniform1f(glGetUniformLocation(program, transparencyName), transparency);
     glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
+    
+    voxelTexture->Activate(program, "texture3D", 0);
 }

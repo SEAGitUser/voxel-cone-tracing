@@ -17,7 +17,7 @@ public:
 	void Activate(const int shaderProgram, const std::string glSamplerName, const int textureUnit = GL_TEXTURE0);
 
 	/// <summary> Clears this texture using a given clear color. </summary>
-	void Clear(GLfloat clearColor[4]);
+    //virtual void Clear(GLfloat clearColor[4]) override;
 
 	Texture3D(
 		const std::vector<GLfloat> & textureBuffer,
@@ -28,6 +28,7 @@ public:
     Texture3D();
     
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
+    virtual void Clear() override;
     
     
 #ifdef __APPLE__
@@ -39,15 +40,18 @@ public:
                         GLsizei levels,
                         GLenum internalformat);
     
-    void glClearTexImage(	GLuint texture,
+    virtual void glClearTexImage(	GLuint texture,
                          GLint level,
                          GLenum format,
                          GLenum type,
-                         const void * data);
+                         const void * data) override;
 #endif
     
 private:
 
+    
     GLint depth;
+    //TODO: THIS ARRAY IS USED TO CLEAR MEMORY, WILL NOT BE NEEDED IN OPENGL 4.4 AND ABOVE
+    //ANOTHER WAY TO DO THIS IN 4.1 IS TO USE OPENCL.  I WILL IMPLEMENT THIS IN A MEMORY PASS. 
 	std::vector<GLfloat> clearData;
 };

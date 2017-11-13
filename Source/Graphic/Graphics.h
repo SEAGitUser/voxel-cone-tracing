@@ -87,10 +87,8 @@ private:
 	// Voxelization.
 	// ----------------
 	int ticksSinceLastVoxelization = voxelizationSparsity;
-	GLuint voxelTextureSize = 64; // Must be set to a power of 2.
-	//OrthographicCamera voxelCamera;
 	VoxelizationMaterial * voxelizationMaterial;
-	Texture3D * voxelTexture = nullptr;
+
 	void initVoxelization();
 	void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
 

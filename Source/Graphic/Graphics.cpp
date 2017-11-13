@@ -36,7 +36,6 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
 	glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
     voxelConeTracingMaterial = new VoxelizationConeTracingMaterial("voxelization_cone_tracing");
     glError();
-	//voxelCamera = OrthographicCamera(viewportWidth / float(viewportHeight));
 	initVoxelization();
 	initVoxelVisualization(viewportWidth, viewportHeight);
 }
@@ -119,7 +118,6 @@ void Graphics::uploadRenderingSettings(const GLuint glProgram) const
 
 void Graphics::uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const
 {
-	//glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), Application::getInstance().state);
 	glm::vec2 screenSize(viewportWidth, viewportHeight);
 }
 
@@ -151,45 +149,36 @@ void Graphics::initVoxelization()
     voxelizationMaterial = new VoxelizationMaterial("voxelization");
 
 	assert(voxelizationMaterial != nullptr);
-
-	const std::vector<GLfloat> texture3D(4 * voxelTextureSize * voxelTextureSize * voxelTextureSize, 0.0f);
-	voxelTexture = new Texture3D(texture3D, voxelTextureSize, voxelTextureSize, voxelTextureSize, true);
-    voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
 void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 {
     //TODO: YOU'LL HAVE TO CHANGE THIS FUNCTION TO RENDER TO 3D TEXTURE
-	if (clearVoxelization) {
-		GLfloat clearColor[4] = { 0, 0, 0, 0 };
-		voxelTexture->Clear(clearColor);
-	}
-
-	Material * material = voxelizationMaterial;
-
-	glUseProgram(material->ProgramID());
+    if(clearVoxelization)
+        voxelizationMaterial->ClearVoxels();
+    
+    voxelizationMaterial->Activate();
     
     static const GLint defaultFrameBuffer = 0;
 	glBindFramebuffer(GL_FRAMEBUFFER, defaultFrameBuffer);
 
 	// Settings.
-	glViewport(0, 0, voxelTextureSize, voxelTextureSize);
+    glViewport(0, 0, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-	// Texture.
-	voxelTexture->Activate(material->ProgramID(), "texture3D", 0);
+
     //TODO: YOU NEED TO ATTACH THIS TEXTURE TO THE SHADER!
 	//glBindImageTexture(0, voxelTexture->textureID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
 
 
 	// Lighting.
-	uploadLighting(renderingScene, material->ProgramID());
+	uploadLighting(renderingScene, voxelizationMaterial->ProgramID());
 
 	// Render.
-	renderQueue(renderingScene.renderers, material->ProgramID(), true);
+	renderQueue(renderingScene.renderers, voxelizationMaterial->ProgramID(), true);
 	if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
 		glGenerateMipmap(GL_TEXTURE_3D);
 		regenerateMipmapQueued = false;
@@ -272,7 +261,6 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	// Activate textures.
 	vvfbo1->ActivateAsTexture(program, "textureBack", 0);
 	vvfbo2->ActivateAsTexture(program, "textureFront", 1);
-	voxelTexture->Activate(program, "texture3D", 2);
 
 	// Render.
 	glViewport(0, 0, viewportWidth, viewportHeight);
@@ -287,7 +275,7 @@ Graphics::~Graphics()
 	if (quadMeshRenderer) delete quadMeshRenderer;
 	if (cubeMeshRenderer) delete cubeMeshRenderer;
 	if (cubeShape) delete cubeShape;
-	if (voxelTexture) delete voxelTexture;
+
     delete voxelConeTracingMaterial;
     delete voxelizationMaterial;
     delete worldPositionMaterial;

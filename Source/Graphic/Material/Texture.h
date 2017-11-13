@@ -59,11 +59,23 @@ public:
     
     inline GLint  GetTextureID() const { return textureID; }
     
+    virtual void Clear() = 0;
+    
     ~Texture()
     {
         glDeleteTextures(1, &textureID);
     }
     
+protected:
+#if __APPLE__
+    //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implemented manually
+    virtual void glClearTexImage(	GLuint texture,
+                                 GLint level,
+                                 GLenum format,
+                                 GLenum type,
+                                 const void * data) = 0;
+    
+#endif
 protected:
     
     GLint width, height, channels;

@@ -28,7 +28,7 @@ public:
 
     Material(const GLchar *name): name(name){}
     
-    virtual void Activate(){}
+    virtual void Activate();
     
     GLuint ProgramID()const { return program;}
     

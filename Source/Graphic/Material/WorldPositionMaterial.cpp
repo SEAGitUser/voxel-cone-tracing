@@ -25,6 +25,7 @@ Material(_name)
 
 void WorldPositionMaterial::Activate() 
 {
+    Material::Activate();
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));
     glUniform3fv(glGetUniformLocation(program, specularColorName), 1, glm::value_ptr(specularColor));
