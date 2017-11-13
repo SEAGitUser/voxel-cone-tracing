@@ -26,6 +26,8 @@ public:
     
     void ClearVoxels();
     
+    ~VoxelizationMaterial();
+    
 public:
     static const std::vector<GLfloat> initTextureBuffer;
     static const GLuint voxelTextureSize = 64;

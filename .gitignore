@@ -259,3 +259,5 @@ Libraries/Windows/\.DS_Store
 voxel-cone-tracing-mac/voxel-cone-tracing-mac\.xcodeproj/project\.xcworkspace/xcuserdata/Hullabaloo\.xcuserdatad/UserInterfaceState\.xcuserstate
 
 *.xcuserstate
+
+*.xcbkptlist

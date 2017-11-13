@@ -53,3 +53,8 @@ void VoxelizationMaterial::Activate()
     
     voxelTexture->Activate(program, "texture3D", 0);
 }
+
+VoxelizationMaterial::~VoxelizationMaterial()
+{
+    delete voxelTexture;
+}
