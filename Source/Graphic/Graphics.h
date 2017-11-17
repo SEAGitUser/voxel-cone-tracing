@@ -9,7 +9,6 @@
 #include "Scene/Scene.h"
 #include "Graphic/Camera/OrthographicCamera.h"
 #include "Shape/Mesh.h"
-#include "Texture3D.h"
 
 class MeshRenderer;
 class Material;
@@ -19,6 +18,7 @@ class VoxelizationMaterial;
 class WorldPositionMaterial;
 class VoxelVisualizationMaterial;
 class FBO_2D;
+class FBO_3D;
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
@@ -98,6 +98,7 @@ private:
 	void initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight);
 	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
 	FBO_2D *vvfbo1, *vvfbo2;
+    FBO_3D * voxelFBO;
     WorldPositionMaterial * worldPositionMaterial;
     VoxelVisualizationMaterial * voxelVisualizationMaterial;
 	// --- Screen quad. ---

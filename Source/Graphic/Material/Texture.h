@@ -24,22 +24,22 @@ public:
     dataType(GL_FLOAT),
     wrap (GL_REPEAT),
     pixelFormat(GL_RGBA),
-    minFilter(GL_NEAREST),
-    magFilter(GL_NEAREST),
+    minFilter(GL_LINEAR_MIPMAP_LINEAR),
+    magFilter(GL_LINEAR),
     width(0),
     height(0)
     {
         
     }
     
-    Texture(const std::string &_path, GLint _width, GLint _height):
+    Texture(const std::string &_path, GLuint _width, GLuint _height):
     forceChannels(0),
     path(_path),
     dataType(GL_FLOAT),
     wrap (GL_REPEAT),
     pixelFormat(GL_RGBA),
-    minFilter(GL_NEAREST),
-    magFilter(GL_NEAREST),
+    minFilter(GL_LINEAR_MIPMAP_LINEAR),
+    magFilter(GL_LINEAR),
     width(_width),
     height(_height)
     {
@@ -49,15 +49,15 @@ public:
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) = 0;
     
     
-    inline void SetWrap(GLint _wrap){ wrap = _wrap; }
-    inline void SetPixelFormat(GLint _format){ pixelFormat = _format; }
-    inline void SetWidth(GLint _width){ width = _width;};
-    inline void SetHeight(GLint _height){ height = _height;};
-    inline void SetMinFilter(GLint _minFilter){ minFilter = _minFilter; }
-    inline void SetMagFilter(GLint _magFilter){ magFilter = _magFilter; }
-    inline void SetDataType(GLint _type){ dataType = _type; }
+    inline void SetWrap(GLuint _wrap){ wrap = _wrap; }
+    inline void SetPixelFormat(GLuint _format){ pixelFormat = _format; }
+    inline void SetWidth(GLuint _width){ width = _width;};
+    inline void SetHeight(GLuint _height){ height = _height;};
+    inline void SetMinFilter(GLuint _minFilter){ minFilter = _minFilter; }
+    inline void SetMagFilter(GLuint _magFilter){ magFilter = _magFilter; }
+    inline void SetDataType(GLuint _type){ dataType = _type; }
     
-    inline GLint  GetTextureID() const { return textureID; }
+    inline GLuint  GetTextureID() const { return textureID; }
     
     virtual void Clear() = 0;
     
@@ -70,7 +70,7 @@ protected:
 #if __APPLE__
     //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implemented manually
     virtual void glClearTexImage(	GLuint texture,
-                                 GLint level,
+                                 GLuint level,
                                  GLenum format,
                                  GLenum type,
                                  const void * data) = 0;
@@ -78,16 +78,18 @@ protected:
 #endif
 protected:
     
-    GLint width, height, channels;
+    static const GLsizei levels = 7;
+    
+    GLuint width, height, channels;
     const std::string path;
     GLboolean forceChannels;
     
     GLuint textureID;
     
-    GLint pixelFormat;
-    GLint dataType;
-    GLint wrap;
-    GLint minFilter;
-    GLint magFilter;
+    GLuint pixelFormat;
+    GLuint dataType;
+    GLuint wrap;
+    GLuint minFilter;
+    GLuint magFilter;
     
 };

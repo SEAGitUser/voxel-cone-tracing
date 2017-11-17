@@ -43,7 +43,7 @@ MeshRenderer::~MeshRenderer()
 {
 	glDeleteBuffers(1, &mesh->vbo);
 	glDeleteVertexArrays(1, &mesh->vao);
-	if (materialSetting != nullptr) delete materialSetting;
+	delete materialSetting;
 }
 
 void MeshRenderer::render(const GLuint program)

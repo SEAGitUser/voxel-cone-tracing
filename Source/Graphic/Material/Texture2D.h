@@ -28,7 +28,7 @@ public:
 #if __APPLE__
     
     virtual void glClearTexImage(	GLuint texture,
-                                 GLint level,
+                                 GLuint level,
                                  GLenum format,
                                  GLenum type,
                                  const void * data) override;

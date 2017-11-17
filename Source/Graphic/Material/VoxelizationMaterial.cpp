@@ -26,7 +26,7 @@ Material(_name)
     
     AssembleProgram(voxelVert, voxelFrag, voxelGeom, nullptr, nullptr);
     
-    voxelTexture = new Texture3D(initTextureBuffer, voxelTextureSize, voxelTextureSize, voxelTextureSize, true);
+    voxelTexture = new Texture3D(initTextureBuffer, voxelTextureSize, voxelTextureSize, voxelTextureSize, GL_TRUE, GL_RGBA32F);
     voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
     
 }

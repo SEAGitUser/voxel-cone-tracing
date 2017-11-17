@@ -41,6 +41,9 @@ void Texture2D::SaveTextureState( GLboolean generateMipmaps, GLboolean loadTextu
     static const GLint border = 0;
     glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, border, pixelFormat , dataType , nullptr);
     glError();
+    /*
+     
+     TODO: DON'T SUPPORT TEXTURES YET
     if(!path.empty() && loadTexture)
     {
         // Load image from disk.
@@ -60,6 +63,7 @@ void Texture2D::SaveTextureState( GLboolean generateMipmaps, GLboolean loadTextu
         // Clean up.
         SOIL_free_image_data(textureBuffer);
     }
+     */
     glBindTexture(GL_TEXTURE_2D, previousTexture);
 }
 
@@ -81,14 +85,12 @@ void Texture2D::Activate(int shaderProgram, int textureUnit)
 #if __APPLE__
 
 void Texture2D::glClearTexImage(	GLuint texture,
-                             GLint level,
+                             GLuint levels,
                              GLenum format,
                              GLenum type,
                              const void * data)
 {
     //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
-    //TODO: this function has potential to be a performance bottleneck, make sure to profile
-    GLsizei levels = 7;
     
     GLint tempWidth = width;
     GLint tempHeight = height;

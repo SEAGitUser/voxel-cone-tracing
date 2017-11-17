@@ -11,7 +11,6 @@
 class Texture3D : public Texture{
 public:
 	unsigned char * textureBuffer = nullptr;
-	GLuint textureID;
 
 	/// <summary> Activates this texture and passes it on to a texture unit on the GPU. </summary>
 	void Activate(const int shaderProgram, const std::string glSamplerName, const int textureUnit = GL_TEXTURE0);
@@ -21,11 +20,15 @@ public:
 
 	Texture3D(
 		const std::vector<GLfloat> & textureBuffer,
-		const int width, const int height, const int depth,
-		const bool generateMipmaps = true
+		const GLuint width, const GLuint height, const GLuint depth,
+		const GLboolean generateMipmaps = GL_TRUE,
+        GLuint internalFormat = GL_RGBA32F
 	);
     
     Texture3D();
+    
+    inline void SetInternalFormat(GLuint value){ internalFormat = value; }
+    inline void SetDepth(GLuint value){ depth = value; }
     
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
     virtual void Clear() override;
@@ -41,7 +44,7 @@ public:
                         GLenum internalformat);
     
     virtual void glClearTexImage(	GLuint texture,
-                         GLint level,
+                         GLuint levels,
                          GLenum format,
                          GLenum type,
                          const void * data) override;
@@ -50,7 +53,8 @@ public:
 private:
 
     
-    GLint depth;
+    GLuint depth;
+    GLuint internalFormat;
     //TODO: THIS ARRAY IS USED TO CLEAR MEMORY, WILL NOT BE NEEDED IN OPENGL 4.4 AND ABOVE
     //ANOTHER WAY TO DO THIS IN 4.1 IS TO USE OPENCL.  I WILL IMPLEMENT THIS IN A MEMORY PASS. 
 	std::vector<GLfloat> clearData;

@@ -25,7 +25,6 @@ void Texture3D::glTexStorage3D(	GLenum target,
     glError();
     for (GLsizei i = 0; i < levels; i++)
     {
-        GLuint pixelFormat = internalformat;
         GLuint dataType = GL_FLOAT;
         glTexImage3D(target, i, internalformat, tempWidth, tempHeight, tempDepth, 0, pixelFormat, dataType, NULL);
         tempWidth = std::max(1, (tempWidth / 2));
@@ -37,14 +36,13 @@ void Texture3D::glTexStorage3D(	GLenum target,
 
 
 void Texture3D::glClearTexImage(	GLuint texture,
-                     GLint level,
+                     GLuint levels,
                      GLenum format,
                      GLenum type,
                      const void * data)
 {
     //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
-    //TODO: this function has potential to be a performance bottleneck, make sure to profile
-    GLsizei levels = 7;
+
     
     GLint tempWidth = width;
     GLint tempHeight = height;
@@ -62,8 +60,9 @@ void Texture3D::glClearTexImage(	GLuint texture,
 
 #endif
 
-Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const int _width, const int _height, const int _depth, const bool generateMipmaps) :
-	Texture("", _width, _height), depth(_depth), clearData(4 * _width * _height * _depth * sizeof(GLfloat), 0.0f)
+Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _width, const GLuint _height, const GLuint _depth, const GLboolean generateMipmaps, GLuint _internalFormat) :
+	Texture("", _width, _height), depth(_depth), internalFormat(_internalFormat),
+    clearData(4 * _width * _height * _depth * sizeof(GLfloat), 0.0f)
 {
 
 }
@@ -77,6 +76,7 @@ void Texture3D::Activate(const int shaderProgram, const std::string glSamplerNam
 
 void Texture3D::Clear()
 {
+    glError();
     glm::vec4 clearColor(0,0,0,0);
 	GLint previousBoundTextureID;
 	glGetIntegerv(GL_TEXTURE_BINDING_3D, &previousBoundTextureID);
@@ -84,7 +84,7 @@ void Texture3D::Clear()
     
     glError();
 
-	glClearTexImage(textureID, 0, GL_RGBA, GL_FLOAT, &clearData[0]);
+	glClearTexImage(textureID, levels, GL_RGBA, GL_FLOAT, &clearData[0]);
 	glBindTexture(GL_TEXTURE_3D, previousBoundTextureID);
 }
 
@@ -101,23 +101,25 @@ void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTextur
     
     glError();
     // Parameter options.
-    const auto wrap = GL_CLAMP_TO_BORDER;
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrap);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap);
     
     glError();
-    const auto filter = GL_LINEAR_MIPMAP_LINEAR;
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, filter);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, minFilter);
+    glError();
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, magFilter);
     
     glError();
-    // Upload texture buffer.
-    const int levels = 7;
-    glTexStorage3D(GL_TEXTURE_3D, levels, GL_RGBA);
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, width, height, depth, 0, GL_RGBA, GL_FLOAT, &textureBuffer[0]);
+
+    glTexStorage3D(GL_TEXTURE_3D, levels, pixelFormat);
+    GLint level = 0, border = 0;
+    glTexImage3D(GL_TEXTURE_3D, level, internalFormat, width, height, depth, border, pixelFormat, dataType, &textureBuffer[0]);
+    glError();
     if (generateMipmaps) glGenerateMipmap(GL_TEXTURE_3D);
     glBindTexture(GL_TEXTURE_3D, previousTexture);
+    
+    glError();
 }
 
 Texture3D::Texture3D():

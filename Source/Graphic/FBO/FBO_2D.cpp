@@ -3,8 +3,8 @@
 #include <iostream>
 #include <assert.h>
 
-FBO_2D::FBO_2D(GLuint w, GLuint h, GLenum magFilter, GLenum minFilter, GLint internalFormat, GLint format, GLint wrap)
-: FBO(w,h)
+FBO_2D::FBO_2D(GLuint w, GLuint h, GLuint minFilter, GLuint magFilter, GLuint pixelFormat, GLuint dataFormat, GLuint wrap)
+: FBO(w, h, minFilter, magFilter, pixelFormat, dataFormat, wrap)
 {
     GLint previousFrameBuffer;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);

@@ -8,10 +8,15 @@ class FBO {
     
 public:
     
-    FBO(GLuint w, GLuint h )
+    FBO(GLuint w, GLuint h, GLuint _minFilter, GLuint _magFilter, GLuint _pixelFormat, GLuint _dataFormat, GLuint _wrap )
     {
         width = w;
         height = h;
+        minFilter = _minFilter;
+        magFilter = _magFilter;
+        dataFormat = _dataFormat;
+        wrap = _wrap;
+        pixelFormat = _pixelFormat;
     }
     
     
@@ -28,4 +33,7 @@ protected:
     static const GLint MAX_RENDER_TARGETS = 15;
     
     GLuint width, height, frameBuffer, textureColorBuffer, attachment, rbo;
+    GLuint minFilter;
+    GLuint magFilter;
+    GLuint dataFormat, wrap, pixelFormat;
 };

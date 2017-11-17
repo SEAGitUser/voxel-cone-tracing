@@ -26,22 +26,40 @@
 #include "Graphic/Material/WorldPositionMaterial.h"
 #include "Graphic/Material/VoxelVisualizationMaterial.h"
 #include "Graphic/FBO/FBO_2D.h"
+#include "Graphic/FBO/FBO_3D.h"
+#include "Texture3D.h"
 
 // ----------------------
 // Rendering pipeline.
 // ----------------------
 void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
 {
+    voxelFBO = nullptr;
+    vvfbo1 = nullptr;
+    vvfbo2 = nullptr;
+    quadMeshRenderer= nullptr;
+    cubeMeshRenderer = nullptr;
+    cubeShape = nullptr;
+    voxelConeTracingMaterial = nullptr;
+    voxelizationMaterial = nullptr;
     
 	glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
     voxelConeTracingMaterial = new VoxelizationConeTracingMaterial("voxelization_cone_tracing");
     glError();
 	initVoxelization();
 	initVoxelVisualization(viewportWidth, viewportHeight);
+    
+    glError();
+    voxelFBO = new FBO_3D(VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
+                          GL_NEAREST,GL_NEAREST, GL_RGBA, GL_FLOAT, GL_CLAMP_TO_EDGE, GL_RGBA32F);
+    
+    glError();
+
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)
 {
+    glError();
 	// Voxelize.
 	bool voxelizeNow = voxelizationQueued || (automaticallyVoxelize && voxelizationSparsity > 0 && ++ticksSinceLastVoxelization >= voxelizationSparsity);
 	if (voxelizeNow) {
@@ -153,6 +171,7 @@ void Graphics::initVoxelization()
 
 void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 {
+    glError();
     //TODO: YOU'LL HAVE TO CHANGE THIS FUNCTION TO RENDER TO 3D TEXTURE
     if(clearVoxelization)
         voxelizationMaterial->ClearVoxels();
@@ -199,8 +218,8 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 	assert(voxelVisualizationMaterial != nullptr);
 
 	// FBOs.
-	vvfbo1 = new FBO_2D(viewportWidth, viewportHeight);
-	vvfbo2 = new FBO_2D(viewportWidth, viewportHeight);
+	vvfbo1 = new FBO_2D(viewportWidth, viewportHeight, GL_NEAREST, GL_NEAREST);
+	vvfbo2 = new FBO_2D(viewportWidth, viewportHeight, GL_NEAREST, GL_NEAREST);
 
 	// Rendering cube.
 	cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
@@ -270,11 +289,12 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 
 Graphics::~Graphics()
 {
-	if (vvfbo1) delete vvfbo1;
-	if (vvfbo2) delete vvfbo2;
-	if (quadMeshRenderer) delete quadMeshRenderer;
-	if (cubeMeshRenderer) delete cubeMeshRenderer;
-	if (cubeShape) delete cubeShape;
+	delete vvfbo1;
+	delete vvfbo2;
+    delete voxelFBO;
+	delete quadMeshRenderer;
+	delete cubeMeshRenderer;
+	delete cubeShape;
 
     delete voxelConeTracingMaterial;
     delete voxelizationMaterial;
