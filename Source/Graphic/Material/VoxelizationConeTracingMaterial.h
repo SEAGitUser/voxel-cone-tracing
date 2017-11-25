@@ -10,6 +10,9 @@
 
 #include "Material.h"
 
+
+class FBO_2D;
+
 class VoxelizationConeTracingMaterial : public Material
 {
 public:

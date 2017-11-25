@@ -48,8 +48,8 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::render(const GLuint program)
 {
-	
-	glUniformMatrix4fv(glGetUniformLocation(program, MODEL_MATRIX_NAME), 1, GL_FALSE, glm::value_ptr(transform.getTransformMatrix()));
+    GLint location = glGetUniformLocation(program, MODEL_MATRIX_NAME);
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(transform.getTransformMatrix()););
 	glBindVertexArray(mesh->vao);
 	glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
 }
