@@ -10,9 +10,10 @@
 #include "Graphic/Material/MaterialStore.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
+#include "Graphic/FBO/FBO_2D.h"
+#include "Graphic/Material/Texture3D.h"
 
-
-VoxelVisualizationMaterial::VoxelVisualizationMaterial(const GLchar *_name):
+VoxelVisualizationMaterial::VoxelVisualizationMaterial(const GLchar *_name,Texture3D* _voxelTexture):
 Material(_name)
 {
     const Shader* voxelVert = MaterialStore::getInstance().findShaderUsingPath("Voxelization/Visualization/voxel_visualization.vert");
@@ -20,7 +21,9 @@ Material(_name)
     
     AssembleProgram(voxelVert, voxelFrag, nullptr, nullptr, nullptr);
     
+    assert(_voxelTexture != nullptr);
     
+    voxelTexture = _voxelTexture;
     
 }
 
@@ -28,6 +31,7 @@ Material(_name)
 void VoxelVisualizationMaterial::Activate() 
 {
     Material::Activate();
+    
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));
     glUniform3fv(glGetUniformLocation(program, specularColorName), 1, glm::value_ptr(specularColor));
@@ -39,4 +43,11 @@ void VoxelVisualizationMaterial::Activate()
     glUniform1f(glGetUniformLocation(program, specularDiffusionName), specularDiffusion);
     glUniform1f(glGetUniformLocation(program, transparencyName), transparency);
     glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
+    
+    // Activate textures.
+
+    voxelTexture->Activate(program, "texture3D", 2);
+    
+    
+    
 }

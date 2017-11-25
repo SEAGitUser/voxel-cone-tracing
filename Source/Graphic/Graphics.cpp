@@ -136,6 +136,8 @@ void Graphics::uploadRenderingSettings(const GLuint glProgram) const
 
 void Graphics::uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const
 {
+    //glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), Application::getInstance().state);
+    
 	glm::vec2 screenSize(viewportWidth, viewportHeight);
 }
 
@@ -203,6 +205,7 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
 		regenerateMipmapQueued = false;
 	}
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glError();
 }
 
 // ----------------------
@@ -212,7 +215,7 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 {
 	// Materials.
     worldPositionMaterial = new WorldPositionMaterial("world_position");
-    voxelVisualizationMaterial = new VoxelVisualizationMaterial("voxel_visualization");
+    voxelVisualizationMaterial = new VoxelVisualizationMaterial("voxel_visualization", voxelizationMaterial->GetVoxelTexture());
 
 	assert(worldPositionMaterial != nullptr);
 	assert(voxelVisualizationMaterial != nullptr);
@@ -233,12 +236,17 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 
 void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
 {
+    Camera & camera = *renderingScene.renderingCamera;
+    auto program = worldPositionMaterial->ProgramID();
+    
+    worldPositionMaterial->Activate();
+    
+    glError();
 	// -------------------------------------------------------
 	// Render cube to FBOs.
 	// -------------------------------------------------------
-	Camera & camera = *renderingScene.renderingCamera;
-	auto program = worldPositionMaterial->ProgramID();
-	glUseProgram(program);
+
+	//glUseProgram(program);
 	uploadCamera(camera, program);
 
 	// Settings.
@@ -267,7 +275,8 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	// Render 3D texture to screen.
 	// -------------------------------------------------------
 	program = voxelVisualizationMaterial->ProgramID();
-	glUseProgram(program);
+    voxelVisualizationMaterial->Activate();
+    
 	uploadCamera(camera, program);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -278,13 +287,19 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	glEnable(GL_CULL_FACE);
 
 	// Activate textures.
+    //TODO: these arguments should not be set by the framebuffer, it should be set by the materials
 	vvfbo1->ActivateAsTexture(program, "textureBack", 0);
 	vvfbo2->ActivateAsTexture(program, "textureFront", 1);
+    
+    Texture3D* voxelTexture = voxelizationMaterial->GetVoxelTexture();
+    voxelTexture->Activate(program, "texture3D", 2);
 
 	// Render.
 	glViewport(0, 0, viewportWidth, viewportHeight);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	quadMeshRenderer->render(program);
+    
+    glError();
 }
 
 Graphics::~Graphics()

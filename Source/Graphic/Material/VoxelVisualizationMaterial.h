@@ -10,12 +10,15 @@
 
 #include "Material.h"
 
+
+class FBO_2D;
+class Texture3D;
+
 class VoxelVisualizationMaterial : public Material
 {
 public:
     
-    
-    VoxelVisualizationMaterial( const GLchar *_name);
+    VoxelVisualizationMaterial(const GLchar *_name,Texture3D* voxelTexture);
     
     virtual void Activate() override;
     
@@ -34,5 +37,7 @@ private:
     glm::vec3 diffuseColor, specularColor = glm::vec3(1);
     float specularReflectivity, diffuseReflectivity, emissivity, specularDiffusion = 2.0f;
     float transparency = 0.0f, refractiveIndex = 1.4f;
+    
+    Texture3D* voxelTexture;
     
 };

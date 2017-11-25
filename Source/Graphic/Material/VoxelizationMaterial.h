@@ -23,6 +23,7 @@ public:
     
     virtual void Activate() override;
     inline bool IsEmissive() { return emissivity > 0.00001f; }
+    inline Texture3D* GetVoxelTexture(){return voxelTexture; }
     
     void ClearVoxels();
     
@@ -30,7 +31,7 @@ public:
     
 public:
     static const std::vector<GLfloat> initTextureBuffer;
-    static const GLuint voxelTextureSize = 64;
+    static const GLuint voxelTextureSize = 64; //must be a power of two
     
 private:
     

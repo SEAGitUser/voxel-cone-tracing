@@ -3,14 +3,13 @@
 #include "OpenGL_Includes.h"
 
 #include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include <string>
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include "Graphic/Material/Resource.h"
-
-
 
 
 class Shader;
@@ -32,6 +31,11 @@ public:
     
     GLuint ProgramID()const { return program;}
     
+    inline void SetParameteri(const GLchar* name, GLint const value);
+    inline void SetParameterv4(const GLchar* name, const glm::vec4 &value);
+    inline void SetParameterf(const GLchar* name, GLfloat const value);
+    inline void SetParamatermat4(const GLchar *name, const glm::mat4 &value);
+    
 protected:
     
     void AssembleProgram(
@@ -51,5 +55,35 @@ public:
 	/// <summary> A name. Just an identifier. Doesn't do anything practical. </summary>
 	const GLchar* name;
 };
+
+void Material::SetParameteri(const GLchar* name, GLint const value)
+{
+    GLint location = glGetUniformLocation(program, name);
+    assert(location != -1);
+    glUniform1i(location, value);
+}
+
+void Material::SetParameterf(const GLchar* name, GLfloat const value)
+{
+    GLint location = glGetUniformLocation(program, name);
+    assert(location != -1);
+    glUniform1f(location,(value));
+}
+
+void Material::SetParameterv4(const GLchar* name, const glm::vec4 &value)
+{
+    GLint location = glGetUniformLocation(program, name);
+    assert(location != -1);
+    glUniform4fv(location, 1, glm::value_ptr(value));
+}
+
+void Material::SetParamatermat4(const GLchar* name, const glm::mat4 &value)
+{
+    GLint location = glGetUniformLocation(program, name);
+    assert(location != -1);
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+}
+
+
 
 
