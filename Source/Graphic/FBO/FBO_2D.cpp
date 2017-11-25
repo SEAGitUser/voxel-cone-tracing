@@ -63,14 +63,6 @@ GLuint FBO_2D::generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean
 }
  */
 
-void FBO_2D::ActivateAsTexture(const int shaderProgram, const std::string glSamplerName, const int textureUnit)
-{
-    glActiveTexture(GL_TEXTURE0 + textureUnit);
-    glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
-    glUniform1i(glGetUniformLocation(shaderProgram, glSamplerName.c_str()), textureUnit);
-}
-
-
 GLint FBO_2D::AddRenderTarget()
 {
     assert(renderTargets.size() < MAX_RENDER_TARGETS);

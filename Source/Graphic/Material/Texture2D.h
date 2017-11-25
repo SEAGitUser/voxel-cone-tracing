@@ -24,6 +24,8 @@ public:
     ///<summary> This saves the texture state in the GPU using the platform's graphics library based on arguments passed in setter functions and constructor arguments </summary>
     void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
     
+    inline void ActivateTexture(const GLchar* samplerName, const GLint textureName, const Texture2D* texture);
+    
 
 #if __APPLE__
     

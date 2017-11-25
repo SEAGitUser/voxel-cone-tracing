@@ -23,7 +23,7 @@ public:
     inline GLint getFrameBufferID(){ return frameBuffer; }
     inline GLint getWidth(){ return width; }
     inline GLint getHeight(){ return height; }
-    inline GLint getColorBufferTextureID() { return textureColorBuffer; }
+    inline GLint getColorBufferTextureName() { return textureColorBuffer; }
     
     
     virtual GLint AddRenderTarget() = 0;

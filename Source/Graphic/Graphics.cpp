@@ -287,12 +287,14 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	glEnable(GL_CULL_FACE);
 
 	// Activate textures.
-    //TODO: these arguments should not be set by the framebuffer, it should be set by the materials
-	vvfbo1->ActivateAsTexture(program, "textureBack", 0);
-	vvfbo2->ActivateAsTexture(program, "textureFront", 1);
+    GLint textureBack = vvfbo1->getColorBufferTextureName();
+    GLint textureFront = vvfbo1->getColorBufferTextureName();
+    
+    voxelVisualizationMaterial->ActivateTexture2D("textureBack", textureBack, 0);
+    voxelVisualizationMaterial->ActivateTexture2D("textureFront", textureFront, 1);
     
     Texture3D* voxelTexture = voxelizationMaterial->GetVoxelTexture();
-    voxelTexture->Activate(program, "texture3D", 2);
+    voxelVisualizationMaterial->ActivateTexture3D("texture3D", voxelTexture, 2);
 
 	// Render.
 	glViewport(0, 0, viewportWidth, viewportHeight);

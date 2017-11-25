@@ -12,12 +12,6 @@ class Texture3D : public Texture{
 public:
 	unsigned char * textureBuffer = nullptr;
 
-	/// <summary> Activates this texture and passes it on to a texture unit on the GPU. </summary>
-	void Activate(const int shaderProgram, const std::string glSamplerName, const int textureUnit = GL_TEXTURE0);
-
-	/// <summary> Clears this texture using a given clear color. </summary>
-    //virtual void Clear(GLfloat clearColor[4]) override;
-
 	Texture3D(
 		const std::vector<GLfloat> & textureBuffer,
 		const GLuint width, const GLuint height, const GLuint depth,

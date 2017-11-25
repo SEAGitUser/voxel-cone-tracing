@@ -45,9 +45,6 @@ void VoxelVisualizationMaterial::Activate()
     glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
     
     // Activate textures.
-
-    voxelTexture->Activate(program, "texture3D", 2);
-    
-    
+    ActivateTexture3D("texture3D", voxelTexture, 2);
     
 }

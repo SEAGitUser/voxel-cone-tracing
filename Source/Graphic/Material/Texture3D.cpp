@@ -67,13 +67,6 @@ Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _w
 
 }
 
-void Texture3D::Activate(const int shaderProgram, const std::string glSamplerName, const int textureUnit)
-{
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_3D, textureID);
-	glUniform1i(glGetUniformLocation(shaderProgram, glSamplerName.c_str()), textureUnit);
-}
-
 void Texture3D::Clear()
 {
     glError();

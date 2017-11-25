@@ -23,7 +23,6 @@ class Texture2D;
 class FBO_2D : public FBO{
 public:
     
-    void ActivateAsTexture(const int shaderProgram, const std::string glSamplerName, const int textureUnit = GL_TEXTURE0);
     FBO_2D(
         GLuint w, GLuint h, GLuint minFilter = GL_LINEAR_MIPMAP_LINEAR, GLuint magFilter = GL_LINEAR,
         GLuint pixelFormat = GL_RGBA, GLuint format = GL_FLOAT, GLuint wrap = GL_CLAMP_TO_EDGE);

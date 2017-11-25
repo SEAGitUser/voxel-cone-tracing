@@ -51,7 +51,7 @@ void VoxelizationMaterial::Activate()
     glUniform1f(glGetUniformLocation(program, transparencyName), transparency);
     glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
     
-    voxelTexture->Activate(program, "texture3D", 0);
+    ActivateTexture3D("texture3D", voxelTexture->GetTextureID(), 0);
 }
 
 VoxelizationMaterial::~VoxelizationMaterial()

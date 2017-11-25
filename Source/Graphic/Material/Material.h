@@ -10,7 +10,8 @@
 #include <memory>
 #include <unordered_map>
 #include "Graphic/Material/Resource.h"
-
+#include "Texture2D.h"
+#include "Texture3D.h"
 
 class Shader;
 
@@ -31,10 +32,14 @@ public:
     
     GLuint ProgramID()const { return program;}
     
-    inline void SetParameteri(const GLchar* name, GLint const value);
-    inline void SetParameterv4(const GLchar* name, const glm::vec4 &value);
-    inline void SetParameterf(const GLchar* name, GLfloat const value);
-    inline void SetParamatermat4(const GLchar *name, const glm::mat4 &value);
+    inline void SetParameteri(const GLchar* parameterName, GLint const value);
+    inline void SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
+    inline void SetParameterf(const GLchar* parameterName, GLfloat const value);
+    inline void SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
+    inline void ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
+    inline void ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
+    inline void ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit);
+    inline void ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit);
     
 protected:
     
@@ -82,6 +87,31 @@ void Material::SetParamatermat4(const GLchar* name, const glm::mat4 &value)
     GLint location = glGetUniformLocation(program, name);
     assert(location != -1);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Material::ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
+{
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    glBindTexture(GL_TEXTURE_2D, textureName);
+    glUniform1i(glGetUniformLocation(program, samplerName), textureUnit);
+}
+
+void Material::ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit)
+{
+    ActivateTexture2D(samplerName, texture->GetTextureID(), textureUnit);
+}
+
+void Material::ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit)
+{
+    ActivateTexture3D(samplerName, texture->GetTextureID(), textureUnit);
+}
+
+
+void Material::ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
+{
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    glBindTexture(GL_TEXTURE_3D, textureName);
+    glUniform1i(glGetUniformLocation(program, samplerName), textureUnit);
 }
 
 
