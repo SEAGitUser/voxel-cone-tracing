@@ -11,7 +11,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
 #include "Graphic/FBO/FBO_2D.h"
-#include "Graphic/Material/Texture3D.h"
+#include "Graphic/Material/Texture/Texture3D.h"
 
 VoxelVisualizationMaterial::VoxelVisualizationMaterial(const GLchar *_name,Texture3D* _voxelTexture):
 Material(_name)

@@ -1,5 +1,5 @@
 #include "FBO_2D.h"
-#include "Graphic/Material/Texture2D.h"
+#include "Graphic/Material/Texture/Texture2D.h"
 #include <iostream>
 #include <assert.h>
 

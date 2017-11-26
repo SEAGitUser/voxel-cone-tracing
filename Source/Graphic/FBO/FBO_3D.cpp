@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "FBO_3D.h"
-#include "Graphic/Material/Texture3D.h"
+#include "Graphic/Material/Texture/Texture3D.h"
 
 FBO_3D::FBO_3D(GLuint w, GLuint h, GLuint d, GLuint _minFilter, GLuint _magFilter, GLuint _pixelFormat, GLuint _dataFormat, GLuint _wrap,GLuint _internalFormat)
 : FBO(w, h, _minFilter, _magFilter, _pixelFormat, _dataFormat, _wrap), depth(d), internalFormat(_internalFormat)
