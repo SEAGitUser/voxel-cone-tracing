@@ -9,7 +9,7 @@
 #include "VoxelizationConeTracingMaterial.h"
 
 
-#include "Graphic/Material/VoxelizationConeTracingMaterial.h"
+#include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"

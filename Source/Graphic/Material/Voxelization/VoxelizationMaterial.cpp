@@ -7,7 +7,7 @@
 //
 
 
-#include "Graphic/Material/VoxelizationMaterial.h"
+#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Graphic/Material/Texture3D.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "glm/gtc/type_ptr.hpp"
