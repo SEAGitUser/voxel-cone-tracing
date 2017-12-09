@@ -33,8 +33,6 @@ public:
     
     virtual void Activate(MaterialSetting::SettingsGroup& settingsGroup, std::vector<PointLight>& lights,Camera& camera);
     
-    GLuint ProgramID()const { return program;}
-    
     inline void SetParameteri(const GLchar* parameterName, GLint const value);
     inline void SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
     inline void SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
