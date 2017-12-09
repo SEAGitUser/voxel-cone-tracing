@@ -13,13 +13,10 @@
 class WorldPositionMaterial : public Material
 {
 public:
-    
-    
-    WorldPositionMaterial( const GLchar *_name);
-    
-    virtual void Activate() override;
-    
-    
+
+    WorldPositionMaterial( const GLchar *_name, const Shader* vert, const Shader* frag);
+    virtual void Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera &camera) override;
+        
 private:
     
     const char * diffuseColorName = "material.diffuseColor";

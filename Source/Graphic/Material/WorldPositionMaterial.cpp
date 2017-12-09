@@ -12,20 +12,15 @@
 #include "glm/glm.hpp"
 
 
-WorldPositionMaterial::WorldPositionMaterial(const GLchar *_name):
-Material(_name)
+WorldPositionMaterial::WorldPositionMaterial(const GLchar *_name, const Shader* vert, const Shader* frag):
+Material(_name, vert, frag)
 {
-    const Shader* voxelVert = MaterialStore::getInstance().findShaderUsingPath("Voxelization/Visualization/world_position.vert");
-    const Shader* voxelFrag = MaterialStore::getInstance().findShaderUsingPath("Voxelization/Visualization/world_position.frag");
-    
-    AssembleProgram(voxelVert, voxelFrag, nullptr, nullptr, nullptr);
-    
 }
 
 
-void WorldPositionMaterial::Activate() 
+void WorldPositionMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera& camera)
 {
-    Material::Activate();
+    Material::Activate(group, lights, camera);
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));
     glUniform3fv(glGetUniformLocation(program, specularColorName), 1, glm::value_ptr(specularColor));

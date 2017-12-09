@@ -41,16 +41,21 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	lightCubeIndex = renderers.size() - 1;
 
 	// Cornell box.
-	renderers[0]->materialSetting = MaterialSetting::Green(); // Green wall.
-	renderers[1]->materialSetting = MaterialSetting::White(); // Floor.
-	renderers[2]->materialSetting = MaterialSetting::White(); // Roof.
-	renderers[3]->materialSetting = MaterialSetting::Red(); // Red wall.
-	renderers[4]->materialSetting = MaterialSetting::Blue(); // White wall.
-	renderers[5]->materialSetting = MaterialSetting::White(); // Left box.
-	renderers[5]->enabled = false;
-	renderers[6]->materialSetting = MaterialSetting::White(); // Right box.
-	renderers[6]->enabled = false;
+    
+    MaterialSetting::Green(renderers[0]->settingsGroup);
+    MaterialSetting::White(renderers[1]->settingsGroup);
+    MaterialSetting::White(renderers[2]->settingsGroup);
+    MaterialSetting::Red(renderers[3]->settingsGroup);
+    MaterialSetting::Blue(renderers[4]->settingsGroup);
+    MaterialSetting::White(renderers[5]->settingsGroup);
 
+    renderers[0]->name = renderers[1]->name = renderers[2]->name = renderers[3]->name = renderers[4]->name
+        = renderers[5]->name = "cornell box";
+	renderers[5]->enabled = false;
+    MaterialSetting::White(renderers[6]->settingsGroup);
+    
+	renderers[6]->enabled = false;
+     
 
 	// Buddha.
 	int buddhaIndex = renderers.size();
@@ -59,6 +64,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	for (unsigned int i = 0; i < buddha->meshes.size(); ++i) {
 		renderers.push_back(new MeshRenderer(&(buddha->meshes[i])));
 	}
+    
 	buddhaRenderer = renderers[buddhaIndex];
 	buddhaRenderer->transform.scale = glm::vec3(1.8f);
 	buddhaRenderer->transform.rotation = glm::vec3(0, 2.4, 0);
@@ -66,25 +72,24 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	buddhaRenderer->transform.updateTransformMatrix();
 	buddhaRenderer->tweakable = true;
 	buddhaRenderer->name = "Buddha";
-	buddhaRenderer->materialSetting = MaterialSetting::White();
-	buddhaMaterialSetting = buddhaRenderer->materialSetting;
-	buddhaMaterialSetting->specularColor = glm::vec3(0.99, 0.61, 0.43);
-	buddhaMaterialSetting->diffuseColor = buddhaMaterialSetting->specularColor;
-	buddhaMaterialSetting->emissivity = 0.00f;
-	buddhaMaterialSetting->transparency = 1.00f;
-	buddhaMaterialSetting->refractiveIndex = 1.21f;
-	buddhaMaterialSetting->specularReflectivity = 1.00f;
-	buddhaMaterialSetting->diffuseReflectivity = 0.0f;
-	buddhaMaterialSetting->specularDiffusion = 1.9f;
+    MaterialSetting::White(buddhaRenderer->settingsGroup);
+
+    buddhaRenderer->settingsGroup[MaterialSetting::specularColor] = glm::vec3(0.99, 0.61, 0.43);
+    buddhaRenderer->settingsGroup[MaterialSetting::diffuseColor]= buddhaRenderer->settingsGroup[MaterialSetting::specularColor];
+    buddhaRenderer->settingsGroup[MaterialSetting::emissivity] = 0.00f;
+    buddhaRenderer->settingsGroup[MaterialSetting::transparency] = 1.00f;
+    buddhaRenderer->settingsGroup[MaterialSetting::refractiveIndex] = 1.21f;
+    buddhaRenderer->settingsGroup[MaterialSetting::specularReflectivity] = 1.00f;
+    buddhaRenderer->settingsGroup[MaterialSetting::diffuseReflectivity] = 0.0f;
+    buddhaRenderer->settingsGroup[MaterialSetting::specularDiffusion] = 1.9f;
 
 	// Light cube.
-	renderers[lightCubeIndex]->materialSetting = MaterialSetting::Emissive();
-	renderers[lightCubeIndex]->materialSetting->diffuseColor.r = 1.0f;
-	renderers[lightCubeIndex]->materialSetting->diffuseColor.g = 1.0f;
-	renderers[lightCubeIndex]->materialSetting->diffuseColor.b = 1.0f;
-	renderers[lightCubeIndex]->materialSetting->emissivity = 8.0f;
-	renderers[lightCubeIndex]->materialSetting->specularReflectivity = 0.0f;
-	renderers[lightCubeIndex]->materialSetting->diffuseReflectivity = 0.0f;
+    MaterialSetting::Emissive(buddhaRenderer->settingsGroup);// = MaterialSetting::Emissive();
+    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::diffuseColor] = glm::vec3(1.0f, 1.0f, 1.0f);
+    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::emissivity] = 8.0f;
+    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::specularReflectivity] = 0.0f;
+    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::diffuseReflectivity] = 0.0f;
+    renderers[lightCubeIndex]->name = "light cube";
 
 	// An additional wall (behind the camera).
 	int backWallIndex = renderers.size();
@@ -94,12 +99,12 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 		renderers.push_back(new MeshRenderer(&(backWall->meshes[i])));
 	}
 	MeshRenderer * bwr = renderers[backWallIndex];
-	bwr->materialSetting = MaterialSetting::White();
+    MaterialSetting::White(bwr->settingsGroup);
 	bwr->transform.scale = glm::vec3(2);
 	bwr->transform.position = glm::vec3(0, 0, 0.99);
 	bwr->transform.rotation = glm::vec3(-1.57079632679, 0, 0);
 	bwr->tweakable = true;
-
+    
 	// Lighting.
 	PointLight p;
 	pointLights.push_back(p);
@@ -121,7 +126,7 @@ void GlassScene::update() {
 	renderers[lightCubeIndex]->transform.updateTransformMatrix();
 
 	pointLights[0].position = renderers[lightCubeIndex]->transform.position;
-	renderers[lightCubeIndex]->materialSetting->diffuseColor = pointLights[0].color;
+    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::diffuseColor] = pointLights[0].color;
 }
 
 GlassScene::~GlassScene() {

@@ -40,26 +40,27 @@ void CornellScene::init(unsigned int viewportWidth, unsigned int viewportHeight)
 	}
 	lightSphereIndex = renderers.size() - 1;
 
+    
 	// Cornell box.
-	renderers[0]->materialSetting = MaterialSetting::Green(); // Green wall.
-	renderers[1]->materialSetting = MaterialSetting::White(); // Floor.
-	renderers[2]->materialSetting = MaterialSetting::White(); // Roof.
-	renderers[3]->materialSetting = MaterialSetting::Red(); // Red wall.
-	renderers[4]->materialSetting = MaterialSetting::White(); // White wall.
-	renderers[5]->materialSetting = MaterialSetting::White(); // Left box.
+	MaterialSetting::Green(renderers[0]->settingsGroup); //Green wall
+    MaterialSetting::White(renderers[1]->settingsGroup); //floor
+    MaterialSetting::White(renderers[2]->settingsGroup); //roof
+    MaterialSetting::Red(renderers[3]->settingsGroup); //red wall
+    MaterialSetting::White(renderers[4]->settingsGroup); //white wall
+    MaterialSetting::White(renderers[5]->settingsGroup); //left box
+
 	renderers[5]->tweakable = true;
-	renderers[6]->materialSetting = MaterialSetting::White(); // Right box.
+    MaterialSetting::White(renderers[6]->settingsGroup);
 	renderers[6]->tweakable = true;
 
 	// Light Sphere.
-	renderers[lightSphereIndex]->materialSetting = MaterialSetting::Emissive();
-	renderers[lightSphereIndex]->materialSetting->diffuseColor.r = 1.0f;
-	renderers[lightSphereIndex]->materialSetting->diffuseColor.g = 1.0f;
-	renderers[lightSphereIndex]->materialSetting->diffuseColor.b = 1.0f;
-	renderers[lightSphereIndex]->materialSetting->emissivity = 8.0f;
-	renderers[lightSphereIndex]->materialSetting->specularReflectivity = 0.0f;
-	renderers[lightSphereIndex]->materialSetting->diffuseReflectivity = 0.0f;
+    MaterialSetting::Emissive(renderers[lightSphereIndex]->settingsGroup);
 
+    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::diffuseColor] = MaterialSetting(glm::vec3(1.0f, 1.0f, 1.0f));
+    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::emissivity] = MaterialSetting(8.0f);
+    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::specularReflectivity] = MaterialSetting(0.0f);
+    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::diffuseReflectivity] = MaterialSetting(0.0f);
+    
 	// ----------
 	// Lighting.
 	// ----------
@@ -84,7 +85,7 @@ void CornellScene::update() {
 	renderers[lightSphereIndex]->transform.updateTransformMatrix();
 
 	pointLights[0].position = renderers[lightSphereIndex]->transform.position;
-	renderers[lightSphereIndex]->materialSetting->diffuseColor = pointLights[0].color;
+    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::diffuseColor] = MaterialSetting(pointLights[0].color);
 }
 
 CornellScene::~CornellScene() {

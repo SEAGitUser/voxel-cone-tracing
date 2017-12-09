@@ -43,10 +43,10 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
     voxelConeTracingMaterial = nullptr;
     voxelizationMaterial = nullptr;
     
-	glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
-    voxelConeTracingMaterial = new VoxelizationConeTracingMaterial("voxelization_cone_tracing");
+	//glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
+    voxelConeTracingMaterial = static_cast< VoxelizationConeTracingMaterial *>(MaterialStore::getInstance().getMaterial("voxelization-cone-tracing"));//new VoxelizationConeTracingMaterial("voxelization_cone_tracing");
     glError();
-	initVoxelization();
+	//initVoxelization();
 	initVoxelVisualization(viewportWidth, viewportHeight);
     
     glError();
@@ -54,6 +54,13 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
                           GL_NEAREST,GL_NEAREST, GL_RGBA, GL_FLOAT, GL_CLAMP_TO_EDGE, GL_RGBA32F);
     
     glError();
+    //TODO:: we can likely get rid of this vector
+    const std::vector<GLfloat> initTextureBuffer = std::vector<GLfloat>(4 * VoxelizationMaterial::voxelTextureSize *
+                                                                                              VoxelizationMaterial::voxelTextureSize * VoxelizationMaterial::voxelTextureSize, 0.0f);
+    
+    voxelTexture = new Texture3D(initTextureBuffer, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
+                                 VoxelizationMaterial::voxelTextureSize, GL_TRUE, GL_RGBA32F);
+    voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
 
 }
 
@@ -63,7 +70,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 	// Voxelize.
 	bool voxelizeNow = voxelizationQueued || (automaticallyVoxelize && voxelizationSparsity > 0 && ++ticksSinceLastVoxelization >= voxelizationSparsity);
 	if (voxelizeNow) {
-		voxelize(renderingScene, true);
+		voxelize(renderingScene);
 		ticksSinceLastVoxelization = 0;
 		voxelizationQueued = false;
 	}
@@ -71,7 +78,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 	// Render.
 	switch (renderingMode) {
 	case RenderingMode::VOXELIZATION_VISUALIZATION:
-		renderVoxelVisualization(renderingScene, viewportWidth, viewportHeight);
+		//renderVoxelVisualization(renderingScene, viewportWidth, viewportHeight);
 		break;
 	case RenderingMode::VOXEL_CONE_TRACING:
 		renderScene(renderingScene, viewportWidth, viewportHeight);
@@ -87,11 +94,11 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 
 	// Fetch references.
 	auto & camera = *renderingScene.renderingCamera;
-	const Material * material = voxelConeTracingMaterial;
-	const GLuint program = material->ProgramID();
+	//const Material * material = voxelConeTracingMaterial;
+	//const GLuint program = material->ProgramID();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glUseProgram(program);
+	//glUseProgram(program);
 
     GLint frameBufferWidth, frameBufferHeight;
     GLFWwindow * window = Application::getInstance().currentWindow;
@@ -107,31 +114,8 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Upload uniforms.
-	uploadCamera(camera, program);
-	uploadGlobalConstants(program, viewportWidth, viewportHeight);
-	uploadLighting(renderingScene, program);
-	uploadRenderingSettings(program);
-
 	// Render.
-	renderQueue(renderingScene.renderers, material->ProgramID(), true);
-}
-
-void Graphics::uploadLighting(Scene & renderingScene, const GLuint program) const
-{
-	// Point lights.
-	for (unsigned int i = 0; i < renderingScene.pointLights.size(); ++i) renderingScene.pointLights[i].Upload(program, i);
-
-	// Number of point lights.
-	glUniform1i(glGetUniformLocation(program, NUMBER_OF_LIGHTS_NAME), renderingScene.pointLights.size());
-}
-
-void Graphics::uploadRenderingSettings(const GLuint glProgram) const
-{
-	glUniform1i(glGetUniformLocation(glProgram, "settings.shadows"), shadows);
-	glUniform1i(glGetUniformLocation(glProgram, "settings.indirectDiffuseLight"), indirectDiffuseLight);
-	glUniform1i(glGetUniformLocation(glProgram, "settings.indirectSpecularLight"), indirectSpecularLight);
-	glUniform1i(glGetUniformLocation(glProgram, "settings.directLight"), directLight);
+	renderQueue(renderingScene, true);
 }
 
 void Graphics::uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const
@@ -141,65 +125,58 @@ void Graphics::uploadGlobalConstants(const GLuint program, unsigned int viewport
 	glm::vec2 screenSize(viewportWidth, viewportHeight);
 }
 
-void Graphics::uploadCamera(Camera & camera, const GLuint program)
+
+void Graphics::renderVoxelize(Scene& renderScene)
 {
-	glUniformMatrix4fv(glGetUniformLocation(program, VIEW_MATRIX_NAME), 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(program, PROJECTION_MATRIX_NAME), 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix()));
-	glUniform3fv(glGetUniformLocation(program, CAMERA_POSITION_NAME), 1, glm::value_ptr(camera.position));
+    RenderingQueue& renderingQueue = renderScene.renderers;
+    for (unsigned int i = 0; i < renderingQueue.size(); ++i)
+    {
+        renderingQueue[i]->transform.updateTransformMatrix();
+        if (renderingQueue[i]->enabled)
+        {
+            renderingQueue[i]->voxelize(voxelTexture, renderScene);
+        }
+    }
+}
+void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) const
+{
+    RenderingQueue &renderingQueue = renderingScene.renderers;
+    
+	for (unsigned int i = 0; i < renderingQueue.size(); ++i)
+    {
+        if (renderingQueue[i]->enabled)
+        {
+            renderingQueue[i]->render(renderingScene);
+        }
+    }
 }
 
-void Graphics::renderQueue(RenderingQueue renderingQueue, const GLuint program, bool uploadMaterialSettings) const
-{
-	for (unsigned int i = 0; i < renderingQueue.size(); ++i) if (renderingQueue[i]->enabled)
-		renderingQueue[i]->transform.updateTransformMatrix();
 
-	for (unsigned int i = 0; i < renderingQueue.size(); ++i) if (renderingQueue[i]->enabled) {
-		if (uploadMaterialSettings && renderingQueue[i]->materialSetting != nullptr) {
-			renderingQueue[i]->materialSetting->Upload(program, false);
-		}
-		renderingQueue[i]->render(program);
-	}
-}
-
-// ----------------------
-// Voxelization.
-// ----------------------
-void Graphics::initVoxelization()
-{
-    voxelizationMaterial = new VoxelizationMaterial("voxelization");
-
-	assert(voxelizationMaterial != nullptr);
-}
-
-void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
+void Graphics::voxelize(Scene & renderScene, bool clearVoxelization)
 {
     glError();
     //TODO: YOU'LL HAVE TO CHANGE THIS FUNCTION TO RENDER TO 3D TEXTURE
     if(clearVoxelization)
-        voxelizationMaterial->ClearVoxels();
+        voxelTexture->Clear();
     
-    voxelizationMaterial->Activate();
-    
+    //voxelizationMaterial->Activate();
+    glError();
     static const GLint defaultFrameBuffer = 0;
 	glBindFramebuffer(GL_FRAMEBUFFER, defaultFrameBuffer);
-
+glError();
 	// Settings.
     glViewport(0, 0, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-
+glError();
 
     //TODO: YOU NEED TO ATTACH THIS TEXTURE TO THE SHADER!
 	//glBindImageTexture(0, voxelTexture->textureID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
 
-
-	// Lighting.
-	uploadLighting(renderingScene, voxelizationMaterial->ProgramID());
-
 	// Render.
-	renderQueue(renderingScene.renderers, voxelizationMaterial->ProgramID(), true);
+	renderVoxelize(renderScene);
 	if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
 		glGenerateMipmap(GL_TEXTURE_3D);
 		regenerateMipmapQueued = false;
@@ -208,14 +185,15 @@ void Graphics::voxelize(Scene & renderingScene, bool clearVoxelization)
     glError();
 }
 
+
 // ----------------------
 // Voxelization visualization.
 // ----------------------
 void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight)
 {
 	// Materials.
-    worldPositionMaterial = new WorldPositionMaterial("world_position");
-    voxelVisualizationMaterial = new VoxelVisualizationMaterial("voxel_visualization", voxelizationMaterial->GetVoxelTexture());
+    worldPositionMaterial = static_cast<Material*>( MaterialStore::getInstance().getMaterial("world-position"));
+    voxelVisualizationMaterial = static_cast<VoxelVisualizationMaterial*>( MaterialStore::getInstance().getMaterial("voxel-visualization"));
 
 	assert(worldPositionMaterial != nullptr);
 	assert(voxelVisualizationMaterial != nullptr);
@@ -233,7 +211,9 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 	quad = StandardShapes::createQuad();
 	quadMeshRenderer = new MeshRenderer(&quad);
 }
-
+/*
+ 
+ FOLLOWING CODE IS COMMENTED OUT BECAUSE IS CURRENTLY NOT WORKING, WILL FIX IN A LATER SUBMISSION
 void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
 {
     Camera & camera = *renderingScene.renderingCamera;
@@ -282,6 +262,7 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Settings.
+    //following function doesn't do anything
 	uploadGlobalConstants(voxelVisualizationMaterial->ProgramID(), viewportWidth, viewportHeight);
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -303,7 +284,7 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
     
     glError();
 }
-
+*/
 Graphics::~Graphics()
 {
 	delete vvfbo1;
@@ -316,4 +297,5 @@ Graphics::~Graphics()
     delete voxelConeTracingMaterial;
     delete voxelizationMaterial;
     delete worldPositionMaterial;
+    delete voxelTexture;
 }

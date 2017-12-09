@@ -18,9 +18,9 @@ class VoxelVisualizationMaterial : public Material
 {
 public:
     
-    VoxelVisualizationMaterial(const GLchar *_name,Texture3D* voxelTexture);
+    VoxelVisualizationMaterial(const GLchar *_name, const Shader* voxelVert, const Shader* voxelFrag);
     
-    virtual void Activate() override;
+    virtual void Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera & camera) override;
     
     
 private:
@@ -38,6 +38,6 @@ private:
     float specularReflectivity, diffuseReflectivity, emissivity, specularDiffusion = 2.0f;
     float transparency = 0.0f, refractiveIndex = 1.4f;
     
-    Texture3D* voxelTexture;
+    const Texture3D* voxelTexture;
     
 };

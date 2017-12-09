@@ -317,6 +317,7 @@ vec3 directLight(vec3 viewDirection){
 
 void main(){
 	color = vec4(0, 0, 0, 1);
+    
 	vec3 viewDirection = normalize(worldPositionFrag - cameraPosition);
 
 	// Indirect diffuse light.
@@ -341,4 +342,5 @@ void main(){
 #if (GAMMA_CORRECTION == 1)
 	color.rgb = pow(color.rgb, vec3(1.0 / 2.2));
 #endif
+    
 }

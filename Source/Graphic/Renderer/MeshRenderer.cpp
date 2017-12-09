@@ -8,19 +8,27 @@
 #include "Graphic/Graphics.h"
 #include "Graphic/Lighting/PointLight.h"
 #include "Graphic/Material/Material.h"
+#include "Graphic/Material/MaterialSetting.h"
+#include "Graphic/Material/MaterialStore.h"
+#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
+#include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 
-// ... shader variable names.
-namespace {
-	const char * MODEL_MATRIX_NAME = "M";
+
+MeshRenderer::MeshRenderer(Mesh * _mesh):  mesh(_mesh)
+{
+    MaterialSetting::Default(settingsGroup);
+    
+    voxelizationMaterial = static_cast<VoxelizationMaterial *>(MaterialStore::getInstance().getMaterial("voxelization"));
+    material = static_cast< VoxelizationConeTracingMaterial* > (MaterialStore::getInstance().getMaterial("voxelization-cone-tracing"));
+    
+    setupMeshRenderer();
 }
 
-MeshRenderer::MeshRenderer(Mesh * _mesh, MaterialSetting * _materialSetting) : materialSetting(_materialSetting)
+MeshRenderer::MeshRenderer(Mesh * _mesh, MaterialSetting::SettingsGroup & _settingGroup)
+: MeshRenderer(_mesh)
 {
 	assert(_mesh != nullptr);
-
-	mesh = _mesh;
-
-	setupMeshRenderer();
+    settingsGroup = _settingGroup;
 }
 
 void MeshRenderer::setupMeshRenderer()
@@ -43,13 +51,16 @@ MeshRenderer::~MeshRenderer()
 {
 	glDeleteBuffers(1, &mesh->vbo);
 	glDeleteVertexArrays(1, &mesh->vao);
-	delete materialSetting;
 }
 
-void MeshRenderer::render(const GLuint program)
+void MeshRenderer::render(Scene& renderScene)
 {
-    GLint location = glGetUniformLocation(program, MODEL_MATRIX_NAME);
-	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(transform.getTransformMatrix()));
+    std::vector<PointLight>& lights = renderScene.pointLights;
+    Camera& camera = *renderScene.renderingCamera;
+
+    material->Activate(settingsGroup, lights, camera);
+    material->SetModelMatrix(transform.getTransformMatrix());
+    
 	glBindVertexArray(mesh->vao);
 	glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
 }
@@ -71,4 +82,16 @@ void MeshRenderer::reuploadVertexDataToGPU()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, dataSize, 0);
 	glEnableVertexAttribArray(1); // Normals.
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, normal));
+}
+
+void MeshRenderer::voxelize(Texture3D* voxelTexture, Scene& renderScene)
+{
+    std::vector<PointLight> &lights = renderScene.pointLights;
+    Camera &camera = *renderScene.renderingCamera;
+    voxelizationMaterial->Activate(settingsGroup, lights, camera);
+    voxelizationMaterial->ActivateTexture3D("texture3D", voxelTexture, 0);
+    voxelizationMaterial->SetModelMatrix(transform.getTransformMatrix());
+
+    glBindVertexArray(mesh->vao);
+    glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
 }

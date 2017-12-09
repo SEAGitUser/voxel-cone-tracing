@@ -14,34 +14,49 @@
 #include "glm/glm.hpp"
 
 
-const std::vector<GLfloat> VoxelizationMaterial::initTextureBuffer = std::vector<GLfloat>(4 * VoxelizationMaterial::voxelTextureSize *
-                                                                   VoxelizationMaterial::voxelTextureSize * VoxelizationMaterial::voxelTextureSize, 0.0f);
 
-VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name):
-Material(_name)
+
+VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const Shader* vertexShader, const Shader* fragmentShader, const Shader* geometryShader):
+Material(_name, vertexShader, fragmentShader, geometryShader)
 {
+    /*
     const Shader* voxelVert = MaterialStore::getInstance().findShaderUsingPath("Voxelization/voxelization.vert");
     const Shader* voxelFrag = MaterialStore::getInstance().findShaderUsingPath("Voxelization/voxelization.frag");
     const Shader* voxelGeom = MaterialStore::getInstance().findShaderUsingPath("Voxelization/voxelization.geom");
+     */
     
-    AssembleProgram(voxelVert, voxelFrag, voxelGeom, nullptr, nullptr);
+    //AssembleProgram(vertexShader, fragmentShader, geometryShader, nullptr, nullptr);
     
-    voxelTexture = new Texture3D(initTextureBuffer, voxelTextureSize, voxelTextureSize, voxelTextureSize, GL_TRUE, GL_RGBA32F);
-    voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
-    
+    //voxelTexture = new Texture3D(initTextureBuffer, voxelTextureSize, voxelTextureSize, voxelTextureSize, GL_TRUE, GL_RGBA32F);
+    //voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
+/*
 void VoxelizationMaterial::ClearVoxels()
 {
-    voxelTexture->Clear();
+    //voxelTexture->Clear();
 }
-
-void VoxelizationMaterial::Activate()
+*/
+void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera& camera)
 {
-    Material::Activate();
+    Material::Activate(group, lights, camera);
     // Vec3s.
-    glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));
-    glUniform3fv(glGetUniformLocation(program, specularColorName), 1, glm::value_ptr(specularColor));
+    
+    GLint index = glGetUniformLocation(program, diffuseColorName);
+    glm::vec3 diffuseColor = group[MaterialSetting::diffuseColor].getVec3Value();
+    glm::vec3 specularColor = group[MaterialSetting::specularColor].getVec3Value();
+    GLfloat emissivity = group[MaterialSetting::emissivity].getFloatValue();
+    GLfloat specularReflectivity = group[MaterialSetting::specularReflectivity].getFloatValue();
+    GLfloat specularDiffusion = group[MaterialSetting::specularDiffusion].getFloatValue();
+    GLfloat transparency = group[MaterialSetting::transparency].getFloatValue();
+    GLfloat refractiveIndex = group[MaterialSetting::refractiveIndex].getFloatValue();
+    GLfloat diffuseReflectivity = group[MaterialSetting::diffuseReflectivity].getFloatValue();
+    
+    
+    
+    glUniform3fv(index, 1, glm::value_ptr(diffuseColor));
+    index = glGetUniformLocation(program, specularColorName);
+    glUniform3fv(index, 1, glm::value_ptr(specularColor));
     
     // Floats.
     glUniform1f(glGetUniformLocation(program, emissivityName), emissivity);
@@ -51,10 +66,10 @@ void VoxelizationMaterial::Activate()
     glUniform1f(glGetUniformLocation(program, transparencyName), transparency);
     glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
     
-    ActivateTexture3D("texture3D", voxelTexture->GetTextureID(), 0);
+    //ActivateTexture3D("texture3D", voxelTexture->GetTextureID(), 0);
 }
 
 VoxelizationMaterial::~VoxelizationMaterial()
 {
-    delete voxelTexture;
+    //delete voxelTexture;
 }

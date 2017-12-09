@@ -19,6 +19,7 @@ class WorldPositionMaterial;
 class VoxelVisualizationMaterial;
 class FBO_2D;
 class FBO_3D;
+class Texture3D;
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
@@ -37,15 +38,7 @@ public:
 		Scene & renderingScene, unsigned int viewportWidth,
 		unsigned int viewportHeight, RenderingMode renderingMode = RenderingMode::VOXEL_CONE_TRACING
 	);
-
-	// ----------------
-	// Rendering.
-	// ----------------
-	bool shadows = true;
-	bool indirectDiffuseLight = true;
-	bool indirectSpecularLight = true;
-	bool directLight = true;
-
+    
 	// ----------------
 	// Voxelization.
 	// ----------------
@@ -58,13 +51,7 @@ public:
 
 	~Graphics();
 private:
-	// ----------------
-	// GLSL uniform names.
-	// ----------------
-	const char * PROJECTION_MATRIX_NAME = "P";
-	const char * VIEW_MATRIX_NAME = "V";
-	const char * CAMERA_POSITION_NAME = "cameraPosition";
-	const char * NUMBER_OF_LIGHTS_NAME = "numberOfLights";
+
 	const char * SCREEN_SIZE_NAME = "screenSize";
 	const char * APP_STATE_NAME = "state";
 
@@ -72,7 +59,9 @@ private:
 	// Rendering.
 	// ----------------
 	void renderScene(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
-	void renderQueue(RenderingQueue renderingQueue, const GLuint program, bool uploadMaterialSettings = false) const;
+    void renderQueue(Scene & renderingScene,  bool uploadMaterialSettings = false) const;
+    void renderVoxelize(Scene& renderScene);
+    
 	void uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const;
 	void uploadCamera(Camera & camera, const GLuint program);
 	void uploadLighting(Scene & renderingScene, const GLuint glProgram) const;
@@ -81,16 +70,15 @@ private:
 	// ----------------
 	// Voxel cone tracing.
 	// ----------------
-	VoxelizationConeTracingMaterial * voxelConeTracingMaterial;
+    VoxelizationConeTracingMaterial * voxelConeTracingMaterial;
 
 	// ----------------
 	// Voxelization.
 	// ----------------
 	int ticksSinceLastVoxelization = voxelizationSparsity;
-	VoxelizationMaterial * voxelizationMaterial;
+    VoxelizationMaterial * voxelizationMaterial;
 
-	void initVoxelization();
-	void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
+    void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
 
 	// ----------------
 	// Voxelization visualization.
@@ -99,7 +87,7 @@ private:
 	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
 	FBO_2D *vvfbo1, *vvfbo2;
     FBO_3D * voxelFBO;
-    WorldPositionMaterial * worldPositionMaterial;
+    Material * worldPositionMaterial;
     VoxelVisualizationMaterial * voxelVisualizationMaterial;
 	// --- Screen quad. ---
 	MeshRenderer * quadMeshRenderer;
@@ -107,4 +95,5 @@ private:
 	// --- Screen cube. ---
 	MeshRenderer * cubeMeshRenderer;
 	Shape * cubeShape;
+    Texture3D* voxelTexture;
 };

@@ -31,14 +31,14 @@ void DragonScene::init(unsigned int viewportWidth, unsigned int viewportHeight) 
 		r->transform.updateTransformMatrix();
 	}
 
-	renderers[0]->materialSetting = MaterialSetting::Red(); // Green wall.
-	renderers[1]->materialSetting = MaterialSetting::White(); // Floor.
-	renderers[2]->materialSetting = MaterialSetting::White(); // Roof.
-	renderers[3]->materialSetting = MaterialSetting::Blue(); // Red wall.
-	renderers[4]->materialSetting = MaterialSetting::White(); // White wall.
-	renderers[5]->materialSetting = MaterialSetting::White(); // Left box.
-	renderers[6]->materialSetting = MaterialSetting::White(); // Right box.
-	renderers[5]->enabled = false; // Disable boxes.
+    // Cornell box.
+    MaterialSetting::Green(renderers[0]->settingsGroup); //Green wall
+    MaterialSetting::White(renderers[1]->settingsGroup); //floor
+    MaterialSetting::White(renderers[2]->settingsGroup); //roof
+    MaterialSetting::Red(renderers[3]->settingsGroup); //red wall
+    MaterialSetting::White(renderers[4]->settingsGroup); //white wall
+    MaterialSetting::White(renderers[5]->settingsGroup); //left box
+    renderers[5]->enabled = false; // Disable boxes.
 	renderers[6]->enabled = false; // Disable boxes.
 
 	// Dragon.
@@ -55,17 +55,16 @@ void DragonScene::init(unsigned int viewportWidth, unsigned int viewportHeight) 
 	dragonRenderer->transform.updateTransformMatrix();
 	dragonRenderer->tweakable = true;
 	dragonRenderer->name = "Dragon";
-	dragonRenderer->materialSetting = MaterialSetting::White();
+    MaterialSetting::White(dragonRenderer->settingsGroup);
 
-	auto * dragonMaterialSetting = dragonRenderer->materialSetting;
-	dragonMaterialSetting->specularColor = glm::vec3(0.95, 1, 0.95);
-	dragonMaterialSetting->diffuseColor = dragonMaterialSetting->specularColor;
-	dragonMaterialSetting->emissivity = 0.00f;
-	dragonMaterialSetting->transparency = 0.00f;
-	dragonMaterialSetting->refractiveIndex = 1.18f;
-	dragonMaterialSetting->specularReflectivity = 1.00f;
-	dragonMaterialSetting->diffuseReflectivity = 0.0f;
-	dragonMaterialSetting->specularDiffusion = 2.0f;
+    dragonRenderer->settingsGroup[MaterialSetting::specularColor] = MaterialSetting(glm::vec3(0.95, 1, 0.95));
+    dragonRenderer->settingsGroup[MaterialSetting::diffuseColor] = dragonRenderer->settingsGroup[MaterialSetting::specularColor];//dragonMaterialSetting->specularColor;
+    dragonRenderer->settingsGroup[MaterialSetting::emissivity] = MaterialSetting(0.00f);
+    dragonRenderer->settingsGroup[MaterialSetting::transparency] = MaterialSetting(0.00f);
+    dragonRenderer->settingsGroup[MaterialSetting::refractiveIndex] = MaterialSetting(1.18f);
+    dragonRenderer->settingsGroup[MaterialSetting::specularReflectivity] = MaterialSetting(1.00f);
+    dragonRenderer->settingsGroup[MaterialSetting::diffuseReflectivity] = MaterialSetting(0.0f);
+    dragonRenderer->settingsGroup[MaterialSetting::specularDiffusion] = MaterialSetting(2.0f);
 
 	// Light.
 	Shape * light = ObjLoader::loadObjFile("Assets\\Models\\quad.obj");
@@ -73,13 +72,13 @@ void DragonScene::init(unsigned int viewportWidth, unsigned int viewportHeight) 
 	lampRenderer = new MeshRenderer(&(light->meshes[0]));
 	renderers.push_back(lampRenderer);
 
-	lampRenderer->materialSetting = MaterialSetting::Emissive();
-	lampRenderer->materialSetting->diffuseColor.r = 1.f;
-	lampRenderer->materialSetting->diffuseColor.g = 1.f;
-	lampRenderer->materialSetting->diffuseColor.b = 1.f;
-	lampRenderer->materialSetting->emissivity = 1.0f;
-	lampRenderer->materialSetting->specularReflectivity = 0.0f;
-	lampRenderer->materialSetting->diffuseReflectivity = 1.0f;
+	MaterialSetting::Emissive(lampRenderer->settingsGroup);
+    lampRenderer->settingsGroup[MaterialSetting::diffuseColor] = MaterialSetting(glm::vec3(1.0f, 1.0f, 1.0f));
+    
+    lampRenderer->settingsGroup[MaterialSetting::emissivity] = MaterialSetting(1.0f);
+    lampRenderer->settingsGroup[MaterialSetting::specularReflectivity] = MaterialSetting(0.0f);
+    lampRenderer->settingsGroup[MaterialSetting::diffuseReflectivity] = MaterialSetting(1.0f);
+
 
 	lampRenderer->transform.position = glm::vec3(0, 0.975, 0);
 	lampRenderer->transform.rotation = glm::vec3(-3.1414 * 0.5, 3.1414 * 0.5, 0);
@@ -101,9 +100,10 @@ void DragonScene::update() {
 	float m = col.r;
 	m = glm::max(m, col.b);
 	m = glm::max(m, col.g);
+    
+    lampRenderer->settingsGroup[MaterialSetting::diffuseColor] = MaterialSetting( col / m);
+    lampRenderer->settingsGroup[MaterialSetting::emissivity] = MaterialSetting( 2.0f * m);
 
-	lampRenderer->materialSetting->diffuseColor = col /= m;
-	lampRenderer->materialSetting->emissivity = 2 * m;
 }
 
 DragonScene::~DragonScene() {

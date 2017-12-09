@@ -9,27 +9,33 @@
 #include "VoxelizationConeTracingMaterial.h"
 
 
-#include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
 
 
 
-VoxelizationConeTracingMaterial::VoxelizationConeTracingMaterial(const GLchar *_name):
-Material(_name)
+VoxelizationConeTracingMaterial::VoxelizationConeTracingMaterial(const GLchar *_name, const Shader* voxelVert, const Shader* voxelFrag):
+Material(_name, voxelVert, voxelFrag)
 {
-    const Shader* voxelVert = MaterialStore::getInstance().findShaderUsingPath("Voxel Cone Tracing/voxel_cone_tracing.vert");
-    const Shader* voxelFrag = MaterialStore::getInstance().findShaderUsingPath("Voxel Cone Tracing/voxel_cone_tracing.frag");
-    
-    AssembleProgram(voxelVert, voxelFrag, nullptr, nullptr, nullptr);
     
 }
 
 
-void VoxelizationConeTracingMaterial::Activate()
+void VoxelizationConeTracingMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera &camera)
 {
-    Material::Activate();
+    Material::Activate(group, lights, camera);
+    
+    GLint index = glGetUniformLocation(program, diffuseColorName);
+    glm::vec3 diffuseColor = group[MaterialSetting::diffuseColor].getVec3Value();
+    glm::vec3 specularColor = group[MaterialSetting::specularColor].getVec3Value();
+    GLfloat emissivity = group[MaterialSetting::emissivity].getFloatValue();
+    GLfloat specularReflectivity = group[MaterialSetting::specularReflectivity].getFloatValue();
+    GLfloat specularDiffusion = group[MaterialSetting::specularDiffusion].getFloatValue();
+    GLfloat transparency = group[MaterialSetting::transparency].getFloatValue();
+    GLfloat refractiveIndex = group[MaterialSetting::refractiveIndex].getFloatValue();
+    GLfloat diffuseReflectivity = group[MaterialSetting::diffuseReflectivity].getFloatValue();
+    
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));
     glUniform3fv(glGetUniformLocation(program, specularColorName), 1, glm::value_ptr(specularColor));

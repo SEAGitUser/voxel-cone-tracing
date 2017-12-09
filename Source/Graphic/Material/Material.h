@@ -10,6 +10,9 @@
 #include <memory>
 #include <unordered_map>
 #include "Graphic/Material/Resource.h"
+#include "Graphic/Material/MaterialSetting.h"
+#include "Graphic/Lighting/PointLight.h"
+#include "Graphic/Camera/Camera.h"
 #include "Texture2D.h"
 #include "Texture3D.h"
 
@@ -20,20 +23,22 @@ class Material : public Resource {
 public:
 	virtual ~Material();
 	Material(const GLchar *_name,
-		Shader * vertexShader,
-		Shader * fragmentShader,
-		Shader * geometryShader = nullptr,
-		Shader * tessEvaluationShader = nullptr,
-		Shader * tessControlShader = nullptr);
+		const Shader * vertexShader,
+		const Shader * fragmentShader,
+		const Shader * geometryShader = nullptr,
+		const Shader * tessEvaluationShader = nullptr,
+		const Shader * tessControlShader = nullptr);
 
     Material(const GLchar *name): name(name){}
     
-    virtual void Activate();
+    virtual void Activate(MaterialSetting::SettingsGroup& settingsGroup, std::vector<PointLight>& lights,Camera& camera);
     
     GLuint ProgramID()const { return program;}
     
     inline void SetParameteri(const GLchar* parameterName, GLint const value);
     inline void SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
+    inline void SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
+    inline void SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
     inline void SetParameterf(const GLchar* parameterName, GLfloat const value);
     inline void SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
     inline void ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
@@ -41,7 +46,26 @@ public:
     inline void ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit);
     inline void ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit);
     
+    
+    inline void SetModelMatrix(glm::mat4& mat);
+    
+    const char * const PROJECTION_MATRIX_NAME = "P";
+    const char * const VIEW_MATRIX_NAME = "V";
+    const char * const CAMERA_POSITION_NAME = "cameraPosition";
+    const char * const NUMBER_OF_LIGHTS_NAME = "numberOfLights";
+    const char * const MODEL_MATRIX_NAME = "M";
+    
+    bool shadows = true;
+    bool indirectDiffuseLight = true;
+    bool indirectSpecularLight = true;
+    bool directLight = true;
+    
+    
 protected:
+    
+    void setLightingParameters(std::vector<PointLight> & lights);
+    void setCameraParameters(Camera&);
+    void uploadRenderingSettings();
     
     void AssembleProgram(
                         const Shader * vertexShader,
@@ -50,6 +74,8 @@ protected:
                         const Shader * tessEvaluationShader,
                         const Shader * tessControlShader
                         );
+    
+    void setValue(MaterialSetting& setting, const GLchar* name);
     
     /// <summary> The actual OpenGL / GLSL program identifier. </summary>
     GLuint program;
@@ -61,31 +87,41 @@ public:
 	const GLchar* name;
 };
 
-void Material::SetParameteri(const GLchar* name, GLint const value)
+void Material::SetParameteri(const GLchar* parameterName, GLint const value)
 {
-    GLint location = glGetUniformLocation(program, name);
-    assert(location != -1);
+    GLint location = glGetUniformLocation(program, parameterName);
     glUniform1i(location, value);
 }
 
-void Material::SetParameterf(const GLchar* name, GLfloat const value)
+void Material::SetParameterf(const GLchar* parameterName, GLfloat const value)
 {
-    GLint location = glGetUniformLocation(program, name);
-    assert(location != -1);
+    GLint location = glGetUniformLocation(program, parameterName);
     glUniform1f(location,(value));
 }
 
-void Material::SetParameterv4(const GLchar* name, const glm::vec4 &value)
+void Material::SetParameterv4(const GLchar* parameterName, const glm::vec4 &value)
 {
-    GLint location = glGetUniformLocation(program, name);
-    assert(location != -1);
+    GLint location = glGetUniformLocation(program, parameterName);
     glUniform4fv(location, 1, glm::value_ptr(value));
 }
 
-void Material::SetParamatermat4(const GLchar* name, const glm::mat4 &value)
+void Material::SetParameterv3(const GLchar *parameterName, const glm::vec3 &value)
 {
-    GLint location = glGetUniformLocation(program, name);
-    assert(location != -1);
+    GLint location = glGetUniformLocation(program, parameterName);
+    glUniform3fv(location, 1, glm::value_ptr(value));
+}
+
+void Material::SetParameterv2(const GLchar *parameterName, const glm::vec2 &value)
+{
+    std::cout << parameterName << " with value < " << value.x  << " " << value.y <<  " > " << std::endl;
+    
+    GLint location = glGetUniformLocation(program, parameterName);
+    glUniform2fv(location, 1, glm::value_ptr(value));
+}
+
+void Material::SetParamatermat4(const GLchar* parameterName, const glm::mat4 &value)
+{
+    GLint location = glGetUniformLocation(program, parameterName);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
@@ -113,6 +149,13 @@ void Material::ActivateTexture3D(const GLchar* samplerName, const GLint textureN
     glBindTexture(GL_TEXTURE_3D, textureName);
     glUniform1i(glGetUniformLocation(program, samplerName), textureUnit);
 }
+
+void Material::SetModelMatrix(glm::mat4& mat)
+{
+    GLint location = glGetUniformLocation(program, MODEL_MATRIX_NAME);
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
 
 
 

@@ -15,13 +15,17 @@ public:
 	static MaterialStore const& getInstance();
 	std::vector<Material*> materials;
     
-    std::vector<Shader*> shaders;
-    
-    Shader const * findShaderUsingPath(const GLchar* path)const ;
-    
+    Material * getMaterial(const GLchar* name) const;
+
 	~MaterialStore();
+    
 private:
-    void AddShader(const char* shaderPath, Shader::ShaderType shaderType);
+    Shader const * findShaderUsingPath(const GLchar* path)const ;
+    Shader* AddShader(const GLchar* shaderPath, Shader::ShaderType shaderType);
+    void AddMaterial( Material* material);
+    
+    void InitShaders();
+    void InitMaterials();
     
 	MaterialStore();
 	MaterialStore(MaterialStore const &) = delete;
