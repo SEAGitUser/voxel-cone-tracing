@@ -19,24 +19,8 @@
 VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const Shader* vertexShader, const Shader* fragmentShader, const Shader* geometryShader):
 Material(_name, vertexShader, fragmentShader, geometryShader)
 {
-    /*
-    const Shader* voxelVert = MaterialStore::getInstance().findShaderUsingPath("Voxelization/voxelization.vert");
-    const Shader* voxelFrag = MaterialStore::getInstance().findShaderUsingPath("Voxelization/voxelization.frag");
-    const Shader* voxelGeom = MaterialStore::getInstance().findShaderUsingPath("Voxelization/voxelization.geom");
-     */
-    
-    //AssembleProgram(vertexShader, fragmentShader, geometryShader, nullptr, nullptr);
-    
-    //voxelTexture = new Texture3D(initTextureBuffer, voxelTextureSize, voxelTextureSize, voxelTextureSize, GL_TRUE, GL_RGBA32F);
-    //voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
-/*
-void VoxelizationMaterial::ClearVoxels()
-{
-    //voxelTexture->Clear();
-}
-*/
 void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera& camera)
 {
     Material::Activate(group, lights, camera);
@@ -52,8 +36,6 @@ void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, std::
     GLfloat refractiveIndex = group[MaterialSetting::refractiveIndex].getFloatValue();
     GLfloat diffuseReflectivity = group[MaterialSetting::diffuseReflectivity].getFloatValue();
     
-    
-    
     glUniform3fv(index, 1, glm::value_ptr(diffuseColor));
     index = glGetUniformLocation(program, specularColorName);
     glUniform3fv(index, 1, glm::value_ptr(specularColor));
@@ -66,10 +48,8 @@ void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, std::
     glUniform1f(glGetUniformLocation(program, transparencyName), transparency);
     glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
     
-    //ActivateTexture3D("texture3D", voxelTexture->GetTextureID(), 0);
 }
 
 VoxelizationMaterial::~VoxelizationMaterial()
 {
-    //delete voxelTexture;
 }

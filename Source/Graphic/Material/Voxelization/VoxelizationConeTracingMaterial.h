@@ -18,9 +18,7 @@ class VoxelizationConeTracingMaterial : public Material
 public:
     
     VoxelizationConeTracingMaterial( const GLchar *_name, const Shader* voxelVert, const Shader* voxelFrag);
-
     virtual void Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera & camera) override;
-    
     
 private:
     
@@ -32,11 +30,6 @@ private:
     const char * specularReflectanceName = "material.specularReflectivity";
     const char * diffuseReflectanceName = "material.diffuseReflectivity";
     const char * specularDiffusionName = "material.specularDiffusion";
-    /*
-    glm::vec3 diffuseColor, specularColor = glm::vec3(1);
-    float specularReflectivity, diffuseReflectivity, emissivity, specularDiffusion = 2.0f;
-    float transparency = 0.0f, refractiveIndex = 1.4f;
-    */
     
 };
 

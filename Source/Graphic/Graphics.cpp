@@ -94,9 +94,6 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 
 	// Fetch references.
 	auto & camera = *renderingScene.renderingCamera;
-	//const Material * material = voxelConeTracingMaterial;
-	//const GLuint program = material->ProgramID();
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//glUseProgram(program);
 
