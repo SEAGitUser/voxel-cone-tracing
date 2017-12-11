@@ -52,6 +52,8 @@ public:
     const char * const CAMERA_POSITION_NAME = "cameraPosition";
     const char * const NUMBER_OF_LIGHTS_NAME = "numberOfLights";
     const char * const MODEL_MATRIX_NAME = "M";
+    const char * SCREEN_SIZE_NAME = "screenSize";
+    const char * APP_STATE_NAME = "state";
     
     bool shadows = true;
     bool indirectDiffuseLight = true;
@@ -64,6 +66,7 @@ protected:
     void setLightingParameters(std::vector<PointLight> & lights);
     void setCameraParameters(Camera&);
     void uploadRenderingSettings();
+    void uploadGlobalConstants();
     
     void AssembleProgram(
                         const Shader * vertexShader,

@@ -24,7 +24,7 @@ namespace {
 
 
 
-/// <summary> Represents a setting for a material that can be used along with voxel cone tracing GI. </summary>
+/// <summary> Represents a setting for a material that can be used for a shader </summary>
 class MaterialSetting
 {
     

@@ -57,6 +57,7 @@ void Material::Activate(MaterialSetting::SettingsGroup& group, std::vector<Point
     setLightingParameters(lights);
     setCameraParameters(camera);
     uploadRenderingSettings();
+    uploadGlobalConstants();
     
     for (std::pair<const GLchar* , MaterialSetting > pair : group)
     {
@@ -66,6 +67,12 @@ void Material::Activate(MaterialSetting::SettingsGroup& group, std::vector<Point
     }
     
 
+}
+
+void Material::uploadGlobalConstants()
+{
+    //TODO: it looks like state 0 is used for mipmapping levels in the voxel visualization, do we need this?
+    glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), 0);
 }
 
 void Material::uploadRenderingSettings()

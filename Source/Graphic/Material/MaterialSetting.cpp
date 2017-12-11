@@ -16,7 +16,7 @@
  const GLchar* MaterialSetting::emissivity = "emissivity";
  const GLchar* MaterialSetting::specularDiffusion = "specularDiffusion";
  const GLchar* MaterialSetting::transparency = "transparency";
- const GLchar*  MaterialSetting::refractiveIndex = "refractiveIndex";
+ const GLchar* MaterialSetting::refractiveIndex = "refractiveIndex";
 
 
 void MaterialSetting::Default(SettingsGroup& group)

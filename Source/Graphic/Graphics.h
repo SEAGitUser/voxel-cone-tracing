@@ -20,6 +20,7 @@ class VoxelVisualizationMaterial;
 class FBO_2D;
 class FBO_3D;
 class Texture3D;
+class VoxelizeRenderTarget;
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
@@ -39,22 +40,9 @@ public:
 		unsigned int viewportHeight, RenderingMode renderingMode = RenderingMode::VOXEL_CONE_TRACING
 	);
     
-	// ----------------
-	// Voxelization.
-	// ----------------
-	bool automaticallyRegenerateMipmap = true;
-	bool regenerateMipmapQueued = true;
-	bool automaticallyVoxelize = true;
-	bool voxelizationQueued = true;
-	int voxelizationSparsity = 1; // Number of ticks between mipmap generation. 
-	// (voxelization sparsity gives unstable framerates, so not sure if it's worth it in interactive applications.)
-
 	~Graphics();
 private:
-
-	const char * SCREEN_SIZE_NAME = "screenSize";
-	const char * APP_STATE_NAME = "state";
-
+ 
 	// ----------------
 	// Rendering.
 	// ----------------
@@ -72,10 +60,6 @@ private:
 	// ----------------
     VoxelizationConeTracingMaterial * voxelConeTracingMaterial;
 
-	// ----------------
-	// Voxelization.
-	// ----------------
-	int ticksSinceLastVoxelization = voxelizationSparsity;
     VoxelizationMaterial * voxelizationMaterial;
 
     void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
@@ -87,6 +71,7 @@ private:
 	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
 	FBO_2D *vvfbo1, *vvfbo2;
     FBO_3D * voxelFBO;
+
     Material * worldPositionMaterial;
     VoxelVisualizationMaterial * voxelVisualizationMaterial;
 	// --- Screen quad. ---
@@ -96,4 +81,6 @@ private:
 	MeshRenderer * cubeMeshRenderer;
 	Shape * cubeShape;
     Texture3D* voxelTexture;
+    
+    VoxelizeRenderTarget* voxelizeRenderTarget = nullptr;
 };

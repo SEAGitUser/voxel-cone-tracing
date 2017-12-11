@@ -25,6 +25,7 @@
 #include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Graphic/Material/WorldPositionMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelVisualizationMaterial.h"
+#include "Graphic/RenderTarget/VoxelizeRenderTarget.h"
 #include "Graphic/FBO/FBO_2D.h"
 #include "Graphic/FBO/FBO_3D.h"
 #include "Texture3D.h"
@@ -40,16 +41,7 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
     quadMeshRenderer= nullptr;
     cubeMeshRenderer = nullptr;
     cubeShape = nullptr;
-    voxelConeTracingMaterial = nullptr;
-    voxelizationMaterial = nullptr;
-    
-	//glEnable(GL_MULTISAMPLE); // MSAA. Set MSAA level using GLFW (see Application.cpp).
-    voxelConeTracingMaterial = static_cast< VoxelizationConeTracingMaterial *>(MaterialStore::getInstance().getMaterial("voxelization-cone-tracing"));//new VoxelizationConeTracingMaterial("voxelization_cone_tracing");
-    glError();
-	//initVoxelization();
-	initVoxelVisualization(viewportWidth, viewportHeight);
-    
-    glError();
+
     voxelFBO = new FBO_3D(VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
                           GL_NEAREST,GL_NEAREST, GL_RGBA, GL_FLOAT, GL_CLAMP_TO_EDGE, GL_RGBA32F);
     
@@ -61,19 +53,17 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
     voxelTexture = new Texture3D(initTextureBuffer, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
                                  VoxelizationMaterial::voxelTextureSize, GL_TRUE, GL_RGBA32F);
     voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
+    
+    voxelizeRenderTarget = new VoxelizeRenderTarget(voxelTexture);
 
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)
 {
     glError();
-	// Voxelize.
-	bool voxelizeNow = voxelizationQueued || (automaticallyVoxelize && voxelizationSparsity > 0 && ++ticksSinceLastVoxelization >= voxelizationSparsity);
-	if (voxelizeNow) {
-		voxelize(renderingScene);
-		ticksSinceLastVoxelization = 0;
-		voxelizationQueued = false;
-	}
+    voxelizeRenderTarget->SaveRenderState();
+    voxelizeRenderTarget->Render(renderingScene);
+    voxelizeRenderTarget->RestoreRenderState();
 
 	// Render.
 	switch (renderingMode) {
@@ -115,26 +105,7 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	renderQueue(renderingScene, true);
 }
 
-void Graphics::uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const
-{
-    //glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), Application::getInstance().state);
-    
-	glm::vec2 screenSize(viewportWidth, viewportHeight);
-}
 
-
-void Graphics::renderVoxelize(Scene& renderScene)
-{
-    RenderingQueue& renderingQueue = renderScene.renderers;
-    for (unsigned int i = 0; i < renderingQueue.size(); ++i)
-    {
-        renderingQueue[i]->transform.updateTransformMatrix();
-        if (renderingQueue[i]->enabled)
-        {
-            renderingQueue[i]->voxelize(voxelTexture, renderScene);
-        }
-    }
-}
 void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) const
 {
     RenderingQueue &renderingQueue = renderingScene.renderers;
@@ -147,41 +118,6 @@ void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) c
         }
     }
 }
-
-
-void Graphics::voxelize(Scene & renderScene, bool clearVoxelization)
-{
-    glError();
-    //TODO: YOU'LL HAVE TO CHANGE THIS FUNCTION TO RENDER TO 3D TEXTURE
-    if(clearVoxelization)
-        voxelTexture->Clear();
-    
-    //voxelizationMaterial->Activate();
-    glError();
-    static const GLint defaultFrameBuffer = 0;
-	glBindFramebuffer(GL_FRAMEBUFFER, defaultFrameBuffer);
-glError();
-	// Settings.
-    glViewport(0, 0, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize);
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
-glError();
-
-    //TODO: YOU NEED TO ATTACH THIS TEXTURE TO THE SHADER!
-	//glBindImageTexture(0, voxelTexture->textureID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
-
-	// Render.
-	renderVoxelize(renderScene);
-	if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
-		glGenerateMipmap(GL_TEXTURE_3D);
-		regenerateMipmapQueued = false;
-	}
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    glError();
-}
-
 
 // ----------------------
 // Voxelization visualization.
@@ -295,4 +231,5 @@ Graphics::~Graphics()
     delete voxelizationMaterial;
     delete worldPositionMaterial;
     delete voxelTexture;
+    delete voxelizeRenderTarget;
 }
