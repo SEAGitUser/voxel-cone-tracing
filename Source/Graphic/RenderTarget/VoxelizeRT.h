@@ -11,16 +11,17 @@
 #include "RenderTarget.h"
 
 class Texture3D;
+class FBO_3D;
 
-class VoxelizeRenderTarget : public RenderTarget
+class VoxelizeRT : public RenderTarget
 {
 public:
-    VoxelizeRenderTarget(Texture3D* voxelTexture);
+    VoxelizeRT( GLuint width, GLuint height);
     virtual void SaveRenderState() override;
     virtual void RestoreRenderState() override;
     virtual void Render( Scene& scene ) override;
     
-    ~VoxelizeRenderTarget();
+    virtual ~VoxelizeRT();
     
 private:
     bool automaticallyRegenerateMipmap = true;
@@ -38,5 +39,5 @@ private:
     GLboolean blend;
     GLint frameBuffer;
     
-    Texture3D* voxelTexture;
+    FBO_3D * fbo3D;
 };
