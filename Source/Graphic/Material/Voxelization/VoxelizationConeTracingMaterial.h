@@ -18,7 +18,7 @@ class VoxelizationConeTracingMaterial : public Material
 public:
     
     VoxelizationConeTracingMaterial( const GLchar *_name, const Shader* voxelVert, const Shader* voxelFrag);
-    virtual void Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera & camera) override;
+    virtual void Activate(MaterialSetting::SettingsGroup &group,Scene& scene) override;
     
 private:
     

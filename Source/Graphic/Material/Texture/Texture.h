@@ -57,7 +57,7 @@ public:
     inline void SetMagFilter(GLuint _magFilter){ magFilter = _magFilter; }
     inline void SetDataType(GLuint _type){ dataType = _type; }
     
-    inline GLuint  GetTextureID() const { return textureID; }
+    inline GLint  GetTextureID() const { return textureID; }
     
     virtual void Clear() = 0;
     

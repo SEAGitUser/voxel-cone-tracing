@@ -23,9 +23,8 @@
 #include "Graphic/Graphics.h"
 #include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
-#include "Graphic/Material/WorldPositionMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelVisualizationMaterial.h"
-#include "Graphic/RenderTarget/VoxelizeRenderTarget.h"
+#include "Graphic/RenderTarget/VoxelizeRT.h"
 #include "Graphic/FBO/FBO_2D.h"
 #include "Graphic/FBO/FBO_3D.h"
 #include "Texture3D.h"
@@ -33,7 +32,7 @@
 // ----------------------
 // Rendering pipeline.
 // ----------------------
-void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
+void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
 {
     voxelFBO = nullptr;
     vvfbo1 = nullptr;
@@ -54,16 +53,15 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
                                  VoxelizationMaterial::voxelTextureSize, GL_TRUE, GL_RGBA32F);
     voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
     
-    voxelizeRenderTarget = new VoxelizeRenderTarget(voxelTexture);
+    voxelizeRenderTarget = new VoxelizeRT(viewportWidth, viewportHeight);
 
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)
 {
     glError();
-    voxelizeRenderTarget->SaveRenderState();
+
     voxelizeRenderTarget->Render(renderingScene);
-    voxelizeRenderTarget->RestoreRenderState();
 
 	// Render.
 	switch (renderingMode) {
@@ -122,6 +120,9 @@ void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) c
 // ----------------------
 // Voxelization visualization.
 // ----------------------
+/*
+ 
+ TODO: THIS WILL CODE IS HERE FOR REFERENCE ONLY, WILL BE DELETED ONCE NEW IMPLEMENTATION WORKS
 void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight)
 {
 	// Materials.
@@ -144,6 +145,7 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 	quad = StandardShapes::createQuad();
 	quadMeshRenderer = new MeshRenderer(&quad);
 }
+*/
 /*
  
  FOLLOWING CODE IS COMMENTED OUT BECAUSE IS CURRENTLY NOT WORKING, WILL FIX IN A LATER SUBMISSION

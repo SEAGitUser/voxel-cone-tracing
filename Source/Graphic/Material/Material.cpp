@@ -49,24 +49,27 @@ void Material::setCameraParameters(Camera &camera)
     glUniform3fv(glGetUniformLocation(program, CAMERA_POSITION_NAME), 1, glm::value_ptr(camera.position));
 }
 
-void Material::Activate(MaterialSetting::SettingsGroup& group, std::vector<PointLight>& lights, Camera& camera)
+void Material::Activate(MaterialSetting::SettingsGroup& group, Scene& scene)
 {
     //TODO: glUseProgram MIGHT BE A PERFORMANCE BOTTLENECK, DO PROFILE
     glUseProgram(program);
     
-    setLightingParameters(lights);
-    setCameraParameters(camera);
+    setLightingParameters(scene.pointLights);
+    setCameraParameters(*scene.renderingCamera);
     uploadRenderingSettings();
     uploadGlobalConstants();
     
+    ApplySettings(group);
+}
+
+void Material::ApplySettings(MaterialSetting::SettingsGroup &group)
+{
     for (std::pair<const GLchar* , MaterialSetting > pair : group)
     {
         const GLchar* name = pair.first;
         MaterialSetting setting = pair.second;
         setValue(setting, name);
     }
-    
-
 }
 
 void Material::uploadGlobalConstants()

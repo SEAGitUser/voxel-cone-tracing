@@ -22,9 +22,9 @@ Material(_name, voxelVert, voxelFrag)
 }
 
 
-void VoxelizationConeTracingMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera &camera)
+void VoxelizationConeTracingMaterial::Activate(MaterialSetting::SettingsGroup &group, Scene& scene)
 {
-    Material::Activate(group, lights, camera);
+    Material::Activate(group,scene);
     
     GLint index = glGetUniformLocation(program, diffuseColorName);
     glm::vec3 diffuseColor = group[MaterialSetting::diffuseColor].getVec3Value();

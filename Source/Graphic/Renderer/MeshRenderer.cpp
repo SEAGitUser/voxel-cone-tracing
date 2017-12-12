@@ -58,11 +58,24 @@ void MeshRenderer::render(Scene& renderScene)
     std::vector<PointLight>& lights = renderScene.pointLights;
     Camera& camera = *renderScene.renderingCamera;
 
-    material->Activate(settingsGroup, lights, camera);
+    material->Activate(settingsGroup, renderScene);
     material->SetModelMatrix(transform.getTransformMatrix());
     
-	glBindVertexArray(mesh->vao);
-	glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
+    renderMesh();
+}
+
+void MeshRenderer::renderMesh()
+{
+    glBindVertexArray(mesh->vao);
+    glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
+}
+
+void MeshRenderer::render(Scene& scene, MaterialSetting::SettingsGroup& group, Material* _material)
+{
+    _material->Activate(group, scene);
+    _material->SetModelMatrix(transform.getTransformMatrix());
+    
+    renderMesh();
 }
 
 void MeshRenderer::reuploadIndexDataToGPU()
@@ -84,14 +97,12 @@ void MeshRenderer::reuploadVertexDataToGPU()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, normal));
 }
 
-void MeshRenderer::voxelize(Texture3D* voxelTexture, Scene& renderScene)
+void MeshRenderer::voxelize(Scene& renderScene)
 {
     std::vector<PointLight> &lights = renderScene.pointLights;
     Camera &camera = *renderScene.renderingCamera;
-    voxelizationMaterial->Activate(settingsGroup, lights, camera);
-    voxelizationMaterial->ActivateTexture3D("texture3D", voxelTexture, 0);
+    voxelizationMaterial->Activate(settingsGroup, renderScene);
     voxelizationMaterial->SetModelMatrix(transform.getTransformMatrix());
-
-    glBindVertexArray(mesh->vao);
-    glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
+    
+    renderMesh();
 }

@@ -21,9 +21,9 @@ Material(_name, vertexShader, fragmentShader, geometryShader)
 {
 }
 
-void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera& camera)
+void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, Scene& scene)
 {
-    Material::Activate(group, lights, camera);
+    Material::Activate(group, scene);
     // Vec3s.
     
     GLint index = glGetUniformLocation(program, diffuseColorName);

@@ -20,7 +20,7 @@ public:
     
     VoxelizationMaterial( const GLchar* _name, const Shader* vertexShader, const Shader* fragmentShader, const Shader* geometryShader);
     
-    virtual void Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights,Camera & camera) override;
+    virtual void Activate(MaterialSetting::SettingsGroup &group, Scene& scene) override;
     void ClearVoxels();
     
     ~VoxelizationMaterial();

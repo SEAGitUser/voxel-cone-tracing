@@ -62,6 +62,8 @@ GLint FBO_3D::AddRenderTarget()
     GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     assert(e = GL_FRAMEBUFFER_COMPLETE);
     glError();
+    
+    renderTextures.push_back(target);
     return target->GetTextureID();
 }
 

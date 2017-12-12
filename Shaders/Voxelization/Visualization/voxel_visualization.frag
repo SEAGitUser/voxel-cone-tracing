@@ -30,7 +30,7 @@ void main() {
 	vec3 direction = texture(textureBack, textureCoordinateFrag).xyz - origin;
 	uint numberOfSteps = uint(INV_STEP_LENGTH * length(direction));
 	direction = normalize(direction);
-
+     
 	// Trace.
 	color = vec4(0.0f);
 	for(uint step = 0; step < numberOfSteps && color.a < 0.99f; ++step) {

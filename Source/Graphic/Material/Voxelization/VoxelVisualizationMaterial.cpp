@@ -19,9 +19,9 @@ Material(_name, voxelVert, voxelFrag)
 }
 
 
-void VoxelVisualizationMaterial::Activate(MaterialSetting::SettingsGroup &group, std::vector<PointLight>& lights, Camera &camera)
+void VoxelVisualizationMaterial::Activate(MaterialSetting::SettingsGroup &group, Scene& scene)
 {
-    Material::Activate(group, lights, camera);
+    Material::Activate(group, scene);
     
     // Vec3s.
     glUniform3fv(glGetUniformLocation(program, diffuseColorName), 1, glm::value_ptr(diffuseColor));

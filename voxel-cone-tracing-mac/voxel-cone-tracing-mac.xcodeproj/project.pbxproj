@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B9175F851FB2D1000061CB1C /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F841FB2D1000061CB1C /* Resource.cpp */; };
-		B9175F8B1FB2F3A10061CB1C /* WorldPositionMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9175F891FB2F3A10061CB1C /* WorldPositionMaterial.cpp */; };
-		B94240981FDDEF9200BB18C1 /* VoxelizeRenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B94240961FDDEF9200BB18C1 /* VoxelizeRenderTarget.cpp */; };
+		B94240981FDDEF9200BB18C1 /* VoxelizeRT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B94240961FDDEF9200BB18C1 /* VoxelizeRT.cpp */; };
+		B942409B1FDE177700BB18C1 /* VoxelVisualizationRT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B94240991FDE177700BB18C1 /* VoxelVisualizationRT.cpp */; };
 		B94F67261FAFFE6A00EAF59A /* FirstPersonController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B94F67251FAFFE6A00EAF59A /* FirstPersonController.cpp */; };
 		B970D5CB1FAE8D0D00208298 /* AssetStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */; };
 		B970D5CD1FAE914D00208298 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = B970D5CC1FAE914D00208298 /* Assets */; };
@@ -366,10 +366,10 @@
 /* Begin PBXFileReference section */
 		B9175F831FB2CFB60061CB1C /* Resource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
 		B9175F841FB2D1000061CB1C /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
-		B9175F891FB2F3A10061CB1C /* WorldPositionMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldPositionMaterial.cpp; sourceTree = "<group>"; };
-		B9175F8A1FB2F3A10061CB1C /* WorldPositionMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldPositionMaterial.h; sourceTree = "<group>"; };
-		B94240961FDDEF9200BB18C1 /* VoxelizeRenderTarget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizeRenderTarget.cpp; sourceTree = "<group>"; };
-		B94240971FDDEF9200BB18C1 /* VoxelizeRenderTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoxelizeRenderTarget.h; sourceTree = "<group>"; };
+		B94240961FDDEF9200BB18C1 /* VoxelizeRT.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizeRT.cpp; sourceTree = "<group>"; };
+		B94240971FDDEF9200BB18C1 /* VoxelizeRT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoxelizeRT.h; sourceTree = "<group>"; };
+		B94240991FDE177700BB18C1 /* VoxelVisualizationRT.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelVisualizationRT.cpp; sourceTree = "<group>"; };
+		B942409A1FDE177700BB18C1 /* VoxelVisualizationRT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoxelVisualizationRT.h; sourceTree = "<group>"; };
 		B94F67251FAFFE6A00EAF59A /* FirstPersonController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirstPersonController.cpp; sourceTree = "<group>"; };
 		B970D5C91FAE870E00208298 /* AssetStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetStore.h; sourceTree = "<group>"; };
 		B970D5CA1FAE8D0D00208298 /* AssetStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetStore.cpp; sourceTree = "<group>"; };
@@ -816,8 +816,10 @@
 			children = (
 				B9D186C31FDDD82E00BFC4C2 /* RenderTarget.cpp */,
 				B9D186C41FDDD82E00BFC4C2 /* RenderTarget.h */,
-				B94240961FDDEF9200BB18C1 /* VoxelizeRenderTarget.cpp */,
-				B94240971FDDEF9200BB18C1 /* VoxelizeRenderTarget.h */,
+				B94240961FDDEF9200BB18C1 /* VoxelizeRT.cpp */,
+				B94240971FDDEF9200BB18C1 /* VoxelizeRT.h */,
+				B94240991FDE177700BB18C1 /* VoxelVisualizationRT.cpp */,
+				B942409A1FDE177700BB18C1 /* VoxelVisualizationRT.h */,
 			);
 			path = RenderTarget;
 			sourceTree = "<group>";
@@ -867,9 +869,9 @@
 		B9F4F9801FA843FC0020A3DC /* Graphic */ = {
 			isa = PBXGroup;
 			children = (
-				B9D186C21FDDD82E00BFC4C2 /* RenderTarget */,
 				B9F4F98D1FA843FC0020A3DC /* Graphics.cpp */,
 				B9F4F98E1FA843FC0020A3DC /* Graphics.h */,
+				B9D186C21FDDD82E00BFC4C2 /* RenderTarget */,
 				B9F4F9811FA843FC0020A3DC /* Camera */,
 				B9F4F98A1FA843FC0020A3DC /* FBO */,
 				B9F4F98F1FA843FC0020A3DC /* Lighting */,
@@ -938,8 +940,6 @@
 				B9F4F9981FA843FC0020A3DC /* Shader.h */,
 				B9175F831FB2CFB60061CB1C /* Resource.h */,
 				B9175F841FB2D1000061CB1C /* Resource.cpp */,
-				B9175F891FB2F3A10061CB1C /* WorldPositionMaterial.cpp */,
-				B9175F8A1FB2F3A10061CB1C /* WorldPositionMaterial.h */,
 			);
 			path = Material;
 			sourceTree = "<group>";
@@ -1506,7 +1506,7 @@
 			files = (
 				B994823A1FB69169009B0D26 /* FBO_3D.cpp in Sources */,
 				B9F4FC1C1FA8456E0020A3DC /* image_DXT.c in Sources */,
-				B94240981FDDEF9200BB18C1 /* VoxelizeRenderTarget.cpp in Sources */,
+				B94240981FDDEF9200BB18C1 /* VoxelizeRT.cpp in Sources */,
 				B9F4FC1D1FA8456E0020A3DC /* image_DXT.h in Sources */,
 				B9F4FC1E1FA8456E0020A3DC /* image_helper.c in Sources */,
 				B9F4FC1F1FA8456E0020A3DC /* image_helper.h in Sources */,
@@ -1563,6 +1563,7 @@
 				B9F4FB471FA845210020A3DC /* type_float.hpp in Sources */,
 				B9F4FB481FA845210020A3DC /* type_gentype.hpp in Sources */,
 				B9F4FB491FA845210020A3DC /* type_gentype.inl in Sources */,
+				B942409B1FDE177700BB18C1 /* VoxelVisualizationRT.cpp in Sources */,
 				B9F4FB4A1FA845210020A3DC /* type_half.hpp in Sources */,
 				B9F4FB4B1FA845210020A3DC /* type_half.inl in Sources */,
 				B9F4FB4C1FA845210020A3DC /* type_int.hpp in Sources */,
@@ -1688,7 +1689,6 @@
 				B9F4FBBD1FA845220020A3DC /* integer.inl in Sources */,
 				B9F4FBBE1FA845220020A3DC /* intersect.hpp in Sources */,
 				B9F4FBBF1FA845220020A3DC /* intersect.inl in Sources */,
-				B9175F8B1FB2F3A10061CB1C /* WorldPositionMaterial.cpp in Sources */,
 				B9F4FBC01FA845220020A3DC /* io.hpp in Sources */,
 				B9F4FBC11FA845220020A3DC /* io.inl in Sources */,
 				B9F4FBC21FA845220020A3DC /* log_base.hpp in Sources */,

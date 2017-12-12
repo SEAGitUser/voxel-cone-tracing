@@ -11,7 +11,6 @@
 #include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelVisualizationMaterial.h"
-#include "Graphic/Material/WorldPositionMaterial.h"
 
 
 

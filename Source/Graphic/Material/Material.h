@@ -15,6 +15,7 @@
 #include "Graphic/Camera/Camera.h"
 #include "Texture2D.h"
 #include "Texture3D.h"
+#include "Scene/Scene.h"
 
 class Shader;
 
@@ -31,7 +32,8 @@ public:
 
     Material(const GLchar *name): name(name){}
     
-    virtual void Activate(MaterialSetting::SettingsGroup& settingsGroup, std::vector<PointLight>& lights,Camera& camera);
+    virtual void Activate(MaterialSetting::SettingsGroup& settingsGroup, Scene& scene);
+    void ApplySettings(MaterialSetting::SettingsGroup& settingsGroup);
     
     inline void SetParameteri(const GLchar* parameterName, GLint const value);
     inline void SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);

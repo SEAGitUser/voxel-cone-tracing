@@ -20,7 +20,7 @@ class VoxelVisualizationMaterial;
 class FBO_2D;
 class FBO_3D;
 class Texture3D;
-class VoxelizeRenderTarget;
+class VoxelizeRT;
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
@@ -32,7 +32,7 @@ public:
 	};
 
 	/// <summary> Initializes rendering. </summary>
-	virtual void init(unsigned int viewportWidth, unsigned int viewportHeight); // Called pre-render once per run.
+	virtual void init(GLuint viewportWidth, GLuint viewportHeight); // Called pre-render once per run.
 
 	/// <sumamry> Renders a scene using a given rendering mode. </summary>
 	virtual void render(
@@ -67,7 +67,7 @@ private:
 	// ----------------
 	// Voxelization visualization.
 	// ----------------
-	void initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight);
+	//void initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight);
 	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
 	FBO_2D *vvfbo1, *vvfbo2;
     FBO_3D * voxelFBO;
@@ -82,5 +82,5 @@ private:
 	Shape * cubeShape;
     Texture3D* voxelTexture;
     
-    VoxelizeRenderTarget* voxelizeRenderTarget = nullptr;
+    VoxelizeRT* voxelizeRenderTarget = nullptr;
 };

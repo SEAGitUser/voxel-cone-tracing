@@ -2,7 +2,7 @@
 
 #include "FBO.h"
 #include "Texture.h"
-
+#include "OpenGL_Includes.h"
 
 GLint FBO::AddRenderTarget(Texture* target)
 {
@@ -17,6 +17,25 @@ GLint FBO::AddRenderTarget(Texture* target)
     
     target->SaveTextureState();
     
+    renderTextures.push_back(target);
     
     return target->GetTextureID();
+}
+
+void FBO::Clear()
+{
+    for(Texture* texture : renderTextures)
+    {
+        texture->Clear();
+    }
+}
+
+void FBO::Activate()
+{
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
+}
+
+void FBO::Deactivate()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
 }

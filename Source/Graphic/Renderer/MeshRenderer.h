@@ -40,7 +40,10 @@ public:
 	~MeshRenderer();
 
     void render(Scene& renderScene);
-    void voxelize(Texture3D* texture3D, Scene& renderScene);
+    void render(Scene& renderScene, MaterialSetting::SettingsGroup& group, Material* material);
+    void renderMesh();
+    
+    void voxelize(Scene& renderScene);
     void applyMaterial(Material* material);
     
 private:
