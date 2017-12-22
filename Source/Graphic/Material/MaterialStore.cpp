@@ -93,15 +93,5 @@ MaterialStore const& MaterialStore::getInstance()
 }
 
 MaterialStore::~MaterialStore() {
-    /*
-	for (unsigned int i = 0; i < materials.size(); ++i)
-	{
-		delete materials[i];
-	}
-    
-    for (std::pair<std::string, Shader* > pair : shaderDatabase)
-    {
-        delete pair.second;
-    }
-    */
+
 }
