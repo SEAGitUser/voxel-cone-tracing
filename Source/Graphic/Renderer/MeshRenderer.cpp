@@ -18,9 +18,8 @@ MeshRenderer::MeshRenderer(Mesh * _mesh):  mesh(_mesh)
 {
     MaterialSetting::Default(settingsGroup);
     
-    voxelizationMaterial = static_cast<VoxelizationMaterial *>(MaterialStore::getInstance().getMaterial("voxelization"));
-    material = static_cast< VoxelizationConeTracingMaterial* > (MaterialStore::getInstance().getMaterial("voxelization-cone-tracing"));
-    
+    voxelization = MaterialStore::GET_MAT<VoxelizationMaterial> ("voxelization");
+    voxelizationConeTracing = MaterialStore::GET_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing");
     setupMeshRenderer();
 }
 
@@ -58,8 +57,8 @@ void MeshRenderer::render(Scene& renderScene)
     std::vector<PointLight>& lights = renderScene.pointLights;
     Camera& camera = *renderScene.renderingCamera;
 
-    material->Activate(settingsGroup, renderScene);
-    material->SetModelMatrix(transform.getTransformMatrix());
+    voxelizationConeTracing->Activate(settingsGroup, renderScene);
+    voxelizationConeTracing->SetModelMatrix(transform.getTransformMatrix());
     
     renderMesh();
 }
@@ -101,8 +100,8 @@ void MeshRenderer::voxelize(Scene& renderScene)
 {
     std::vector<PointLight> &lights = renderScene.pointLights;
     Camera &camera = *renderScene.renderingCamera;
-    voxelizationMaterial->Activate(settingsGroup, renderScene);
-    voxelizationMaterial->SetModelMatrix(transform.getTransformMatrix());
+    voxelization->Activate(settingsGroup, renderScene);
+    voxelization->SetModelMatrix(transform.getTransformMatrix());
     
     renderMesh();
 }

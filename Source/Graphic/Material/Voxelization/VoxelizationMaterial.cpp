@@ -14,9 +14,7 @@
 #include "glm/glm.hpp"
 
 
-
-
-VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const Shader* vertexShader, const Shader* fragmentShader, const Shader* geometryShader):
+VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const ShaderSharedPtr vertexShader, const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader):
 Material(_name, vertexShader, fragmentShader, geometryShader)
 {
 }

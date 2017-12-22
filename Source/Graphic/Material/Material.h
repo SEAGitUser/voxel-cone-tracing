@@ -16,19 +16,18 @@
 #include "Texture2D.h"
 #include "Texture3D.h"
 #include "Scene/Scene.h"
-
-class Shader;
+#include "Shader.h"
 
 /// <summary> Represents a material that references a gl program, textures and settings. </summary>
 class Material : public Resource {
 public:
 	virtual ~Material();
 	Material(const GLchar *_name,
-		const Shader * vertexShader,
-		const Shader * fragmentShader,
-		const Shader * geometryShader = nullptr,
-		const Shader * tessEvaluationShader = nullptr,
-		const Shader * tessControlShader = nullptr);
+		const ShaderSharedPtr& vertexShader,
+		const ShaderSharedPtr& fragmentShader,
+		const ShaderSharedPtr& geometryShader = nullptr,
+		const ShaderSharedPtr& tessEvaluationShader = nullptr,
+		const ShaderSharedPtr& tessControlShader = nullptr);
 
     Material(const GLchar *name): name(name){}
     
@@ -71,11 +70,11 @@ protected:
     void uploadGlobalConstants();
     
     void AssembleProgram(
-                        const Shader * vertexShader,
-                        const Shader * fragmentShader,
-                        const Shader * geometryShader,
-                        const Shader * tessEvaluationShader,
-                        const Shader * tessControlShader
+                        const ShaderSharedPtr& vertexShader,
+                        const ShaderSharedPtr& fragmentShader,
+                        const ShaderSharedPtr& geometryShader,
+                        const ShaderSharedPtr& tessEvaluationShader,
+                        const ShaderSharedPtr& tessControlShader
                         );
     
     void setValue(MaterialSetting& setting, const GLchar* name);
@@ -159,6 +158,7 @@ void Material::SetModelMatrix(glm::mat4& mat)
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
+using MaterialSharedPtr = std::shared_ptr<Material>;
 
 
 

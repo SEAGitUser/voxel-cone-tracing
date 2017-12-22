@@ -15,7 +15,7 @@
 
 
 
-VoxelizationConeTracingMaterial::VoxelizationConeTracingMaterial(const GLchar *_name, const Shader* voxelVert, const Shader* voxelFrag):
+VoxelizationConeTracingMaterial::VoxelizationConeTracingMaterial(const GLchar *_name, const ShaderSharedPtr& voxelVert, const ShaderSharedPtr& voxelFrag):
 Material(_name, voxelVert, voxelFrag)
 {
     

@@ -52,6 +52,6 @@ private:
 	void reuploadVertexDataToGPU();
     
 private:
-    VoxelizationMaterial* voxelizationMaterial = nullptr;
-    VoxelizationConeTracingMaterial* material = nullptr;
+    std::shared_ptr<VoxelizationMaterial> voxelization = nullptr;
+    std::shared_ptr<VoxelizationConeTracingMaterial> voxelizationConeTracing = nullptr;
 };

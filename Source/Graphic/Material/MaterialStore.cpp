@@ -1,9 +1,9 @@
 
 
-#include <iostream>
+
 #include <unordered_map>
-#include <string>
 #include <utility>
+#include <memory>
 
 #include "MaterialStore.h"
 #include "Material.h"
@@ -13,42 +13,42 @@
 #include "Graphic/Material/Voxelization/VoxelVisualizationMaterial.h"
 
 
-
-
-static std::unordered_map<const GLchar*,  Shader*> shaderDatabase;
-static std::unordered_map<const GLchar*,  Material*> materialDatabase;
+static std::unordered_map<const GLchar*,  ShaderSharedPtr> shaderDatabase;
+static std::unordered_map<const GLchar*,  MaterialSharedPtr > materialDatabase;
 
 MaterialStore::MaterialStore()
 {
-    Shader* voxelizationVert = AddShader("Voxelization/voxelization.vert", Shader::ShaderType::VERTEX);
-    Shader* voxelVisualizationVert = AddShader("Voxelization/Visualization/voxel_visualization.vert", Shader::ShaderType::VERTEX);
-    Shader* wordPositionVert = AddShader("Voxelization/Visualization/world_position.vert", Shader::ShaderType::VERTEX);
-    Shader* voxelConeTractingVert = AddShader("Voxel Cone Tracing/voxel_cone_tracing.vert", Shader::ShaderType::VERTEX);
-
-    Shader* voxelizationGeom = AddShader("Voxelization/voxelization.geom", Shader::ShaderType::GEOMETRY);
     
-    Shader* voxelizationFrag = AddShader("Voxelization/voxelization.frag", Shader::ShaderType::FRAGMENT);
-    Shader* voxelConeTracingFrag = AddShader("Voxel Cone Tracing/voxel_cone_tracing.frag", Shader::ShaderType::FRAGMENT);
-    Shader* voxelVisualizationFrag = AddShader("Voxelization/Visualization/voxel_visualization.frag", Shader::ShaderType::FRAGMENT);
-    Shader* worldPositoinFrag = AddShader("Voxelization/Visualization/world_position.frag", Shader::ShaderType::FRAGMENT);
+    ShaderSharedPtr voxelizationVert = AddShader("Voxelization/voxelization.vert", Shader::ShaderType::VERTEX);
+    ShaderSharedPtr voxelVisualizationVert = AddShader("Voxelization/Visualization/voxel_visualization.vert", Shader::ShaderType::VERTEX);
+    ShaderSharedPtr wordPositionVert = AddShader("Voxelization/Visualization/world_position.vert", Shader::ShaderType::VERTEX);
+    ShaderSharedPtr voxelConeTractingVert = AddShader("Voxel Cone Tracing/voxel_cone_tracing.vert", Shader::ShaderType::VERTEX);
+
+    ShaderSharedPtr voxelizationGeom = AddShader("Voxelization/voxelization.geom", Shader::ShaderType::GEOMETRY);
+    
+    ShaderSharedPtr voxelizationFrag = AddShader("Voxelization/voxelization.frag", Shader::ShaderType::FRAGMENT);
+    ShaderSharedPtr voxelConeTracingFrag = AddShader("Voxel Cone Tracing/voxel_cone_tracing.frag", Shader::ShaderType::FRAGMENT);
+    ShaderSharedPtr voxelVisualizationFrag = AddShader("Voxelization/Visualization/voxel_visualization.frag", Shader::ShaderType::FRAGMENT);
+    ShaderSharedPtr worldPositoinFrag = AddShader("Voxelization/Visualization/world_position.frag", Shader::ShaderType::FRAGMENT);
 
     
-    VoxelizationMaterial *voxelizationMaterial = new VoxelizationMaterial("voxelization", voxelizationVert, voxelizationFrag, voxelizationGeom);
+    MaterialSharedPtr voxelizationMaterial = CREATE_MAT<Material>("voxelization", voxelizationVert, voxelizationFrag, voxelizationGeom);
     AddMaterial(voxelizationMaterial);
     
-    VoxelizationConeTracingMaterial *voxelizationConeTracing = new VoxelizationConeTracingMaterial("voxelization-cone-tracing", voxelConeTractingVert, voxelConeTracingFrag);
+    MaterialSharedPtr voxelizationConeTracing = CREATE_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing", voxelConeTractingVert, voxelConeTracingFrag);
     AddMaterial(voxelizationConeTracing);
     
-    VoxelVisualizationMaterial* voxelVizMaterial = new VoxelVisualizationMaterial("voxel-visualization",  voxelVisualizationVert, voxelVisualizationFrag);
+    MaterialSharedPtr voxelVizMaterial = CREATE_MAT<VoxelVisualizationMaterial>("voxel-visualization",  voxelVisualizationVert, voxelVisualizationFrag);
     AddMaterial(voxelVizMaterial);
     
-    Material* material = new Material("world-position", wordPositionVert, worldPositoinFrag);
+    MaterialSharedPtr material = CREATE_MAT<Material>("world-position", wordPositionVert, worldPositoinFrag);
     AddMaterial(material);
+    
     
 }
 
 
-void MaterialStore::AddMaterial( Material* material)
+void MaterialStore::AddMaterial( MaterialSharedPtr material)
 {
     if(materialDatabase.count(material->name) == 0)
     {
@@ -56,12 +56,13 @@ void MaterialStore::AddMaterial( Material* material)
     }
 }
 
-Shader* MaterialStore::AddShader(const GLchar *shaderPath, Shader::ShaderType shaderType)
+ShaderSharedPtr MaterialStore::AddShader(const GLchar *shaderPath, Shader::ShaderType shaderType)
 {
-    Shader* result = nullptr;
+    
+    ShaderSharedPtr result = nullptr;
     if(shaderDatabase.count(shaderPath) == 0)
     {
-        result = new Shader(shaderPath, shaderType);
+        result = std::make_shared<Shader>(shaderPath, shaderType);
         shaderDatabase[shaderPath] = result;
     }
     else
@@ -70,16 +71,15 @@ Shader* MaterialStore::AddShader(const GLchar *shaderPath, Shader::ShaderType sh
     }
     
     return result;
-
 }
 
-Material * MaterialStore::getMaterial(const GLchar* name) const
+MaterialSharedPtr MaterialStore::getMaterial(const GLchar* name) const
 {
     assert(materialDatabase.count(name) != 0);
     return materialDatabase[name];
 }
 
-Shader const *  MaterialStore::findShaderUsingPath(const GLchar* path)const
+ShaderSharedPtr const   MaterialStore::findShaderUsingPath(const GLchar* path)const
 {
     assert(shaderDatabase.count(path) != 0);
     return shaderDatabase[path];
@@ -93,6 +93,7 @@ MaterialStore const& MaterialStore::getInstance()
 }
 
 MaterialStore::~MaterialStore() {
+    /*
 	for (unsigned int i = 0; i < materials.size(); ++i)
 	{
 		delete materials[i];
@@ -102,4 +103,5 @@ MaterialStore::~MaterialStore() {
     {
         delete pair.second;
     }
+    */
 }

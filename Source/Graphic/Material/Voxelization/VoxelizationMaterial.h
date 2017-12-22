@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Graphic/Material/Material.h"
+#include "Graphic/Material/Shader.h"
 #include <string>
 
 
@@ -18,7 +19,7 @@ class VoxelizationMaterial: public Material
 {
 public:
     
-    VoxelizationMaterial( const GLchar* _name, const Shader* vertexShader, const Shader* fragmentShader, const Shader* geometryShader);
+    VoxelizationMaterial( const GLchar* _name, const ShaderSharedPtr vertexShader, const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader);
     
     virtual void Activate(MaterialSetting::SettingsGroup &group, Scene& scene) override;
     void ClearVoxels();

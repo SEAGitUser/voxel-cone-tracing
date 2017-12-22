@@ -10,7 +10,8 @@ const std::string Shader::shaderResourcePath = Resource::resourceRoot + "/Shader
 
 GLuint Shader::compile() {
 	// Create and compile shader.
-	shaderID = glCreateShader(shaderType);
+    
+	shaderID = glCreateShader(static_cast<GLint>(shaderType));
 	const char * source = rawShader.c_str();
 	glShaderSource(shaderID, 1, &source, nullptr);
 	glCompileShader(shaderID);
@@ -22,19 +23,19 @@ GLuint Shader::compile() {
 	if (!success) {
 		GLchar log[1024];
 		glGetShaderInfoLog(shaderID, 1024, nullptr, log);
-		std::cerr << "- Failed to compile shader '" << path << "' : " << shaderType << typeName << "!" << std::endl;
+		std::cerr << "- Failed to compile shader '" << path << "' : " << static_cast<GLint>(shaderType) << typeName << "!" << std::endl;
 		std::cerr << "LOG: " << std::endl << log << std::endl;
         //the line std::getchar() makes xcode behave oddly,I'll put an assert instead
         assert(false);
 		return 0;
 	}
 	if (shaderID == 0) {
-		std::cerr << "- Could not compile shader '" << path << "' : " << shaderType << typeName << "!" << std::endl;
+		std::cerr << "- Could not compile shader '" << path << "' : " << static_cast<GLint>(shaderType) << typeName << "!" << std::endl;
 		//std::getchar();
         assert(false);
 		return 0;
 	}
-	std::cout << "- Shader '" << path << "' : " << shaderType << typeName << " compiled successfully." << std::endl;
+	std::cout << "- Shader '" << path << "' : " << static_cast<GLint>(shaderType) << typeName << " compiled successfully." << std::endl;
 	return shaderID;
 }
 

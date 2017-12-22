@@ -17,11 +17,11 @@ Material::~Material()
 
 Material::Material(
 	const GLchar *_name,
-	const Shader * vertexShader,
-	const Shader * fragmentShader,
-	const Shader * geometryShader,
-	const Shader * tessEvaluationShader,
-	const Shader * tessControlShader) : name(_name)
+	const ShaderSharedPtr& vertexShader,
+	const ShaderSharedPtr& fragmentShader,
+	const ShaderSharedPtr& geometryShader,
+	const ShaderSharedPtr& tessEvaluationShader,
+	const ShaderSharedPtr& tessControlShader) : name(_name)
 {
 
     AssembleProgram(vertexShader, fragmentShader, geometryShader, tessControlShader, tessControlShader);
@@ -133,11 +133,11 @@ void Material::setValue(MaterialSetting &setting, const GLchar* name)
 }
 
 void Material::AssembleProgram(
-                              const Shader * vertexShader,
-                              const Shader * fragmentShader,
-                              const Shader * geometryShader,
-                              const Shader * tessEvaluationShader,
-                              const Shader * tessControlShader
+                              const ShaderSharedPtr& vertexShader,
+                              const ShaderSharedPtr& fragmentShader,
+                              const ShaderSharedPtr& geometryShader,
+                              const ShaderSharedPtr& tessEvaluationShader,
+                              const ShaderSharedPtr& tessControlShader
                             )
 {
     assert(vertexShader != nullptr);

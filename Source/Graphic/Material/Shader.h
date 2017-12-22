@@ -9,13 +9,15 @@
 /// <summary> Represents a shader program. </summary>
 class Shader : public Resource{
 public:
-	enum ShaderType {
+    
+	enum class ShaderType {
 		VERTEX = GL_VERTEX_SHADER,
 		FRAGMENT = GL_FRAGMENT_SHADER,
 		GEOMETRY = GL_GEOMETRY_SHADER,
 		TESSELATION_EVALUATION = GL_TESS_EVALUATION_SHADER,
 		TESSELATION_CONTROL = GL_TESS_CONTROL_SHADER
 	};
+    Shader();
 
     static const std::string shaderResourcePath;
 	const ShaderType shaderType;
@@ -44,5 +46,7 @@ protected:
 
 private:
 	std::string rawShader;
-	Shader();
+
 };
+
+using ShaderSharedPtr = std::shared_ptr<Shader>;

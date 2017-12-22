@@ -33,7 +33,7 @@ public:
 private:
     
     //Material * worldPositionMaterial;
-    VoxelVisualizationMaterial * voxelVisualizationMaterial;
+    std::shared_ptr<VoxelVisualizationMaterial>  voxelVisualizationMaterial = nullptr;
     
     MeshRenderer * cubeMeshRenderer;
     Shape * cubeShape;

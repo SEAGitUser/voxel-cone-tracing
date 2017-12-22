@@ -18,7 +18,7 @@ class VoxelVisualizationMaterial : public Material
 {
 public:
     
-    VoxelVisualizationMaterial(const GLchar *_name, const Shader* voxelVert, const Shader* voxelFrag);
+    VoxelVisualizationMaterial(const GLchar *_name, const ShaderSharedPtr voxelVert, const ShaderSharedPtr voxelFrag);
     
     virtual void Activate(MaterialSetting::SettingsGroup &group, Scene& scene) override;
     

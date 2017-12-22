@@ -13,7 +13,7 @@
 #include "Graphic/FBO/FBO_2D.h"
 #include "Graphic/Material/Texture/Texture3D.h"
 
-VoxelVisualizationMaterial::VoxelVisualizationMaterial(const GLchar *_name, const Shader* voxelVert,const Shader* voxelFrag):
+VoxelVisualizationMaterial::VoxelVisualizationMaterial(const GLchar *_name, const ShaderSharedPtr voxelVert,const ShaderSharedPtr voxelFrag):
 Material(_name, voxelVert, voxelFrag)
 {
 }

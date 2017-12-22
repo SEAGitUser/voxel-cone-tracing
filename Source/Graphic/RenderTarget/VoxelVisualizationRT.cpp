@@ -15,7 +15,7 @@
 VoxelVisualizationRT::VoxelVisualizationRT(Texture3D* _voxelTexture, GLuint width, GLuint height)
 {
     //worldPositionMaterial = static_cast<Material*>( MaterialStore::getInstance().getMaterial("world-position"));
-    voxelVisualizationMaterial = static_cast<VoxelVisualizationMaterial*>( MaterialStore::getInstance().getMaterial("voxel-visualization"));
+    voxelVisualizationMaterial = MaterialStore::GET_MAT<VoxelVisualizationMaterial>("voxel-visualization");
     voxelTexture = _voxelTexture;
     
 }
