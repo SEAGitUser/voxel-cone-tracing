@@ -26,6 +26,7 @@ public:
     
     inline void ActivateTexture(const GLchar* samplerName, const GLint textureName, const Texture2D* texture);
     
+    virtual void generateMipMap() override;
 
 #if __APPLE__
     

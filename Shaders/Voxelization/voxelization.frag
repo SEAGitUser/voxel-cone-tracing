@@ -22,19 +22,22 @@ struct PointLight {
 };
 
 struct Material {
-	vec3 diffuseColor;
-	vec3 specularColor;
+	vec3  diffuseColor;
+	vec3  specularColor;
 	float diffuseReflectivity;
 	float specularReflectivity;
+    float specularDiffusion;
 	float emissivity;
 	float transparency;
+    float refractiveIndex;
 };
 
 uniform Material material;
 uniform PointLight pointLights[MAX_LIGHTS];
-uniform int numberOfLights;
-uniform vec3 cameraPosition;
-uniform sampler3D sampler3Dims;
+
+//uniform int numberOfLights;
+//uniform vec3 cameraPosition;
+//uniform sampler3D sampler3Dims;
 
 in vec3 worldPositionFrag;
 in vec3 normalFrag;
@@ -56,20 +59,32 @@ vec3 scaleAndBias(vec3 p) { return 0.5f * p + vec3(0.5f); }
 
 bool isInsideCube(const vec3 p, float e) { return abs(p.x) < 1 + e && abs(p.y) < 1 + e && abs(p.z) < 1 + e; }
 
-void main(){
-	color = vec3(0.0f);
-	if(!isInsideCube(worldPositionFrag, 0)) return;
+void main()
+{
+    color = vec3(0.0f);
+    
+	if(!isInsideCube(worldPositionFrag, 0))
+        discard;
 
 	// Calculate diffuse lighting fragment contribution.
-	uint maxLights = min(numberOfLights, MAX_LIGHTS);
-	for(uint i = 0; i < maxLights; ++i)
-        color += calculatePointLight(pointLights[i]);
-	vec3 spec = material.specularReflectivity * material.specularColor;
-	vec3 diff = material.diffuseReflectivity * material.diffuseColor;
-	color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
-
-    //TODO: imageStore is an atomic operation, but it is not supported on 4.1, we need to re-write a different way
+	//uint maxLights = min(numberOfLights, MAX_LIGHTS);
+	//for(uint i = 0; i < maxLights; ++i)
     
+    
+    //color = vec3(1.0f);
+    //TODO: we'll support more than one light eventually
+    
+    PointLight pointLight = pointLights[0];
+    color += calculatePointLight(pointLight);
+    vec3 spec = material.specularReflectivity * material.specularColor;
+    vec3 diff = material.diffuseReflectivity * material.diffuseColor;
+    color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
+    
+    
+    
+    
+
+    //TODO: following code works on opengl 4.5, it needs to be deleted
     /*
 	// Output lighting to 3D texture.
 	vec3 voxel = scaleAndBias(worldPositionFrag);

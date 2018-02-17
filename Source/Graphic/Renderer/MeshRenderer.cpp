@@ -4,30 +4,29 @@
 #include "Graphic/Material/Material.h"
 #include "Scene/Scene.h"
 #include "Graphic/Camera/Camera.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #include "Graphic/Graphics.h"
 #include "Graphic/Lighting/PointLight.h"
 #include "Graphic/Material/Material.h"
 #include "Graphic/Material/MaterialSetting.h"
 #include "Graphic/Material/MaterialStore.h"
-#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 
 
 MeshRenderer::MeshRenderer(Mesh * _mesh):  mesh(_mesh)
 {
-    MaterialSetting::Default(settingsGroup);
+    voxProperties = VoxProperties::Default();
     
-    voxelization = MaterialStore::GET_MAT<VoxelizationMaterial> ("voxelization");
-    voxelizationConeTracing = MaterialStore::GET_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing");
+    voxMaterial = MaterialStore::GET_MAT<VoxelizationMaterial> ("voxelization");
+    voxConeTracing = MaterialStore::GET_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing");
     setupMeshRenderer();
 }
 
-MeshRenderer::MeshRenderer(Mesh * _mesh, MaterialSetting::SettingsGroup & _settingGroup)
+MeshRenderer::MeshRenderer(Mesh * _mesh, VoxProperties & _voxProperties)
 : MeshRenderer(_mesh)
 {
 	assert(_mesh != nullptr);
-    settingsGroup = _settingGroup;
+    voxProperties = _voxProperties;
 }
 
 void MeshRenderer::setupMeshRenderer()
@@ -57,8 +56,8 @@ void MeshRenderer::render(Scene& renderScene)
     std::vector<PointLight>& lights = renderScene.pointLights;
     Camera& camera = *renderScene.renderingCamera;
 
-    voxelizationConeTracing->Activate(settingsGroup, renderScene);
-    voxelizationConeTracing->SetModelMatrix(transform.getTransformMatrix());
+    voxConeTracing->ApplyVoxSettings(transform, renderScene, voxProperties);
+    voxConeTracing->SetModelMatrix(transform.getTransformMatrix());
     
     renderMesh();
 }
@@ -66,12 +65,14 @@ void MeshRenderer::render(Scene& renderScene)
 void MeshRenderer::renderMesh()
 {
     glBindVertexArray(mesh->vao);
+    assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
     glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
+    glError();
 }
 
 void MeshRenderer::render(Scene& scene, MaterialSetting::SettingsGroup& group, Material* _material)
 {
-    _material->Activate(group, scene);
+    _material->ApplySettings(group, scene);
     _material->SetModelMatrix(transform.getTransformMatrix());
     
     renderMesh();
@@ -86,22 +87,23 @@ void MeshRenderer::reuploadIndexDataToGPU()
 
 void MeshRenderer::reuploadVertexDataToGPU()
 {
+    static const int POSITION_LOCATION = 0;
+    static const int NORMALS_LOCATION = 1;
+    static const int NUMBER_OF_ELEMENTS = 3;
+    
 	auto dataSize = sizeof(VertexData);
 	glBindVertexArray(mesh->vao);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
 	glBufferData(GL_ARRAY_BUFFER, mesh->vertexData.size() * dataSize, mesh->vertexData.data(), mesh->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0); // Positions.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, dataSize, 0);
-	glEnableVertexAttribArray(1); // Normals.
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, normal));
+	glEnableVertexAttribArray(POSITION_LOCATION);
+	glVertexAttribPointer(POSITION_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, nullptr);
+	glEnableVertexAttribArray(NORMALS_LOCATION);
+	glVertexAttribPointer(NORMALS_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, normal));
 }
 
-void MeshRenderer::voxelize(Scene& renderScene)
+void MeshRenderer::voxelize(Scene& renderScene, glm::mat4& worldToUnitCube)
 {
-    std::vector<PointLight> &lights = renderScene.pointLights;
-    Camera &camera = *renderScene.renderingCamera;
-    voxelization->Activate(settingsGroup, renderScene);
-    voxelization->SetModelMatrix(transform.getTransformMatrix());
+    voxMaterial->ApplyVoxSettings(transform, worldToUnitCube, renderScene, voxProperties);
     
     renderMesh();
 }

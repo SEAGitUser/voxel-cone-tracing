@@ -108,6 +108,10 @@ void Texture2D::glClearTexImage(	GLuint texture,
 
 #endif
 
+void Texture2D::generateMipMap()
+{
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
 
 
 void Texture2D::Clear()
@@ -120,6 +124,8 @@ void Texture2D::Clear()
     glClearTexImage(textureID, 0, GL_RGBA, GL_FLOAT, &clearColor);
     glBindTexture(GL_TEXTURE_2D, previousBoundTextureID);
 }
+
+
 Texture2D::~Texture2D()
 {
     

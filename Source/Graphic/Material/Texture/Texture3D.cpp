@@ -60,11 +60,18 @@ void Texture3D::glClearTexImage(	GLuint texture,
 
 #endif
 
-Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _width, const GLuint _height, const GLuint _depth, const GLboolean generateMipmaps, GLuint _internalFormat) :
-	Texture("", _width, _height), depth(_depth), internalFormat(_internalFormat),
-    clearData(4 * _width * _height * _depth * sizeof(GLfloat), 0.0f)
+
+Texture3D::Texture3D():
+Texture()
 {
 
+}
+
+
+Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _width, const GLuint _height, const GLuint _depth, const GLboolean generateMipmaps, GLuint _internalFormat) :
+	Texture("", _width, _height), depth(_depth), internalFormat(_internalFormat)
+{
+    SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
 void Texture3D::Clear()
@@ -77,8 +84,14 @@ void Texture3D::Clear()
     
     glError();
 
-	glClearTexImage(textureID, levels, GL_RGBA, GL_FLOAT, &clearData[0]);
-	glBindTexture(GL_TEXTURE_3D, previousBoundTextureID);
+    //TODO: find a way to get rid of this clearData array
+    if(clearData.size() == 0)
+    {
+        clearData.resize(4 * width * height * depth * sizeof(GLfloat), 0.0f);
+    }
+    glClearTexImage(textureID, levels, GL_RGBA, GL_FLOAT, &clearData[0]);
+    glError();
+    glBindTexture(GL_TEXTURE_3D, previousBoundTextureID);
 }
 
 
@@ -88,8 +101,11 @@ void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTextur
     glGetIntegerv(GL_TEXTURE_BINDING_3D, &previousTexture);
     
     glError();
-    // Generate texture on GPU.
-    glGenTextures(1, &textureID);
+    if(textureID == INVALID_TEXTURE)
+    {
+        glGenTextures(1, &textureID);
+    }
+    
     glBindTexture(GL_TEXTURE_3D, textureID);
     
     glError();
@@ -102,7 +118,6 @@ void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTextur
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, minFilter);
     glError();
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, magFilter);
-    
     glError();
 
     glTexStorage3D(GL_TEXTURE_3D, levels, pixelFormat);
@@ -115,8 +130,9 @@ void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTextur
     glError();
 }
 
-Texture3D::Texture3D():
-Texture()
+void Texture3D::generateMipMap()
 {
-    
+    glGenerateMipmap(GL_TEXTURE_3D);
 }
+
+

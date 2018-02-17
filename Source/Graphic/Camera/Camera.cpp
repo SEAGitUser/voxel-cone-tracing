@@ -11,5 +11,5 @@ void Camera::setProjectionMatrix(glm::mat4 _projectionMatrix) {
 }
 
 void Camera::updateViewMatrix() {
-	viewMatrix = glm::lookAt(position, position + rotation, up);
+	viewMatrix = glm::lookAt(position, position + forward, up);
 }

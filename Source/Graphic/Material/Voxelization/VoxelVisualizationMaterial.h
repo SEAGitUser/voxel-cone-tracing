@@ -20,24 +20,9 @@ public:
     
     VoxelVisualizationMaterial(const GLchar *_name, const ShaderSharedPtr voxelVert, const ShaderSharedPtr voxelFrag);
     
-    virtual void Activate(MaterialSetting::SettingsGroup &group, Scene& scene) override;
-    
+    virtual void ApplySettings(MaterialSetting::SettingsGroup &group, Scene& scene) override;
     
 private:
-    
-    const char * diffuseColorName = "material.diffuseColor";
-    const char * specularColorName = "material.specularColor";
-    const char * emissivityName = "material.emissivity";
-    const char * transparencyName = "material.transparency";
-    const char * refractiveIndexName = "material.refractiveIndex";
-    const char * specularReflectanceName = "material.specularReflectivity";
-    const char * diffuseReflectanceName = "material.diffuseReflectivity";
-    const char * specularDiffusionName = "material.specularDiffusion";
-    
-    glm::vec3 diffuseColor, specularColor = glm::vec3(1);
-    float specularReflectivity, diffuseReflectivity, emissivity, specularDiffusion = 2.0f;
-    float transparency = 0.0f, refractiveIndex = 1.4f;
-    
     const Texture3D* voxelTexture;
     
 };

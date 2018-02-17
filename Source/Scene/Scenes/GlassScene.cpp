@@ -5,7 +5,7 @@
 #include "glm/gtx/rotate_vector.hpp"
 
 #include "Graphic/Lighting/PointLight.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
 #include "Graphic/Renderer/MeshRenderer.h"
 #include "Graphic/Material/MaterialSetting.h"
@@ -41,19 +41,18 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	lightCubeIndex = renderers.size() - 1;
 
 	// Cornell box.
+    renderers[0]->voxProperties = VoxProperties::Green();
+    renderers[1]->voxProperties = VoxProperties::White();
+    renderers[2]->voxProperties = VoxProperties::White();
+    renderers[3]->voxProperties = VoxProperties::Red();
+    renderers[4]->voxProperties = VoxProperties::Blue();
+    renderers[5]->voxProperties = VoxProperties::White();
     
-    MaterialSetting::Green(renderers[0]->settingsGroup);
-    MaterialSetting::White(renderers[1]->settingsGroup);
-    MaterialSetting::White(renderers[2]->settingsGroup);
-    MaterialSetting::Red(renderers[3]->settingsGroup);
-    MaterialSetting::Blue(renderers[4]->settingsGroup);
-    MaterialSetting::White(renderers[5]->settingsGroup);
-
     renderers[0]->name = renderers[1]->name = renderers[2]->name = renderers[3]->name = renderers[4]->name
         = renderers[5]->name = "cornell box";
 	renderers[5]->enabled = false;
-    MaterialSetting::White(renderers[6]->settingsGroup);
     
+    renderers[6]->voxProperties = VoxProperties::White();
 	renderers[6]->enabled = false;
      
 
@@ -72,23 +71,26 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	buddhaRenderer->transform.updateTransformMatrix();
 	buddhaRenderer->tweakable = true;
 	buddhaRenderer->name = "Buddha";
-    MaterialSetting::White(buddhaRenderer->settingsGroup);
 
-    buddhaRenderer->settingsGroup[MaterialSetting::specularColor] = glm::vec3(0.99, 0.61, 0.43);
-    buddhaRenderer->settingsGroup[MaterialSetting::diffuseColor]= buddhaRenderer->settingsGroup[MaterialSetting::specularColor];
-    buddhaRenderer->settingsGroup[MaterialSetting::emissivity] = 0.00f;
-    buddhaRenderer->settingsGroup[MaterialSetting::transparency] = 1.00f;
-    buddhaRenderer->settingsGroup[MaterialSetting::refractiveIndex] = 1.21f;
-    buddhaRenderer->settingsGroup[MaterialSetting::specularReflectivity] = 1.00f;
-    buddhaRenderer->settingsGroup[MaterialSetting::diffuseReflectivity] = 0.0f;
-    buddhaRenderer->settingsGroup[MaterialSetting::specularDiffusion] = 1.9f;
+    buddhaRenderer->voxProperties = VoxProperties::White();
 
-	// Light cube.
-    MaterialSetting::Emissive(buddhaRenderer->settingsGroup);// = MaterialSetting::Emissive();
-    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::diffuseColor] = glm::vec3(1.0f, 1.0f, 1.0f);
-    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::emissivity] = 8.0f;
-    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::specularReflectivity] = 0.0f;
-    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::diffuseReflectivity] = 0.0f;
+    
+    buddhaRenderer->voxProperties.specularColor = glm::vec3(0.99f, 0.62f, 0.43f);
+    buddhaRenderer->voxProperties.diffuseColor = glm::vec3(0.99f, 0.62f, 0.43f);
+    buddhaRenderer->voxProperties.emissivity = 0.0f;
+    buddhaRenderer->voxProperties.transparency = 1.f;
+    buddhaRenderer->voxProperties.refractiveIndex = 1.21f;
+    buddhaRenderer->voxProperties.specularReflectivity = 1.0f;
+    buddhaRenderer->voxProperties.diffuseReflectivity = 0.0f;
+    buddhaRenderer->voxProperties.specularDiffusion = 1.9f;
+
+
+    renderers[lightCubeIndex]->voxProperties.diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    renderers[lightCubeIndex]->voxProperties.emissivity = 8.0f;
+    renderers[lightCubeIndex]->voxProperties.specularReflectivity = 0.0f;
+    renderers[lightCubeIndex]->voxProperties.diffuseReflectivity = 0.0f;
+    
+
     renderers[lightCubeIndex]->name = "light cube";
 
 	// An additional wall (behind the camera).
@@ -99,7 +101,9 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 		renderers.push_back(new MeshRenderer(&(backWall->meshes[i])));
 	}
 	MeshRenderer * bwr = renderers[backWallIndex];
-    MaterialSetting::White(bwr->settingsGroup);
+    //MaterialSetting::White(bwr->settingsGroup);
+    bwr->voxProperties = VoxProperties::White();
+    
 	bwr->transform.scale = glm::vec3(2);
 	bwr->transform.position = glm::vec3(0, 0, 0.99);
 	bwr->transform.rotation = glm::vec3(-1.57079632679, 0, 0);
@@ -113,20 +117,19 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	renderingCamera->position = glm::vec3(0, 0, 0.925);
 }
 
-
 void GlassScene::update() {
 	FirstPersonScene::update();
 
-	buddhaRenderer->transform.rotation.y = Time::time;
+	buddhaRenderer->transform.rotation.y = FrameRate::time;
 
-	glm::vec3 r = glm::vec3(sinf(float(Time::time * 0.67)), sinf(float(Time::time * 0.78)), cosf(float(Time::time * 0.67)));
+	glm::vec3 r = glm::vec3(sinf(float(FrameRate::time * 0.67)), sinf(float(FrameRate::time * 0.78)), cosf(float(FrameRate::time * 0.67)));
 
 	renderers[lightCubeIndex]->transform.position = 0.45f * r + 0.20f * r * glm::vec3(1, 0, 1);
 	renderers[lightCubeIndex]->transform.scale = glm::vec3(0.049f);
 	renderers[lightCubeIndex]->transform.updateTransformMatrix();
 
 	pointLights[0].position = renderers[lightCubeIndex]->transform.position;
-    renderers[lightCubeIndex]->settingsGroup[MaterialSetting::diffuseColor] = pointLights[0].color;
+    renderers[lightCubeIndex]->voxProperties.diffuseColor = pointLights[0].color;
 }
 
 GlassScene::~GlassScene() {

@@ -6,5 +6,5 @@
 class OrthographicCamera : public Camera {
 public:
 	OrthographicCamera();
-	OrthographicCamera(float aspect, float near = -100.0f, float far = 100.0f);
+	OrthographicCamera(GLfloat aspect, GLfloat near = -100.0f, GLfloat far = 100.0f);
 };

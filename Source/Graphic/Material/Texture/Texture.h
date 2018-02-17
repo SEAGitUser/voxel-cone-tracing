@@ -27,7 +27,8 @@ public:
     minFilter(GL_LINEAR_MIPMAP_LINEAR),
     magFilter(GL_LINEAR),
     width(0),
-    height(0)
+    height(0),
+    textureID(INVALID_TEXTURE)
     {
         
     }
@@ -41,7 +42,8 @@ public:
     minFilter(GL_LINEAR_MIPMAP_LINEAR),
     magFilter(GL_LINEAR),
     width(_width),
-    height(_height)
+    height(_height),
+    textureID(INVALID_TEXTURE)
     {
         
     }
@@ -60,6 +62,7 @@ public:
     inline GLint  GetTextureID() const { return textureID; }
     
     virtual void Clear() = 0;
+    virtual void generateMipMap() = 0;
     
     ~Texture()
     {
@@ -68,7 +71,7 @@ public:
     
 protected:
 #if __APPLE__
-    //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implemented manually
+    //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implement it manually
     virtual void glClearTexImage(	GLuint texture,
                                  GLuint level,
                                  GLenum format,
@@ -78,6 +81,7 @@ protected:
 #endif
 protected:
     
+    static const GLuint INVALID_TEXTURE = 0;
     static const GLsizei levels = 7;
     
     GLuint width, height, channels;

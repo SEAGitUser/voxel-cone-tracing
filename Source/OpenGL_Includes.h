@@ -69,6 +69,9 @@ static inline const char * GetGLErrorString(GLenum error)
     return str;
 }
 
+//TODO: it is better to register a callback that will alert of an opengl error, check this out:
+//https://www.khronos.org/opengl/wiki/OpenGL_Error
+
 #define glError() { \
 GLenum err = glGetError(); \
 while (err != GL_NO_ERROR) { \

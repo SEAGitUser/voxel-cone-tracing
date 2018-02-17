@@ -26,7 +26,7 @@ public:
     
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
     virtual void Clear() override;
-    
+    virtual void generateMipMap() override;
     
 #ifdef __APPLE__
     

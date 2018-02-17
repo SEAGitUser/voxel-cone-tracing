@@ -11,7 +11,7 @@ void Transform::updateTransformMatrix() {
 	transformIsInvalid = false;
 }
 
-glm::mat4 & Transform::getTransformMatrix() {
+const glm::mat4 & Transform::getTransformMatrix() {
 	if (transformIsInvalid) { updateTransformMatrix(); }
 	return transform;
 }

@@ -3,8 +3,8 @@
 #include "Opengl_Includes.h"
 #include <vector>
 
-
 class Texture;
+
 class FBO {
     
 public:
@@ -17,7 +17,7 @@ public:
     dataFormat(_dataFormat),
     wrap(_wrap ),
     pixelFormat(_pixelFormat),
-    previousFrameBuffer(0)
+    previousFrameBuffer(INVALID_FRAME_BUFFER)
     {
         renderTextures.reserve(MAX_RENDER_TARGETS);
     }
@@ -26,7 +26,9 @@ public:
     inline GLint getWidth(){ return width; }
     inline GLint getHeight(){ return height; }
     inline GLint getColorBufferTextureName() { return textureColorBuffer; }
-    inline Texture* getRenderTextures(GLuint index){ return renderTextures[index];};
+    inline Texture* getRenderTexture(GLuint index){ return renderTextures[index];};
+    void colorMaskOn(GLboolean value);
+    void activateCulling(GLboolean value);
     
     void Clear();
     void Activate();
@@ -37,6 +39,8 @@ public:
     
 protected:
     static const GLint MAX_RENDER_TARGETS = 15;
+    
+    static const GLint INVALID_FRAME_BUFFER = -1;
     
     GLuint width, height, frameBuffer, textureColorBuffer, attachment, rbo;
     GLuint minFilter;

@@ -49,21 +49,27 @@ void Material::setCameraParameters(Camera &camera)
     glUniform3fv(glGetUniformLocation(program, CAMERA_POSITION_NAME), 1, glm::value_ptr(camera.position));
 }
 
-void Material::Activate(MaterialSetting::SettingsGroup& group, Scene& scene)
+void Material::ApplySettings(Scene& scene)
 {
-    //TODO: glUseProgram MIGHT BE A PERFORMANCE BOTTLENECK, DO PROFILE
     glUseProgram(program);
     
     setLightingParameters(scene.pointLights);
     setCameraParameters(*scene.renderingCamera);
+}
+void Material::ApplySettings(MaterialSetting::SettingsGroup& group, Scene& scene)
+{
+    glUseProgram(program);
+    
+    ApplySettings(scene);
     uploadRenderingSettings();
     uploadGlobalConstants();
-    
     ApplySettings(group);
 }
 
 void Material::ApplySettings(MaterialSetting::SettingsGroup &group)
 {
+    glUseProgram(program);
+    
     for (std::pair<const GLchar* , MaterialSetting > pair : group)
     {
         const GLchar* name = pair.first;
@@ -74,7 +80,7 @@ void Material::ApplySettings(MaterialSetting::SettingsGroup &group)
 
 void Material::uploadGlobalConstants()
 {
-    //TODO: it looks like state 0 is used for mipmapping levels in the voxel visualization, do we need this?
+    //TODO: it looks like state 0 is used for mipmapping levels in the voxel visualization, do we need this? n
     glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), 0);
 }
 
@@ -90,45 +96,74 @@ void Material::setValue(MaterialSetting &setting, const GLchar* name)
 {
     assert(setting.getType() != MaterialSetting::Type::NONE);
     
-    switch (setting.getType()) {
+    GLint result = 0;
+    //TODO: let's use virtual functions and templates for this instead
+    switch (setting.getType())
+    {
+        case MaterialSetting::Type::MAT4 :
+        {
+            glm::mat4 value = setting.getMat4Value();
+            result = SetParamatermat4(name, value);
+            break;
+        }
         case MaterialSetting::Type::VEC4 :
         {
-            
             glm::vec4 value = setting.getVec4Value();
-            SetParameterv4(name, value);
+            result = SetParameterv4(name, value);
             break;
         }
         case MaterialSetting::Type::VEC3:
         {
             glm::vec3 value = setting.getVec3Value();
-            SetParameterv3(name, value);
+            result = SetParameterv3(name, value);
             break;
         }
         case MaterialSetting::Type::VEC2:
         {
             glm::vec2 value = setting.getVec2Value();
-            SetParameterv2(name, value);
+            result = SetParameterv2(name, value);
             break;
         }
         case MaterialSetting::Type::FLOAT:
         {
             GLfloat value = setting.getFloatValue();
-            SetParameterf(name, value);
+            result = SetParameterf(name, value);
             break;
         }
         case MaterialSetting::Type::INT:
         {
             GLint value = setting.getIntValue();
-            SetParameteri(name, value);
+            result = SetParameteri(name, value);
             break;
         }
-        case MaterialSetting::Type::SAMPLER:
+        case MaterialSetting::Type::SAMPLER_2D:
         {
-            assert(false);
-        }
-            
-        default:
+            MaterialSetting::Sampler2D sampler = setting.getSampler2DValue();
+            result = SetParameterSampler2D(name, sampler);
             break;
+        }
+        case MaterialSetting::Type::SAMPLER_3D:
+        {
+            MaterialSetting::Sampler3D sampler = setting.getSampler3DValue();
+            result = SetParameterSampler3D(name, sampler);
+            break;
+        }
+        case MaterialSetting::Type::POINT_LIGHT:
+        {
+            PointLight &light = setting.getPointLightValue();
+            result = SetPointLight(name, light);
+            break;
+        }
+        default:
+        {
+            assert(false && "unrecognized setting for shader" );
+            break;
+        }
+    }
+    
+    if(result == -1)
+    {
+        printf("WARNING: parameter %s was not found for material %s\n", name, this->name);
     }
 }
 

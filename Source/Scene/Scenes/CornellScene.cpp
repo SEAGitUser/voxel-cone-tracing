@@ -9,7 +9,7 @@
 
 
 #include "Graphic/Lighting/PointLight.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
 #include "Graphic/Renderer/MeshRenderer.h"
 #include "Graphic/Material/MaterialSetting.h"
@@ -42,24 +42,25 @@ void CornellScene::init(unsigned int viewportWidth, unsigned int viewportHeight)
 
     
 	// Cornell box.
-	MaterialSetting::Green(renderers[0]->settingsGroup); //Green wall
-    MaterialSetting::White(renderers[1]->settingsGroup); //floor
-    MaterialSetting::White(renderers[2]->settingsGroup); //roof
-    MaterialSetting::Red(renderers[3]->settingsGroup); //red wall
-    MaterialSetting::White(renderers[4]->settingsGroup); //white wall
-    MaterialSetting::White(renderers[5]->settingsGroup); //left box
+    renderers[0]->voxProperties = VoxProperties::Green(); //wall
+    renderers[1]->voxProperties = VoxProperties::White(); //floor
+    renderers[2]->voxProperties = VoxProperties::White(); //roof
+    renderers[3]->voxProperties = VoxProperties::Red(); //wall
+    renderers[4]->voxProperties = VoxProperties::White(); //wall
+    renderers[5]->voxProperties = VoxProperties::White(); //left box
 
 	renderers[5]->tweakable = true;
-    MaterialSetting::White(renderers[6]->settingsGroup);
+
+    renderers[6]->voxProperties = VoxProperties::White();
 	renderers[6]->tweakable = true;
 
 	// Light Sphere.
-    MaterialSetting::Emissive(renderers[lightSphereIndex]->settingsGroup);
-
-    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::diffuseColor] = MaterialSetting(glm::vec3(1.0f, 1.0f, 1.0f));
-    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::emissivity] = MaterialSetting(8.0f);
-    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::specularReflectivity] = MaterialSetting(0.0f);
-    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::diffuseReflectivity] = MaterialSetting(0.0f);
+    renderers[lightSphereIndex]->voxProperties = VoxProperties::Emissive();
+    
+    renderers[lightSphereIndex]->voxProperties.diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    renderers[lightSphereIndex]->voxProperties.emissivity = 8.0f;
+    renderers[lightSphereIndex]->voxProperties.specularReflectivity = 0.0f;
+    renderers[lightSphereIndex]->voxProperties.diffuseReflectivity = 0.0f;
     
 	// ----------
 	// Lighting.
@@ -74,7 +75,7 @@ void CornellScene::init(unsigned int viewportWidth, unsigned int viewportHeight)
 void CornellScene::update() {
 	FirstPersonScene::update();
 
-	glm::vec3 r = glm::vec3(sinf(float(Time::time * 0.97)), sinf(float(Time::time * 0.45)), sinf(float(Time::time * 0.32)));
+	glm::vec3 r = glm::vec3(sinf(float(FrameRate::time * 0.97)), sinf(float(FrameRate::time * 0.45)), sinf(float(FrameRate::time * 0.32)));
 
 	// Lighting.
 	renderers[lightSphereIndex]->transform.position = glm::vec3(0, 0.5, 0.1) + r * 0.1f;
@@ -85,7 +86,7 @@ void CornellScene::update() {
 	renderers[lightSphereIndex]->transform.updateTransformMatrix();
 
 	pointLights[0].position = renderers[lightSphereIndex]->transform.position;
-    renderers[lightSphereIndex]->settingsGroup[MaterialSetting::diffuseColor] = MaterialSetting(pointLights[0].color);
+    renderers[lightSphereIndex]->voxProperties.diffuseColor = pointLights[0].color;
 }
 
 CornellScene::~CornellScene() {

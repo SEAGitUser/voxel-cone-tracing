@@ -10,6 +10,7 @@
 
 
 #if __APPLE__
+//TODO: there is already a Resource::resourceRoot with the same value
 const std::string AssetStore::resourceRoot = "../Resources";
 
 #else

@@ -9,27 +9,22 @@
 #pragma once
 
 #include "Material.h"
+#include "VoxelizationMaterial.h"
 
 
-class FBO_2D;
-
-class VoxelizationConeTracingMaterial : public Material
+class VoxelizationConeTracingMaterial : public VoxelizationMaterial
 {
 public:
     
     VoxelizationConeTracingMaterial( const GLchar *_name, const ShaderSharedPtr& voxelVert, const ShaderSharedPtr& voxelFrag);
-    virtual void Activate(MaterialSetting::SettingsGroup &group,Scene& scene) override;
+    
+    void ApplyVoxSettings(Transform& worldTransform, Scene& scene, VoxProperties& properties);
     
 private:
     
-    const char * diffuseColorName = "material.diffuseColor";
-    const char * specularColorName = "material.specularColor";
-    const char * emissivityName = "material.emissivity";
-    const char * transparencyName = "material.transparency";
-    const char * refractiveIndexName = "material.refractiveIndex";
-    const char * specularReflectanceName = "material.specularReflectivity";
-    const char * diffuseReflectanceName = "material.diffuseReflectivity";
-    const char * specularDiffusionName = "material.specularDiffusion";
-    
+    using VoxelizationMaterial::ApplySettings;
+    using Material::ApplySettings;
+    MaterialSetting::SettingsGroup group;
+        
 };
 

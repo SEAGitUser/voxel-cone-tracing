@@ -18,7 +18,7 @@ static std::unordered_map<const GLchar*,  MaterialSharedPtr > materialDatabase;
 
 MaterialStore::MaterialStore()
 {
-    
+    //todo: in real world production software this would be some sort of database
     ShaderSharedPtr voxelizationVert = AddShader("Voxelization/voxelization.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr voxelVisualizationVert = AddShader("Voxelization/Visualization/voxel_visualization.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr wordPositionVert = AddShader("Voxelization/Visualization/world_position.vert", Shader::ShaderType::VERTEX);
@@ -32,7 +32,7 @@ MaterialStore::MaterialStore()
     ShaderSharedPtr worldPositoinFrag = AddShader("Voxelization/Visualization/world_position.frag", Shader::ShaderType::FRAGMENT);
 
     
-    MaterialSharedPtr voxelizationMaterial = CREATE_MAT<Material>("voxelization", voxelizationVert, voxelizationFrag, voxelizationGeom);
+    MaterialSharedPtr voxelizationMaterial = CREATE_MAT<VoxelizationMaterial>("voxelization", voxelizationVert, voxelizationFrag, voxelizationGeom);
     AddMaterial(voxelizationMaterial);
     
     MaterialSharedPtr voxelizationConeTracing = CREATE_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing", voxelConeTractingVert, voxelConeTracingFrag);

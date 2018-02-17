@@ -15,8 +15,6 @@ class RenderTarget {
 public:
     RenderTarget(){};
     
-    virtual void SaveRenderState(){};
-    virtual void RestoreRenderState(){};
     virtual void Render( Scene& renderScene ) = 0;
     
     virtual ~RenderTarget(){};

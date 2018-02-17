@@ -7,7 +7,7 @@
 #include "Graphic/Lighting/PointLight.h"
 #include "Graphic/Camera/Camera.h"
 #include "Graphic/Camera/PerspectiveCamera.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
 #include "Graphic/Renderer/MeshRenderer.h"
 #include "Graphic/Material/MaterialSetting.h"
@@ -29,14 +29,16 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 		r->transform.scale = glm::vec3(0.995f);
 		r->transform.updateTransformMatrix();
 	}
-
-	MaterialSetting::Red(renderers[0]->settingsGroup); // Green wall.
-	MaterialSetting::White(renderers[1]->settingsGroup); // Floor.
-	MaterialSetting::White(renderers[2]->settingsGroup) ; // Roof.
-	MaterialSetting::Blue(renderers[3]->settingsGroup); // Red wall.
-	MaterialSetting::White(renderers[4]->settingsGroup) ; // White wall.
-    MaterialSetting::White(renderers[5]->settingsGroup); // Left box.
-    MaterialSetting::White(renderers[6]->settingsGroup); // Right box.
+    
+    renderers[0]->voxProperties = VoxProperties::Red(); //wall
+    renderers[1]->voxProperties = VoxProperties::White(); //floor
+    renderers[2]->voxProperties = VoxProperties::White(); //roof
+    renderers[3]->voxProperties = VoxProperties::Blue(); //wall
+    renderers[4]->voxProperties = VoxProperties::White(); //wall
+    renderers[5]->voxProperties = VoxProperties::White(); //left box
+    renderers[6]->voxProperties = VoxProperties::White(); //right box
+    
+    
 	renderers[5]->enabled = false; // Disable boxes.
 	renderers[6]->enabled = false; // Disable boxes.
 
@@ -49,15 +51,18 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	}
 
 	MeshRenderer * objectRenderer = renderers[objectIndex];
-    MaterialSetting::White(objectRenderer->settingsGroup);
-    MaterialSetting::SettingsGroup& objectMaterialSetting = objectRenderer->settingsGroup;
-    objectMaterialSetting[MaterialSetting::specularColor] =  glm::vec3(0.2, 0.8, 1.0);
-    objectMaterialSetting[MaterialSetting::diffuseColor] = objectMaterialSetting[MaterialSetting::specularColor];
-    objectMaterialSetting[MaterialSetting::emissivity] = 0.00f;
-    objectMaterialSetting[MaterialSetting::specularReflectivity] = 1.0f;
-    objectMaterialSetting[MaterialSetting::diffuseReflectivity] = 0.0f;
-    objectMaterialSetting[MaterialSetting::specularDiffusion] = 3.2f;
-    objectMaterialSetting[MaterialSetting::transparency] = 1.0f;
+
+    objectRenderer->voxProperties = VoxProperties::White();
+    
+    objectRenderer->voxProperties.specularColor = glm::vec3(0.2f, 0.8f, 1.0f);
+    objectRenderer->voxProperties.diffuseColor = objectRenderer->voxProperties.specularColor;
+    objectRenderer->voxProperties.emissivity = 0.0f;
+    objectRenderer->voxProperties.specularReflectivity = 1.0f;
+    objectRenderer->voxProperties.diffuseReflectivity = 0.f;
+    objectRenderer->voxProperties.specularDiffusion = 3.2f;
+    objectRenderer->voxProperties.transparency = 1.0f;
+    
+
 	objectRenderer->tweakable = true;
 	objectRenderer->transform.scale = glm::vec3(0.23f);
 	objectRenderer->transform.rotation = glm::vec3(0.00, 0.30, 0.00);
@@ -73,15 +78,18 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	}
 
 	objectRenderer = renderers[objectIndex];
-    MaterialSetting::White(objectRenderer->settingsGroup);
-    MaterialSetting::SettingsGroup &settings = objectRenderer->settingsGroup;
-    settings[MaterialSetting::specularColor] = glm::vec3(1.0, 0.8, 0.6);
-    settings[MaterialSetting::diffuseColor] = settings[MaterialSetting::specularColor];
-    settings[MaterialSetting::emissivity] = 0.00f;
-    settings[MaterialSetting::specularReflectivity] = 1.0f;
-    settings[MaterialSetting::diffuseReflectivity] = 0.0f;
-    settings[MaterialSetting::specularDiffusion] = 2.2f;
-	objectRenderer->tweakable = true;
+
+    objectRenderer->voxProperties = VoxProperties::White();
+    
+    objectRenderer->voxProperties.specularColor = glm::vec3(1.0f, 0.8f, 0.6f);
+    objectRenderer->voxProperties.diffuseColor= objectRenderer->voxProperties.specularColor;
+    objectRenderer->voxProperties.emissivity = 0.0f;
+    objectRenderer->voxProperties.specularReflectivity = 1.0f;
+    objectRenderer->voxProperties.diffuseReflectivity = 1.0f;
+    objectRenderer->voxProperties.specularDiffusion = 2.2f;
+    
+    
+    objectRenderer->tweakable = true;
 	objectRenderer->transform.scale = glm::vec3(1.3f);
 	objectRenderer->transform.rotation = glm::vec3(0, 2.1, 0);
 	objectRenderer->transform.position = glm::vec3(-0.28, -0.52, 0.00);
@@ -96,14 +104,15 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	}
 
 	objectRenderer = renderers[objectIndex];
-	MaterialSetting::White(objectRenderer->settingsGroup);
-    MaterialSetting::SettingsGroup &settings2 = objectRenderer->settingsGroup;
-    settings2[MaterialSetting::specularColor] = glm::vec3(0.7, 0.8, 0.7);
-    settings2[MaterialSetting::diffuseColor] = settings2[MaterialSetting::specularColor];
-    settings2[MaterialSetting::emissivity] = 0.00f;
-    settings2[MaterialSetting::specularReflectivity] = 0.6f;
-    settings2[MaterialSetting::diffuseReflectivity] = 0.4f;
-    settings2[MaterialSetting::specularDiffusion] = 9.4f;
+	
+    objectRenderer->voxProperties = VoxProperties::White();
+    objectRenderer->voxProperties.specularColor = glm::vec3(0.7f, 0.8f, 0.7f);
+    objectRenderer->voxProperties.diffuseColor = objectRenderer->voxProperties.specularColor;
+    objectRenderer->voxProperties.emissivity = 0.0f;
+    objectRenderer->voxProperties.specularReflectivity = 0.6f;
+    objectRenderer->voxProperties.diffuseReflectivity = 0.5f;
+    objectRenderer->voxProperties.specularDiffusion = 9.4f;
+    
 	objectRenderer->tweakable = true;
 	objectRenderer->transform.scale = glm::vec3(0.31f);
 	objectRenderer->transform.rotation = glm::vec3(0, 0.4, 0);
@@ -117,11 +126,15 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	MeshRenderer * lamp = new MeshRenderer(&(light->meshes[0]));
 	renderers.push_back(lamp);
 
-	MaterialSetting::Emissive(lamp->settingsGroup );
-    lamp->settingsGroup[MaterialSetting::diffuseColor]= glm::vec3(2.f, 2.0f, 2.0f);
-    lamp->settingsGroup[MaterialSetting::emissivity] = 0.5f;
-    lamp->settingsGroup[MaterialSetting::specularReflectivity] = 0.0f;
-    lamp->settingsGroup[MaterialSetting::diffuseReflectivity] = 1.0f;
+	//MaterialSetting::Emissive(lamp->settingsGroup );
+    
+    objectRenderer->voxProperties = VoxProperties::Emissive();
+    
+    objectRenderer->voxProperties.diffuseColor =glm::vec3(2.0f, 2.0f, 2.0f);
+    objectRenderer->voxProperties.emissivity = 0.5f;
+    objectRenderer->voxProperties.specularReflectivity = 0.f;
+    objectRenderer->voxProperties.diffuseReflectivity = 0.0f;
+
 
 	lamp->transform.position = glm::vec3(0, 0.975, 0);
 	lamp->transform.rotation = glm::vec3(-3.1414 * 0.5, 3.1414 * 0.5, 0);

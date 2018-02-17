@@ -7,7 +7,7 @@
 //
 
 
-#import "../../Source/Application.h"
+#import "Application.h"
 
 int main(int argc, const char * argv[]) {
     
@@ -21,3 +21,4 @@ int main(int argc, const char * argv[]) {
     
     
 }
+

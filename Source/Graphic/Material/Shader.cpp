@@ -1,12 +1,13 @@
 #include "Shader.h"
 
+#include "Resource.h"
 #include <cassert>
 #include <iostream>
 #include <fstream>
 #include <vector>
 
 
-const std::string Shader::shaderResourcePath = Resource::resourceRoot + "/Shaders/";
+const std::string Shader::shaderResourcePath =  "/Shaders/";
 
 GLuint Shader::compile() {
 	// Create and compile shader.
@@ -42,7 +43,7 @@ GLuint Shader::compile() {
 Shader::Shader(const char* _path, ShaderType _type) :  shaderType(_type) {
 	
     // Load the shader instantly.
-    path = shaderResourcePath + _path;
+    path = Resource::resourceRoot + Shader::shaderResourcePath + _path;
     
 	std::ifstream fileStream(path, std::ios::in);
 	if (!fileStream.is_open()) {

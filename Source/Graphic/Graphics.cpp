@@ -13,7 +13,7 @@
 #include "Material/Material.h"
 #include "Camera/OrthographicCamera.h"
 #include "Material/MaterialStore.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #include "Shape/Mesh.h"
 #include "Shape/StandardShapes.h"
 #include "Renderer/MeshRenderer.h"
@@ -51,9 +51,8 @@ void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
     
     voxelTexture = new Texture3D(initTextureBuffer, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
                                  VoxelizationMaterial::voxelTextureSize, GL_TRUE, GL_RGBA32F);
-    voxelTexture->SaveTextureState(GL_FALSE, GL_FALSE);
     
-    voxelizeRenderTarget = new VoxelizeRT(viewportWidth, viewportHeight);
+    voxelizeRenderTarget = new VoxelizeRT( );
 
 }
 

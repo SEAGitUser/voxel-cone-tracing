@@ -13,41 +13,123 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
 
+constexpr GLfloat VoxelizationMaterial::VOXEL_CUBE_SCALE = 50.0f;
 
-VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const ShaderSharedPtr vertexShader, const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader):
+VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const ShaderSharedPtr vertexShader,
+                                           const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader):
 Material(_name, vertexShader, fragmentShader, geometryShader)
 {
 }
 
-void VoxelizationMaterial::Activate(MaterialSetting::SettingsGroup &group, Scene& scene)
+void VoxelizationMaterial::GetVoxSettings(MaterialSetting::SettingsGroup &settings, VoxProperties &voxProperties)
 {
-    Material::Activate(group, scene);
-    // Vec3s.
-    
-    GLint index = glGetUniformLocation(program, diffuseColorName);
-    glm::vec3 diffuseColor = group[MaterialSetting::diffuseColor].getVec3Value();
-    glm::vec3 specularColor = group[MaterialSetting::specularColor].getVec3Value();
-    GLfloat emissivity = group[MaterialSetting::emissivity].getFloatValue();
-    GLfloat specularReflectivity = group[MaterialSetting::specularReflectivity].getFloatValue();
-    GLfloat specularDiffusion = group[MaterialSetting::specularDiffusion].getFloatValue();
-    GLfloat transparency = group[MaterialSetting::transparency].getFloatValue();
-    GLfloat refractiveIndex = group[MaterialSetting::refractiveIndex].getFloatValue();
-    GLfloat diffuseReflectivity = group[MaterialSetting::diffuseReflectivity].getFloatValue();
-    
-    glUniform3fv(index, 1, glm::value_ptr(diffuseColor));
-    index = glGetUniformLocation(program, specularColorName);
-    glUniform3fv(index, 1, glm::value_ptr(specularColor));
-    
-    // Floats.
-    glUniform1f(glGetUniformLocation(program, emissivityName), emissivity);
-    glUniform1f(glGetUniformLocation(program, specularReflectanceName), specularReflectivity);
-    glUniform1f(glGetUniformLocation(program, diffuseReflectanceName), diffuseReflectivity);
-    glUniform1f(glGetUniformLocation(program, specularDiffusionName), specularDiffusion);
-    glUniform1f(glGetUniformLocation(program, transparencyName), transparency);
-    glUniform1f(glGetUniformLocation(program, refractiveIndexName), refractiveIndex);
-    
+    settings["material.diffuseColor"] = voxProperties.diffuseColor;
+    settings["material.specularColor"] = voxProperties.specularColor;
+    settings["material.emissivity"] = voxProperties.emissivity;
+    settings["material.specularReflectivity"] = voxProperties.specularReflectivity;
+    settings["material.specularDiffusion"] = voxProperties.specularDiffusion;
+    settings["material.transparency"] = voxProperties.transparency;
+    settings["material.refractiveIndex"] = voxProperties.refractiveIndex;
+    settings["material.diffuseReflectivity"] = voxProperties.diffuseReflectivity;
 }
+
+void VoxelizationMaterial::ApplyVoxSettings(Transform& worldTransform,
+                                            glm::mat4& worldToUnitCube, Scene& scene, VoxProperties& voxProperties)
+{
+    
+    settings["totalSlices"] = VOXEL_CUBE_SCALE;
+    settings["modelMatrix"] = worldTransform.getTransformMatrix();
+    settings["worldToUnitCube"] = worldToUnitCube;
+    
+    std::vector<PointLight> &lights = scene.pointLights;
+    assert(lights.size() == 1 && "only one light supported at the moment");
+    settings["pointLight"] = lights[0];
+    
+    GetVoxSettings(settings, voxProperties);
+    ApplySettings(settings, scene);
+    
+    glError();
+}
+
 
 VoxelizationMaterial::~VoxelizationMaterial()
 {
 }
+
+//////////////////////////////VoxProperties Defaults
+
+
+VoxProperties VoxProperties::White()
+{
+    VoxProperties properties;
+    properties.diffuseColor = glm::vec3(0.97f, 0.97f, 0.97f);
+    return properties;
+}
+
+VoxProperties VoxProperties::Cyan()
+{
+    VoxProperties props;
+    props.diffuseColor = glm::vec3(0.30f, 0.95f, 0.93f);
+    return props;
+}
+
+VoxProperties VoxProperties::Purple()
+{
+    VoxProperties props;
+    props.diffuseColor = glm::vec3(0.97f, 0.05f, 0.93f);
+    return props;
+}
+
+
+VoxProperties  VoxProperties ::Red()
+{
+    VoxProperties props;
+    props.diffuseColor =  glm::vec3(1.0f, 0.26f, 0.27f);
+    return props;
+}
+
+VoxProperties VoxProperties::Green()
+{
+    VoxProperties props;
+    props.diffuseColor =  glm::vec3(0.27f, 1.0f, 0.26f);
+    return props;
+}
+
+VoxProperties  VoxProperties::Blue()
+{
+    VoxProperties props;
+    props.diffuseColor =  glm::vec3(0.35f, 0.38f, 1.0f);
+    return props;
+}
+
+VoxProperties VoxProperties::Emissive()
+{
+    VoxProperties props;
+    props.diffuseColor =  glm::vec3(0.85f, 0.9f, 1.0f);
+    props.emissivity = 1.0f;
+    return props;
+}
+
+VoxProperties VoxProperties::Default()
+{
+    VoxProperties properties;
+    static glm::vec3 pink = glm::vec3(1.000f, 0.412f, 0.706f);
+    
+    properties.diffuseColor = pink;
+    properties.specularColor = glm::vec3(1.0f);
+    properties.specularReflectivity = 0.0f;
+    properties.diffuseReflectivity = 1.0f;
+    properties.emissivity = 1.5f;
+    properties.specularDiffusion = 2.0f;
+    properties.transparency = 0.0f;
+    properties.refractiveIndex = 1.4f;
+    
+    return properties;
+    
+}
+
+
+
+
+
+

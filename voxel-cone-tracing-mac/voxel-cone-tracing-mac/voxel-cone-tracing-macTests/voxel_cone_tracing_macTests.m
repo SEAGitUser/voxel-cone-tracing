@@ -2,8 +2,8 @@
 //  voxel_cone_tracing_macTests.m
 //  voxel-cone-tracing-macTests
 //
-//  Created by Rafael Sabino on 10/29/17.
-//  Copyright © 2017 Rafael Sabino. All rights reserved.
+//  Created by Rafael Sabino on 2/4/18.
+//  Copyright © 2018 Rafael Sabino. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

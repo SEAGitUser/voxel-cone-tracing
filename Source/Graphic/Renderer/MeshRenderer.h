@@ -7,6 +7,7 @@
 #include "Graphic/Lighting/PointLight.h"
 #include "Graphic/Camera/Camera.h"
 #include "Scene/Scene.h"
+#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
@@ -29,13 +30,25 @@ public:
 
 	Transform transform;
 	Mesh * mesh = nullptr;
-
-    // Rendering.
-    MaterialSetting::SettingsGroup settingsGroup;
+    //MaterialSetting::SettingsGroup settingsGroup;
+    VoxelizationMaterial::VoxProperties voxProperties;
+    
+    
+     inline void diffuseColor(glm::vec3 _diffuseColor){ voxProperties.diffuseColor = _diffuseColor;}
+     inline void specularColor(glm::vec3 _specularColor){ voxProperties.specularColor = _specularColor;}
+     inline void diffuseReflectivity(GLfloat _diffuseReflectivity ){ voxProperties.diffuseReflectivity = _diffuseReflectivity;}
+     inline void specularReflectivity(GLfloat _specularReflectivity ){ voxProperties.specularReflectivity = _specularReflectivity;}
+     inline void specularDiffusion(GLfloat _specularDiffusion ){ voxProperties.specularDiffusion = _specularDiffusion; }
+     inline void emissivity(GLfloat _emissivity ){ voxProperties.emissivity = _emissivity; }
+     inline void transparency(GLfloat _transparency ){ voxProperties.transparency = _transparency; }
+     inline void refractiveIndex(GLfloat _refractiveIndex ){ voxProperties.refractiveIndex = _refractiveIndex; }
+    
 
 public:
-	// Constr/destr.
-    MeshRenderer(Mesh *, MaterialSetting::SettingsGroup &);
+
+    void setVoxProperites(VoxelizationMaterial::VoxProperties &voxProperties);
+    
+    MeshRenderer(Mesh *, VoxProperties &);
     MeshRenderer(Mesh *);
 	~MeshRenderer();
 
@@ -43,15 +56,16 @@ public:
     void render(Scene& renderScene, MaterialSetting::SettingsGroup& group, Material* material);
     void renderMesh();
     
-    void voxelize(Scene& renderScene);
-    void applyMaterial(Material* material);
+    void voxelize(Scene& renderScene, glm::mat4& worldToUnitCube);
+
     
+
 private:
 	void setupMeshRenderer();
 	void reuploadIndexDataToGPU();
 	void reuploadVertexDataToGPU();
     
 private:
-    std::shared_ptr<VoxelizationMaterial> voxelization = nullptr;
-    std::shared_ptr<VoxelizationConeTracingMaterial> voxelizationConeTracing = nullptr;
+    std::shared_ptr<VoxelizationMaterial> voxMaterial = nullptr;
+    std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;
 };

@@ -8,7 +8,7 @@
 #include "glm/gtx/rotate_vector.hpp"
 
 #include "Graphic/Camera/Camera.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #include "Graphic/Camera/PerspectiveCamera.h"
 #include "Application.h"
 

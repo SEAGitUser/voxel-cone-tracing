@@ -14,7 +14,7 @@
 #include "Graphic/Graphics.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "Graphic/Renderer/MeshRenderer.h"
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 
 #define __LOG_INTERVAL 0 /* How often we should log frame rate info to the console. = 0 means don't log. */
 #if __LOG_INTERVAL > 0
@@ -125,8 +125,8 @@ void Application::init() {
 	// Finalize initialization.
 	// -------------------------------------
 	srand(0);
-	Time::time = 0;
-	initialized = Time::initialized = true;
+	FrameRate::time = 0;
+	initialized = FrameRate::initialized = true;
 
 	timeElapsed = glfwGetTime() - timeElapsed;
 	std::cout << "Initialization finished (" << timeElapsed << " seconds)!" << std::endl;
@@ -161,9 +161,9 @@ void Application::run()
 
 		// Update time vals.
 		double currentTime = glfwGetTime();
-		Time::deltaTime = currentTime - Time::time;
-		Time::time = currentTime;
-		Time::framesPerSecond = 1.0 / (Time::deltaTime + 0.0000001);
+		FrameRate::deltaTime = currentTime - FrameRate::time;
+		FrameRate::time = currentTime;
+		FrameRate::framesPerSecond = 1.0 / (FrameRate::deltaTime + 0.0000001);
 
 		// --------------------------------------------------
 		// Update world.
@@ -212,12 +212,12 @@ void Application::run()
 		glfwPollEvents();
 
 		// Update frame count.
-		Time::frameCount++;
-		smoothedDeltaTimeAccumulator += Time::deltaTime;
+		FrameRate::frameCount++;
+		smoothedDeltaTimeAccumulator += FrameRate::deltaTime;
 
 		// Update smoothed delta time.
-		if (Time::smoothedDeltaTimeFrameCount > 0 && Time::frameCount % Time::smoothedDeltaTimeFrameCount == 0) {
-			Time::smoothedDeltaTime = smoothedDeltaTimeAccumulator / Time::smoothedDeltaTimeFrameCount;
+		if (FrameRate::smoothedDeltaTimeFrameCount > 0 && FrameRate::frameCount % FrameRate::smoothedDeltaTimeFrameCount == 0) {
+			FrameRate::smoothedDeltaTime = smoothedDeltaTimeAccumulator / FrameRate::smoothedDeltaTimeFrameCount;
 			smoothedDeltaTimeAccumulator = 0;
 		}
 

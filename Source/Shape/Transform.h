@@ -11,6 +11,8 @@
 /// <summary> Represents a transform: rotation, position and scale. </summary>
 class Transform {
 public:
+    //TODO: these are used as transformed to quaternions first, then turned into mat4x4 matrices, maybe
+    //this should be matrices in the first place
 	glm::vec3 position = { 0,0,0 }, scale = { 1,1,1 }, rotation = { 0,0,0 };
 	Transform * parent = nullptr;
 
@@ -23,7 +25,7 @@ public:
 	void updateTransformMatrix();
 
 	/// <summary> Returns a reference to the transform matrix </summary>
-	glm::mat4 & getTransformMatrix();
+	const glm::mat4 & getTransformMatrix();
 
 	/// <summary> Output. </summary>
 	friend std::ostream & operator<<(std::ostream &, const Transform &);

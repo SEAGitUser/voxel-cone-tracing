@@ -8,7 +8,7 @@
 #include <iomanip>
 #include "OpenGL_Includes.h"
 
-#include "Time/Time.h"
+#include "Time/FrameRate.h"
 #endif
 
 #include "ObjLoader.h"

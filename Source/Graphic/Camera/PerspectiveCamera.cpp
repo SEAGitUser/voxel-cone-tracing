@@ -1,4 +1,10 @@
 #include "PerspectiveCamera.h"
 
-PerspectiveCamera::PerspectiveCamera(float _fov, float _aspect, float _near, float _far)
-	: Camera(glm::perspective(_fov, _aspect, _near, _far)) {}
+PerspectiveCamera::PerspectiveCamera(GLfloat _fov, GLfloat _aspect, GLfloat _near, GLfloat _far)
+	: Camera(glm::perspective(_fov, _aspect, _near, _far))
+{
+    fov = _fov;
+    aspect = _aspect;
+    near  =_near;
+    far  = _far;
+}

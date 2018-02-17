@@ -1,0 +1,966 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B98CE5942027A19300B45558 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B98CE5932027A19300B45558 /* Assets.xcassets */; };
+		B98CE5972027A19300B45558 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B98CE5952027A19300B45558 /* MainMenu.xib */; };
+		B98CE59A2027A19300B45558 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B98CE5992027A19300B45558 /* main.mm */; };
+		B98CE5A52027A19300B45558 /* voxel_cone_tracing_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B98CE5A42027A19300B45558 /* voxel_cone_tracing_macTests.m */; };
+		B98CE5B02027A19300B45558 /* voxel_cone_tracing_macUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B98CE5AF2027A19300B45558 /* voxel_cone_tracing_macUITests.m */; };
+		B98CE69E2027A25D00B45558 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6422027A25C00B45558 /* Mesh.cpp */; };
+		B98CE69F2027A25D00B45558 /* StandardShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6432027A25C00B45558 /* StandardShapes.cpp */; };
+		B98CE6A02027A25D00B45558 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6462027A25C00B45558 /* Transform.cpp */; };
+		B98CE6A12027A25D00B45558 /* FrameRate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE64D2027A25C00B45558 /* FrameRate.cpp */; };
+		B98CE6A22027A25D00B45558 /* MeshRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6502027A25C00B45558 /* MeshRenderer.cpp */; };
+		B98CE6A32027A25D00B45558 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6542027A25C00B45558 /* Camera.cpp */; };
+		B98CE6A42027A25D00B45558 /* OrthographicCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6552027A25C00B45558 /* OrthographicCamera.cpp */; };
+		B98CE6A52027A25D00B45558 /* FirstPersonController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE65A2027A25C00B45558 /* FirstPersonController.cpp */; };
+		B98CE6A62027A25D00B45558 /* PerspectiveCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE65B2027A25C00B45558 /* PerspectiveCamera.cpp */; };
+		B98CE6A72027A25D00B45558 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE65C2027A25C00B45558 /* Graphics.cpp */; };
+		B98CE6A82027A25D00B45558 /* FBO_3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE65F2027A25C00B45558 /* FBO_3D.cpp */; };
+		B98CE6A92027A25D00B45558 /* FBO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6602027A25C00B45558 /* FBO.cpp */; };
+		B98CE6AA2027A25D00B45558 /* FBO_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6622027A25C00B45558 /* FBO_2D.cpp */; };
+		B98CE6AB2027A25D00B45558 /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6692027A25C00B45558 /* Resource.cpp */; };
+		B98CE6AC2027A25D00B45558 /* VoxelizationConeTracingMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE66B2027A25C00B45558 /* VoxelizationConeTracingMaterial.cpp */; };
+		B98CE6AD2027A25D00B45558 /* VoxelVisualizationMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE66C2027A25C00B45558 /* VoxelVisualizationMaterial.cpp */; };
+		B98CE6AE2027A25D00B45558 /* VoxelizationMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE66E2027A25C00B45558 /* VoxelizationMaterial.cpp */; };
+		B98CE6AF2027A25D00B45558 /* MaterialStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6712027A25C00B45558 /* MaterialStore.cpp */; };
+		B98CE6B02027A25D00B45558 /* MaterialSetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6732027A25C00B45558 /* MaterialSetting.cpp */; };
+		B98CE6B12027A25D00B45558 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6762027A25C00B45558 /* Shader.cpp */; };
+		B98CE6B22027A25D00B45558 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE67B2027A25C00B45558 /* Texture.cpp */; };
+		B98CE6B32027A25D00B45558 /* Texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE67D2027A25C00B45558 /* Texture2D.cpp */; };
+		B98CE6B42027A25D00B45558 /* Texture3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE67E2027A25C00B45558 /* Texture3D.cpp */; };
+		B98CE6B52027A25D00B45558 /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE67F2027A25C00B45558 /* Material.cpp */; };
+		B98CE6B62027A25D00B45558 /* RenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6822027A25C00B45558 /* RenderTarget.cpp */; };
+		B98CE6B72027A25D00B45558 /* VoxelVisualizationRT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6832027A25C00B45558 /* VoxelVisualizationRT.cpp */; };
+		B98CE6B82027A25D00B45558 /* VoxelizeRT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6862027A25C00B45558 /* VoxelizeRT.cpp */; };
+		B98CE6B92027A25D00B45558 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6872027A25C00B45558 /* Application.cpp */; };
+		B98CE6BA2027A25D00B45558 /* GlassScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE68A2027A25C00B45558 /* GlassScene.cpp */; };
+		B98CE6BB2027A25D00B45558 /* MultipleObjectsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE68B2027A25C00B45558 /* MultipleObjectsScene.cpp */; };
+		B98CE6BC2027A25D00B45558 /* CornellScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE68D2027A25C00B45558 /* CornellScene.cpp */; };
+		B98CE6BD2027A25D00B45558 /* DragonScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE68E2027A25C00B45558 /* DragonScene.cpp */; };
+		B98CE6BE2027A25D00B45558 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6982027A25C00B45558 /* ObjLoader.cpp */; };
+		B98CE6BF2027A25D00B45558 /* tiny_obj_loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE69B2027A25C00B45558 /* tiny_obj_loader.cpp */; };
+		B98CE6C02027A25D00B45558 /* AssetStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE69D2027A25C00B45558 /* AssetStore.cpp */; };
+		B9F501A92027B7690008D84E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F501A82027B7690008D84E /* OpenGL.framework */; };
+		B9F501AD2027BBFB0008D84E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F501AC2027BBFB0008D84E /* CoreGraphics.framework */; };
+		B9F501AF2027BC1B0008D84E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F501AE2027BC1B0008D84E /* CoreVideo.framework */; };
+		B9F501B12027BC8B0008D84E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F501B02027BC8B0008D84E /* IOKit.framework */; };
+		B9F501B32027BCB50008D84E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F501B22027BCB40008D84E /* AppKit.framework */; };
+		B9F501B52027BDE90008D84E /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = B9F501B42027BDE90008D84E /* Shaders */; };
+		B9F501B82027C5B90008D84E /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = B9F501B72027C5B90008D84E /* Assets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B98CE5A12027A19300B45558 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B98CE5852027A19300B45558 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B98CE58C2027A19300B45558;
+			remoteInfo = "voxel-cone-tracing-mac";
+		};
+		B98CE5AC2027A19300B45558 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B98CE5852027A19300B45558 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B98CE58C2027A19300B45558;
+			remoteInfo = "voxel-cone-tracing-mac";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B98CE58D2027A19300B45558 /* voxel-cone-tracing-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxel-cone-tracing-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98CE5932027A19300B45558 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B98CE5962027A19300B45558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B98CE5982027A19300B45558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B98CE5992027A19300B45558 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		B98CE59B2027A19300B45558 /* voxel_cone_tracing_mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = voxel_cone_tracing_mac.entitlements; sourceTree = "<group>"; };
+		B98CE5A02027A19300B45558 /* voxel-cone-tracing-macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "voxel-cone-tracing-macTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98CE5A42027A19300B45558 /* voxel_cone_tracing_macTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voxel_cone_tracing_macTests.m; sourceTree = "<group>"; };
+		B98CE5A62027A19300B45558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B98CE5AB2027A19300B45558 /* voxel-cone-tracing-macUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "voxel-cone-tracing-macUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98CE5AF2027A19300B45558 /* voxel_cone_tracing_macUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voxel_cone_tracing_macUITests.m; sourceTree = "<group>"; };
+		B98CE5B12027A19300B45558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B98CE6402027A25C00B45558 /* OpenGL_Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL_Includes.h; sourceTree = "<group>"; };
+		B98CE6422027A25C00B45558 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		B98CE6432027A25C00B45558 /* StandardShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandardShapes.cpp; sourceTree = "<group>"; };
+		B98CE6442027A25C00B45558 /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
+		B98CE6452027A25C00B45558 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
+		B98CE6462027A25C00B45558 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		B98CE6472027A25C00B45558 /* StandardShapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardShapes.h; sourceTree = "<group>"; };
+		B98CE6482027A25C00B45558 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		B98CE6492027A25C00B45558 /* VertexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexData.h; sourceTree = "<group>"; };
+		B98CE64A2027A25C00B45558 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
+		B98CE64C2027A25C00B45558 /* FrameRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRate.h; sourceTree = "<group>"; };
+		B98CE64D2027A25C00B45558 /* FrameRate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameRate.cpp; sourceTree = "<group>"; };
+		B98CE6502027A25C00B45558 /* MeshRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshRenderer.cpp; sourceTree = "<group>"; };
+		B98CE6512027A25C00B45558 /* MeshRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshRenderer.h; sourceTree = "<group>"; };
+		B98CE6532027A25C00B45558 /* PerspectiveCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerspectiveCamera.h; sourceTree = "<group>"; };
+		B98CE6542027A25C00B45558 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		B98CE6552027A25C00B45558 /* OrthographicCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OrthographicCamera.cpp; sourceTree = "<group>"; };
+		B98CE6562027A25C00B45558 /* OrthographicCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrthographicCamera.h; sourceTree = "<group>"; };
+		B98CE6572027A25C00B45558 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		B98CE6592027A25C00B45558 /* FirstPersonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPersonController.h; sourceTree = "<group>"; };
+		B98CE65A2027A25C00B45558 /* FirstPersonController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirstPersonController.cpp; sourceTree = "<group>"; };
+		B98CE65B2027A25C00B45558 /* PerspectiveCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PerspectiveCamera.cpp; sourceTree = "<group>"; };
+		B98CE65C2027A25C00B45558 /* Graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
+		B98CE65E2027A25C00B45558 /* FBO_3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO_3D.h; sourceTree = "<group>"; };
+		B98CE65F2027A25C00B45558 /* FBO_3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FBO_3D.cpp; sourceTree = "<group>"; };
+		B98CE6602027A25C00B45558 /* FBO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FBO.cpp; sourceTree = "<group>"; };
+		B98CE6612027A25C00B45558 /* FBO_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO_2D.h; sourceTree = "<group>"; };
+		B98CE6622027A25C00B45558 /* FBO_2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FBO_2D.cpp; sourceTree = "<group>"; };
+		B98CE6632027A25C00B45558 /* FBO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBO.h; sourceTree = "<group>"; };
+		B98CE6652027A25C00B45558 /* PointLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointLight.h; sourceTree = "<group>"; };
+		B98CE6662027A25C00B45558 /* Graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
+		B98CE6682027A25C00B45558 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
+		B98CE6692027A25C00B45558 /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
+		B98CE66B2027A25C00B45558 /* VoxelizationConeTracingMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizationConeTracingMaterial.cpp; sourceTree = "<group>"; };
+		B98CE66C2027A25C00B45558 /* VoxelVisualizationMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelVisualizationMaterial.cpp; sourceTree = "<group>"; };
+		B98CE66D2027A25C00B45558 /* VoxelVisualizationMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelVisualizationMaterial.h; sourceTree = "<group>"; };
+		B98CE66E2027A25C00B45558 /* VoxelizationMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizationMaterial.cpp; sourceTree = "<group>"; };
+		B98CE66F2027A25C00B45558 /* VoxelizationConeTracingMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelizationConeTracingMaterial.h; sourceTree = "<group>"; };
+		B98CE6702027A25C00B45558 /* VoxelizationMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelizationMaterial.h; sourceTree = "<group>"; };
+		B98CE6712027A25C00B45558 /* MaterialStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MaterialStore.cpp; sourceTree = "<group>"; };
+		B98CE6732027A25C00B45558 /* MaterialSetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MaterialSetting.cpp; sourceTree = "<group>"; };
+		B98CE6742027A25C00B45558 /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		B98CE6752027A25C00B45558 /* MaterialStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialStore.h; sourceTree = "<group>"; };
+		B98CE6762027A25C00B45558 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
+		B98CE6772027A25C00B45558 /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
+		B98CE6792027A25C00B45558 /* Texture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
+		B98CE67A2027A25C00B45558 /* Texture3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture3D.h; sourceTree = "<group>"; };
+		B98CE67B2027A25C00B45558 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		B98CE67C2027A25C00B45558 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		B98CE67D2027A25C00B45558 /* Texture2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture2D.cpp; sourceTree = "<group>"; };
+		B98CE67E2027A25C00B45558 /* Texture3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture3D.cpp; sourceTree = "<group>"; };
+		B98CE67F2027A25C00B45558 /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		B98CE6812027A25C00B45558 /* VoxelVisualizationRT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelVisualizationRT.h; sourceTree = "<group>"; };
+		B98CE6822027A25C00B45558 /* RenderTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderTarget.cpp; sourceTree = "<group>"; };
+		B98CE6832027A25C00B45558 /* VoxelVisualizationRT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelVisualizationRT.cpp; sourceTree = "<group>"; };
+		B98CE6842027A25C00B45558 /* VoxelizeRT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelizeRT.h; sourceTree = "<group>"; };
+		B98CE6852027A25C00B45558 /* RenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderTarget.h; sourceTree = "<group>"; };
+		B98CE6862027A25C00B45558 /* VoxelizeRT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelizeRT.cpp; sourceTree = "<group>"; };
+		B98CE6872027A25C00B45558 /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
+		B98CE68A2027A25C00B45558 /* GlassScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlassScene.cpp; sourceTree = "<group>"; };
+		B98CE68B2027A25C00B45558 /* MultipleObjectsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultipleObjectsScene.cpp; sourceTree = "<group>"; };
+		B98CE68C2027A25C00B45558 /* CornellScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornellScene.h; sourceTree = "<group>"; };
+		B98CE68D2027A25C00B45558 /* CornellScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CornellScene.cpp; sourceTree = "<group>"; };
+		B98CE68E2027A25C00B45558 /* DragonScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DragonScene.cpp; sourceTree = "<group>"; };
+		B98CE68F2027A25C00B45558 /* MultipleObjectsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipleObjectsScene.h; sourceTree = "<group>"; };
+		B98CE6902027A25C00B45558 /* GlassScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlassScene.h; sourceTree = "<group>"; };
+		B98CE6912027A25C00B45558 /* DragonScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragonScene.h; sourceTree = "<group>"; };
+		B98CE6922027A25C00B45558 /* ScenePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePack.h; sourceTree = "<group>"; };
+		B98CE6942027A25C00B45558 /* FirstPersonScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPersonScene.h; sourceTree = "<group>"; };
+		B98CE6952027A25C00B45558 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		B98CE6972027A25C00B45558 /* ObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjLoader.h; sourceTree = "<group>"; };
+		B98CE6982027A25C00B45558 /* ObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjLoader.cpp; sourceTree = "<group>"; };
+		B98CE6992027A25C00B45558 /* AssetStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetStore.h; sourceTree = "<group>"; };
+		B98CE69B2027A25C00B45558 /* tiny_obj_loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cpp; sourceTree = "<group>"; };
+		B98CE69C2027A25C00B45558 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
+		B98CE69D2027A25C00B45558 /* AssetStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetStore.cpp; sourceTree = "<group>"; };
+		B9F501A82027B7690008D84E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		B9F501AB2027B7B00008D84E /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
+		B9F501AC2027BBFB0008D84E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B9F501AE2027BC1B0008D84E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		B9F501B02027BC8B0008D84E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		B9F501B22027BCB40008D84E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		B9F501B42027BDE90008D84E /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shaders; path = ../../Shaders; sourceTree = "<group>"; };
+		B9F501B62027C3080008D84E /* MaterialSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialSetting.h; sourceTree = "<group>"; };
+		B9F501B72027C5B90008D84E /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Assets; path = ../../Assets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B98CE58A2027A19300B45558 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9F501B32027BCB50008D84E /* AppKit.framework in Frameworks */,
+				B9F501B12027BC8B0008D84E /* IOKit.framework in Frameworks */,
+				B9F501AF2027BC1B0008D84E /* CoreVideo.framework in Frameworks */,
+				B9F501AD2027BBFB0008D84E /* CoreGraphics.framework in Frameworks */,
+				B9F501A92027B7690008D84E /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98CE59D2027A19300B45558 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98CE5A82027A19300B45558 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B98CE5842027A19300B45558 = {
+			isa = PBXGroup;
+			children = (
+				B9F501B72027C5B90008D84E /* Assets */,
+				B9F501B42027BDE90008D84E /* Shaders */,
+				B98CE63F2027A25C00B45558 /* Source */,
+				B98CE58F2027A19300B45558 /* voxel-cone-tracing-mac */,
+				B98CE5A32027A19300B45558 /* voxel-cone-tracing-macTests */,
+				B98CE5AE2027A19300B45558 /* voxel-cone-tracing-macUITests */,
+				B98CE58E2027A19300B45558 /* Products */,
+				B9F501A72027B7690008D84E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B98CE58E2027A19300B45558 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE58D2027A19300B45558 /* voxel-cone-tracing-mac.app */,
+				B98CE5A02027A19300B45558 /* voxel-cone-tracing-macTests.xctest */,
+				B98CE5AB2027A19300B45558 /* voxel-cone-tracing-macUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B98CE58F2027A19300B45558 /* voxel-cone-tracing-mac */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE5932027A19300B45558 /* Assets.xcassets */,
+				B98CE5952027A19300B45558 /* MainMenu.xib */,
+				B98CE5982027A19300B45558 /* Info.plist */,
+				B98CE5992027A19300B45558 /* main.mm */,
+				B98CE59B2027A19300B45558 /* voxel_cone_tracing_mac.entitlements */,
+			);
+			path = "voxel-cone-tracing-mac";
+			sourceTree = "<group>";
+		};
+		B98CE5A32027A19300B45558 /* voxel-cone-tracing-macTests */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE5A42027A19300B45558 /* voxel_cone_tracing_macTests.m */,
+				B98CE5A62027A19300B45558 /* Info.plist */,
+			);
+			path = "voxel-cone-tracing-macTests";
+			sourceTree = "<group>";
+		};
+		B98CE5AE2027A19300B45558 /* voxel-cone-tracing-macUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE5AF2027A19300B45558 /* voxel_cone_tracing_macUITests.m */,
+				B98CE5B12027A19300B45558 /* Info.plist */,
+			);
+			path = "voxel-cone-tracing-macUITests";
+			sourceTree = "<group>";
+		};
+		B98CE63F2027A25C00B45558 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE64A2027A25C00B45558 /* Application.h */,
+				B98CE6872027A25C00B45558 /* Application.cpp */,
+				B98CE6402027A25C00B45558 /* OpenGL_Includes.h */,
+				B98CE6412027A25C00B45558 /* Shape */,
+				B98CE64B2027A25C00B45558 /* Time */,
+				B98CE64E2027A25C00B45558 /* Graphic */,
+				B98CE6882027A25C00B45558 /* Scene */,
+				B98CE6962027A25C00B45558 /* Utility */,
+			);
+			name = Source;
+			path = ../../Source;
+			sourceTree = "<group>";
+		};
+		B98CE6412027A25C00B45558 /* Shape */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6422027A25C00B45558 /* Mesh.cpp */,
+				B98CE6432027A25C00B45558 /* StandardShapes.cpp */,
+				B98CE6442027A25C00B45558 /* Shape.h */,
+				B98CE6452027A25C00B45558 /* Mesh.h */,
+				B98CE6462027A25C00B45558 /* Transform.cpp */,
+				B98CE6472027A25C00B45558 /* StandardShapes.h */,
+				B98CE6482027A25C00B45558 /* Transform.h */,
+				B98CE6492027A25C00B45558 /* VertexData.h */,
+			);
+			path = Shape;
+			sourceTree = "<group>";
+		};
+		B98CE64B2027A25C00B45558 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE64C2027A25C00B45558 /* FrameRate.h */,
+				B98CE64D2027A25C00B45558 /* FrameRate.cpp */,
+			);
+			path = Time;
+			sourceTree = "<group>";
+		};
+		B98CE64E2027A25C00B45558 /* Graphic */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE64F2027A25C00B45558 /* Renderer */,
+				B98CE6522027A25C00B45558 /* Camera */,
+				B98CE65C2027A25C00B45558 /* Graphics.cpp */,
+				B98CE6662027A25C00B45558 /* Graphics.h */,
+				B98CE65D2027A25C00B45558 /* FBO */,
+				B98CE6642027A25C00B45558 /* Lighting */,
+				B98CE6672027A25C00B45558 /* Material */,
+				B98CE6802027A25C00B45558 /* RenderTarget */,
+			);
+			path = Graphic;
+			sourceTree = "<group>";
+		};
+		B98CE64F2027A25C00B45558 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6502027A25C00B45558 /* MeshRenderer.cpp */,
+				B98CE6512027A25C00B45558 /* MeshRenderer.h */,
+			);
+			path = Renderer;
+			sourceTree = "<group>";
+		};
+		B98CE6522027A25C00B45558 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6532027A25C00B45558 /* PerspectiveCamera.h */,
+				B98CE6542027A25C00B45558 /* Camera.cpp */,
+				B98CE6552027A25C00B45558 /* OrthographicCamera.cpp */,
+				B98CE6562027A25C00B45558 /* OrthographicCamera.h */,
+				B98CE6572027A25C00B45558 /* Camera.h */,
+				B98CE6582027A25C00B45558 /* Controllers */,
+				B98CE65B2027A25C00B45558 /* PerspectiveCamera.cpp */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		B98CE6582027A25C00B45558 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6592027A25C00B45558 /* FirstPersonController.h */,
+				B98CE65A2027A25C00B45558 /* FirstPersonController.cpp */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B98CE65D2027A25C00B45558 /* FBO */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE65E2027A25C00B45558 /* FBO_3D.h */,
+				B98CE65F2027A25C00B45558 /* FBO_3D.cpp */,
+				B98CE6602027A25C00B45558 /* FBO.cpp */,
+				B98CE6612027A25C00B45558 /* FBO_2D.h */,
+				B98CE6622027A25C00B45558 /* FBO_2D.cpp */,
+				B98CE6632027A25C00B45558 /* FBO.h */,
+			);
+			path = FBO;
+			sourceTree = "<group>";
+		};
+		B98CE6642027A25C00B45558 /* Lighting */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6652027A25C00B45558 /* PointLight.h */,
+			);
+			path = Lighting;
+			sourceTree = "<group>";
+		};
+		B98CE6672027A25C00B45558 /* Material */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE66A2027A25C00B45558 /* Voxelization */,
+				B98CE6752027A25C00B45558 /* MaterialStore.h */,
+				B98CE6712027A25C00B45558 /* MaterialStore.cpp */,
+				B9F501B62027C3080008D84E /* MaterialSetting.h */,
+				B98CE6732027A25C00B45558 /* MaterialSetting.cpp */,
+				B98CE6742027A25C00B45558 /* Material.h */,
+				B98CE67F2027A25C00B45558 /* Material.cpp */,
+				B98CE6682027A25C00B45558 /* Shader.h */,
+				B98CE6762027A25C00B45558 /* Shader.cpp */,
+				B98CE6772027A25C00B45558 /* Resource.h */,
+				B98CE6692027A25C00B45558 /* Resource.cpp */,
+				B98CE6782027A25C00B45558 /* Texture */,
+			);
+			path = Material;
+			sourceTree = "<group>";
+		};
+		B98CE66A2027A25C00B45558 /* Voxelization */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE66F2027A25C00B45558 /* VoxelizationConeTracingMaterial.h */,
+				B98CE66B2027A25C00B45558 /* VoxelizationConeTracingMaterial.cpp */,
+				B98CE66D2027A25C00B45558 /* VoxelVisualizationMaterial.h */,
+				B98CE66C2027A25C00B45558 /* VoxelVisualizationMaterial.cpp */,
+				B98CE6702027A25C00B45558 /* VoxelizationMaterial.h */,
+				B98CE66E2027A25C00B45558 /* VoxelizationMaterial.cpp */,
+			);
+			path = Voxelization;
+			sourceTree = "<group>";
+		};
+		B98CE6782027A25C00B45558 /* Texture */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE67B2027A25C00B45558 /* Texture.cpp */,
+				B98CE67C2027A25C00B45558 /* Texture.h */,
+				B98CE6792027A25C00B45558 /* Texture2D.h */,
+				B98CE67D2027A25C00B45558 /* Texture2D.cpp */,
+				B98CE67A2027A25C00B45558 /* Texture3D.h */,
+				B98CE67E2027A25C00B45558 /* Texture3D.cpp */,
+			);
+			path = Texture;
+			sourceTree = "<group>";
+		};
+		B98CE6802027A25C00B45558 /* RenderTarget */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6822027A25C00B45558 /* RenderTarget.cpp */,
+				B98CE6812027A25C00B45558 /* VoxelVisualizationRT.h */,
+				B98CE6832027A25C00B45558 /* VoxelVisualizationRT.cpp */,
+				B98CE6842027A25C00B45558 /* VoxelizeRT.h */,
+				B98CE6852027A25C00B45558 /* RenderTarget.h */,
+				B98CE6862027A25C00B45558 /* VoxelizeRT.cpp */,
+			);
+			path = RenderTarget;
+			sourceTree = "<group>";
+		};
+		B98CE6882027A25C00B45558 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6892027A25C00B45558 /* Scenes */,
+				B98CE6922027A25C00B45558 /* ScenePack.h */,
+				B98CE6932027A25C00B45558 /* Templates */,
+				B98CE6952027A25C00B45558 /* Scene.h */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		B98CE6892027A25C00B45558 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE68A2027A25C00B45558 /* GlassScene.cpp */,
+				B98CE68B2027A25C00B45558 /* MultipleObjectsScene.cpp */,
+				B98CE68C2027A25C00B45558 /* CornellScene.h */,
+				B98CE68D2027A25C00B45558 /* CornellScene.cpp */,
+				B98CE68E2027A25C00B45558 /* DragonScene.cpp */,
+				B98CE68F2027A25C00B45558 /* MultipleObjectsScene.h */,
+				B98CE6902027A25C00B45558 /* GlassScene.h */,
+				B98CE6912027A25C00B45558 /* DragonScene.h */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		B98CE6932027A25C00B45558 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6942027A25C00B45558 /* FirstPersonScene.h */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
+		B98CE6962027A25C00B45558 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE6972027A25C00B45558 /* ObjLoader.h */,
+				B98CE6982027A25C00B45558 /* ObjLoader.cpp */,
+				B98CE6992027A25C00B45558 /* AssetStore.h */,
+				B98CE69A2027A25C00B45558 /* External */,
+				B98CE69D2027A25C00B45558 /* AssetStore.cpp */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		B98CE69A2027A25C00B45558 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				B98CE69B2027A25C00B45558 /* tiny_obj_loader.cpp */,
+				B98CE69C2027A25C00B45558 /* tiny_obj_loader.h */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		B9F501A72027B7690008D84E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B9F501B22027BCB40008D84E /* AppKit.framework */,
+				B9F501B02027BC8B0008D84E /* IOKit.framework */,
+				B9F501AE2027BC1B0008D84E /* CoreVideo.framework */,
+				B9F501AC2027BBFB0008D84E /* CoreGraphics.framework */,
+				B9F501AA2027B7B00008D84E /* Debug */,
+				B9F501A82027B7690008D84E /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B9F501AA2027B7B00008D84E /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				B9F501AB2027B7B00008D84E /* libglfw3.a */,
+			);
+			name = Debug;
+			path = ../../Libraries/Mac/Debug;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B98CE58C2027A19300B45558 /* voxel-cone-tracing-mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B98CE5B42027A19300B45558 /* Build configuration list for PBXNativeTarget "voxel-cone-tracing-mac" */;
+			buildPhases = (
+				B98CE5892027A19300B45558 /* Sources */,
+				B98CE58A2027A19300B45558 /* Frameworks */,
+				B98CE58B2027A19300B45558 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "voxel-cone-tracing-mac";
+			productName = "voxel-cone-tracing-mac";
+			productReference = B98CE58D2027A19300B45558 /* voxel-cone-tracing-mac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B98CE59F2027A19300B45558 /* voxel-cone-tracing-macTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B98CE5B72027A19300B45558 /* Build configuration list for PBXNativeTarget "voxel-cone-tracing-macTests" */;
+			buildPhases = (
+				B98CE59C2027A19300B45558 /* Sources */,
+				B98CE59D2027A19300B45558 /* Frameworks */,
+				B98CE59E2027A19300B45558 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B98CE5A22027A19300B45558 /* PBXTargetDependency */,
+			);
+			name = "voxel-cone-tracing-macTests";
+			productName = "voxel-cone-tracing-macTests";
+			productReference = B98CE5A02027A19300B45558 /* voxel-cone-tracing-macTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B98CE5AA2027A19300B45558 /* voxel-cone-tracing-macUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B98CE5BA2027A19300B45558 /* Build configuration list for PBXNativeTarget "voxel-cone-tracing-macUITests" */;
+			buildPhases = (
+				B98CE5A72027A19300B45558 /* Sources */,
+				B98CE5A82027A19300B45558 /* Frameworks */,
+				B98CE5A92027A19300B45558 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B98CE5AD2027A19300B45558 /* PBXTargetDependency */,
+			);
+			name = "voxel-cone-tracing-macUITests";
+			productName = "voxel-cone-tracing-macUITests";
+			productReference = B98CE5AB2027A19300B45558 /* voxel-cone-tracing-macUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B98CE5852027A19300B45558 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Rafael Sabino";
+				TargetAttributes = {
+					B98CE58C2027A19300B45558 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					B98CE59F2027A19300B45558 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = B98CE58C2027A19300B45558;
+					};
+					B98CE5AA2027A19300B45558 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = B98CE58C2027A19300B45558;
+					};
+				};
+			};
+			buildConfigurationList = B98CE5882027A19300B45558 /* Build configuration list for PBXProject "voxel-cone-tracing-mac" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B98CE5842027A19300B45558;
+			productRefGroup = B98CE58E2027A19300B45558 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B98CE58C2027A19300B45558 /* voxel-cone-tracing-mac */,
+				B98CE59F2027A19300B45558 /* voxel-cone-tracing-macTests */,
+				B98CE5AA2027A19300B45558 /* voxel-cone-tracing-macUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B98CE58B2027A19300B45558 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9F501B52027BDE90008D84E /* Shaders in Resources */,
+				B9F501B82027C5B90008D84E /* Assets in Resources */,
+				B98CE5942027A19300B45558 /* Assets.xcassets in Resources */,
+				B98CE5972027A19300B45558 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98CE59E2027A19300B45558 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98CE5A92027A19300B45558 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B98CE5892027A19300B45558 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98CE69F2027A25D00B45558 /* StandardShapes.cpp in Sources */,
+				B98CE6AF2027A25D00B45558 /* MaterialStore.cpp in Sources */,
+				B98CE6A92027A25D00B45558 /* FBO.cpp in Sources */,
+				B98CE6AE2027A25D00B45558 /* VoxelizationMaterial.cpp in Sources */,
+				B98CE6B62027A25D00B45558 /* RenderTarget.cpp in Sources */,
+				B98CE6B12027A25D00B45558 /* Shader.cpp in Sources */,
+				B98CE69E2027A25D00B45558 /* Mesh.cpp in Sources */,
+				B98CE6A42027A25D00B45558 /* OrthographicCamera.cpp in Sources */,
+				B98CE6BE2027A25D00B45558 /* ObjLoader.cpp in Sources */,
+				B98CE6B72027A25D00B45558 /* VoxelVisualizationRT.cpp in Sources */,
+				B98CE6A72027A25D00B45558 /* Graphics.cpp in Sources */,
+				B98CE6A82027A25D00B45558 /* FBO_3D.cpp in Sources */,
+				B98CE6C02027A25D00B45558 /* AssetStore.cpp in Sources */,
+				B98CE6A32027A25D00B45558 /* Camera.cpp in Sources */,
+				B98CE6A02027A25D00B45558 /* Transform.cpp in Sources */,
+				B98CE6BF2027A25D00B45558 /* tiny_obj_loader.cpp in Sources */,
+				B98CE6A62027A25D00B45558 /* PerspectiveCamera.cpp in Sources */,
+				B98CE6BB2027A25D00B45558 /* MultipleObjectsScene.cpp in Sources */,
+				B98CE6BD2027A25D00B45558 /* DragonScene.cpp in Sources */,
+				B98CE6AA2027A25D00B45558 /* FBO_2D.cpp in Sources */,
+				B98CE6A52027A25D00B45558 /* FirstPersonController.cpp in Sources */,
+				B98CE6B02027A25D00B45558 /* MaterialSetting.cpp in Sources */,
+				B98CE6BA2027A25D00B45558 /* GlassScene.cpp in Sources */,
+				B98CE6AD2027A25D00B45558 /* VoxelVisualizationMaterial.cpp in Sources */,
+				B98CE6B92027A25D00B45558 /* Application.cpp in Sources */,
+				B98CE6AB2027A25D00B45558 /* Resource.cpp in Sources */,
+				B98CE6B82027A25D00B45558 /* VoxelizeRT.cpp in Sources */,
+				B98CE6AC2027A25D00B45558 /* VoxelizationConeTracingMaterial.cpp in Sources */,
+				B98CE59A2027A19300B45558 /* main.mm in Sources */,
+				B98CE6A12027A25D00B45558 /* FrameRate.cpp in Sources */,
+				B98CE6A22027A25D00B45558 /* MeshRenderer.cpp in Sources */,
+				B98CE6B32027A25D00B45558 /* Texture2D.cpp in Sources */,
+				B98CE6B42027A25D00B45558 /* Texture3D.cpp in Sources */,
+				B98CE6B52027A25D00B45558 /* Material.cpp in Sources */,
+				B98CE6BC2027A25D00B45558 /* CornellScene.cpp in Sources */,
+				B98CE6B22027A25D00B45558 /* Texture.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98CE59C2027A19300B45558 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98CE5A52027A19300B45558 /* voxel_cone_tracing_macTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98CE5A72027A19300B45558 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98CE5B02027A19300B45558 /* voxel_cone_tracing_macUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B98CE5A22027A19300B45558 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B98CE58C2027A19300B45558 /* voxel-cone-tracing-mac */;
+			targetProxy = B98CE5A12027A19300B45558 /* PBXContainerItemProxy */;
+		};
+		B98CE5AD2027A19300B45558 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B98CE58C2027A19300B45558 /* voxel-cone-tracing-mac */;
+			targetProxy = B98CE5AC2027A19300B45558 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B98CE5952027A19300B45558 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B98CE5962027A19300B45558 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B98CE5B22027A19300B45558 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B98CE5B32027A19300B45558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B98CE5B52027A19300B45558 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "voxel-cone-tracing-mac/voxel_cone_tracing_mac.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5662ABGNXL;
+				HEADER_SEARCH_PATHS = (
+					..,
+					../../Source,
+					../../Includes,
+				);
+				INFOPLIST_FILE = "voxel-cone-tracing-mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = ../../Libraries/Mac/Debug;
+				OTHER_LDFLAGS = "-lglfw3";
+				PRODUCT_BUNDLE_IDENTIFIER = "codigo-artistico.voxel-cone-tracing-mac";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B98CE5B62027A19300B45558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "voxel-cone-tracing-mac/voxel_cone_tracing_mac.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5662ABGNXL;
+				HEADER_SEARCH_PATHS = (
+					..,
+					../../Source,
+					../../Includes,
+				);
+				INFOPLIST_FILE = "voxel-cone-tracing-mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = ../../Libraries/Mac/Release/;
+				OTHER_LDFLAGS = "-lglfw3";
+				PRODUCT_BUNDLE_IDENTIFIER = "codigo-artistico.voxel-cone-tracing-mac";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		B98CE5B82027A19300B45558 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5662ABGNXL;
+				INFOPLIST_FILE = "voxel-cone-tracing-macTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "codigo-artistico.voxel-cone-tracing-macTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/voxel-cone-tracing-mac.app/Contents/MacOS/voxel-cone-tracing-mac";
+			};
+			name = Debug;
+		};
+		B98CE5B92027A19300B45558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5662ABGNXL;
+				INFOPLIST_FILE = "voxel-cone-tracing-macTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "codigo-artistico.voxel-cone-tracing-macTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/voxel-cone-tracing-mac.app/Contents/MacOS/voxel-cone-tracing-mac";
+			};
+			name = Release;
+		};
+		B98CE5BB2027A19300B45558 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5662ABGNXL;
+				INFOPLIST_FILE = "voxel-cone-tracing-macUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "codigo-artistico.voxel-cone-tracing-macUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "voxel-cone-tracing-mac";
+			};
+			name = Debug;
+		};
+		B98CE5BC2027A19300B45558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5662ABGNXL;
+				INFOPLIST_FILE = "voxel-cone-tracing-macUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "codigo-artistico.voxel-cone-tracing-macUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "voxel-cone-tracing-mac";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B98CE5882027A19300B45558 /* Build configuration list for PBXProject "voxel-cone-tracing-mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B98CE5B22027A19300B45558 /* Debug */,
+				B98CE5B32027A19300B45558 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B98CE5B42027A19300B45558 /* Build configuration list for PBXNativeTarget "voxel-cone-tracing-mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B98CE5B52027A19300B45558 /* Debug */,
+				B98CE5B62027A19300B45558 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B98CE5B72027A19300B45558 /* Build configuration list for PBXNativeTarget "voxel-cone-tracing-macTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B98CE5B82027A19300B45558 /* Debug */,
+				B98CE5B92027A19300B45558 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B98CE5BA2027A19300B45558 /* Build configuration list for PBXNativeTarget "voxel-cone-tracing-macUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B98CE5BB2027A19300B45558 /* Debug */,
+				B98CE5BC2027A19300B45558 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B98CE5852027A19300B45558 /* Project object */;
+}

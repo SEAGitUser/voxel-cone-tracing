@@ -20,7 +20,7 @@ void FirstPersonController::update() {
     glfwGetCursorPos(window, &xpos, &ypos);
     
     if (firstUpdate) {
-        targetCamera->rotation = renderingCamera->rotation;
+        targetCamera->forward = renderingCamera->forward;
         targetCamera->position = renderingCamera->position;
         firstUpdate = false;
 
@@ -40,13 +40,13 @@ void FirstPersonController::update() {
     
     // X rotation.
 
-    targetCamera->rotation = glm::rotateY(targetCamera->rotation, xRot);
+    targetCamera->forward = glm::rotateY(targetCamera->forward, xRot);
     
     // Y rotation.
-    glm::vec3 newDirection = glm::rotate(targetCamera->rotation, yRot, targetCamera->right());
+    glm::vec3 newDirection = glm::rotate(targetCamera->forward, yRot, targetCamera->right());
     float a = glm::dot(newDirection, glm::vec3(0, 1, 0));
     if (abs(a) < 0.99)
-        targetCamera->rotation = newDirection;
+        targetCamera->forward = newDirection;
     
     
     // ----------
@@ -54,28 +54,28 @@ void FirstPersonController::update() {
     // ----------
     // Move forward.
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        targetCamera->position += targetCamera->forward() * (float)Time::deltaTime * CAMERA_SPEED;
+        targetCamera->position += targetCamera->front() * (float)FrameRate::deltaTime * CAMERA_SPEED;
     }
     // Move backward.
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        targetCamera->position -= targetCamera->forward() * (float)Time::deltaTime * CAMERA_SPEED;
+        targetCamera->position -= targetCamera->front() * (float)FrameRate::deltaTime * CAMERA_SPEED;
     }
     // Strafe right.
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        targetCamera->position += targetCamera->right() * (float)Time::deltaTime * CAMERA_SPEED;
+        targetCamera->position += targetCamera->right() * (float)FrameRate::deltaTime * CAMERA_SPEED;
     }
     // Strafe left.
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        targetCamera->position -= targetCamera->right() * (float)Time::deltaTime * CAMERA_SPEED;
+        targetCamera->position -= targetCamera->right() * (float)FrameRate::deltaTime * CAMERA_SPEED;
     }
     
     // Interpolate between target and current camera.
     auto * camera = renderingCamera;
-    float rotationInterpolation= glm::clamp(Time::deltaTime * CAMERA_ROTATION_INTERPOLATION_SPEED, 0.0, 1.0);
-    float positionInterpolation = glm::clamp(Time::deltaTime * CAMERA_POSITION_INTERPOLATION_SPEED, 0.0, 1.0);
+    float rotationInterpolation= glm::clamp(FrameRate::deltaTime * CAMERA_ROTATION_INTERPOLATION_SPEED, 0.0, 1.0);
+    float positionInterpolation = glm::clamp(FrameRate::deltaTime * CAMERA_POSITION_INTERPOLATION_SPEED, 0.0, 1.0);
     
     //printf("%f\n", rotationInterpolation);
-    camera->rotation = mix(camera->rotation, targetCamera->rotation, rotationInterpolation);
+    camera->forward = mix(camera->forward, targetCamera->front(), rotationInterpolation);
     camera->position = mix(camera->position, targetCamera->position, positionInterpolation);
     
     // Reset mouse position for next update iteration.

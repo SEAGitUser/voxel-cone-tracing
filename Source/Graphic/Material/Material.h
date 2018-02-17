@@ -13,6 +13,7 @@
 #include "Graphic/Material/MaterialSetting.h"
 #include "Graphic/Lighting/PointLight.h"
 #include "Graphic/Camera/Camera.h"
+#include "Graphic/Lighting/PointLight.h"
 #include "Texture2D.h"
 #include "Texture3D.h"
 #include "Scene/Scene.h"
@@ -21,7 +22,7 @@
 /// <summary> Represents a material that references a gl program, textures and settings. </summary>
 class Material : public Resource {
 public:
-	virtual ~Material();
+
 	Material(const GLchar *_name,
 		const ShaderSharedPtr& vertexShader,
 		const ShaderSharedPtr& fragmentShader,
@@ -31,23 +32,31 @@ public:
 
     Material(const GLchar *name): name(name){}
     
-    virtual void Activate(MaterialSetting::SettingsGroup& settingsGroup, Scene& scene);
+    virtual void ApplySettings(MaterialSetting::SettingsGroup& settingsGroup, Scene& scene);
     void ApplySettings(MaterialSetting::SettingsGroup& settingsGroup);
+    void ApplySettings(Scene& scene);
     
-    inline void SetParameteri(const GLchar* parameterName, GLint const value);
-    inline void SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
-    inline void SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
-    inline void SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
-    inline void SetParameterf(const GLchar* parameterName, GLfloat const value);
-    inline void SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
-    inline void ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
-    inline void ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
-    inline void ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit);
-    inline void ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit);
+    inline GLint SetParameteri(const GLchar* parameterName, GLint const value);
+    inline GLint SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
+    inline GLint SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
+    inline GLint SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
+    inline GLint SetParameterf(const GLchar* parameterName, GLfloat const value);
+    inline GLint SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
+    inline GLint SetParameterSampler2D(const GLchar* parameterName, const MaterialSetting::Sampler2D& sampler);
+    inline GLint SetParameterSampler3D(const GLchar* parameterName, const MaterialSetting::Sampler3D& sampler);
+    inline GLint SetPointLight(const GLchar* parameterName,  const PointLight& light  );
+    
+    inline GLint ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
+    inline GLint ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
+    inline GLint ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit);
+    inline GLint ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit);
     
     
-    inline void SetModelMatrix(glm::mat4& mat);
+    inline GLint SetModelMatrix(const glm::mat4& mat);
     
+    virtual ~Material();
+    
+public:
     const char * const PROJECTION_MATRIX_NAME = "P";
     const char * const VIEW_MATRIX_NAME = "V";
     const char * const CAMERA_POSITION_NAME = "cameraPosition";
@@ -89,73 +98,107 @@ public:
 	const GLchar* name;
 };
 
-void Material::SetParameteri(const GLchar* parameterName, GLint const value)
+GLint Material::SetParameteri(const GLchar* parameterName, GLint const value)
 {
     GLint location = glGetUniformLocation(program, parameterName);
     glUniform1i(location, value);
+    return location;
 }
 
-void Material::SetParameterf(const GLchar* parameterName, GLfloat const value)
+GLint Material::SetParameterf(const GLchar* parameterName, GLfloat const value)
 {
     GLint location = glGetUniformLocation(program, parameterName);
     glUniform1f(location,(value));
+    return location;
 }
 
-void Material::SetParameterv4(const GLchar* parameterName, const glm::vec4 &value)
+GLint Material::SetParameterv4(const GLchar* parameterName, const glm::vec4 &value)
 {
     GLint location = glGetUniformLocation(program, parameterName);
     glUniform4fv(location, 1, glm::value_ptr(value));
+    return location;
 }
 
-void Material::SetParameterv3(const GLchar *parameterName, const glm::vec3 &value)
+GLint Material::SetParameterv3(const GLchar *parameterName, const glm::vec3 &value)
 {
     GLint location = glGetUniformLocation(program, parameterName);
     glUniform3fv(location, 1, glm::value_ptr(value));
+    return location;
 }
 
-void Material::SetParameterv2(const GLchar *parameterName, const glm::vec2 &value)
+GLint Material::SetParameterv2(const GLchar *parameterName, const glm::vec2 &value)
 {
-    std::cout << parameterName << " with value < " << value.x  << " " << value.y <<  " > " << std::endl;
-    
     GLint location = glGetUniformLocation(program, parameterName);
     glUniform2fv(location, 1, glm::value_ptr(value));
+    return location;
 }
 
-void Material::SetParamatermat4(const GLchar* parameterName, const glm::mat4 &value)
+GLint Material::SetParamatermat4(const GLchar* parameterName, const glm::mat4 &value)
 {
     GLint location = glGetUniformLocation(program, parameterName);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    return location;
 }
 
-void Material::ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
+GLint Material::SetParameterSampler2D(const GLchar* parameterName, const MaterialSetting::Sampler2D& sampler)
+{
+    GLint result = ActivateTexture2D(parameterName, sampler.texture->GetTextureID() , sampler.textureUnit);
+    return result;
+}
+
+GLint Material::SetParameterSampler3D(const GLchar* parameterName, const MaterialSetting::Sampler3D& sampler)
+{
+    GLint result = ActivateTexture3D(parameterName, sampler.texture->GetTextureID() , sampler.textureUnit);
+    return result;
+}
+
+
+GLint Material::SetPointLight(const GLchar *parameterName, const PointLight &light)
+{
+    GLint location = glGetUniformLocation(program, ("pointLights[" + std::to_string(light.index) + "].position").c_str());
+    glUniform3fv(location, 1, glm::value_ptr(light.position));
+    location = location != -1 ?  glGetUniformLocation(program, ("pointLights[" + std::to_string(light.index) + "].color").c_str()) : location;
+    glUniform3fv(location, 1, glm::value_ptr(light.color));
+    return location;
+}
+
+GLint Material::ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
 {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, textureName);
-    glUniform1i(glGetUniformLocation(program, samplerName), textureUnit);
+    GLint location = glGetUniformLocation(program, samplerName);
+    glUniform1i(location, textureUnit);
+    
+    return location;
 }
 
-void Material::ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit)
+GLint Material::ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit)
 {
-    ActivateTexture2D(samplerName, texture->GetTextureID(), textureUnit);
+    GLint result = ActivateTexture2D(samplerName, texture->GetTextureID(), textureUnit);
+    return result;
 }
 
-void Material::ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit)
+GLint Material::ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit)
 {
-    ActivateTexture3D(samplerName, texture->GetTextureID(), textureUnit);
+    GLint result = ActivateTexture3D(samplerName, texture->GetTextureID(), textureUnit);
+    return result;
 }
 
 
-void Material::ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
+GLint Material::ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
 {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_3D, textureName);
-    glUniform1i(glGetUniformLocation(program, samplerName), textureUnit);
+    GLint location = glGetUniformLocation(program, samplerName);
+    glUniform1i(location, textureUnit);
+    return location;
 }
 
-void Material::SetModelMatrix(glm::mat4& mat)
+GLint Material::SetModelMatrix(const glm::mat4& mat)
 {
     GLint location = glGetUniformLocation(program, MODEL_MATRIX_NAME);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+    return location;
 }
 
 using MaterialSharedPtr = std::shared_ptr<Material>;

@@ -10,81 +10,100 @@
 #include "Graphic/Renderer/MeshRenderer.h"
 #include "Graphic/Material/Texture/Texture3D.h"
 #include "Graphic/FBO/FBO_3D.h"
+#include "Graphic/Camera/Camera.h"
+#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 
-
-VoxelizeRT::VoxelizeRT( GLuint width, GLuint height)
+VoxelizeRT::VoxelizeRT( )
 {
-    fbo3D = new FBO_3D(width, height);
-}
-
-void VoxelizeRT::SaveRenderState()
-{
-    glGetIntegerv(GL_COLOR_WRITEMASK, colorMask);
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &frameBuffer);
+    fbo3D = new FBO_3D(VoxelizationMaterial::VOXEL_CUBE_SCALE,
+                       VoxelizationMaterial::VOXEL_CUBE_SCALE, VoxelizationMaterial::VOXEL_CUBE_SCALE);
     
-    cullFace = glIsEnabled(GL_CULL_FACE);
-    depthTest = glIsEnabled(GL_DEPTH_TEST);
-    blend = glIsEnabled(GL_BLEND);
-    glError();
+    worldToUnitCubeNormTex = glm::mat4(1.0f);
 }
 
-void VoxelizeRT::RestoreRenderState()
+void VoxelizeRT::createUnitCubeTransform(Camera& camera, glm::mat4 &worldToUnitCube)
 {
-    glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
-    glError();
-    cullFace == GL_TRUE ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-    depthTest == GL_TRUE ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-    blend == GL_TRUE ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
-    glError();
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    glError();
+    glm::vec4 viewVector = glm::vec4(camera.forward, 0);
+    
+    glm::mat4 unitCubeToWorld = glm::scale(glm::mat4(1.0f), glm::vec3(VoxelizationMaterial::VOXEL_CUBE_SCALE));
+    
+    const GLfloat offsetScale = -.25f;
+    glm::vec4 originalOffset = viewVector * offsetScale;
+    glm::vec4 scaledOffset = unitCubeToWorld * originalOffset; //glm::vec4(viewVector * offsetScale, 0.0f);
+    
+    //think of the texture texels as cubic world units of measurment, the size of a cellsize wraps in it unit cubed
+    //amount of world space, anything that falls within a cell will eventually contain ambient light from the world reaching that cell
+    glm::vec3 cellSize( GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE/fbo3D->getWidth()),
+                       GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE/fbo3D->getHeight()),
+                       GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE / fbo3D->getDepth()) );
+    
+    float xTranslate = floorf( ( scaledOffset.x) /cellSize.x) * cellSize.x;
+    float yTranslate = floorf( ( scaledOffset.y) / cellSize.y) * cellSize.y;
+    float zTranslate = floorf( ( scaledOffset.z) / cellSize.z ) * cellSize.z;
+    
+    glm::vec3 translate = glm::vec3(xTranslate, yTranslate, zTranslate);
+    unitCubeToWorld = glm::translate(glm::mat4(1.0f), translate) * unitCubeToWorld;
+    
+    worldToUnitCube = glm::inverse(unitCubeToWorld);
+    
+    float displace = .50f;
+    worldToUnitCube = glm::translate(glm::mat4(1.0f), glm::vec3(displace, displace, displace))  * worldToUnitCube;
+    
 }
 
-//TODO: YOU'LL HAVE TO CHANGE THIS FUNCTION TO RENDER TO 3D TEXTURE
+void VoxelizeRT::voxelize(Scene& renderScene, glm::mat4 &worldToUnitCube)
+{
+    RenderingQueue& renderingQueue = renderScene.renderers;
+    for (GLuint i = 0; i < renderingQueue.size(); ++i)
+    {
+        renderingQueue[i]->transform.updateTransformMatrix();
+        if (renderingQueue[i]->enabled)
+        {
+            renderingQueue[i]->voxelize(renderScene, worldToUnitCube);
+        }
+    }
+}
+
+
 void VoxelizeRT::Render(Scene& renderScene)
 {
-    bool voxelizeNow = voxelizationQueued || (automaticallyVoxelize && voxelizationSparsity > 0 && ++ticksSinceLastVoxelization >= voxelizationSparsity);
-
-    if(voxelizeNow)
+    fbo3D->Clear();
+    fbo3D->Activate();
     {
-        SaveRenderState();
-        fbo3D->Clear();
-        Texture3D* voxelTexture = static_cast<Texture3D*>(fbo3D->getRenderTextures(0));
+        fbo3D->colorMaskOn(GL_TRUE);
+
+        fbo3D->activateCulling(GL_FALSE);
         
-        fbo3D->Activate();
-        {
-            glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-            glDisable(GL_CULL_FACE);
-            glDisable(GL_DEPTH_TEST);
-            glDisable(GL_BLEND);
-            
-            glError();
-            RenderingQueue& renderingQueue = renderScene.renderers;
-            for (unsigned int i = 0; i < renderingQueue.size(); ++i)
-            {
-                renderingQueue[i]->transform.updateTransformMatrix();
-                if (renderingQueue[i]->enabled)
-                {
-                    renderingQueue[i]->voxelize(renderScene);
-                }
-            }
-            ticksSinceLastVoxelization = 0;
-            voxelizationQueued = false;
-            
-            if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
-                glGenerateMipmap(GL_TEXTURE_3D);
-                regenerateMipmapQueued = false;
-            }
-            
-            glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-            glEnable(GL_CULL_FACE);
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_BLEND);
-        }
+        glError();
         
-        fbo3D->Deactivate();
-        RestoreRenderState();
+        glm::mat4 worldToUnitCube;
+        createUnitCubeTransform(*renderScene.renderingCamera, worldToUnitCube);
+        
+        voxelize(renderScene, worldToUnitCube);
+        
+        GLuint textureIndex = 0;
+        Texture3D* voxelTexture = static_cast<Texture3D*>(fbo3D->getRenderTexture(textureIndex));
+        
+        voxelTexture->generateMipMap();
+//TODO: optimization oportunity
+//        if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
+//            glGenerateMipmap(GL_TEXTURE_3D);
+//            regenerateMipmapQueued = false;
+//        }
+        
+        glError();
+        ticksSinceLastVoxelization = 0;
+        voxelizationQueued = false;
+
+        glError();
+
+        fbo3D->activateCulling(GL_TRUE);
     }
+    
+    glError();
+    fbo3D->Deactivate();
+
+    
 }
 
 VoxelizeRT::~VoxelizeRT()

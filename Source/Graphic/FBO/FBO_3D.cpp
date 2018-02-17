@@ -17,19 +17,16 @@ FBO_3D::FBO_3D(GLuint w, GLuint h, GLuint d, GLuint _minFilter, GLuint _magFilte
     GLint previousFrameBuffer;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
     
-    // Init framebuffer.
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     glError();
     AddRenderTarget();
     glError();
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, w, h); // Use a single rbo for both depth and stencil buffer.
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    assert( e == GL_FRAMEBUFFER_COMPLETE);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) { std::cerr << "FBO failed to initialize correctly." << std::endl; }
+
 }
 
 
@@ -39,8 +36,6 @@ GLint FBO_3D::AddRenderTarget()
     
     Texture3D *target = new Texture3D();
     renderTargets.push_back(target);
-    
-    //GLint textureID = FBO::AddRenderTarget(target);
     
     target->SetWrap(wrap);
     
@@ -58,9 +53,9 @@ GLint FBO_3D::AddRenderTarget()
     glError();
     glBindTexture(GL_TEXTURE_3D, target->GetTextureID());
     glError();
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , target->GetTextureID(), 0);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (unsigned int)renderTextures.size(), target->GetTextureID(), 0);
     GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    assert(e = GL_FRAMEBUFFER_COMPLETE);
+    assert(e == GL_FRAMEBUFFER_COMPLETE);
     glError();
     
     renderTextures.push_back(target);

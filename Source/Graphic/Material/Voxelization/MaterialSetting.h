@@ -254,6 +254,22 @@ public:
         value.sampler3D = _value;
         type = Type::SAMPLER_3D;
     }
+
+    static void Default(SettingsGroup& group) ;
+
+    static void White(SettingsGroup& group);
+
+    static void Cyan(SettingsGroup& group);
+
+    static void Purple(SettingsGroup& group);
+
+    static void Red(SettingsGroup& group);
+
+    static void Green(SettingsGroup& group);
+
+    static void Blue(SettingsGroup& group);
+
+    static void Emissive(SettingsGroup& group);
     
     static const GLchar* diffuseColor;
     static const GLchar* specularColor;

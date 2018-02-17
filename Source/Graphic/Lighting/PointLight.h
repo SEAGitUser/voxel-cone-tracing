@@ -13,6 +13,6 @@ class PointLight {
 public:
 	bool tweakable = true;
 	glm::vec3 position, color;
-	PointLight(glm::vec3 _position = { 0, 0, 0 }, glm::vec3 _color = { 1, 1, 1 }) : position(_position), color(_color) {}
-    
+    GLuint index;
+	PointLight(glm::vec3 _position = { 0, 0, 0 }, glm::vec3 _color = { 1, 1, 1 }) : position(_position), color(_color), index(0) {}
 };

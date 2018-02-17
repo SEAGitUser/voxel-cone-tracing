@@ -12,16 +12,19 @@
 
 class Texture3D;
 class FBO_3D;
+class Camera;
 
 class VoxelizeRT : public RenderTarget
 {
 public:
-    VoxelizeRT( GLuint width, GLuint height);
-    virtual void SaveRenderState() override;
-    virtual void RestoreRenderState() override;
+    VoxelizeRT( );
     virtual void Render( Scene& scene ) override;
-    
     virtual ~VoxelizeRT();
+    
+    
+private:
+    void createUnitCubeTransform(Camera& camera, glm::mat4 &worldToUnitCube);
+    void voxelize(Scene& renderScene, glm::mat4 &worldToUnitCube);
     
 private:
     bool automaticallyRegenerateMipmap = true;
@@ -38,6 +41,8 @@ private:
     GLboolean depthTest;
     GLboolean blend;
     GLint frameBuffer;
+    
+    glm::mat4 worldToUnitCubeNormTex;
     
     FBO_3D * fbo3D;
 };
