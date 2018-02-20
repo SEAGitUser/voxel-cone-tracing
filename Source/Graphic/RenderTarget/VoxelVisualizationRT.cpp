@@ -93,41 +93,15 @@ void VoxelVisualizationRT::Render( Scene& scene )
     group["windowSize"] = glm::vec2(fbo->getDimensions().width, fbo->getDimensions().height);
     group["focalLength"] = scene.renderingCamera->getNear();
     group["modelView"] = glm::inverse(scene.renderingCamera->viewMatrix);
-    
-    //delete following line, it is no longer needed
-    //voxelVisualizationMaterial->Material::ApplySettings(group);
 
-    
-    fbo->Clear();
     fbo->Activate();
-
-
-    /*
-    glCullFace(GL_BACK);
-    glBindFramebuffer(GL_FRAMEBUFFER, vvfbo2->getFrameBufferID());
-    glViewport(0, 0, vvfbo2->getWidth(), vvfbo2->getHeight());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cubeMeshRenderer->render(program);
-    */
+    fbo->ClearFBO();
     
+
     std::shared_ptr<Material> material =  std::static_pointer_cast<Material>(voxelVisualizationMaterial);
     cubeMeshRenderer->render(scene, group, material.get());
     
     fbo->Deactivate();
-    
-    /*
-    RenderingQueue &renderingQueue = scene.renderers;
-
-    for (unsigned int i = 0; i < renderingQueue.size(); ++i)
-    {
-        if (renderingQueue[i]->enabled)
-        {
-            renderingQueue[i]->renderMesh();
-        }
-    }
-    */
-    
-    //glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
 }
 
 VoxelVisualizationRT::~VoxelVisualizationRT()

@@ -17,13 +17,24 @@
          contextName = "Shader::Shader(char const*, Shader::ShaderType):Shader.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "Shader::shaderResourcePath ">
-            </PersistentString>
-            <PersistentString
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
                value = "shaderResourcePath">
+            </PersistentString>
+            <PersistentString
+               value = "Shader::shaderResourcePath ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "VoxelizeRT::VoxelizeRT():VoxelizeRT.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "FBO::Activate():FBO.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "previousFrameBuffer">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

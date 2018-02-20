@@ -14,7 +14,8 @@ public:
     Texture::Dimensions     dimensions;
     Texture::Properties     textureProperties;
     
-    FBO(): frameBuffer(DEFAULT_FRAMEBUFFER)
+    FBO():  frameBuffer(DEFAULT_FRAMEBUFFER),
+            previousFrameBuffer(INVALID_FRAME_BUFFER)
     {
         getDefaultFBODimensions();
     }
@@ -25,7 +26,6 @@ public:
     {
         dimensions = _dimensions;
         textureProperties = _textureProperties;
-        frameBuffer = DEFAULT_FRAMEBUFFER;
         renderTextures.reserve(MAX_RENDER_TARGETS);
     }
     
@@ -37,7 +37,15 @@ public:
     void colorMaskOn(GLboolean value);
     void activateCulling(GLboolean value);
     
-    void Clear();
+    void ClearRenderTextures();
+    
+    inline void ClearFBO()
+    {
+        assert(previousFrameBuffer != INVALID_FRAME_BUFFER);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+    }
+    
     void Activate();
     void Deactivate();
     

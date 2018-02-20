@@ -54,7 +54,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 	// Render.
 	switch (renderingMode) {
 	case RenderingMode::VOXELIZATION_VISUALIZATION:
-		renderVoxelVisualization(renderingScene, viewportWidth, viewportHeight);
+        voxVisualizationRT->Render(renderingScene);
 		break;
 	case RenderingMode::VOXEL_CONE_TRACING:
 		renderScene(renderingScene, viewportWidth, viewportHeight);
@@ -77,7 +77,7 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
     glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
 	// GL Settings.
 	glViewport(0, 0, frameBufferWidth, frameBufferHeight);
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -135,81 +135,6 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 }
 */
 
-
-void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
-{
-    
-    voxVisualizationRT->Render(renderingScene);
-    /*
-    Camera & camera = *renderingScene.renderingCamera;
-    auto program = worldPositionMaterial->ProgramID();
-    
-    worldPositionMaterial->Activate();
-    
-    glError();
-	// -------------------------------------------------------
-	// Render cube to FBOs.
-	// -------------------------------------------------------
-
-	//glUseProgram(program);
-	uploadCamera(camera, program);
-
-	// Settings.
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-
-	// Back.
-	glCullFace(GL_FRONT);
-	glBindFramebuffer(GL_FRAMEBUFFER, vvfbo1->getFrameBufferID());
-	glViewport(0, 0, vvfbo1->getWidth(), vvfbo1->getHeight());
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	cubeMeshRenderer->render(program);
-
-    glError();
-	// Front.
-	glCullFace(GL_BACK);
-	glBindFramebuffer(GL_FRAMEBUFFER, vvfbo2->getFrameBufferID());
-	glViewport(0, 0, vvfbo2->getWidth(), vvfbo2->getHeight());
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	cubeMeshRenderer->render(program);
-    
-    glError();
-
-	// -------------------------------------------------------
-	// Render 3D texture to screen.
-	// -------------------------------------------------------
-	program = voxelVisualizationMaterial->ProgramID();
-    voxelVisualizationMaterial->Activate();
-    
-	uploadCamera(camera, program);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// Settings.
-    //following function doesn't do anything
-	uploadGlobalConstants(voxelVisualizationMaterial->ProgramID(), viewportWidth, viewportHeight);
-	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-
-	// Activate textures.
-    GLint textureBack = vvfbo1->getColorBufferTextureName();
-    GLint textureFront = vvfbo1->getColorBufferTextureName();
-    
-    voxelVisualizationMaterial->ActivateTexture2D("textureBack", textureBack, 0);
-    voxelVisualizationMaterial->ActivateTexture2D("textureFront", textureFront, 1);
-    
-    Texture3D* voxelTexture = voxelizationMaterial->GetVoxelTexture();
-    voxelVisualizationMaterial->ActivateTexture3D("texture3D", voxelTexture, 2);
-
-	// Render.
-	glViewport(0, 0, viewportWidth, viewportHeight);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	quadMeshRenderer->render(program);
-    
-    glError();
-     */
-}
 
 Graphics::~Graphics()
 {

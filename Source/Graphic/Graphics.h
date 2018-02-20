@@ -65,13 +65,6 @@ private:
     VoxelizationMaterial * voxelizationMaterial;
 
     void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
-
-	// ----------------
-	// Voxelization visualization.
-	// ----------------
-	//void initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight);
-	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
-    
     
     //TODO: turn these into smart pointers
 

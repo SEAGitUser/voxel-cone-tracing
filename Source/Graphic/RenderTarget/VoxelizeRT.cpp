@@ -78,7 +78,7 @@ void VoxelizeRT::voxelize(Scene& renderScene, glm::mat4 &worldToUnitCube)
 void VoxelizeRT::Render(Scene& renderScene)
 {
     
-    fbo->Clear();
+    fbo->ClearRenderTextures();
     fbo->Activate();
     {
         fbo->colorMaskOn(GL_TRUE);

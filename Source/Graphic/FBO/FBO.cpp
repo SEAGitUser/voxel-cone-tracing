@@ -22,7 +22,7 @@ GLint FBO::AddRenderTarget(Texture* target)
     return target->GetTextureID();
 }
 
-void FBO::Clear()
+void FBO::ClearRenderTextures()
 {
     assert(previousFrameBuffer == INVALID_FRAME_BUFFER && "Cannot clear while the framebuffer object is active");
     for(Texture* texture : renderTextures)
