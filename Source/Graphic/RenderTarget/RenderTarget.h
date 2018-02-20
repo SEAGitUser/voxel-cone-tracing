@@ -10,6 +10,9 @@
 
 #include "OpenGL_Includes.h"
 #include "Scene/Scene.h"
+
+class FBO;
+
 class RenderTarget {
     
 public:
@@ -18,11 +21,13 @@ public:
     virtual void Render( Scene& renderScene ) = 0;
     
     virtual ~RenderTarget(){};
+    
+    inline FBO* getFBO(){ return fbo;};
 private:
     
     
 protected:
     using RenderingQueue = const std::vector<MeshRenderer*> &;
-
+    FBO * fbo;
 };
 

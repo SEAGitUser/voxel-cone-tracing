@@ -10,17 +10,22 @@
 
 #include "Material.h"
 
-
-class FBO_2D;
 class Texture3D;
 
 class VoxelVisualizationMaterial : public Material
 {
 public:
     
-    VoxelVisualizationMaterial(const GLchar *_name, const ShaderSharedPtr voxelVert, const ShaderSharedPtr voxelFrag);
+    struct VisualizationArgs
+    {
+        glm::mat4 modelview;
+        GLfloat focalLength;
+        glm::vec2 windowSize;
+        glm::vec3 rayOrigin;
+        
+    }VisualizationArgs;
     
-    virtual void ApplySettings(MaterialSetting::SettingsGroup &group, Scene& scene) override;
+    VoxelVisualizationMaterial(const GLchar *_name, const ShaderSharedPtr voxelVert, const ShaderSharedPtr voxelFrag);
     
 private:
     const Texture3D* voxelTexture;

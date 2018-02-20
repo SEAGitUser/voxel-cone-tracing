@@ -349,10 +349,10 @@
 			children = (
 				B98CE65E2027A25C00B45558 /* FBO_3D.h */,
 				B98CE65F2027A25C00B45558 /* FBO_3D.cpp */,
-				B98CE6602027A25C00B45558 /* FBO.cpp */,
 				B98CE6612027A25C00B45558 /* FBO_2D.h */,
 				B98CE6622027A25C00B45558 /* FBO_2D.cpp */,
 				B98CE6632027A25C00B45558 /* FBO.h */,
+				B98CE6602027A25C00B45558 /* FBO.cpp */,
 			);
 			path = FBO;
 			sourceTree = "<group>";
@@ -416,8 +416,8 @@
 				B98CE6822027A25C00B45558 /* RenderTarget.cpp */,
 				B98CE6812027A25C00B45558 /* VoxelVisualizationRT.h */,
 				B98CE6832027A25C00B45558 /* VoxelVisualizationRT.cpp */,
-				B98CE6842027A25C00B45558 /* VoxelizeRT.h */,
 				B98CE6852027A25C00B45558 /* RenderTarget.h */,
+				B98CE6842027A25C00B45558 /* VoxelizeRT.h */,
 				B98CE6862027A25C00B45558 /* VoxelizeRT.cpp */,
 			);
 			path = RenderTarget;

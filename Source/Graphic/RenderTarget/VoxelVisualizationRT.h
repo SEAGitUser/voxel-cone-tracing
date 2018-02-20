@@ -22,7 +22,7 @@ class VoxelVisualizationRT : public RenderTarget
 {
 public:
     
-    VoxelVisualizationRT(Texture3D* voxelTexture,  GLuint width, GLuint height);
+    VoxelVisualizationRT(Texture3D* voxelTexture);
     
     virtual void Render( Scene& scene ) override;
     
@@ -39,6 +39,4 @@ private:
     Shape *cubeShape = nullptr;
     Texture3D* voxelTexture = nullptr;
     FBO_2D* fbo;
-    
-    GLuint width; GLuint height;
 };

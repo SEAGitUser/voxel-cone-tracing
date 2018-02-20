@@ -19,7 +19,3 @@ Material(_name, voxelVert, voxelFrag)
 }
 
 
-void VoxelVisualizationMaterial::ApplySettings(MaterialSetting::SettingsGroup &group, Scene& scene)
-{
-    Material::ApplySettings(group, scene);
-}

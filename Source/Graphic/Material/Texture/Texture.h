@@ -17,6 +17,32 @@ class Texture : public Resource
 {
     
 public:
+    typedef struct Dimensions
+    {
+        inline Dimensions():width(0), height(0), depth(0){}
+        
+        GLuint width;
+        GLuint height;
+        GLuint depth;
+        
+    } Dimensions;
+    
+    
+    typedef struct Properties
+    {
+        inline Properties():pixelFormat(GL_RGBA),
+        dataFormat(GL_FLOAT), wrap(GL_CLAMP_TO_EDGE), minFilter(GL_LINEAR_MIPMAP_LINEAR), magFilter(GL_LINEAR),
+        internalFormat(GL_RGBA32F)
+        {}
+        
+        GLuint pixelFormat;
+        GLuint dataFormat;
+        GLuint wrap;
+        GLuint internalFormat;
+        GLuint minFilter;
+        GLuint magFilter;
+        
+    } Properties;
     
     Texture():
     forceChannels(0),

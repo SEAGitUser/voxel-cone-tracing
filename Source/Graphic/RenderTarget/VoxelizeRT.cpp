@@ -15,8 +15,16 @@
 
 VoxelizeRT::VoxelizeRT( )
 {
-    fbo3D = new FBO_3D(VoxelizationMaterial::VOXEL_CUBE_SCALE,
-                       VoxelizationMaterial::VOXEL_CUBE_SCALE, VoxelizationMaterial::VOXEL_CUBE_SCALE);
+    Texture::Dimensions dimensions;
+    dimensions.width = dimensions.height = dimensions.depth = VoxelizationMaterial::VOXEL_CUBE_SCALE;
+    
+    //properties will initialize to default values automatically
+    Texture::Properties properties;
+    
+    properties.minFilter = GL_NEAREST;
+    properties.magFilter = GL_NEAREST;
+    
+    fbo = new FBO_3D(dimensions, properties);
     
     worldToUnitCubeNormTex = glm::mat4(1.0f);
 }
@@ -29,13 +37,15 @@ void VoxelizeRT::createUnitCubeTransform(Camera& camera, glm::mat4 &worldToUnitC
     
     const GLfloat offsetScale = -.25f;
     glm::vec4 originalOffset = viewVector * offsetScale;
-    glm::vec4 scaledOffset = unitCubeToWorld * originalOffset; //glm::vec4(viewVector * offsetScale, 0.0f);
+    glm::vec4 scaledOffset = unitCubeToWorld * originalOffset;
+    
+    FBO_3D* fbo3D = static_cast<FBO_3D*>(fbo);
     
     //think of the texture texels as cubic world units of measurment, the size of a cellsize wraps in it unit cubed
     //amount of world space, anything that falls within a cell will eventually contain ambient light from the world reaching that cell
-    glm::vec3 cellSize( GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE/fbo3D->getWidth()),
-                       GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE/fbo3D->getHeight()),
-                       GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE / fbo3D->getDepth()) );
+    glm::vec3 cellSize( GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE/fbo->getDimensions().width),
+                       GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE/fbo->getDimensions().height),
+                       GLfloat(VoxelizationMaterial::VOXEL_CUBE_SCALE / fbo->getDimensions().depth) );
     
     float xTranslate = floorf( ( scaledOffset.x) /cellSize.x) * cellSize.x;
     float yTranslate = floorf( ( scaledOffset.y) / cellSize.y) * cellSize.y;
@@ -67,12 +77,13 @@ void VoxelizeRT::voxelize(Scene& renderScene, glm::mat4 &worldToUnitCube)
 
 void VoxelizeRT::Render(Scene& renderScene)
 {
-    fbo3D->Clear();
-    fbo3D->Activate();
+    
+    fbo->Clear();
+    fbo->Activate();
     {
-        fbo3D->colorMaskOn(GL_TRUE);
+        fbo->colorMaskOn(GL_TRUE);
 
-        fbo3D->activateCulling(GL_FALSE);
+        fbo->activateCulling(GL_FALSE);
         
         glError();
         
@@ -82,7 +93,7 @@ void VoxelizeRT::Render(Scene& renderScene)
         voxelize(renderScene, worldToUnitCube);
         
         GLuint textureIndex = 0;
-        Texture3D* voxelTexture = static_cast<Texture3D*>(fbo3D->getRenderTexture(textureIndex));
+        Texture3D* voxelTexture = static_cast<Texture3D*>(fbo->getRenderTexture(textureIndex));
         
         voxelTexture->generateMipMap();
 //TODO: optimization oportunity
@@ -97,11 +108,11 @@ void VoxelizeRT::Render(Scene& renderScene)
 
         glError();
 
-        fbo3D->activateCulling(GL_TRUE);
+        fbo->activateCulling(GL_TRUE);
     }
     
     glError();
-    fbo3D->Deactivate();
+    fbo->Deactivate();
 
     
 }

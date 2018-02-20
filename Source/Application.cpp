@@ -206,7 +206,8 @@ void Application::run()
 #endif
 
 		// Swap front and back buffers.
-		if (!paused) glfwSwapBuffers(currentWindow);
+		if (!paused)
+            glfwSwapBuffers(currentWindow);
 
 		// Poll for and process events.
 		glfwPollEvents();

@@ -16,21 +16,17 @@
 #include "Graphic/FBO/FBO_2D.h"
 
 
-VoxelVisualizationRT::VoxelVisualizationRT(Texture3D* _voxelTexture, GLuint _width, GLuint _height)
+VoxelVisualizationRT::VoxelVisualizationRT(Texture3D* _voxelTexture)
 {
-    //worldPositionMaterial = static_cast<Material*>( MaterialStore::getInstance().getMaterial("world-position"));
     voxelVisualizationMaterial = MaterialStore::GET_MAT<VoxelVisualizationMaterial>("voxel-visualization");
     voxelTexture = _voxelTexture;
-    width = _width;
-    height = _height;
     
     //todo: ObjLoader should return a shared pointer
     cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
     cubeMeshRenderer = std::make_shared<MeshRenderer>(&cubeShape->meshes[0]);
     
-    fbo = new FBO_2D(width, height);
-
-    
+    //this will render to the default frame buffer
+    fbo = new FBO_2D();
 }
 
 void VoxelVisualizationRT::Render( Scene& scene )
@@ -94,17 +90,17 @@ void VoxelVisualizationRT::Render( Scene& scene )
     
     group["texture3D"] = sampler;
     group["rayOrigin"] = scene.renderingCamera->position;
-    group["windowSize"] = glm::vec2(width, height);
+    group["windowSize"] = glm::vec2(fbo->getDimensions().width, fbo->getDimensions().height);
     group["focalLength"] = scene.renderingCamera->getNear();
     group["modelView"] = glm::inverse(scene.renderingCamera->viewMatrix);
     
     //delete following line, it is no longer needed
     //voxelVisualizationMaterial->Material::ApplySettings(group);
 
-
+    
     fbo->Clear();
     fbo->Activate();
-    
+
 
     /*
     glCullFace(GL_BACK);

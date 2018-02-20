@@ -6,14 +6,14 @@
 
 GLint FBO::AddRenderTarget(Texture* target)
 {
-    target->SetWrap(wrap);
+    target->SetWrap(textureProperties.wrap);
     
-    target->SetWidth(width);
-    target->SetHeight(height);
-    target->SetMinFilter(minFilter);
-    target->SetMagFilter(magFilter);
-    target->SetPixelFormat(pixelFormat);
-    target->SetDataType(dataFormat);
+    target->SetWidth(dimensions.width);
+    target->SetHeight(dimensions.height);
+    target->SetMinFilter(textureProperties.minFilter);
+    target->SetMagFilter(textureProperties.magFilter);
+    target->SetPixelFormat(textureProperties.pixelFormat);
+    target->SetDataType(textureProperties.dataFormat);
     
     target->SaveTextureState();
     
@@ -37,7 +37,7 @@ void FBO::Activate()
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, dimensions.width, dimensions.height);
 
 }
 

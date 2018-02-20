@@ -25,6 +25,7 @@
 #include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Graphic/Material/Voxelization/VoxelVisualizationMaterial.h"
 #include "Graphic/RenderTarget/VoxelizeRT.h"
+#include "Graphic/RenderTarget/VoxelVisualizationRT.h"
 #include "Graphic/FBO/FBO_2D.h"
 #include "Graphic/FBO/FBO_3D.h"
 #include "Texture3D.h"
@@ -34,25 +35,13 @@
 // ----------------------
 void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
 {
-    voxelFBO = nullptr;
-    vvfbo1 = nullptr;
-    vvfbo2 = nullptr;
     quadMeshRenderer= nullptr;
     cubeMeshRenderer = nullptr;
     cubeShape = nullptr;
-
-    voxelFBO = new FBO_3D(VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
-                          GL_NEAREST,GL_NEAREST, GL_RGBA, GL_FLOAT, GL_CLAMP_TO_EDGE, GL_RGBA32F);
     
-    glError();
-    //TODO:: we can likely get rid of this vector
-    const std::vector<GLfloat> initTextureBuffer = std::vector<GLfloat>(4 * VoxelizationMaterial::voxelTextureSize *
-                                                                                              VoxelizationMaterial::voxelTextureSize * VoxelizationMaterial::voxelTextureSize, 0.0f);
-    
-    voxelTexture = new Texture3D(initTextureBuffer, VoxelizationMaterial::voxelTextureSize, VoxelizationMaterial::voxelTextureSize,
-                                 VoxelizationMaterial::voxelTextureSize, GL_TRUE, GL_RGBA32F);
-    
-    voxelizeRenderTarget = new VoxelizeRT( );
+    voxelizeRenderTarget = new VoxelizeRT();
+    Texture3D* texture = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(0) );
+    voxVisualizationRT = new VoxelVisualizationRT(texture);
 
 }
 
@@ -65,7 +54,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 	// Render.
 	switch (renderingMode) {
 	case RenderingMode::VOXELIZATION_VISUALIZATION:
-		//renderVoxelVisualization(renderingScene, viewportWidth, viewportHeight);
+		renderVoxelVisualization(renderingScene, viewportWidth, viewportHeight);
 		break;
 	case RenderingMode::VOXEL_CONE_TRACING:
 		renderScene(renderingScene, viewportWidth, viewportHeight);
@@ -82,16 +71,15 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	// Fetch references.
 	auto & camera = *renderingScene.renderingCamera;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//glUseProgram(program);
-
+    
     GLint frameBufferWidth, frameBufferHeight;
     GLFWwindow * window = Application::getInstance().currentWindow;
     glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
 	// GL Settings.
 	glViewport(0, 0, frameBufferWidth, frameBufferHeight);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -100,6 +88,7 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 
 	// Render.
 	renderQueue(renderingScene, true);
+    
 }
 
 
@@ -145,11 +134,13 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 	quadMeshRenderer = new MeshRenderer(&quad);
 }
 */
-/*
- 
- FOLLOWING CODE IS COMMENTED OUT BECAUSE IS CURRENTLY NOT WORKING, WILL FIX IN A LATER SUBMISSION
+
+
 void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
 {
+    
+    voxVisualizationRT->Render(renderingScene);
+    /*
     Camera & camera = *renderingScene.renderingCamera;
     auto program = worldPositionMaterial->ProgramID();
     
@@ -217,13 +208,11 @@ void Graphics::renderVoxelVisualization(Scene & renderingScene, unsigned int vie
 	quadMeshRenderer->render(program);
     
     glError();
+     */
 }
-*/
+
 Graphics::~Graphics()
 {
-	delete vvfbo1;
-	delete vvfbo2;
-    delete voxelFBO;
 	delete quadMeshRenderer;
 	delete cubeMeshRenderer;
 	delete cubeShape;
@@ -233,4 +222,5 @@ Graphics::~Graphics()
     delete worldPositionMaterial;
     delete voxelTexture;
     delete voxelizeRenderTarget;
+    delete voxVisualizationRT;
 }

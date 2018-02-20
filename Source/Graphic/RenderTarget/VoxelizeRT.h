@@ -44,5 +44,5 @@ private:
     
     glm::mat4 worldToUnitCubeNormTex;
     
-    FBO_3D * fbo3D;
+
 };

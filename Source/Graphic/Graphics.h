@@ -21,6 +21,8 @@ class FBO_2D;
 class FBO_3D;
 class Texture3D;
 class VoxelizeRT;
+class VoxelVisualizationRT;
+
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
@@ -69,8 +71,9 @@ private:
 	// ----------------
 	//void initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight);
 	void renderVoxelVisualization(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
-	FBO_2D *vvfbo1, *vvfbo2;
-    FBO_3D * voxelFBO;
+    
+    
+    //TODO: turn these into smart pointers
 
     Material * worldPositionMaterial;
     VoxelVisualizationMaterial * voxelVisualizationMaterial;
@@ -83,4 +86,5 @@ private:
     Texture3D* voxelTexture;
     
     VoxelizeRT* voxelizeRenderTarget = nullptr;
+    VoxelVisualizationRT* voxVisualizationRT = nullptr;
 };

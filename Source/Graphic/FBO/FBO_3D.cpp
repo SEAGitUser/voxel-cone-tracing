@@ -10,8 +10,8 @@
 #include "FBO_3D.h"
 #include "Graphic/Material/Texture/Texture3D.h"
 
-FBO_3D::FBO_3D(GLuint w, GLuint h, GLuint d, GLuint _minFilter, GLuint _magFilter, GLuint _pixelFormat, GLuint _dataFormat, GLuint _wrap,GLuint _internalFormat)
-: FBO(w, h, _minFilter, _magFilter, _pixelFormat, _dataFormat, _wrap), depth(d), internalFormat(_internalFormat)
+FBO_3D::FBO_3D(Texture::Dimensions &_dimensions, Texture::Properties &_properties)
+: FBO(_dimensions, _properties)
 {
     
     GLint previousFrameBuffer;
@@ -37,16 +37,16 @@ GLint FBO_3D::AddRenderTarget()
     Texture3D *target = new Texture3D();
     renderTargets.push_back(target);
     
-    target->SetWrap(wrap);
+    target->SetWrap(textureProperties.wrap);
     
-    target->SetWidth(width);
-    target->SetHeight(height);
-    target->SetDepth(depth);
-    target->SetMinFilter(minFilter);
-    target->SetMagFilter(magFilter);
-    target->SetPixelFormat(pixelFormat);
-    target->SetDataType(dataFormat);
-    target->SetInternalFormat(internalFormat);
+    target->SetWidth(dimensions.width);
+    target->SetHeight(dimensions.height);
+    target->SetDepth(dimensions.depth);
+    target->SetMinFilter(textureProperties.minFilter);
+    target->SetMagFilter(textureProperties.magFilter);
+    target->SetPixelFormat(textureProperties.pixelFormat);
+    target->SetDataType(textureProperties.dataFormat);
+    target->SetInternalFormat(textureProperties.internalFormat);
     
     target->SaveTextureState();
 
