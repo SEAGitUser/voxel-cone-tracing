@@ -77,44 +77,36 @@ void VoxelizeRT::voxelize(Scene& renderScene, glm::mat4 &worldToUnitCube)
 
 void VoxelizeRT::Render(Scene& renderScene)
 {
-    
     fbo->ClearRenderTextures();
-    fbo->Activate();
-    {
-        fbo->colorMaskOn(GL_TRUE);
+    FBO::Commands commands = fbo->Activate();
 
-        fbo->activateCulling(GL_FALSE);
-        
-        glError();
-        
-        glm::mat4 worldToUnitCube;
-        createUnitCubeTransform(*renderScene.renderingCamera, worldToUnitCube);
-        
-        voxelize(renderScene, worldToUnitCube);
-        
-        GLuint textureIndex = 0;
-        Texture3D* voxelTexture = static_cast<Texture3D*>(fbo->getRenderTexture(textureIndex));
-        
-        voxelTexture->generateMipMap();
+    commands.colorMask(true);
+    commands.activateCulling(false);
+    commands.enableBlend(false);
+    commands.enableCullFace(false);
+    
+    glError();
+    
+    glm::mat4 worldToUnitCube;
+    createUnitCubeTransform(*renderScene.renderingCamera, worldToUnitCube);
+    
+    voxelize(renderScene, worldToUnitCube);
+    
+    GLuint renderTexture = 0;
+    Texture3D* voxelTexture = static_cast<Texture3D*>(fbo->getRenderTexture(renderTexture));
+    
+    voxelTexture->generateMipMap();
 //TODO: optimization oportunity
 //        if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
 //            glGenerateMipmap(GL_TEXTURE_3D);
 //            regenerateMipmapQueued = false;
 //        }
-        
-        glError();
-        ticksSinceLastVoxelization = 0;
-        voxelizationQueued = false;
-
-        glError();
-
-        fbo->activateCulling(GL_TRUE);
-    }
     
     glError();
-    fbo->Deactivate();
-
-    
+    ticksSinceLastVoxelization = 0;
+    voxelizationQueued = false;
+    commands.end();
+    glError();
 }
 
 VoxelizeRT::~VoxelizeRT()

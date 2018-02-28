@@ -85,7 +85,6 @@ void VoxelVisualizationRT::Render( Scene& scene )
     //TODO: THERE ARE TWO TEXTURES HERE AM NOT ASSIGNING, THAT IS OK.  PLEASE SEE COMMENT ABOVE.
     static MaterialSetting::SettingsGroup group;
     MaterialSetting::Sampler3D sampler;
-    //sampler.name = "texture3D";
     sampler.texture= voxelTexture;
     
     group["texture3D"] = sampler;
@@ -94,14 +93,11 @@ void VoxelVisualizationRT::Render( Scene& scene )
     group["focalLength"] = scene.renderingCamera->getNear();
     group["modelView"] = glm::inverse(scene.renderingCamera->viewMatrix);
 
-    fbo->Activate();
-    fbo->ClearFBO();
-    
+    FBO::Commands commands = fbo->Activate();
+    commands.clearRenderTarget();
 
     std::shared_ptr<Material> material =  std::static_pointer_cast<Material>(voxelVisualizationMaterial);
     cubeMeshRenderer->render(scene, group, material.get());
-    
-    fbo->Deactivate();
 }
 
 VoxelVisualizationRT::~VoxelVisualizationRT()

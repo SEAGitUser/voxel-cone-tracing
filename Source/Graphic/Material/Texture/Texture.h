@@ -17,6 +17,7 @@ class Texture : public Resource
 {
     
 public:
+    
     typedef struct Dimensions
     {
         inline Dimensions():width(0), height(0), depth(0){}
@@ -45,31 +46,31 @@ public:
     } Properties;
     
     Texture():
-    forceChannels(0),
-    path(""),
-    dataType(GL_FLOAT),
-    wrap (GL_REPEAT),
-    pixelFormat(GL_RGBA),
-    minFilter(GL_LINEAR_MIPMAP_LINEAR),
-    magFilter(GL_LINEAR),
-    width(0),
-    height(0),
-    textureID(INVALID_TEXTURE)
+        forceChannels(0),
+        path(""),
+        dataType(GL_FLOAT),
+        wrap (GL_REPEAT),
+        pixelFormat(GL_RGBA),
+        minFilter(GL_LINEAR_MIPMAP_LINEAR),
+        magFilter(GL_LINEAR),
+        width(0),
+        height(0),
+        textureID(INVALID_TEXTURE)
     {
         
     }
     
     Texture(const std::string &_path, GLuint _width, GLuint _height):
-    forceChannels(0),
-    path(_path),
-    dataType(GL_FLOAT),
-    wrap (GL_REPEAT),
-    pixelFormat(GL_RGBA),
-    minFilter(GL_LINEAR_MIPMAP_LINEAR),
-    magFilter(GL_LINEAR),
-    width(_width),
-    height(_height),
-    textureID(INVALID_TEXTURE)
+        forceChannels(0),
+        path(_path),
+        dataType(GL_FLOAT),
+        wrap (GL_REPEAT),
+        pixelFormat(GL_RGBA),
+        minFilter(GL_LINEAR_MIPMAP_LINEAR),
+        magFilter(GL_LINEAR),
+        width(_width),
+        height(_height),
+        textureID(INVALID_TEXTURE)
     {
         
     }

@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "OpenGL_Includes.h"
 
+
 GLint FBO::AddRenderTarget(Texture* target)
 {
     target->SetWrap(textureProperties.wrap);
@@ -24,48 +25,87 @@ GLint FBO::AddRenderTarget(Texture* target)
 
 void FBO::ClearRenderTextures()
 {
-    assert(previousFrameBuffer == INVALID_FRAME_BUFFER && "Cannot clear while the framebuffer object is active");
     for(Texture* texture : renderTextures)
     {
         texture->Clear();
     }
 }
 
-void FBO::Activate()
+FBO::Commands FBO::Activate()
 {
-    assert(previousFrameBuffer == INVALID_FRAME_BUFFER && "Cannot call Activate() without first calling Deactivate()");
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    FBO::Commands commands(frameBuffer);
+    commands.setViewport(dimensions.width, dimensions.height);
+    return commands;
+}
+
+///////////////////////////////////////////////////FBO::Commands
+
+GLint FBO::Commands::fboID = FBO::DEFAULT_FRAMEBUFFER;
+
+FBO::Commands::Commands(GLint _fboID)
+{
+    //you cannot manipulate two FBO objects at the same time in OpenGL.
+    //call the end() function first, then call Activate() on another FBO object.
+    assert(fboID == DEFAULT_FRAMEBUFFER && "Only one FBO::Commands is allowed at a time");
+    fboID = _fboID;
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, fboID);
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
-    glViewport(0, 0, dimensions.width, dimensions.height);
-
 }
 
-void FBO::Deactivate()
+void FBO::Commands::setViewport(GLint width, GLint height)
 {
-    assert(previousFrameBuffer != INVALID_FRAME_BUFFER && "Cannot call Deactivate() without first calling Activate()");
-    glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
-    previousFrameBuffer = INVALID_FRAME_BUFFER;
+     glViewport(0, 0, width, height);
 }
 
-void FBO::colorMaskOn(GLboolean value)
+void FBO::Commands::colorMask(bool _value)
 {
+    GLboolean value = _value ? GL_TRUE : GL_FALSE;
     glColorMask(value, value, value, value);
 }
 
-void FBO::activateCulling(GLboolean value)
+void FBO::Commands::activateCulling(bool value)
 {
-    if(value == GL_FALSE)
-    {
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
-    }
-    else
-    {
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-    }
-
+    value ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 }
+
+void FBO::Commands::enableDepthTest(bool value)
+{
+    value ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+}
+
+void FBO::Commands::enableBlend(bool value)
+{
+    value ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
+}
+
+void FBO::Commands::enableCullFace(bool _value)
+{
+    _value ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+}
+
+FBO::Commands::Commands( const FBO::Commands& rhs)
+{
+    fboID = rhs.fboID;
+}
+
+void FBO::Commands::end()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
+    fboID = DEFAULT_FRAMEBUFFER;
+}
+
+void FBO::Commands::clearRenderTarget()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+FBO::Commands::~Commands()
+{
+    end();
+}
+
+
+
+
+
