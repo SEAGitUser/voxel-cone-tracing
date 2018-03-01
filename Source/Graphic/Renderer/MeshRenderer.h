@@ -24,28 +24,24 @@ class VoxelizationConeTracingMaterial;
 /// <summary> A renderer that can be used to render a mesh. </summary>
 class MeshRenderer {
 public:
-	bool enabled = true;
-	bool tweakable = false; // Automatically adds a window for this mesh renderer.
-	std::string name = "Mesh renderer";
+    bool enabled = true;
+    bool tweakable = false; // Automatically adds a window for this mesh renderer.
+    std::string name = "Mesh renderer";
 
-	Transform transform;
-	Mesh * mesh = nullptr;
-    //MaterialSetting::SettingsGroup settingsGroup;
+    Mesh * mesh = nullptr;
     VoxelizationMaterial::VoxProperties voxProperties;
+    Transform transform;
     
-    
-     inline void diffuseColor(glm::vec3 _diffuseColor){ voxProperties.diffuseColor = _diffuseColor;}
-     inline void specularColor(glm::vec3 _specularColor){ voxProperties.specularColor = _specularColor;}
-     inline void diffuseReflectivity(GLfloat _diffuseReflectivity ){ voxProperties.diffuseReflectivity = _diffuseReflectivity;}
-     inline void specularReflectivity(GLfloat _specularReflectivity ){ voxProperties.specularReflectivity = _specularReflectivity;}
-     inline void specularDiffusion(GLfloat _specularDiffusion ){ voxProperties.specularDiffusion = _specularDiffusion; }
-     inline void emissivity(GLfloat _emissivity ){ voxProperties.emissivity = _emissivity; }
-     inline void transparency(GLfloat _transparency ){ voxProperties.transparency = _transparency; }
-     inline void refractiveIndex(GLfloat _refractiveIndex ){ voxProperties.refractiveIndex = _refractiveIndex; }
-    
-
 public:
-
+    inline void diffuseColor(glm::vec3 _diffuseColor){ voxProperties.diffuseColor = _diffuseColor;}
+    inline void specularColor(glm::vec3 _specularColor){ voxProperties.specularColor = _specularColor;}
+    inline void diffuseReflectivity(GLfloat _diffuseReflectivity ){ voxProperties.diffuseReflectivity = _diffuseReflectivity;}
+    inline void specularReflectivity(GLfloat _specularReflectivity ){ voxProperties.specularReflectivity = _specularReflectivity;}
+    inline void specularDiffusion(GLfloat _specularDiffusion ){ voxProperties.specularDiffusion = _specularDiffusion; }
+    inline void emissivity(GLfloat _emissivity ){ voxProperties.emissivity = _emissivity; }
+    inline void transparency(GLfloat _transparency ){ voxProperties.transparency = _transparency; }
+    inline void refractiveIndex(GLfloat _refractiveIndex ){ voxProperties.refractiveIndex = _refractiveIndex; }
+    
     void setVoxProperites(VoxelizationMaterial::VoxProperties &voxProperties);
     
     MeshRenderer(Mesh *, VoxProperties &);
@@ -64,8 +60,8 @@ private:
 	void setupMeshRenderer();
 	void reuploadIndexDataToGPU();
 	void reuploadVertexDataToGPU();
-    
 private:
     std::shared_ptr<VoxelizationMaterial> voxMaterial = nullptr;
     std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;
+
 };

@@ -80,6 +80,8 @@ void main()
     vec3 diff = material.diffuseReflectivity * material.diffuseColor;
     color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
     
+    color = vec3(1.f);
+    
     
     
     

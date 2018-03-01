@@ -81,6 +81,8 @@ void main()
     {
         fragColor += texture(texture3D, pos);
     }
+    
+    fragColor = vec4(1.0f);
 }
 
  

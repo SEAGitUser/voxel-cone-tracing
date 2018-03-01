@@ -51,7 +51,6 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 
     voxelizeRenderTarget->Render(renderingScene);
 
-	// Render.
 	switch (renderingMode) {
 	case RenderingMode::VOXELIZATION_VISUALIZATION:
         voxVisualizationRT->Render(renderingScene);

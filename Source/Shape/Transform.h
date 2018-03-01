@@ -11,8 +11,6 @@
 /// <summary> Represents a transform: rotation, position and scale. </summary>
 class Transform {
 public:
-    //TODO: these are used as transformed to quaternions first, then turned into mat4x4 matrices, maybe
-    //this should be matrices in the first place
 	glm::vec3 position = { 0,0,0 }, scale = { 1,1,1 }, rotation = { 0,0,0 };
 	Transform * parent = nullptr;
 

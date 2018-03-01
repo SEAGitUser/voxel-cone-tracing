@@ -91,8 +91,11 @@ FBO::Commands::Commands( const FBO::Commands& rhs)
 
 void FBO::Commands::end()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
-    fboID = DEFAULT_FRAMEBUFFER;
+    if(fboID != DEFAULT_FRAMEBUFFER)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
+        fboID = DEFAULT_FRAMEBUFFER;
+    }
 }
 
 void FBO::Commands::clearRenderTarget()

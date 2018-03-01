@@ -96,7 +96,7 @@ void MeshRenderer::reuploadVertexDataToGPU()
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
 	glBufferData(GL_ARRAY_BUFFER, mesh->vertexData.size() * dataSize, mesh->vertexData.data(), mesh->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(POSITION_LOCATION);
-	glVertexAttribPointer(POSITION_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, nullptr);
+	glVertexAttribPointer(POSITION_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, position));
 	glEnableVertexAttribArray(NORMALS_LOCATION);
 	glVertexAttribPointer(NORMALS_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, normal));
 }

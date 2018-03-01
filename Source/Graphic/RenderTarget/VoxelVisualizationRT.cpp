@@ -13,6 +13,7 @@
 #include "Graphic/Material/Texture/Texture3D.h"
 #include "Graphic/Camera/PerspectiveCamera.h"
 #include "Utility/ObjLoader.h"
+#include "Utility/Logger.h"
 #include "Graphic/FBO/FBO_2D.h"
 
 
@@ -91,10 +92,16 @@ void VoxelVisualizationRT::Render( Scene& scene )
     group["rayOrigin"] = scene.renderingCamera->position;
     group["windowSize"] = glm::vec2(fbo->getDimensions().width, fbo->getDimensions().height);
     group["focalLength"] = scene.renderingCamera->getNear();
-    group["modelView"] = glm::inverse(scene.renderingCamera->viewMatrix);
+    
+    
+    glm::mat4 mvp = scene.renderingCamera->getProjectionMatrix() * scene.renderingCamera->viewMatrix
+        * cubeMeshRenderer->transform.getTransformMatrix();
+    
+    group["MVP"] = mvp;
 
     FBO::Commands commands = fbo->Activate();
     commands.clearRenderTarget();
+    commands.enableCullFace(false);
 
     std::shared_ptr<Material> material =  std::static_pointer_cast<Material>(voxelVisualizationMaterial);
     cubeMeshRenderer->render(scene, group, material.get());
