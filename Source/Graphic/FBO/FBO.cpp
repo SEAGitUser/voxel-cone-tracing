@@ -81,7 +81,14 @@ void FBO::Commands::enableBlend(bool value)
 
 void FBO::Commands::enableCullFace(bool _value)
 {
-    _value ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+    if(_value)
+    {
+        glEnable(GL_CULL_FACE); glCullFace(GL_BACK);
+    }
+    else
+    {
+        glDisable(GL_CULL_FACE);
+    }
 }
 
 FBO::Commands::Commands( const FBO::Commands& rhs)
@@ -103,6 +110,10 @@ void FBO::Commands::clearRenderTarget()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void FBO::Commands::setClearColor(glm::vec4 color)
+{
+    glClearColor(color.r, color.g, color.b, color.a);
+}
 FBO::Commands::~Commands()
 {
     end();

@@ -73,8 +73,6 @@ void MeshRenderer::renderMesh()
 void MeshRenderer::render(Scene& scene, MaterialSetting::SettingsGroup& group, Material* _material)
 {
     _material->ApplySettings(group, scene);
-    _material->SetModelMatrix(transform.getTransformMatrix());
-    
     renderMesh();
 }
 

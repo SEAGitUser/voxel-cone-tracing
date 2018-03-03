@@ -700,12 +700,12 @@
 			isa = PBXGroup;
 			children = (
 				B98CE6532027A25C00B45558 /* PerspectiveCamera.h */,
+				B98CE65B2027A25C00B45558 /* PerspectiveCamera.cpp */,
+				B98CE6572027A25C00B45558 /* Camera.h */,
 				B98CE6542027A25C00B45558 /* Camera.cpp */,
 				B98CE6552027A25C00B45558 /* OrthographicCamera.cpp */,
 				B98CE6562027A25C00B45558 /* OrthographicCamera.h */,
-				B98CE6572027A25C00B45558 /* Camera.h */,
 				B98CE6582027A25C00B45558 /* Controllers */,
-				B98CE65B2027A25C00B45558 /* PerspectiveCamera.cpp */,
 			);
 			path = Camera;
 			sourceTree = "<group>";

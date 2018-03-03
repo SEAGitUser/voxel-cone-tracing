@@ -2,7 +2,7 @@
 
 #include "Opengl_Includes.h"
 #include "Graphic/Material/Texture/Texture.h"
-
+#include "glm/glm.hpp"
 #include <vector>
 
 
@@ -24,6 +24,7 @@ public:
         void colorMask( bool value);
         void activateCulling(bool value);
         void enableBlend(bool value);
+        void setClearColor(glm::vec4 color = glm::vec4(0.0f));
         void clearRenderTarget();
         void end();
         

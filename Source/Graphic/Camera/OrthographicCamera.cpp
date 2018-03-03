@@ -6,10 +6,9 @@ OrthographicCamera::OrthographicCamera() :
     far = 1.0f;
     aspect = 1.0f;
 }
+
 OrthographicCamera::OrthographicCamera(GLfloat _aspect, GLfloat _near, GLfloat _far) :
-    Camera(glm::ortho(-1.0f, 1.0f, -aspect, aspect, near, far))
+    Camera( aspect, aspect, near, far)
 {
-    aspect = _aspect;
-    near = _near;
-    far = _far;
+    projectionMatrix = glm::ortho(-1.0f, -1.0f, -aspect, aspect, near, far);
 }
