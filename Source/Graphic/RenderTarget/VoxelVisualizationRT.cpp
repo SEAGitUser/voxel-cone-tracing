@@ -39,11 +39,8 @@ void VoxelVisualizationRT::Render( Scene& scene )
     
     group["texture3D"] = sampler;
     group["camPosition"] = scene.renderingCamera->position;
-    group["focalLength"] = scene.renderingCamera->getFocalLength();
     
     glm::mat4 modelView = scene.renderingCamera->viewMatrix * cubeMeshRenderer->transform.getTransformMatrix();
-    group["viewMatrix"] = modelView;
-    
     group["M"] = cubeMeshRenderer->transform.getTransformMatrix();
 
     glm::mat4 mvp = scene.renderingCamera->getProjectionMatrix() * modelView;
