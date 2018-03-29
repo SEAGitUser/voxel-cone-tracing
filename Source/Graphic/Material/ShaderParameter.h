@@ -16,7 +16,7 @@ class Texture3D;
 /// <summary> Represents a setting for a material that can be used for a shader </summary>
 
 //TODO: LET'S TRY IMPLEMENTING THIS WITH TEMPLATE CLASSES
-class MaterialSetting
+class ShaderParameter
 {
     
 public:
@@ -28,6 +28,7 @@ public:
         VEC2,
         FLOAT,
         INT,
+        UINT,
         SAMPLER_2D,
         SAMPLER_3D,
         POINT_LIGHT,
@@ -61,6 +62,7 @@ private
         glm::vec2 vector2;
         GLfloat   floatValue;
         GLint     intValue;
+        GLuint    uintValue;
         Sampler2D   sampler2D;
         Sampler3D   sampler3D;
         glm::mat4 mat4;
@@ -83,10 +85,10 @@ public:
     
 
     
-    using SettingsGroup =  std::unordered_map<const GLchar* ,MaterialSetting>;
-    using KeyValue = std::pair<const GLchar*, MaterialSetting> ;
+    using ShaderParamsGroup =  std::unordered_map<const GLchar* ,ShaderParameter>;
+    using KeyValue = std::pair<const GLchar*, ShaderParameter> ;
     
-    MaterialSetting():value(),type(Type::NONE)
+    ShaderParameter():value(),type(Type::NONE)
     {
         
     }
@@ -96,6 +98,11 @@ public:
         return value.intValue;
     }
     
+    inline GLuint getUnsignedInt()
+    {
+        assert(type == Type::UINT);
+        return value.uintValue;
+    }
     inline GLfloat getFloatValue()
     {
         assert(type == Type::FLOAT);
@@ -144,7 +151,7 @@ public:
         return value.pointLight;
     }
     
-    inline MaterialSetting& operator=(const glm::mat4 &value)
+    inline ShaderParameter& operator=(const glm::mat4 &value)
     {
         type = Type::MAT4;
         this->value.mat4 = value;
@@ -152,7 +159,7 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const GLfloat &value)
+    inline ShaderParameter& operator=(const GLfloat &value)
     {
         type = Type::FLOAT;
         this->value.floatValue = value;
@@ -160,7 +167,7 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const glm::vec4 &value)
+    inline ShaderParameter& operator=(const glm::vec4 &value)
     {
         type = Type::VEC4;
         this->value.vector4 = value;
@@ -168,7 +175,7 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const glm::vec3 &value)
+    inline ShaderParameter& operator=(const glm::vec3 &value)
     {
         type = Type::VEC3;
         this->value.vector3 = value;
@@ -176,7 +183,7 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const glm::vec2 &value)
+    inline ShaderParameter& operator=(const glm::vec2 &value)
     {
         type = Type::VEC2;
         this->value.vector2 = value;
@@ -184,15 +191,23 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const GLint &value)
+    inline ShaderParameter& operator=(const GLint &value)
     {
         type = Type::INT;
         this->value.intValue = value;
         
         return *this;
     }
+
+    inline ShaderParameter& operator=(const GLuint &value)
+    {
+        type = Type::UINT;
+        this->value.intValue = value;
+        
+        return *this;
+    }
     
-    inline MaterialSetting& operator=(const Sampler2D &sampler)
+    inline ShaderParameter& operator=(const Sampler2D &sampler)
     {
         type = Type::SAMPLER_2D;
         this->value.sampler2D = sampler;
@@ -200,73 +215,69 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const PointLight &light)
+    inline ShaderParameter& operator=(const PointLight &light)
     {
         type = Type::POINT_LIGHT;
         this->value.pointLight = light;
         return *this;
     }
 
-    MaterialSetting(glm::mat4 _value)
+    ShaderParameter(glm::mat4 _value)
     {
         value.mat4 = _value;
         type = Type::MAT4;
     }
     
-    MaterialSetting(glm::vec4 _value)
+    ShaderParameter(glm::vec4 _value)
     {
         value.vector4 = _value;
         type = Type::VEC4;
     }
     
-    MaterialSetting(glm::vec3 _value)
+    ShaderParameter(glm::vec3 _value)
     {
         value.vector3 = _value;
         type = Type::VEC3;
     }
     
-    MaterialSetting(glm::vec2 _value)
+    ShaderParameter(glm::vec2 _value)
     {
         value.vector2 = _value;
         type = Type::VEC2;
     }
     
-    MaterialSetting(GLint _value)
+    ShaderParameter(GLint _value)
     {
         value.intValue = _value;
         type = Type::INT;
     }
+    ShaderParameter(GLuint _value)
+    {
+        value.uintValue = _value;
+        type = Type::UINT;
+    }
     
-    MaterialSetting(GLfloat _value)
+    ShaderParameter(GLfloat _value)
     {
         value.floatValue= _value;
         type = Type::FLOAT;
     }
 
-    MaterialSetting(Sampler2D _value)
+    ShaderParameter(Sampler2D _value)
     {
         value.sampler2D = _value;
         type = Type::SAMPLER_2D;
     }
 
-    MaterialSetting(Sampler3D _value)
+    ShaderParameter(Sampler3D _value)
     {
         value.sampler3D = _value;
         type = Type::SAMPLER_3D;
     }
     
-    static const GLchar* diffuseColor;
-    static const GLchar* specularColor;
-    static const GLchar* specularReflectivity;
-    static const GLchar* diffuseReflectivity;
-    static const GLchar* emissivity;
-    static const GLchar* specularDiffusion;
-    static const GLchar* transparency;
-    static const GLchar*  refractiveIndex;
-    
 private:
     
-    static void AddToGroup(SettingsGroup& group, KeyValue value);
+    static void AddToGroup(ShaderParamsGroup& group, KeyValue value);
 };
 
 

@@ -15,9 +15,11 @@ public:
     
 	const glm::mat4 & getProjectionMatrix() const;
 	void setProjectionMatrix(glm::mat4 projectionMatrix);
+    
 	virtual void updateViewMatrix();
-	glm::vec3 right() { return glm::normalize(-glm::cross(up, forward)); }
-	glm::vec3 front() { return glm::normalize(forward); }
+	
+    inline glm::vec3 right() { return glm::normalize(-glm::cross(up, forward)); }
+	inline glm::vec3 front() { return glm::normalize(forward); }
 
     
     inline GLfloat getFov() const {return fov;}

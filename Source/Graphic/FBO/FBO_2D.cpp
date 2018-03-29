@@ -12,7 +12,7 @@ FBO_2D::FBO_2D(Texture::Dimensions &dimensions, Texture::Properties &textureProp
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     
-    textureColorBuffer = AddRenderTarget();
+    AddRenderTarget();
     
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
@@ -64,29 +64,38 @@ GLuint FBO_2D::generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean
 }
  */
 
-GLint FBO_2D::AddRenderTarget()
+Texture* FBO_2D::AddRenderTarget(bool depthTarget)
 {
-    assert(renderTargets.size() < MAX_RENDER_TARGETS);
+    GLint previousFrameBuffer;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    
+    assert(renderTextures.size() < MAX_RENDER_TARGETS);
     assert(frameBuffer != DEFAULT_FRAMEBUFFER && "Cannot add a render target to a frame buffer object whose frame buffer is the default");
 
     Texture2D *target = new Texture2D();
-    renderTargets.push_back(target);
-    
     GLint targetID = FBO::AddRenderTarget(target);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)(renderTargets.size() -1), GL_TEXTURE_2D, targetID, 0);
-    return targetID;
+    
+    if(!depthTarget)
+    {
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)(renderTextures.size() -1), GL_TEXTURE_2D, targetID, 0);
+    }
+    else
+    {
+        depthTexture = target;
+        target->SetPixelFormat(GL_DEPTH_COMPONENT32);
+        target->SaveTextureState();
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, targetID, 0);
+    }
+    
+    assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
+    
+    return target;
 
 }
 
 FBO_2D::~FBO_2D()
 {
-    for(Texture2D* texture : renderTargets)
-    {
-        delete texture;
-    }
-    
     glDeleteFramebuffers(1, &frameBuffer);
-    
-
-    
 }

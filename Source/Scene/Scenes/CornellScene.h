@@ -14,4 +14,5 @@ public:
 	~CornellScene();
 private:
 	std::vector<Shape*> shapes;
+    Shape * lightSphere = nullptr;
 };

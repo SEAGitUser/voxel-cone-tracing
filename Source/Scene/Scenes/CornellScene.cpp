@@ -11,8 +11,7 @@
 #include "Graphic/Lighting/PointLight.h"
 #include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
-#include "Graphic/Renderer/MeshRenderer.h"
-#include "Graphic/Material/MaterialSetting.h"
+#include "Graphic/Material/ShaderParameter.h"
 
 // Settings.
 namespace { unsigned int lightSphereIndex = 0; }
@@ -24,19 +23,18 @@ void CornellScene::init(unsigned int viewportWidth, unsigned int viewportHeight)
 	Shape * cornell = ObjLoader::loadObjFile("Assets\\Models\\cornell.obj");
 	shapes.push_back(cornell);
 	for (unsigned int i = 0; i < cornell->meshes.size(); ++i) {
-		renderers.push_back(new MeshRenderer(&(cornell->meshes[i])));
-	}
-	for (auto & r : renderers) {
-		r->transform.position -= glm::vec3(0.00f, 0.0f, 0);
-		r->transform.scale = glm::vec3(0.995f);
-		r->transform.updateTransformMatrix();
+		renderers.push_back(((cornell->meshes[i])));
 	}
 
+    cornell->transform.position -= glm::vec3(0.00f, 0.0f, 0);
+    cornell->transform.scale = glm::vec3(0.995f);
+    cornell->transform.updateTransformMatrix();
+
 	// Light sphere.
-	Shape * lightSphere = ObjLoader::loadObjFile("Assets\\Models\\sphere.obj");
+	lightSphere = ObjLoader::loadObjFile("Assets\\Models\\sphere.obj");
 	shapes.push_back(lightSphere);
 	for (unsigned int i = 0; i < lightSphere->meshes.size(); ++i) {
-		renderers.push_back(new MeshRenderer(&(lightSphere->meshes[i])));
+		renderers.push_back((lightSphere->meshes[i]));
 	}
 	lightSphereIndex = renderers.size() - 1;
 
@@ -78,14 +76,14 @@ void CornellScene::update() {
 	glm::vec3 r = glm::vec3(sinf(float(FrameRate::time * 0.97)), sinf(float(FrameRate::time * 0.45)), sinf(float(FrameRate::time * 0.32)));
 
 	// Lighting.
-	renderers[lightSphereIndex]->transform.position = glm::vec3(0, 0.5, 0.1) + r * 0.1f;
-	renderers[lightSphereIndex]->transform.position.x *= 4.5f;
-	renderers[lightSphereIndex]->transform.position.z *= 4.5f;
-	renderers[lightSphereIndex]->transform.rotation = r;
-	renderers[lightSphereIndex]->transform.scale = glm::vec3(0.049f);
-	renderers[lightSphereIndex]->transform.updateTransformMatrix();
+	lightSphere->transform.position = glm::vec3(0, 0.5, 0.1) + r * 0.1f;
+	lightSphere->transform.position.x *= 4.5f;
+	lightSphere->transform.position.z *= 4.5f;
+	lightSphere->transform.rotation = r;
+	lightSphere->transform.scale = glm::vec3(0.049f);
+	lightSphere->transform.updateTransformMatrix();
 
-	pointLights[0].position = renderers[lightSphereIndex]->transform.position;
+	pointLights[0].position = lightSphere->transform.position;
     renderers[lightSphereIndex]->voxProperties.diffuseColor = pointLights[0].color;
 }
 

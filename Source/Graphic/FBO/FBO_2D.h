@@ -14,8 +14,7 @@
 #include <vector>
 
 #include "FBO.h"
-
-class Texture2D;
+#include "Graphic/Material/Texture/Texture2D.h"
 
 
 // https://www.opengl.org/wiki/Framebuffer_Object_Examples
@@ -24,14 +23,18 @@ class FBO_2D : public FBO
 {
 public:
     
-    FBO_2D():FBO(){};
+    FBO_2D():FBO(),depthTexture(nullptr)
+        {};
     
     FBO_2D(Texture::Dimensions &dimensions,  Texture::Properties &textureProperties);
     ~FBO_2D();
     
-    virtual GLint AddRenderTarget() override;
+    virtual Texture* AddRenderTarget(bool depthTarget = false) override;
+    inline Texture* getDepthTexture(){ return static_cast<Texture*>(depthTexture); }
 private:
+    
     GLuint generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
     
-    std::vector<Texture2D*> renderTargets;
+    Texture2D* depthTexture;
+    
 };

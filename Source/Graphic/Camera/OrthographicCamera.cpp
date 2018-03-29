@@ -1,4 +1,7 @@
 #include "OrthographicCamera.h"
+#include "Logger.h"
+
+
 OrthographicCamera::OrthographicCamera() :
     Camera(glm::ortho(-1, 1, -1, 1, -1, 1))
 {
@@ -7,8 +10,18 @@ OrthographicCamera::OrthographicCamera() :
     aspect = 1.0f;
 }
 
-OrthographicCamera::OrthographicCamera(GLfloat _aspect, GLfloat _near, GLfloat _far) :
-    Camera( aspect, aspect, near, far)
+OrthographicCamera::OrthographicCamera(GLfloat viewSpaceWidth, GLfloat viewSpaceHeight, GLfloat viewSpaceDepth):
+    Camera(glm::mat4(1.0f))
 {
-    projectionMatrix = glm::ortho(-1.0f, -1.0f, -aspect, aspect, near, far);
+    aspect = viewSpaceWidth/viewSpaceHeight;
+    left = viewSpaceWidth * -.5f;
+    right = -left;
+    top = viewSpaceHeight * .5f;
+    bottom = -top;
+    //anything behind the camera will not be projected
+    near = 0.0f;
+    far = viewSpaceDepth * 1.01f;
+    focalLength = near;
+    
+    projectionMatrix = glm::ortho(left, right, bottom, top, near, far);
 }

@@ -51,5 +51,5 @@ private:
     GLuint internalFormat;
     //TODO: THIS ARRAY IS USED TO CLEAR MEMORY, WILL NOT BE NEEDED IN OPENGL 4.4 AND ABOVE
     //ANOTHER WAY TO DO THIS IN 4.1 IS TO USE OPENCL.  I WILL IMPLEMENT THIS IN A MEMORY PASS. 
-	std::vector<GLfloat> clearData;
+	static std::vector<GLfloat> clearData;
 };

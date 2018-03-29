@@ -9,22 +9,25 @@
 #pragma once
 
 #include "RenderTarget.h"
+#include "Graphic/Camera/OrthographicCamera.h"
 
-class Texture3D;
-class FBO_3D;
-class Camera;
+class OrthographicCamera;
+class Texture2D;
+class Material;
+class Points;
+class VoxelizationMaterial;
 
 class VoxelizeRT : public RenderTarget
 {
 public:
-    VoxelizeRT( );
+    VoxelizeRT(GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth );
     virtual void Render( Scene& scene ) override;
     virtual ~VoxelizeRT();
     
     
 private:
-    void createUnitCubeTransform(Camera& camera, glm::mat4 &worldToUnitCube);
-    void voxelize(Scene& renderScene, glm::mat4 &worldToUnitCube);
+    void voxelize(Scene& renderScene);
+    Texture2D* renderDepthBuffer(Scene& renderScene);
     
 private:
     bool automaticallyRegenerateMipmap = true;
@@ -41,8 +44,12 @@ private:
     GLboolean depthTest;
     GLboolean blend;
     GLint frameBuffer;
+
+    std::shared_ptr<Material> positionsMaterial;
+    std::shared_ptr<Points> points;
+    std::shared_ptr<VoxelizationMaterial> voxMaterial;
     
-    glm::mat4 worldToUnitCubeNormTex;
+    OrthographicCamera orthoCamera;
     
 
 };

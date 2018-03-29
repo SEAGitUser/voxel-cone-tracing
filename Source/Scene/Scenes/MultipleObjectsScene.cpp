@@ -9,11 +9,10 @@
 #include "Graphic/Camera/PerspectiveCamera.h"
 #include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
-#include "Graphic/Renderer/MeshRenderer.h"
-#include "Graphic/Material/MaterialSetting.h"
+#include "Graphic/Material/ShaderParameter.h"
 #include "Application.h"
 
-namespace { MaterialSetting * objectMaterialSetting; }
+namespace { ShaderParameter * objectMaterialSetting; }
 
 void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	FirstPersonScene::init(viewportWidth, viewportHeight);
@@ -22,13 +21,11 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	Shape * cornell = ObjLoader::loadObjFile("Assets/Models/cornell.obj");
 	shapes.push_back(cornell);
 	for (unsigned int i = 0; i < cornell->meshes.size(); ++i) {
-		renderers.push_back(new MeshRenderer(&(cornell->meshes[i])));
+		renderers.push_back(cornell->meshes[i]);
 	}
-	for (auto & r : renderers) {
-		r->transform.position -= glm::vec3(0.00f, 0.0f, 0);
-		r->transform.scale = glm::vec3(0.995f);
-		r->transform.updateTransformMatrix();
-	}
+    cornell->transform.position -= glm::vec3(0.00f, 0.0f, 0);
+    cornell->transform.scale = glm::vec3(0.995f);
+    cornell->transform.updateTransformMatrix();
     
     renderers[0]->voxProperties = VoxProperties::Red(); //wall
     renderers[1]->voxProperties = VoxProperties::White(); //floor
@@ -47,10 +44,10 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
 	Shape * object = ObjLoader::loadObjFile("Assets\\Models\\susanne.obj");
 	shapes.push_back(object);
 	for (unsigned int i = 0; i < object->meshes.size(); ++i) {
-		renderers.push_back(new MeshRenderer(&(object->meshes[i])));
+		renderers.push_back((object->meshes[i]));
 	}
 
-	MeshRenderer * objectRenderer = renderers[objectIndex];
+	Mesh * objectRenderer = renderers[objectIndex];
 
     objectRenderer->voxProperties = VoxProperties::White();
     
@@ -64,17 +61,18 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
     
 
 	objectRenderer->tweakable = true;
-	objectRenderer->transform.scale = glm::vec3(0.23f);
-	objectRenderer->transform.rotation = glm::vec3(0.00, 0.30, 0.00);
-	objectRenderer->transform.position = glm::vec3(0.07, -0.49, 0.36);
-	objectRenderer->transform.updateTransformMatrix();
+    
+    object->transform.scale = glm::vec3(0.23f);
+    object->transform.rotation = glm::vec3(0.0f, 0.3f, 0.f);
+    object->transform.position = glm::vec3(0.07f, -0.49f, 0.36f);
+    object->transform.updateTransformMatrix();
 
 	// Dragon.
 	objectIndex = renderers.size();
 	object = ObjLoader::loadObjFile("Assets\\Models\\dragon.obj");
 	shapes.push_back(object);
 	for (unsigned int i = 0; i < object->meshes.size(); ++i) {
-		renderers.push_back(new MeshRenderer(&(object->meshes[i])));
+		renderers.push_back((object->meshes[i]));
 	}
 
 	objectRenderer = renderers[objectIndex];
@@ -90,17 +88,17 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
     
     
     objectRenderer->tweakable = true;
-	objectRenderer->transform.scale = glm::vec3(1.3f);
-	objectRenderer->transform.rotation = glm::vec3(0, 2.1, 0);
-	objectRenderer->transform.position = glm::vec3(-0.28, -0.52, 0.00);
-	objectRenderer->transform.updateTransformMatrix();
+	object->transform.scale = glm::vec3(1.3f);
+	object->transform.rotation = glm::vec3(0, 2.1, 0);
+	object->transform.position = glm::vec3(-0.28, -0.52, 0.00);
+	object->transform.updateTransformMatrix();
 
 	// Bunny.
 	objectIndex = renderers.size();
 	object = ObjLoader::loadObjFile("Assets\\Models\\bunny.obj");
 	shapes.push_back(object);
 	for (unsigned int i = 0; i < object->meshes.size(); ++i) {
-		renderers.push_back(new MeshRenderer(&(object->meshes[i])));
+		renderers.push_back(((object->meshes[i])));
 	}
 
 	objectRenderer = renderers[objectIndex];
@@ -114,19 +112,18 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
     objectRenderer->voxProperties.specularDiffusion = 9.4f;
     
 	objectRenderer->tweakable = true;
-	objectRenderer->transform.scale = glm::vec3(0.31f);
-	objectRenderer->transform.rotation = glm::vec3(0, 0.4, 0);
-	objectRenderer->transform.position = glm::vec3(0.44, -0.52, 0);
-	objectRenderer->transform.updateTransformMatrix();
+	object->transform.scale = glm::vec3(0.31f);
+	object->transform.rotation = glm::vec3(0, 0.4, 0);
+	object->transform.position = glm::vec3(0.44, -0.52, 0);
+	object->transform.updateTransformMatrix();
 
 	// Light.
 	int lightIndex = renderers.size();
 	Shape * light = ObjLoader::loadObjFile("Assets\\Models\\quad.obj");
 	shapes.push_back(light);
-	MeshRenderer * lamp = new MeshRenderer(&(light->meshes[0]));
+	Mesh * lamp =  ((light->meshes[0]));
 	renderers.push_back(lamp);
 
-	//MaterialSetting::Emissive(lamp->settingsGroup );
     
     objectRenderer->voxProperties = VoxProperties::Emissive();
     
@@ -136,15 +133,15 @@ void MultipleObjectsScene::init(unsigned int viewportWidth, unsigned int viewpor
     objectRenderer->voxProperties.diffuseReflectivity = 0.0f;
 
 
-	lamp->transform.position = glm::vec3(0, 0.975, 0);
-	lamp->transform.rotation = glm::vec3(-3.1414 * 0.5, 3.1414 * 0.5, 0);
-	lamp->transform.scale = glm::vec3(0.14f, 0.34f, 1.0f);
-	lamp->transform.updateTransformMatrix();
+	light->transform.position = glm::vec3(0, 0.975, 0);
+	light->transform.rotation = glm::vec3(-3.1414 * 0.5, 3.1414 * 0.5, 0);
+	light->transform.scale = glm::vec3(0.14f, 0.34f, 1.0f);
+	light->transform.updateTransformMatrix();
 
 	// Point light.
 	PointLight p;
 	p.color = glm::vec3(1.0f);
-	p.position = lamp->transform.position - glm::vec3(0, 0.38, 0);
+	p.position = light->transform.position - glm::vec3(0, 0.38, 0);
 	pointLights.push_back(p);
 }
 

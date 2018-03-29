@@ -12,8 +12,10 @@
 #include "Graphic/Material/MaterialStore.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
+#include "Utility/Logger.h"
 
-constexpr GLfloat VoxelizationMaterial::VOXEL_CUBE_SCALE = 50.0f;
+constexpr GLfloat VoxelizationMaterial::VOXEL_CUBE_SCALE = 2.0f;
+constexpr GLuint VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS = 64u;
 
 VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const ShaderSharedPtr vertexShader,
                                            const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader):
@@ -21,7 +23,7 @@ Material(_name, vertexShader, fragmentShader, geometryShader)
 {
 }
 
-void VoxelizationMaterial::GetVoxSettings(MaterialSetting::SettingsGroup &settings, VoxProperties &voxProperties)
+void VoxelizationMaterial::GetVoxSettings(ShaderParameter::ShaderParamsGroup &settings, VoxProperties &voxProperties)
 {
     settings["material.diffuseColor"] = voxProperties.diffuseColor;
     settings["material.specularColor"] = voxProperties.specularColor;
@@ -33,20 +35,21 @@ void VoxelizationMaterial::GetVoxSettings(MaterialSetting::SettingsGroup &settin
     settings["material.diffuseReflectivity"] = voxProperties.diffuseReflectivity;
 }
 
-void VoxelizationMaterial::ApplyVoxSettings(Transform& worldTransform,
-                                            glm::mat4& worldToUnitCube, Scene& scene, VoxProperties& voxProperties)
+void VoxelizationMaterial::uploadGPUVoxParams(Transform& worldTransform, Scene& scene,
+                                            VoxProperties& voxProperties, OrthographicCamera& orthoCamera)
 {
     
-    settings["totalSlices"] = VOXEL_CUBE_SCALE;
-    settings["modelMatrix"] = worldTransform.getTransformMatrix();
-    settings["worldToUnitCube"] = worldToUnitCube;
+    assert((VOXEL_TEXTURE_DIMENSIONS & (VOXEL_TEXTURE_DIMENSIONS - 1))  % 2 == 0
+           && "voxel textures must be a power of 2");
+    
+    settings["cubeDimensions"] = VOXEL_TEXTURE_DIMENSIONS;
     
     std::vector<PointLight> &lights = scene.pointLights;
     assert(lights.size() == 1 && "only one light supported at the moment");
     settings["pointLight"] = lights[0];
     
-    GetVoxSettings(settings, voxProperties);
-    ApplySettings(settings, scene);
+    //GetVoxSettings(settings, voxProperties);
+    uploadGPUParameters(settings, scene);
     
     glError();
 }

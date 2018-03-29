@@ -39,7 +39,8 @@ void Texture2D::SaveTextureState( GLboolean generateMipmaps, GLboolean loadTextu
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     static const GLint border = 0;
-    glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, border, pixelFormat , dataType , nullptr);
+    GLint format = pixelFormat == GL_DEPTH_COMPONENT32 ? GL_DEPTH_COMPONENT : pixelFormat;
+    glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, border, format , dataType , nullptr);
     glError();
     /*
      
@@ -72,11 +73,13 @@ shaderTextureSamplerName(""),
 Texture()
 {
     glGenTextures(1, &textureID);
+    
+    SaveTextureState();
 }
 
 void Texture2D::Activate(int shaderProgram, int textureUnit)
 {
-	glActiveTexture(textureUnit);
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glUniform1i(glGetUniformLocation(shaderProgram, shaderTextureSamplerName.c_str()), textureUnit);
 }

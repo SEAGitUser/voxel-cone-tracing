@@ -12,22 +12,26 @@
 #include "Scene/Scene.h"
 
 class FBO;
+class FBO_2D;
+class Mesh;
 
 class RenderTarget {
     
 public:
     RenderTarget(){};
     
-    virtual void Render( Scene& renderScene ) = 0;
+    virtual void Render( Scene& renderScene );
     
     virtual ~RenderTarget(){};
     
-    inline FBO* getFBO(){ return fbo;};
+    inline FBO* getFBO(){ return voxelFBO;};
 private:
     
     
 protected:
-    using RenderingQueue = const std::vector<MeshRenderer*> &;
-    FBO * fbo;
+    using RenderingQueue = const std::vector<Mesh*> &;
+    FBO* voxelFBO;
+    FBO_2D* depthFBO;
+    FBO_2D* defaultFBO;
 };
 

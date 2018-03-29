@@ -3,6 +3,31 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "FBO::Activate():FBO.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "previousFrameBuffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::initBuffers():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "VoxelizeRT::voxelize(Scene&amp;):VoxelizeRT.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "renderingQueue[i]-&gt;name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Primitive::Commands::Commands(Primitive*):Primitive.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Primitive::Commands::uploadGPUVertexData():Primitive.cpp">
+      </ContextState>
+      <ContextState
          contextName = "::__cxx_global_var_init():Shader.cpp">
          <PersistentStrings>
             <PersistentString
@@ -14,27 +39,65 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "MeshRenderer::setupMeshRenderer():MeshRenderer.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "FBO::InitCommands():FBO.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Texture3D::Clear():Texture3D.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "levels">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Shader::Shader(char const*, Shader::ShaderType):Shader.cpp">
          <PersistentStrings>
             <PersistentString
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
-               value = "shaderResourcePath">
-            </PersistentString>
-            <PersistentString
                value = "Shader::shaderResourcePath ">
             </PersistentString>
+            <PersistentString
+               value = "shaderResourcePath">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::Commands(Mesh*):Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::render():Mesh.cpp">
       </ContextState>
       <ContextState
          contextName = "VoxelizeRT::VoxelizeRT():VoxelizeRT.cpp">
       </ContextState>
       <ContextState
-         contextName = "FBO::Activate():FBO.cpp">
+         contextName = "Primitive::Commands::initBuffers():Primitive.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Graphics::init(unsigned int, unsigned int):Graphics.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "FBO_3D::AddRenderTarget():FBO_3D.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::uploadIndexDataToGPU():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshRenderer::reuploadIndexDataToGPU():MeshRenderer.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshRenderer::renderMesh():MeshRenderer.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Primitive::Commands::uploadGPUIndexData():Primitive.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "previousFrameBuffer">
+               value = "primitive-&gt;indices">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

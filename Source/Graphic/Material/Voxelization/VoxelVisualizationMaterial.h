@@ -23,6 +23,14 @@ public:
         glm::vec2 windowSize;
         glm::vec3 rayOrigin;
         
+        VisualizationArgs()
+        {
+            modelview = glm::mat4(1.0f);
+            focalLength = 0.0f;
+            windowSize = glm::vec2(0.0f);
+            rayOrigin = glm::vec3(0.0f);
+        }
+        
     }VisualizationArgs;
     
     VoxelVisualizationMaterial(const GLchar *_name, const ShaderSharedPtr voxelVert, const ShaderSharedPtr voxelFrag);

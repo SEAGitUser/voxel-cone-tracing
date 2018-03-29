@@ -30,8 +30,9 @@ FBO_3D::FBO_3D(Texture::Dimensions &_dimensions, Texture::Properties &_propertie
 }
 
 
-GLint FBO_3D::AddRenderTarget()
+Texture* FBO_3D::AddRenderTarget(bool depthTarget)
 {
+    assert(depthTarget == false && "depth target not supported for 3D FBOs");
     assert(renderTargets.size() < MAX_RENDER_TARGETS);
     
     Texture3D *target = new Texture3D();
@@ -59,7 +60,7 @@ GLint FBO_3D::AddRenderTarget()
     glError();
     
     renderTextures.push_back(target);
-    return target->GetTextureID();
+    return target;
 }
 
 FBO_3D::~FBO_3D()

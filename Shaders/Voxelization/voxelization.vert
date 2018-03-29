@@ -6,21 +6,45 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 
-uniform mat4 modelMatrix;
-uniform mat4 worldToUnitCube;
-uniform float totalSlices;
+//cube dimensions is assumed to be a power of 2
+uniform uint cubeDimensions;
+uniform sampler2D depthTexture;
 
-out vec3 worldPositionGeom;
-out vec3 normalGeom;
 out float totalSlicesGeom;
+out vec4 colorGeom;
 
+void throwAwayVertex()
+{
+    gl_Position.x = 10000.0f;
+}
 void main(){
     
-	worldPositionGeom = vec3(modelMatrix * vec4(position, 1));
-	normalGeom = normalize(mat3(transpose(inverse(modelMatrix))) * normal);
-    totalSlicesGeom = totalSlices;
+    //this is the same thing as the remainder or mod operator, but way faster. total slices is always a power of 2, causing
+    //this "mod" to always give us the right answer.
+    float x = uint(gl_InstanceID) & uint(cubeDimensions - 1);
+    float y = int(float(gl_InstanceID) / float(cubeDimensions));
     
-    gl_Position = worldToUnitCube * modelMatrix * vec4(position,1);
+    float OFFSET_TO_PIXEL_CENTER = 0.5f;
+    x += OFFSET_TO_PIXEL_CENTER;
+    y += OFFSET_TO_PIXEL_CENTER;
     
-	//gl_Position = P * V * vec4(worldPositionGeom, 1);
+    x /= float(cubeDimensions);
+    y /= float(cubeDimensions);
+
+    totalSlicesGeom = float(cubeDimensions);
+    float depth = texture(depthTexture, vec2(x,y)).r;
+    
+    if(depth == 0.0f)
+    {
+        throwAwayVertex();
+    }
+    else
+    {
+        colorGeom = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+
+        gl_Position.xy = vec2(x,y);
+        gl_Position.z = depth;
+        gl_Position.w = 1.0f;
+    }
+
 }

@@ -15,7 +15,7 @@ uniform vec3    camPosition;
 uniform sampler3D texture3D;
 
 uniform float   stepSize = 0.01f;
-uniform float   maxSamples = 5;
+uniform float   maxSamples = 80;
 uniform mat4    viewMatrix;
 
 in vec3  fragPosition;
@@ -57,7 +57,7 @@ void main()
     AABB aabb = AABB(vec3(-1.0), vec3(+1.0));
     
     float tnear, tfar;
-    fragColor = vec4(1.0f);
+    fragColor = vec4(0.0f);
     if(IntersectBox(eye, aabb, tnear, tfar))
     {
         if (tnear < 0.0) tnear = 0.0;
@@ -69,6 +69,11 @@ void main()
         // note that the box we are intersecting against has dimension ranges from -1 to 1 in all axis
         rayStart = 0.5 * (rayStart + 1.0);
         rayStop = 0.5 * (rayStop + 1.0);
+        
+        //the purpose of this is so that when we look at visualization of the voxels, the nearest voxels to the camera
+        //show up in the front, otherwise, the scene shows up in reverse order. 
+        rayStart = 1 - rayStart;
+        rayStop = 1 - rayStop;
 
         // Perform the ray marching:
         vec3 pos = rayStart;
@@ -77,7 +82,8 @@ void main()
 
         for (int i=0; i < maxSamples && travel > 0.0; ++i, pos += step, travel -= stepSize)
         {
-            fragColor += texture(texture3D, pos);
+            vec3 samplePoint = pos;
+            fragColor += texture(texture3D, samplePoint);
         }
     }
 }

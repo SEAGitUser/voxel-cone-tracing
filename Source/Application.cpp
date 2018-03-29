@@ -13,7 +13,6 @@
 #include "Scene/ScenePack.h"
 #include "Graphic/Graphics.h"
 #include "Graphic/Material/MaterialStore.h"
-#include "Graphic/Renderer/MeshRenderer.h"
 #include "Time/FrameRate.h"
 
 #define __LOG_INTERVAL 0 /* How often we should log frame rate info to the console. = 0 means don't log. */
@@ -99,7 +98,9 @@ void Application::init() {
 	int w, h;
 	glfwGetWindowSize(currentWindow, &w, &h);
 	MaterialStore::getInstance(); // Initialize material store.
-	graphics.init(w, h);
+    glError();
+    graphics.init(w, h);
+    glError();
 	glfwSetWindowSizeCallback(currentWindow, Application::OnWindowResize);
 	glfwSwapInterval(DEFAULT_VSYNC); // vSync.
 	std::cout << "[2] : Graphics initialized." << std::endl;
@@ -323,18 +324,16 @@ void Application::GLFWKeyCallback(GLFWwindow * window, int key, int scanmode, in
 {
 	auto & app = Application::getInstance();
 
+    using GRM = Graphics::RenderingMode;
 
+    
 	// Button was pressed down this frame.
 	if (action == 1) {
 		// Change rendering mode.
 		if (key == GLFW_KEY_R) {
-			using GRM = Graphics::RenderingMode;
-			if (app.currentRenderingMode == GRM::VOXELIZATION_VISUALIZATION) {
-				app.currentRenderingMode = GRM::VOXEL_CONE_TRACING;
-			}
-			else {
-				app.currentRenderingMode = GRM::VOXELIZATION_VISUALIZATION;
-			}
+
+            uint mode = (static_cast<int>(app.currentRenderingMode) + 1) % static_cast<int>(GRM::RENDER_MODE_TOTAL);
+            app.currentRenderingMode = static_cast<GRM>(mode);
 		}
 
 		// Change viewing mode.

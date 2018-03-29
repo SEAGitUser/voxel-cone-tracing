@@ -11,7 +11,7 @@
 #include "Graphic/Material/Material.h"
 #include "Graphic/Material/Shader.h"
 #include "Shape/Transform.h"
-
+#include "Graphic/Camera/OrthographicCamera.h"
 #include <string>
 
 
@@ -91,21 +91,21 @@ public:
                          const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader);
     void ClearVoxels();
     ~VoxelizationMaterial();
-    void createUnitCubeTransform(Camera& camera, glm::mat4 &worldToUnitCube);
-    void ApplyVoxSettings(Transform& worldTransform, glm::mat4& worldToUnitCube, Scene& scene, VoxProperties& voxProperties);
+    void uploadGPUVoxParams(Transform& worldTransform, Scene& scene, VoxProperties& voxProperties,
+                            OrthographicCamera& orthoCamera);
     
 protected:
-    MaterialSetting::SettingsGroup settings;
+    ShaderParameter::ShaderParamsGroup settings;
     
 protected:
-    void GetVoxSettings(MaterialSetting::SettingsGroup& settings, VoxProperties& voxProperties );
+    void GetVoxSettings(ShaderParameter::ShaderParamsGroup& settings, VoxProperties& voxProperties );
     
 private:
     VoxelizationMaterial();
     
 public:
     static const std::vector<GLfloat> initTextureBuffer;
-    static const GLuint voxelTextureSize = 64; //must be a power of two
+    static const GLuint VOXEL_TEXTURE_DIMENSIONS; //must be a power of two
     static const GLfloat VOXEL_CUBE_SCALE;
     
 };

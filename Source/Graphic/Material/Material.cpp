@@ -49,39 +49,32 @@ void Material::setCameraParameters(Camera &camera)
     glUniform3fv(glGetUniformLocation(program, CAMERA_POSITION_NAME), 1, glm::value_ptr(camera.position));
 }
 
-void Material::ApplySettings(Scene& scene)
+void Material::uploadGPUParameters(Scene& scene)
 {
     glUseProgram(program);
     
     setLightingParameters(scene.pointLights);
     setCameraParameters(*scene.renderingCamera);
 }
-void Material::ApplySettings(MaterialSetting::SettingsGroup& group, Scene& scene)
+void Material::uploadGPUParameters(ShaderParameter::ShaderParamsGroup& group, Scene& scene)
 {
     glUseProgram(program);
     
-    ApplySettings(scene);
+    uploadGPUParameters(scene);
     uploadRenderingSettings();
-    uploadGlobalConstants();
-    ApplySettings(group);
+    uploadGPUParameters(group);
 }
 
-void Material::ApplySettings(MaterialSetting::SettingsGroup &group)
+void Material::uploadGPUParameters(ShaderParameter::ShaderParamsGroup &group)
 {
     glUseProgram(program);
     
-    for (std::pair<const GLchar* , MaterialSetting > pair : group)
+    for (std::pair<const GLchar* , ShaderParameter > pair : group)
     {
         const GLchar* name = pair.first;
-        MaterialSetting setting = pair.second;
+        ShaderParameter setting = pair.second;
         setValue(setting, name);
     }
-}
-
-void Material::uploadGlobalConstants()
-{
-    //TODO: it looks like state 0 is used for mipmapping levels in the voxel visualization, do we need this? n
-    glUniform1i(glGetUniformLocation(program, APP_STATE_NAME), 0);
 }
 
 void Material::uploadRenderingSettings()
@@ -92,63 +85,71 @@ void Material::uploadRenderingSettings()
     glUniform1i(glGetUniformLocation(program, "settings.directLight"), directLight);
 }
 
-void Material::setValue(MaterialSetting &setting, const GLchar* name)
+void Material::setValue(ShaderParameter &setting, const GLchar* name)
 {
-    assert(setting.getType() != MaterialSetting::Type::NONE);
+    assert(setting.getType() != ShaderParameter::Type::NONE);
     
     GLint result = 0;
     //TODO: let's use virtual functions and templates for this instead
     switch (setting.getType())
     {
-        case MaterialSetting::Type::MAT4 :
+        case ShaderParameter::Type::MAT4 :
         {
             glm::mat4 value = setting.getMat4Value();
             result = SetParamatermat4(name, value);
             break;
         }
-        case MaterialSetting::Type::VEC4 :
+        case ShaderParameter::Type::VEC4 :
         {
             glm::vec4 value = setting.getVec4Value();
             result = SetParameterv4(name, value);
             break;
         }
-        case MaterialSetting::Type::VEC3:
+        case ShaderParameter::Type::VEC3:
         {
             glm::vec3 value = setting.getVec3Value();
             result = SetParameterv3(name, value);
             break;
         }
-        case MaterialSetting::Type::VEC2:
+        case ShaderParameter::Type::VEC2:
         {
             glm::vec2 value = setting.getVec2Value();
             result = SetParameterv2(name, value);
             break;
         }
-        case MaterialSetting::Type::FLOAT:
+        case ShaderParameter::Type::FLOAT:
         {
             GLfloat value = setting.getFloatValue();
             result = SetParameterf(name, value);
             break;
         }
-        case MaterialSetting::Type::INT:
+        case ShaderParameter::Type::INT:
         {
             GLint value = setting.getIntValue();
             result = SetParameteri(name, value);
             break;
         }
-        case MaterialSetting::Type::SAMPLER_2D:
+        
+        case ShaderParameter::Type::UINT:
         {
-            MaterialSetting::Sampler2D sampler = setting.getSampler2DValue();
+            GLuint value = setting.getUnsignedInt();
+            result = SetParameterui(name, value);
+            break;
+        }
+            
+        case ShaderParameter::Type::SAMPLER_2D:
+        {
+            ShaderParameter::Sampler2D sampler = setting.getSampler2DValue();
             result = SetParameterSampler2D(name, sampler);
             break;
         }
-        case MaterialSetting::Type::SAMPLER_3D:
+        case ShaderParameter::Type::SAMPLER_3D:
         {
-            MaterialSetting::Sampler3D sampler = setting.getSampler3DValue();
+            ShaderParameter::Sampler3D sampler = setting.getSampler3DValue();
             result = SetParameterSampler3D(name, sampler);
             break;
         }
-        case MaterialSetting::Type::POINT_LIGHT:
+        case ShaderParameter::Type::POINT_LIGHT:
         {
             PointLight &light = setting.getPointLightValue();
             result = SetPointLight(name, light);

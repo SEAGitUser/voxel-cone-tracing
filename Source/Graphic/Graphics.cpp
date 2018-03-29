@@ -16,7 +16,6 @@
 #include "Time/FrameRate.h"
 #include "Shape/Mesh.h"
 #include "Shape/StandardShapes.h"
-#include "Renderer/MeshRenderer.h"
 #include "Utility/ObjLoader.h"
 #include "Shape/Shape.h"
 #include "Application.h"
@@ -35,20 +34,17 @@
 // ----------------------
 void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
 {
-    quadMeshRenderer= nullptr;
-    cubeMeshRenderer = nullptr;
     cubeShape = nullptr;
     
-    voxelizeRenderTarget = new VoxelizeRT();
+    GLfloat const worldCubeDimensions = 10.0f;
+    voxelizeRenderTarget = new VoxelizeRT(worldCubeDimensions, worldCubeDimensions,worldCubeDimensions);
+
     Texture3D* texture = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(0) );
     voxVisualizationRT = new VoxelVisualizationRT(texture);
-
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)
 {
-    glError();
-
     voxelizeRenderTarget->Render(renderingScene);
 
 	switch (renderingMode) {
@@ -58,6 +54,9 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 	case RenderingMode::VOXEL_CONE_TRACING:
 		renderScene(renderingScene, viewportWidth, viewportHeight);
 		break;
+    case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER:
+        voxelizeRenderTarget->PresentOrthographicDepth(renderingScene);
+        break;
 	}
 }
 
@@ -95,11 +94,15 @@ void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) c
 {
     RenderingQueue &renderingQueue = renderingScene.renderers;
     
-	for (unsigned int i = 0; i < renderingQueue.size(); ++i)
+	//for (unsigned int i = 0; i < renderingQueue.size(); ++i)
+    for(Shape* shape : renderingScene.shapes)
     {
-        if (renderingQueue[i]->enabled)
+        for(Mesh* mesh : shape->meshes)
         {
-            renderingQueue[i]->render(renderingScene);
+            if (mesh->enabled)
+            {
+                mesh->render(renderingScene, shape->transform);
+            }
         }
     }
 }
@@ -137,8 +140,6 @@ void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int v
 
 Graphics::~Graphics()
 {
-	delete quadMeshRenderer;
-	delete cubeMeshRenderer;
 	delete cubeShape;
 
     delete voxelConeTracingMaterial;

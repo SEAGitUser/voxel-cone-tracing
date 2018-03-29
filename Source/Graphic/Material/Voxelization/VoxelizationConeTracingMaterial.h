@@ -11,6 +11,7 @@
 #include "Material.h"
 #include "VoxelizationMaterial.h"
 
+class Scene;
 
 class VoxelizationConeTracingMaterial : public VoxelizationMaterial
 {
@@ -18,13 +19,13 @@ public:
     
     VoxelizationConeTracingMaterial( const GLchar *_name, const ShaderSharedPtr& voxelVert, const ShaderSharedPtr& voxelFrag);
     
-    void ApplyVoxSettings(Transform& worldTransform, Scene& scene, VoxProperties& properties);
+    void uploadVoxParametersToGPU(Transform& worldTransform, Scene& scene, VoxProperties& properties);
     
 private:
     
-    using VoxelizationMaterial::ApplySettings;
-    using Material::ApplySettings;
-    MaterialSetting::SettingsGroup group;
+    using VoxelizationMaterial::uploadGPUParameters;
+    using Material::uploadGPUParameters;
+    ShaderParameter::ShaderParamsGroup group;
         
 };
 

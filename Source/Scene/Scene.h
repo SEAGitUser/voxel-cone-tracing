@@ -7,15 +7,17 @@
 #include "../Graphic/Lighting/PointLight.h"
 #include "../Graphic/Camera/Camera.h"
 
-class MeshRenderer;
+
+class Mesh;
+class Shape;
 
 /// <summary> The scene represents a 3D world populated with renderers, cameras and lights. </summary>
 class Scene {
 public:
 	/// <summary> The main camera used for rendering. </summary>
-	Camera * renderingCamera;
+	Camera * renderingCamera = nullptr;
 
-	std::vector<MeshRenderer *> renderers;
+	std::vector<Mesh *> renderers;
 	std::vector<PointLight> pointLights;
 
 	/// <summary> Updates the scene. Is called pre-render. </summary>
@@ -26,4 +28,12 @@ public:
 
 	/// <summary> Creates a new scene. Does not initialize it. </summary>
 	Scene() {}
+    
+    ~Scene()
+    {
+        delete renderingCamera;
+        renderingCamera = nullptr;
+    }
+    
+    std::vector<Shape*> shapes;
 };

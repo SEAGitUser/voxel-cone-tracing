@@ -27,7 +27,7 @@ public:
 
     ~FBO_3D();
     
-    virtual GLint AddRenderTarget() override;
+    virtual Texture* AddRenderTarget(bool depthTarget = false) override;
 private:
 
     GLuint generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);

@@ -26,11 +26,13 @@ class VoxelVisualizationRT;
 
 /// <summary> A graphical context used for rendering. </summary>
 class Graphics {
-	using RenderingQueue = const std::vector<MeshRenderer*> &;
+	using RenderingQueue = const std::vector<Mesh*> &;
 public:
-	enum RenderingMode {
-		VOXELIZATION_VISUALIZATION = 0, // Voxelization visualization.
-		VOXEL_CONE_TRACING = 1			// Global illumination using voxel cone tracing.
+	enum class RenderingMode {
+		VOXELIZATION_VISUALIZATION = 0,
+		VOXEL_CONE_TRACING = 1,
+        ORTHOGRAPHIC_DEPTH_BUFFER = 2,
+        RENDER_MODE_TOTAL
 	};
 
 	/// <summary> Initializes rendering. </summary>
@@ -63,18 +65,15 @@ private:
     VoxelizationConeTracingMaterial * voxelConeTracingMaterial;
 
     VoxelizationMaterial * voxelizationMaterial;
-
-    void voxelize(Scene & renderingScene, bool clearVoxelizationFirst = true);
     
     //TODO: turn these into smart pointers
 
     Material * worldPositionMaterial;
     VoxelVisualizationMaterial * voxelVisualizationMaterial;
 	// --- Screen quad. ---
-	MeshRenderer * quadMeshRenderer;
+	//MeshRenderer * quadMeshRenderer;
 	Mesh quad;
-	// --- Screen cube. ---
-	MeshRenderer * cubeMeshRenderer;
+
 	Shape * cubeShape;
     Texture3D* voxelTexture;
     

@@ -14,22 +14,30 @@ public:
     class Commands
     {
     public:
-        Commands(GLint fboID);
-        Commands(const Commands& rhs);
+        Commands(FBO* fbo);
         ~Commands();
         
         void setViewport(GLint width, GLint height);
-        void enableCullFace(bool value);
+        void backFaceCulling(bool value);
         void enableDepthTest(bool value);
         void colorMask( bool value);
         void activateCulling(bool value);
         void enableBlend(bool value);
+        void enableAdditiveBlending();
         void setClearColor(glm::vec4 color = glm::vec4(0.0f));
         void clearRenderTarget();
+        void drawInstancedPoints(GLint count);
         void end();
         
     protected:
-        static GLint fboID;
+        static FBO* fbo;
+    private:
+        Commands();
+        
+        //if you make these public, you'll have to think about changing the code in destructor of this class as well.
+        //this is because rvalues get destroyed immidiately, causing things to malfunction
+        Commands(const Commands& rhs);
+        FBO& operator=(Commands& rhs);
     };
     
     
@@ -52,14 +60,12 @@ public:
     inline const    Texture::Dimensions& getDimensions();
     inline          GLint getColorBufferTextureName();
     inline          Texture* getRenderTexture(GLuint index);
-    inline void     ClearFBO();
     inline Commands& getCommands();
     
     
     void ClearRenderTextures();
-    Commands Activate();
     
-    virtual GLint AddRenderTarget() = 0;
+    virtual Texture* AddRenderTarget(bool depthTarget) = 0;
 
 private:
     inline void getDefaultFBODimensions();

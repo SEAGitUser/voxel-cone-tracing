@@ -41,8 +41,10 @@ uniform PointLight pointLights[MAX_LIGHTS];
 
 in vec3 worldPositionFrag;
 in vec3 normalFrag;
+in vec3 colorFrag;
+in float totalSlicesFrag;
 
-out vec3 color;
+out vec4 color;
 
 vec3 calculatePointLight(const PointLight light)
 {
@@ -61,26 +63,28 @@ bool isInsideCube(const vec3 p, float e) { return abs(p.x) < 1 + e && abs(p.y) <
 
 void main()
 {
-    color = vec3(0.0f);
+    color = vec4(colorFrag,1.0f);
     
-	if(!isInsideCube(worldPositionFrag, 0))
-        discard;
-
-	// Calculate diffuse lighting fragment contribution.
-	//uint maxLights = min(numberOfLights, MAX_LIGHTS);
-	//for(uint i = 0; i < maxLights; ++i)
+//    the code below hasn't been testest, commented out for this reason
+//    color = vec4(depth.rrr, 1.0f);
+//
+//    if(!isInsideCube(worldPositionFrag, 0))
+//        discard;
+//
+//    // Calculate diffuse lighting fragment contribution.
+//    //uint maxLights = min(numberOfLights, MAX_LIGHTS);
+//    //for(uint i = 0; i < maxLights; ++i)
+//
+//
+//    //color = vec3(1.0f);
+//    //TODO: we'll support more than one light eventually
+//
+//    PointLight pointLight = pointLights[0];
+//    color += calculatePointLight(pointLight);
+//    vec3 spec = material.specularReflectivity * material.specularColor;
+//    vec3 diff = material.diffuseReflectivity * material.diffuseColor;
+//    color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
     
-    
-    //color = vec3(1.0f);
-    //TODO: we'll support more than one light eventually
-    
-    PointLight pointLight = pointLights[0];
-    color += calculatePointLight(pointLight);
-    vec3 spec = material.specularReflectivity * material.specularColor;
-    vec3 diff = material.diffuseReflectivity * material.diffuseColor;
-    color = (diff + spec) * color + clamp(material.emissivity, 0, 1) * material.diffuseColor;
-    
-    color = vec3(1.f);
     
     
     

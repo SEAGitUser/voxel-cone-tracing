@@ -9,8 +9,16 @@ uniform mat4 V;
 uniform mat4 P;
 
 out vec3 worldPosition;
+out vec3 projectedPosition;
 
-void main(){
-	worldPosition = vec3(M * vec4(position, 1));
-	gl_Position = P * V * vec4(worldPosition, 1);
+
+void main()
+{
+    worldPosition = position;
+    //todo: optimize this
+    gl_Position = P * V * M * vec4(worldPosition, 1);
+    
+    projectedPosition = gl_Position.xyz;
 }
+
+

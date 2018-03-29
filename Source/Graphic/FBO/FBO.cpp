@@ -31,26 +31,17 @@ void FBO::ClearRenderTextures()
     }
 }
 
-FBO::Commands FBO::Activate()
-{
-    FBO::Commands commands(frameBuffer);
-    commands.setViewport(dimensions.width, dimensions.height);
-    return commands;
-}
-
 ///////////////////////////////////////////////////FBO::Commands
 
-GLint FBO::Commands::fboID = FBO::DEFAULT_FRAMEBUFFER;
+FBO* FBO::Commands::fbo = nullptr;
 
-FBO::Commands::Commands(GLint _fboID)
+FBO::Commands::Commands(FBO* _fbo)
 {
-    //you cannot manipulate two FBO objects at the same time in OpenGL.
-    //call the end() function first, then call Activate() on another FBO object.
-    assert(fboID == DEFAULT_FRAMEBUFFER && "Only one FBO::Commands is allowed at a time");
-    fboID = _fboID;
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, fboID);
+    assert(fbo == nullptr && "You must call FBO::Commands::end() to indicate end of frame rendering before starting a new frame commands");
+    fbo = _fbo;
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo->frameBuffer);
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    setViewport(fbo->dimensions.width, fbo->dimensions.height);
 }
 
 void FBO::Commands::setViewport(GLint width, GLint height)
@@ -79,7 +70,13 @@ void FBO::Commands::enableBlend(bool value)
     value ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
 }
 
-void FBO::Commands::enableCullFace(bool _value)
+void FBO::Commands::enableAdditiveBlending()
+{
+    enableBlend(true);
+    glBlendFunc(GL_ONE, GL_ONE);
+}
+
+void FBO::Commands::backFaceCulling(bool _value)
 {
     if(_value)
     {
@@ -91,18 +88,10 @@ void FBO::Commands::enableCullFace(bool _value)
     }
 }
 
-FBO::Commands::Commands( const FBO::Commands& rhs)
-{
-    fboID = rhs.fboID;
-}
-
 void FBO::Commands::end()
 {
-    if(fboID != DEFAULT_FRAMEBUFFER)
-    {
-        glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
-        fboID = DEFAULT_FRAMEBUFFER;
-    }
+    glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
+    fbo = nullptr;
 }
 
 void FBO::Commands::clearRenderTarget()
@@ -114,9 +103,23 @@ void FBO::Commands::setClearColor(glm::vec4 color)
 {
     glClearColor(color.r, color.g, color.b, color.a);
 }
+
+void FBO::Commands::drawInstancedPoints(GLint count)
+{
+    static GLfloat singleVertex[][3] = {
+        {0.0f, 0.0f, 0.0f}
+    };
+    static const int POSITION_LOCATION = 0;
+    
+    glBufferData(GL_ARRAY_BUFFER, sizeof(singleVertex),
+                 singleVertex, GL_STATIC_DRAW);
+    glDrawArraysInstanced(GL_POINTS, 0, 3, count);
+}
+
 FBO::Commands::~Commands()
 {
-    end();
+    assert(fbo == nullptr &&
+           "You must call end() to signal end of frame rendering before FBO::Commands object gets destoroyed");
 }
 
 

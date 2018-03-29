@@ -9,6 +9,7 @@
 
 #ifdef __APPLE__
 
+std::vector<GLfloat> Texture3D::clearData = std::vector<GLfloat>();
 
 void Texture3D::glTexStorage3D(	GLenum target,
                         GLsizei levels,
@@ -52,9 +53,9 @@ void Texture3D::glClearTexImage(	GLuint texture,
         
         glTexSubImage3D(GL_TEXTURE_3D, i, 0, 0, 0, tempWidth, tempHeight, tempDepth, pixelFormat, dataType, data);
         
-        tempWidth = std::max(1, (tempWidth / 2));
-        tempHeight = std::max(1, (tempHeight / 2));
-        tempDepth = std::max(1, (tempDepth / 2));
+        tempWidth = std::max(1, (tempWidth >> 1));
+        tempHeight = std::max(1, (tempHeight >> 1));
+        tempDepth = std::max(1, (tempDepth >> 1));
     }
 }
 
@@ -62,7 +63,8 @@ void Texture3D::glClearTexImage(	GLuint texture,
 
 
 Texture3D::Texture3D():
-Texture()
+    Texture(),
+    depth(0.0f)
 {
 
 }
@@ -76,8 +78,6 @@ Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _w
 
 void Texture3D::Clear()
 {
-    glError();
-    glm::vec4 clearColor(0,0,0,0);
 	GLint previousBoundTextureID;
 	glGetIntegerv(GL_TEXTURE_BINDING_3D, &previousBoundTextureID);
 	glBindTexture(GL_TEXTURE_3D, textureID);
@@ -87,7 +87,7 @@ void Texture3D::Clear()
     //TODO: find a way to get rid of this clearData array
     if(clearData.size() == 0)
     {
-        clearData.resize(4 * width * height * depth * sizeof(GLfloat), 0.0f);
+        clearData.resize(4 * width * height * depth * sizeof(GLfloat), .003f);
     }
     glClearTexImage(textureID, levels, GL_RGBA, GL_FLOAT, &clearData[0]);
     glError();

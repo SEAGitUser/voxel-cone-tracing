@@ -17,6 +17,7 @@ class Shape;
 class Texture3D;
 class FBO_2D;
 class MeshRenderer;
+class PointRenderer;
 
 class VoxelVisualizationRT : public RenderTarget
 {
@@ -33,7 +34,7 @@ public:
 private:
     
     std::shared_ptr<VoxelVisualizationMaterial>  voxelVisualizationMaterial = nullptr;
-    std::shared_ptr<MeshRenderer> cubeMeshRenderer;
+    std::shared_ptr<Mesh> cubeMeshRenderer;
     
     //TODO: make these pointers shared pointers
     Shape *cubeShape = nullptr;
