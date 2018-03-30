@@ -49,6 +49,7 @@
 		B996F71C2058F87200C8D62D /* Points.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B996F71A2058F87200C8D62D /* Points.cpp */; };
 		B996F71F205A45C300C8D62D /* Primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B996F71D205A45C300C8D62D /* Primitive.cpp */; };
 		B996F721205A58E800C8D62D /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B996F720205A58E800C8D62D /* Shape.cpp */; };
+		B9BEA33E206E267D00D4E6F3 /* ScreenQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9BEA33C206E267D00D4E6F3 /* ScreenQuad.cpp */; };
 		B9C2B4252047D2B9002484F0 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9C2B4232047D2B9002484F0 /* Logger.cpp */; };
 		B9C2B8332047D71A002484F0 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = B9C2B7382047D71A002484F0 /* CMakeLists.txt */; };
 		B9C2B8342047D71A002484F0 /* func_exponential.inl in Resources */ = {isa = PBXBuildFile; fileRef = B9C2B74B2047D71A002484F0 /* func_exponential.inl */; };
@@ -279,6 +280,8 @@
 		B996F71D205A45C300C8D62D /* Primitive.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Primitive.cpp; sourceTree = "<group>"; };
 		B996F71E205A45C300C8D62D /* Primitive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Primitive.h; sourceTree = "<group>"; };
 		B996F720205A58E800C8D62D /* Shape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		B9BEA33C206E267D00D4E6F3 /* ScreenQuad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenQuad.cpp; sourceTree = "<group>"; };
+		B9BEA33D206E267D00D4E6F3 /* ScreenQuad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenQuad.h; sourceTree = "<group>"; };
 		B9C2B4232047D2B9002484F0 /* Logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
 		B9C2B4242047D2B9002484F0 /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		B9C2B7302047D71A002484F0 /* vec4.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
@@ -669,6 +672,8 @@
 				B98CE6492027A25C00B45558 /* VertexData.h */,
 				B996F71E205A45C300C8D62D /* Primitive.h */,
 				B996F71D205A45C300C8D62D /* Primitive.cpp */,
+				B9BEA33C206E267D00D4E6F3 /* ScreenQuad.cpp */,
+				B9BEA33D206E267D00D4E6F3 /* ScreenQuad.h */,
 			);
 			path = Shape;
 			sourceTree = "<group>";
@@ -743,6 +748,7 @@
 		B98CE6672027A25C00B45558 /* Material */ = {
 			isa = PBXGroup;
 			children = (
+				B98CE6782027A25C00B45558 /* Texture */,
 				B98CE66A2027A25C00B45558 /* Voxelization */,
 				B98CE6752027A25C00B45558 /* MaterialStore.h */,
 				B98CE6712027A25C00B45558 /* MaterialStore.cpp */,
@@ -754,7 +760,6 @@
 				B98CE6762027A25C00B45558 /* Shader.cpp */,
 				B98CE6772027A25C00B45558 /* Resource.h */,
 				B98CE6692027A25C00B45558 /* Resource.cpp */,
-				B98CE6782027A25C00B45558 /* Texture */,
 			);
 			path = Material;
 			sourceTree = "<group>";
@@ -1454,6 +1459,7 @@
 				B98CE69E2027A25D00B45558 /* Mesh.cpp in Sources */,
 				B98CE6A42027A25D00B45558 /* OrthographicCamera.cpp in Sources */,
 				B98CE6BE2027A25D00B45558 /* ObjLoader.cpp in Sources */,
+				B9BEA33E206E267D00D4E6F3 /* ScreenQuad.cpp in Sources */,
 				B9C2B8502047D71B002484F0 /* glm.cpp in Sources */,
 				B996F721205A58E800C8D62D /* Shape.cpp in Sources */,
 				B98CE6B72027A25D00B45558 /* VoxelVisualizationRT.cpp in Sources */,

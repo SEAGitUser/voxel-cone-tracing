@@ -104,16 +104,9 @@ void FBO::Commands::setClearColor(glm::vec4 color)
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-void FBO::Commands::drawInstancedPoints(GLint count)
+void FBO::Commands::setDetphClearValue(GLfloat depth)
 {
-    static GLfloat singleVertex[][3] = {
-        {0.0f, 0.0f, 0.0f}
-    };
-    static const int POSITION_LOCATION = 0;
-    
-    glBufferData(GL_ARRAY_BUFFER, sizeof(singleVertex),
-                 singleVertex, GL_STATIC_DRAW);
-    glDrawArraysInstanced(GL_POINTS, 0, 3, count);
+    glClearDepth(depth);
 }
 
 FBO::Commands::~Commands()

@@ -15,7 +15,6 @@ public:
     public:
         explicit Commands(Mesh* mesh);
         void uploadGPUVertexData() override;
-        static const GLuint NORMALS_LOCATION = 1;
         
         ~Commands() override;
     private:

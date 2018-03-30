@@ -34,7 +34,7 @@ void main(){
     totalSlicesGeom = float(cubeDimensions);
     float depth = texture(depthTexture, vec2(x,y)).r;
     
-    if(depth == 0.0f)
+    if(depth == 1.0f)
     {
         throwAwayVertex();
     }

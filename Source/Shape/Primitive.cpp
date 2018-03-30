@@ -18,19 +18,31 @@ Primitive::Commands::Commands(Primitive* _primitive)
 
 void Primitive::Commands::uploadGPUVertexData()
 {
-    auto dataSize = sizeof(VertexData);
-    static const int NUMBER_OF_ELEMENTS = 3;
-    glBindBuffer(GL_ARRAY_BUFFER, primitive->vbo);
-    glBufferData(GL_ARRAY_BUFFER, primitive->vertexData.size() * dataSize, primitive->vertexData.data(),
-                 primitive->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(POSITION_LOCATION);
-    glVertexAttribPointer(POSITION_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, position));
+    
+    if(primitive->vertexData.size() != 0)
+    {
+        auto dataSize = sizeof(VertexData);
+        static const int NUMBER_OF_ELEMENTS = 3;
+        glBindBuffer(GL_ARRAY_BUFFER, primitive->vbo);
+        glBufferData(GL_ARRAY_BUFFER, primitive->vertexData.size() * dataSize, primitive->vertexData.data(),
+                     primitive->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+        glEnableVertexAttribArray(POSITION_LOCATION);
+        glVertexAttribPointer(POSITION_LOCATION, NUMBER_OF_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, position));
+        glEnableVertexAttribArray(TEXTURE_LOCATION);
+        static const int NUMBER_OF_TEXTURE_ELEMENTS = 2;
+        glVertexAttribPointer(TEXTURE_LOCATION, NUMBER_OF_TEXTURE_ELEMENTS, GL_FLOAT, GL_FALSE, dataSize, (GLvoid*)offsetof(VertexData, texCoord));
+    }
+
 }
 
 void Primitive::Commands::uploadGPUIndexData()
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, primitive->ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, primitive->indices.size() * sizeof(GLuint), primitive->indices.data(), primitive->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+    if(primitive->indices.size() != 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, primitive->ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, primitive->indices.size() * sizeof(GLuint), primitive->indices.data(), primitive->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+    }
+
 }
 
 void Primitive::Commands::uploadGPURenderingData()

@@ -39,5 +39,5 @@ private:
     //TODO: make these pointers shared pointers
     Shape *cubeShape = nullptr;
     Texture3D* voxelTexture = nullptr;
-    FBO_2D* fbo;
+    FBO_2D* defaultFBO;
 };

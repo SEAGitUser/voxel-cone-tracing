@@ -23,6 +23,15 @@ class FBO_2D : public FBO
 {
 public:
     
+    //todo: create a commands class for FBO2D
+    class Commands : public FBO::Commands
+    {
+    public:
+
+    private:
+    
+    };
+    
     FBO_2D():FBO(),depthTexture(nullptr)
         {};
     

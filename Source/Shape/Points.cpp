@@ -42,31 +42,6 @@ Primitive::Commands(_point),points(_point)
     
 }
 
-//
-//void Points::Commands::destroyBuffers()
-//{
-//    assert(false);
-////    glDeleteBuffers(1, &screenPoint->vao);
-//}
-//void Points::Commands::initBuffers()
-//{
-//    assert(false);
-////    glGenBuffers(1, &(screenPoint->vbo));
-//    //TODO: MAY HAVE TO DO THIS EVERY FRAME?
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(screenPoint->singleVertex), singleVertex, GL_STATIC_DRAW);
-//}
-//
-//void Points::Commands::drawPoints(GLint count)
-//{
-//
-//}
-//
-//void Points::Commands::end()
-//{
-//    glDisableVertexAttribArray(Primitive::Commands::POSITION_LOCATION);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-//}
-//
 void Points::Commands::render()
 {
     glBindBuffer(GL_ARRAY_BUFFER, points->vbo);

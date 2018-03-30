@@ -25,8 +25,8 @@ public:
         void enableBlend(bool value);
         void enableAdditiveBlending();
         void setClearColor(glm::vec4 color = glm::vec4(0.0f));
+        void setDetphClearValue(GLfloat value = 0.0f);
         void clearRenderTarget();
-        void drawInstancedPoints(GLint count);
         void end();
         
     protected:
@@ -76,7 +76,7 @@ protected:
     static const GLint INVALID_FRAME_BUFFER = -1;
     static const GLuint DEFAULT_FRAMEBUFFER = 0;
     
-    //keep the variable frameBuffer private as it guarantees that the only classes that can create
+    //keep the variable frameBuffer protected as it guarantees that the only classes that can create
     //FBO::Commands objects are the FBO family of classes.  It also forces the clients to call Activate() on
     //the FBO object.  This will make sure the FBO is active on the OpenGL side before opengl commands against this FBO
     //are ran.

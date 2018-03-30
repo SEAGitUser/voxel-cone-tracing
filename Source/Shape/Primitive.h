@@ -30,6 +30,8 @@ public:
         virtual void destroyBuffers();
         
         static const int POSITION_LOCATION = 0;
+        static const GLuint NORMALS_LOCATION = 1;
+        static const int TEXTURE_LOCATION = 2;
         
         virtual void uploadGPUVertexData();
         virtual void uploadGPUIndexData();

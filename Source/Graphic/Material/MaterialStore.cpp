@@ -18,11 +18,11 @@ static std::unordered_map<const GLchar*,  MaterialSharedPtr > materialDatabase;
 
 MaterialStore::MaterialStore()
 {
-    //todo: in real world production software this would be some sort of database
     ShaderSharedPtr voxelizationVert = AddShader("Voxelization/voxelization.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr voxelVisualizationVert = AddShader("Voxelization/Visualization/voxel_visualization.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr wordPositionVert = AddShader("Voxelization/Visualization/world_position.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr voxelConeTractingVert = AddShader("Voxel Cone Tracing/voxel_cone_tracing.vert", Shader::ShaderType::VERTEX);
+    ShaderSharedPtr textureDisplayVert = AddShader("textureDisplay.vert", Shader::ShaderType::VERTEX);
 
     ShaderSharedPtr voxelizationGeom = AddShader("Voxelization/voxelization.geom", Shader::ShaderType::GEOMETRY);
     
@@ -30,6 +30,7 @@ MaterialStore::MaterialStore()
     ShaderSharedPtr voxelConeTracingFrag = AddShader("Voxel Cone Tracing/voxel_cone_tracing.frag", Shader::ShaderType::FRAGMENT);
     ShaderSharedPtr voxelVisualizationFrag = AddShader("Voxelization/Visualization/voxel_visualization.frag", Shader::ShaderType::FRAGMENT);
     ShaderSharedPtr worldPositoinFrag = AddShader("Voxelization/Visualization/world_position.frag", Shader::ShaderType::FRAGMENT);
+    ShaderSharedPtr textureDisplayFrag = AddShader("textureDisplay.frag", Shader::ShaderType::FRAGMENT);
 
     
     MaterialSharedPtr voxelizationMaterial = CREATE_MAT<VoxelizationMaterial>("voxelization", voxelizationVert, voxelizationFrag, voxelizationGeom);
@@ -42,6 +43,9 @@ MaterialStore::MaterialStore()
     AddMaterial(voxelVizMaterial);
     
     MaterialSharedPtr material = CREATE_MAT<Material>("world-position", wordPositionVert, worldPositoinFrag);
+    AddMaterial(material);
+    
+    material = CREATE_MAT<Material>("texture-display", textureDisplayVert, textureDisplayFrag);
     AddMaterial(material);
     
     

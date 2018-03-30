@@ -55,7 +55,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 		renderScene(renderingScene, viewportWidth, viewportHeight);
 		break;
     case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER:
-        voxelizeRenderTarget->PresentOrthographicDepth(renderingScene);
+        voxelizeRenderTarget->presentOrthographicDepth(renderingScene);
         break;
 	}
 }
@@ -84,7 +84,6 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Render.
 	renderQueue(renderingScene, true);
     
 }
@@ -106,37 +105,6 @@ void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) c
         }
     }
 }
-
-// ----------------------
-// Voxelization visualization.
-// ----------------------
-/*
- 
- TODO: THIS WILL CODE IS HERE FOR REFERENCE ONLY, WILL BE DELETED ONCE NEW IMPLEMENTATION WORKS
-void Graphics::initVoxelVisualization(unsigned int viewportWidth, unsigned int viewportHeight)
-{
-	// Materials.
-    worldPositionMaterial = static_cast<Material*>( MaterialStore::getInstance().getMaterial("world-position"));
-    voxelVisualizationMaterial = static_cast<VoxelVisualizationMaterial*>( MaterialStore::getInstance().getMaterial("voxel-visualization"));
-
-	assert(worldPositionMaterial != nullptr);
-	assert(voxelVisualizationMaterial != nullptr);
-
-	// FBOs.
-	vvfbo1 = new FBO_2D(viewportWidth, viewportHeight, GL_NEAREST, GL_NEAREST);
-	vvfbo2 = new FBO_2D(viewportWidth, viewportHeight, GL_NEAREST, GL_NEAREST);
-
-	// Rendering cube.
-	cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
-	assert(cubeShape->meshes.size() == 1);
-	cubeMeshRenderer = new MeshRenderer(&cubeShape->meshes[0]);
-
-	// Rendering quad.
-	quad = StandardShapes::createQuad();
-	quadMeshRenderer = new MeshRenderer(&quad);
-}
-*/
-
 
 Graphics::~Graphics()
 {

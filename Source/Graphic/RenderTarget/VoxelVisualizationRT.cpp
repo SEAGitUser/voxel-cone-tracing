@@ -24,10 +24,9 @@ VoxelVisualizationRT::VoxelVisualizationRT(Texture3D* _voxelTexture)
     
     //todo: ObjLoader should return a shared pointer
     cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
-    //cubeMeshRenderer = std::make_shared<Mesh>(cubeShape);
-    
+
     //this will render to the default frame buffer
-    fbo = new FBO_2D();
+    defaultFBO = new FBO_2D();
 
 }
 
@@ -49,7 +48,7 @@ void VoxelVisualizationRT::Render( Scene& scene )
 
     group["MVP"] = mvp;
 
-    FBO::Commands commands(fbo);
+    FBO::Commands commands(defaultFBO);
     commands.setClearColor();
     commands.clearRenderTarget();
     commands.backFaceCulling(false);
@@ -58,13 +57,13 @@ void VoxelVisualizationRT::Render( Scene& scene )
 
     std::shared_ptr<Material> material =  std::static_pointer_cast<Material>(voxelVisualizationMaterial);
     cubeShape->render(scene, group, material.get());
-    
+    commands.enableDepthTest(true);
     commands.end();
 }
 
 VoxelVisualizationRT::~VoxelVisualizationRT()
 {
     delete cubeShape;
-    delete fbo;
+    delete defaultFBO;
 }
 

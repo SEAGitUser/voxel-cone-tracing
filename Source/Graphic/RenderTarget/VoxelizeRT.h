@@ -10,6 +10,7 @@
 
 #include "RenderTarget.h"
 #include "Graphic/Camera/OrthographicCamera.h"
+#include "ScreenQuad.h"
 
 class OrthographicCamera;
 class Texture2D;
@@ -21,13 +22,15 @@ class VoxelizeRT : public RenderTarget
 {
 public:
     VoxelizeRT(GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth );
+    void presentOrthographicDepth( Scene& scene);
+    
     virtual void Render( Scene& scene ) override;
     virtual ~VoxelizeRT();
     
     
 private:
     void voxelize(Scene& renderScene);
-    Texture2D* renderDepthBuffer(Scene& renderScene);
+    Texture2D* renderDepthBuffer(Scene& renderScene, FBO* fbo);
     
 private:
     bool automaticallyRegenerateMipmap = true;
@@ -44,12 +47,15 @@ private:
     GLboolean depthTest;
     GLboolean blend;
     GLint frameBuffer;
+    
+    glm::vec3 orthoCameraPosition;
 
-    std::shared_ptr<Material> positionsMaterial;
-    std::shared_ptr<Points> points;
-    std::shared_ptr<VoxelizationMaterial> voxMaterial;
+    std::shared_ptr<Material> positionsMaterial = nullptr;
+    std::shared_ptr<Points> points = nullptr;
+    std::shared_ptr<VoxelizationMaterial> voxMaterial = nullptr;
+    std::shared_ptr<Material> textureDisplayMat = nullptr;
     
     OrthographicCamera orthoCamera;
-    
+    ScreenQuand screenQuad;
 
 };
