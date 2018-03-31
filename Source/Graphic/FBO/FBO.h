@@ -21,6 +21,7 @@ public:
         void backFaceCulling(bool value);
         void enableDepthTest(bool value);
         void colorMask( bool value);
+        void depthMask( bool value);
         void activateCulling(bool value);
         void enableBlend(bool value);
         void enableAdditiveBlending();

@@ -49,6 +49,7 @@ Shader::Shader(const char* _path, ShaderType _type) :  shaderType(_type) {
 	if (!fileStream.is_open()) {
 		std::cerr << "Couldn't load shader '" + std::string(path) + "'." << std::endl;
 		fileStream.close();
+        assert(false);
 		return;
 	}
 	std::string line = "";

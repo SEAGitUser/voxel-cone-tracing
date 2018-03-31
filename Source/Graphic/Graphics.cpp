@@ -54,10 +54,20 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 	case RenderingMode::VOXEL_CONE_TRACING:
 		renderScene(renderingScene, viewportWidth, viewportHeight);
 		break;
-    case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER:
-        voxelizeRenderTarget->presentOrthographicDepth(renderingScene);
+    case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_0:
+        voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 0);
+        break;
+    case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_1:
+        voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 1);
+        break;
+    case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_2:
+        voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 2);
+        break;
+    case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_3:
+        voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 3);
         break;
 	}
+    
 }
 
 // ----------------------

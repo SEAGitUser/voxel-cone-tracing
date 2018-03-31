@@ -31,7 +31,6 @@ private:
 protected:
     using RenderingQueue = const std::vector<Mesh*> &;
     FBO* voxelFBO;
-    FBO_2D* depthFBO;
     FBO_2D* defaultFBO;
 };
 

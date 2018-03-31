@@ -55,6 +55,12 @@ void FBO::Commands::colorMask(bool _value)
     glColorMask(value, value, value, value);
 }
 
+void FBO::Commands::depthMask(bool _value)
+{
+    GLboolean value = _value ? GL_TRUE : GL_FALSE;
+    glDepthMask(value);
+}
+
 void FBO::Commands::activateCulling(bool value)
 {
     value ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);

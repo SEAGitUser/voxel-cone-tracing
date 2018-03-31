@@ -10,10 +10,11 @@
 
 #include "RenderTarget.h"
 #include "Graphic/Camera/OrthographicCamera.h"
+#include "Texture2D.h"
 #include "ScreenQuad.h"
+#include <array>
 
 class OrthographicCamera;
-class Texture2D;
 class Material;
 class Points;
 class VoxelizationMaterial;
@@ -22,7 +23,8 @@ class VoxelizeRT : public RenderTarget
 {
 public:
     VoxelizeRT(GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth );
-    void presentOrthographicDepth( Scene& scene);
+    void presentOrthographicDepth( Scene& scene, GLint layer);
+    void presentDepthLayer( GLint layer);
     
     virtual void Render( Scene& scene ) override;
     virtual ~VoxelizeRT();
@@ -30,6 +32,10 @@ public:
     
 private:
     void voxelize(Scene& renderScene);
+    void generateDepthMaps(Scene& renderScene);
+    
+    void initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
+    
     Texture2D* renderDepthBuffer(Scene& renderScene, FBO* fbo);
     
 private:
@@ -54,8 +60,10 @@ private:
     std::shared_ptr<Points> points = nullptr;
     std::shared_ptr<VoxelizationMaterial> voxMaterial = nullptr;
     std::shared_ptr<Material> textureDisplayMat = nullptr;
+    std::shared_ptr<Material> depthPeelingMat = nullptr;
     
     OrthographicCamera orthoCamera;
     ScreenQuand screenQuad;
-
+    
+    std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };
