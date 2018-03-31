@@ -108,7 +108,7 @@ void Application::init() {
 	// -------------------------------------
 	// Initialize scene.
 	// -------------------------------------
-	scene = new __DEFAULT_LEVEL();
+    scene = new __DEFAULT_LEVEL();
 	scene->init(w, h);
 	std::cout << "[3] : Scene initialized." << std::endl;
 

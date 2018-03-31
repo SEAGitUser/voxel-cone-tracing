@@ -11,7 +11,7 @@ class GlassScene : public FirstPersonScene {
 public:
 	void update() override;
 	void init(unsigned int viewportWidth, unsigned int viewportHeight) override;
-	~GlassScene();
+	~GlassScene() override;
 private:
 
 };

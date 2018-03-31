@@ -138,6 +138,6 @@ void GlassScene::update() {
 }
 
 GlassScene::~GlassScene() {
-	for (auto * r : renderers) delete r;
-	for (auto * s : shapes) delete s;
+	for (auto * s : shapes)
+        delete s;
 }

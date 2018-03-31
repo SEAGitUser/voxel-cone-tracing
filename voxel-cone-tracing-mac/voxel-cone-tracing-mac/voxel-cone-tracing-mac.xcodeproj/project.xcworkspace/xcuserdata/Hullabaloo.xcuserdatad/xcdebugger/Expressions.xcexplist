@@ -22,6 +22,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Scene::~Scene():Scene.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "renderingCamera">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Primitive::Commands::Commands(Primitive*):Primitive.cpp">
       </ContextState>
       <ContextState
@@ -59,10 +67,10 @@
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
-               value = "Shader::shaderResourcePath ">
+               value = "shaderResourcePath">
             </PersistentString>
             <PersistentString
-               value = "shaderResourcePath">
+               value = "Shader::shaderResourcePath ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

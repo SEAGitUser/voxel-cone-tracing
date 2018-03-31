@@ -53,7 +53,6 @@ void Points::Commands::render()
 
 Points::Commands::~Commands()
 {
-    //glDisableVertexAttribArray(Primitive::Commands::POSITION_LOCATION);
 }
 
 

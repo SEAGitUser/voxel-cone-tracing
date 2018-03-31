@@ -17,7 +17,7 @@ public:
 		firstPersonController = new FirstPersonController(renderingCamera);
 	}
 	virtual void update() override { firstPersonController->update(); }
-	~FirstPersonScene() { delete firstPersonController; }
+	~FirstPersonScene() override  { delete firstPersonController; }
 private:
 	FirstPersonController * firstPersonController;
 };

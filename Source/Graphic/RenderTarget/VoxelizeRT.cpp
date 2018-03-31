@@ -73,21 +73,26 @@ void VoxelizeRT::voxelize(Scene& renderScene)
     voxelCommands.enableBlend(false);
     voxelCommands.backFaceCulling(true);
     
-    Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
-    
-    static ShaderParameter::ShaderParamsGroup settings;
-    ShaderParameter::Sampler2D sampler;
-    sampler.texture = depthTexture;
-    
-    settings["depthTexture"] = sampler;
-    settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
-    glm::mat4 projection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
-    
-    voxMaterial->uploadGPUParameters(settings, renderScene);
+    for(GLint i = 0; i < depthFBOs.size(); ++i)
+    {
+        Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
+        
+        static ShaderParameter::ShaderParamsGroup settings;
+        ShaderParameter::Sampler2D sampler;
+        sampler.texture = depthTexture;
+        
+        settings["depthTexture"] = sampler;
+        settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+        glm::mat4 projection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
+        
+        voxMaterial->uploadGPUParameters(settings, renderScene);
+        
+        Points::Commands pointsCommands (points.get());
+        pointsCommands.render();
 
-    Points::Commands pointsCommands (points.get());
-    pointsCommands.render();
+    }
     voxelCommands.end();
+
 }
 
 void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)

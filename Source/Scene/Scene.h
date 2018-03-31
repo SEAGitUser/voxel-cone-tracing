@@ -29,7 +29,7 @@ public:
 	/// <summary> Creates a new scene. Does not initialize it. </summary>
 	Scene() {}
     
-    ~Scene()
+    virtual ~Scene()
     {
         delete renderingCamera;
         renderingCamera = nullptr;
