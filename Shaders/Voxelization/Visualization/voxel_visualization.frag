@@ -72,8 +72,8 @@ void main()
         
         //the purpose of this is so that when we look at visualization of the voxels, the nearest voxels to the camera
         //show up in the front, otherwise, the scene shows up in reverse order. 
-        rayStart = 1 - rayStart;
-        rayStop = 1 - rayStop;
+        rayStart.z = 1 - rayStart.z;
+        rayStop.z = 1 - rayStop.z;
 
         // Perform the ray marching:
         vec3 pos = rayStart;
