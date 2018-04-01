@@ -31,8 +31,6 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     properties.magFilter = GL_NEAREST;
     voxelFBO = new FBO_3D(dimensions, properties);
 
-
-    orthoCameraPosition = glm::vec3(0.0f, 0.0f, 1.5f);
     orthoCamera = OrthographicCamera(3.5f, 3.5f, 3.5f);
     
     positionsMaterial = MaterialStore::GET_MAT<Material>("world-position");
@@ -64,9 +62,6 @@ void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture:
 }
 void VoxelizeRT::voxelize(Scene& renderScene)
 {
-    glError();
-
-    voxelFBO->ClearRenderTextures();
     FBO::Commands voxelCommands(voxelFBO);
     
     voxelCommands.colorMask( true );
@@ -82,6 +77,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         sampler.texture = depthTexture;
         
         settings["depthTexture"] = sampler;
+        settings["camPosition"] = orthoCamera.position;
         settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
         glm::mat4 projection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
         
@@ -119,7 +115,7 @@ void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
     fboCommands.end();
 }
 
-void VoxelizeRT::generateDepthMaps(Scene& renderScene)
+void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
 {    
     static ShaderParameter::ShaderParamsGroup params;
     
@@ -156,8 +152,6 @@ Texture2D* VoxelizeRT::renderDepthBuffer(Scene& renderScene, FBO* fbo)
     group["V"] = orthoCamera.viewMatrix;
     group["P"] = orthoCamera.getProjectionMatrix();
 
-    
-    RenderingQueue& renderingQueue = renderScene.renderers;
     fbo->ClearRenderTextures();
     FBO::Commands commands(fbo);
     commands.setClearColor();
@@ -177,16 +171,42 @@ Texture2D* VoxelizeRT::renderDepthBuffer(Scene& renderScene, FBO* fbo)
     return static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
 }
 
+void VoxelizeRT::fillUpVoxelTexture(Scene& renderScene)
+{
+    renderDepthBuffer(renderScene, depthFBOs[0].get());
+    generateDepthPeelingMaps(renderScene);
+    voxelize(renderScene);
+}
+
 void VoxelizeRT::Render(Scene& renderScene)
 {
-    orthoCamera.position = orthoCameraPosition;
+    voxelFBO->ClearRenderTextures();
+    
+    //from y plane ( green )
+    orthoCamera.position = glm::vec3(0.0f, 1.5f, 0.0f);
+    orthoCamera.forward =  glm::vec3(0.0f, -1.0f, 0.0f);
+    orthoCamera.up = glm::vec3(-1.0f, 0.0f, 0.0f);
+    orthoCamera.updateViewMatrix();
+
+    fillUpVoxelTexture(renderScene);
+
+    //from z plane ( blue )
+    orthoCamera.position = glm::vec3(0.0f, .0f, 1.5f);
+    orthoCamera.forward =  glm::vec3(0.0f, 0.0f, -1.0f);
+    orthoCamera.up = glm::vec3(0.0f, 1.0f, 0.0f);
     orthoCamera.updateViewMatrix();
     
-    renderDepthBuffer(renderScene, depthFBOs[0].get());
+    fillUpVoxelTexture(renderScene);
     
-    generateDepthMaps(renderScene);
-    glError();
-    voxelize(renderScene);
+    //from x plane
+    orthoCamera.position = glm::vec3(1.5f, .0f, 0.f);
+    orthoCamera.forward =  glm::vec3(-1.0f, 0.0f, .0f);
+    orthoCamera.up = glm::vec3(0.0f, 1.0f, 0.0f);
+    orthoCamera.updateViewMatrix();
+
+    fillUpVoxelTexture(renderScene);
+    
+    
     
     //voxelTexture->generateMipMap();
     //TODO: optimization oportunity

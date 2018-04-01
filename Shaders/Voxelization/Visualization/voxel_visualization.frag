@@ -69,11 +69,6 @@ void main()
         // note that the box we are intersecting against has dimension ranges from -1 to 1 in all axis
         rayStart = 0.5 * (rayStart + 1.0);
         rayStop = 0.5 * (rayStop + 1.0);
-        
-        //the purpose of this is so that when we look at visualization of the voxels, the nearest voxels to the camera
-        //show up in the front, otherwise, the scene shows up in reverse order. 
-        rayStart.z = 1 - rayStart.z;
-        rayStop.z = 1 - rayStop.z;
 
         // Perform the ray marching:
         vec3 pos = rayStart;

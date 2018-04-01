@@ -8,7 +8,7 @@ class Camera {
     
 public:
     
-	glm::vec3 up = { 0,1,0 }, forward = { 0,0,-1 }, position = { 0,0,0 };
+	glm::vec3 up = { 0.0f,1.0f,0.0f }, forward = { 0.0f,0.0f,-1.f }, position = { 0.f,0.f,0.f };
 	glm::mat4 viewMatrix;
     bool projectionMatrixHasChanged = true;
     bool dirtyProjectionMatrix = true;
@@ -34,7 +34,7 @@ protected:
         aspect(0.0f),
         near(0.0f),
         far(0.0f),
-        focalLength(0.0f)
+        focalLength(0.0f)    
     {
     }
     

@@ -14,7 +14,6 @@
 #include "glm/glm.hpp"
 #include "Utility/Logger.h"
 
-constexpr GLfloat VoxelizationMaterial::VOXEL_CUBE_SCALE = 2.0f;
 constexpr GLuint VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS = 64u;
 
 VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const ShaderSharedPtr vertexShader,

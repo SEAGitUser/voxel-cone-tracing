@@ -20,7 +20,7 @@ OrthographicCamera::OrthographicCamera(GLfloat viewSpaceWidth, GLfloat viewSpace
     bottom = -top;
     //anything behind the camera will not be projected
     near = 0.0f;
-    far = viewSpaceDepth * 1.01f;
+    far = viewSpaceDepth ;
     focalLength = near;
     
     projectionMatrix = glm::ortho(left, right, bottom, top, near, far);

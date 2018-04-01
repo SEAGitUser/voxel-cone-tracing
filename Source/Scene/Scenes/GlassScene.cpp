@@ -19,7 +19,6 @@ namespace {
 void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	FirstPersonScene::init(viewportWidth, viewportHeight);
 
-    glError();
 	// Cornell box.
 	Shape * cornell = ObjLoader::loadObjFile("/Assets/Models/cornell.obj");
 	shapes.push_back(cornell);
@@ -70,11 +69,11 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	buddhaRenderer = renderers[buddhaIndex];
 	buddha->transform.scale = glm::vec3(1.8f);
 	buddha->transform.rotation = glm::vec3(0, 2.4, 0);
-	buddha->transform.position = glm::vec3(0, -0.13, 0.05);// glm::vec3(0, 0.0, 0);
+	buddha->transform.position = glm::vec3(0, -0.13, 0.05);
 	buddha->transform.updateTransformMatrix();
 	buddhaRenderer->tweakable = true;
 	buddhaRenderer->name = "Buddha";
-    buddhaRenderer->enabled = true;
+    buddhaRenderer->enabled = false;
 
     buddhaRenderer->voxProperties = VoxProperties::White();
 
@@ -119,7 +118,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	pointLights.push_back(p);
 	pointLights[0].color = glm::vec3(0.63f, 0.47f, 0.51f);
 
-	renderingCamera->position = glm::vec3(0, 0, 0.925);
+	renderingCamera->position = glm::vec3(0.f, .0f, 1.5f);
 }
 
 void GlassScene::update() {

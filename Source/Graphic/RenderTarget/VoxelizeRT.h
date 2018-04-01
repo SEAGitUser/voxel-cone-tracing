@@ -24,15 +24,15 @@ class VoxelizeRT : public RenderTarget
 public:
     VoxelizeRT(GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth );
     void presentOrthographicDepth( Scene& scene, GLint layer);
-    void presentDepthLayer( GLint layer);
     
     virtual void Render( Scene& scene ) override;
     virtual ~VoxelizeRT();
     
     
 private:
+    void fillUpVoxelTexture( Scene& renderScene);
     void voxelize(Scene& renderScene);
-    void generateDepthMaps(Scene& renderScene);
+    void generateDepthPeelingMaps(Scene& renderScene);
     
     void initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
     
@@ -53,8 +53,6 @@ private:
     GLboolean depthTest;
     GLboolean blend;
     GLint frameBuffer;
-    
-    glm::vec3 orthoCameraPosition;
 
     std::shared_ptr<Material> positionsMaterial = nullptr;
     std::shared_ptr<Points> points = nullptr;
