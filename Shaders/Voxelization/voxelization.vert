@@ -9,7 +9,11 @@ layout(location = 1) in vec3 normal;
 //cube dimensions is assumed to be a power of 2
 uniform uint cubeDimensions;
 uniform sampler2D depthTexture;
-uniform vec3 camPosition;
+
+//these are assumed to be from orthographic projections
+uniform mat4 zPlaneProjection;
+uniform mat4 toWorldSpace;
+
 
 out float totalSlicesGeom;
 out vec4 colorGeom;
@@ -30,36 +34,27 @@ void main(){
 
     totalSlicesGeom = float(cubeDimensions);
     float depth = texture(depthTexture, vec2(x,y)).r;
-    depth = 1.0f - depth;
+    
+    depth = depth;
     //if "if" statement fails below we are effectively throwing this vertex away
     gl_Position.x = 10000.0f;
-    if(depth != 0.0f)
+    if(depth != 1.0f)
     {
+        vec4 clipSpacePos = vec4(x, y, depth, 1.f );
+        
+        clipSpacePos.xyz *= 2.0f;
+        clipSpacePos.xyz -= 1.0f;
+        
+        vec4 worldSpacePos = toWorldSpace * clipSpacePos;
+        
         //here we are transforming the projections of x y planes into a z plane.
         //in the geometry shader, it is assumed that we are looking the camera using a z plane
         //which plane we pick here depends on the position of the camera when rendering the depth buffer sampled above
+        gl_Position =  zPlaneProjection * worldSpacePos;
         
-        //projection to z plane ( blue)
-        gl_Position.xy = vec2(x,y);
-        gl_Position.z = depth;
-        gl_Position.w = 1.0f;
-        colorGeom = vec4(.0f, 0.0f, 1.0f, 1.0f);
-        vec3 n = normalize(camPosition);
-        //projection from x plane to z plane ( red )
-        if(n.x > n.y && n.x > n.z)
-        {
-            gl_Position.x = depth;
-            gl_Position.y = y;
-            gl_Position.z = x;
-            colorGeom = vec4(1.0f, .0f, 0.0f, 1.0f);
-        }
-        //projection from y plane to z plane (green)
-        else if(n.y > n.x && n.y > n.z)
-        {
-            gl_Position.x = y;
-            gl_Position.y =  depth;
-            gl_Position.z = x;
-            colorGeom = vec4(.0f, 1.0f, .0f, 1.0f);
-        }
+        
+        colorGeom = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+        
     }
 }

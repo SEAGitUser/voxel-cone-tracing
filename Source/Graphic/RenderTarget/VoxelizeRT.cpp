@@ -33,6 +33,13 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
 
     orthoCamera = OrthographicCamera(3.5f, 3.5f, 3.5f);
     
+    orthoCamera.position = glm::vec3(0.0f, .0f, 1.5f);
+    orthoCamera.forward =  glm::vec3(0.0f, 0.0f, -1.0f);
+    orthoCamera.up = glm::vec3(0.0f, 1.0f, 0.0f);
+    orthoCamera.updateViewMatrix();
+    
+    zPlaneProjection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
+    
     positionsMaterial = MaterialStore::GET_MAT<Material>("world-position");
     points = std::make_shared<Points>(dimensions.width * dimensions.height );
     voxMaterial = MaterialStore::GET_MAT<VoxelizationMaterial> ("voxelization");
@@ -70,6 +77,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
     
     for(GLint i = 0; i < depthFBOs.size(); ++i)
     {
+        
         Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
         
         static ShaderParameter::ShaderParamsGroup settings;
@@ -77,9 +85,11 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         sampler.texture = depthTexture;
         
         settings["depthTexture"] = sampler;
-        settings["camPosition"] = orthoCamera.position;
+        glm::mat4 toWorldSpace = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
+        toWorldSpace = glm::inverse(toWorldSpace);
+        settings["zPlaneProjection"] = zPlaneProjection;
+        settings["toWorldSpace"] = toWorldSpace;
         settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
-        glm::mat4 projection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
         
         voxMaterial->uploadGPUParameters(settings, renderScene);
         
@@ -157,7 +167,7 @@ Texture2D* VoxelizeRT::renderDepthBuffer(Scene& renderScene, FBO* fbo)
     commands.setClearColor();
     commands.clearRenderTarget();
     commands.colorMask(false);
-    commands.backFaceCulling(true);
+    commands.backFaceCulling(false);
     commands.enableDepthTest(true);
     for (Shape* shape : renderScene.shapes)
     {
@@ -182,15 +192,15 @@ void VoxelizeRT::Render(Scene& renderScene)
 {
     voxelFBO->ClearRenderTextures();
     
-    //from y plane ( green )
-    orthoCamera.position = glm::vec3(0.0f, 1.5f, 0.0f);
+    //from y plane
+    orthoCamera.position = glm::vec3(0.0f, 2.5f, 0.0f);
     orthoCamera.forward =  glm::vec3(0.0f, -1.0f, 0.0f);
-    orthoCamera.up = glm::vec3(-1.0f, 0.0f, 0.0f);
+    orthoCamera.up = glm::vec3(1.0f, 0.0f, 0.0f);
     orthoCamera.updateViewMatrix();
 
     fillUpVoxelTexture(renderScene);
 
-    //from z plane ( blue )
+    //from z plane
     orthoCamera.position = glm::vec3(0.0f, .0f, 1.5f);
     orthoCamera.forward =  glm::vec3(0.0f, 0.0f, -1.0f);
     orthoCamera.up = glm::vec3(0.0f, 1.0f, 0.0f);

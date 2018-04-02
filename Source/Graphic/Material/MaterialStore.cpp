@@ -23,6 +23,7 @@ MaterialStore::MaterialStore()
     ShaderSharedPtr wordPositionVert = AddShader("Positions/world_position.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr voxelConeTractingVert = AddShader("Voxel Cone Tracing/voxel_cone_tracing.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr textureDisplayVert = AddShader("Texture Display/textureDisplay.vert", Shader::ShaderType::VERTEX);
+    ShaderSharedPtr depthPeelingVert = AddShader("Depth Peeling/depthPeeling.vert", Shader::ShaderType::VERTEX);
 
     ShaderSharedPtr voxelizationGeom = AddShader("Voxelization/voxelization.geom", Shader::ShaderType::GEOMETRY);
     
@@ -49,7 +50,7 @@ MaterialStore::MaterialStore()
     material = CREATE_MAT<Material>("texture-display", textureDisplayVert, textureDisplayFrag);
     AddMaterial(material);
 
-    material = CREATE_MAT<Material>("depth-peeling", wordPositionVert, depthPeelingFrag);
+    material = CREATE_MAT<Material>("depth-peeling", depthPeelingVert, depthPeelingFrag);
     AddMaterial(material);
     
     glError();

@@ -63,5 +63,7 @@ private:
     OrthographicCamera orthoCamera;
     ScreenQuand screenQuad;
     
+    glm::mat4 zPlaneProjection;
+    
     std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

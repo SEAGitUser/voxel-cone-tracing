@@ -4,10 +4,8 @@
 #version 410 core
 
 
-//this shader is tied to Positions/world_position.vert
-
 in vec3 worldPosition;
-in vec3 projectedPosition;
+noperspective in vec4 projectedPosition;
 
 uniform sampler2D depthTexture;
 

@@ -24,23 +24,19 @@ out float totalSlicesFrag;
 void main(){
     
     vec4 normalizedTexCoords =vec4(float(gl_in[0].gl_Position.x), float(gl_in[0].gl_Position.y), float(gl_in[0].gl_Position.z), 1.0f);
-    
-    //going back to projection space between -1 to 1 on both x and y.
-    //For a little background go here: http://www.songho.ca/opengl/gl_projectionmatrix.html
-    vec2 inputPos = vec2(
-                         (normalizedTexCoords.x * 2.0f) -1.0f,
-                         (normalizedTexCoords.y * 2.0f) -1.0f
-                         );
-    
 
-    gl_Position = vec4(inputPos.x, inputPos.y, 0.0f, 1.0f);
+    gl_Position =normalizedTexCoords;
+
     
     //check these answers for info about why linearly multiplying the depth value times the total number of slices works out.
     //https://stackoverflow.com/questions/7777913/how-to-render-depth-linearly-in-modern-opengl-with-gl-fragcoord-z-in-fragment-sh
     //https://stackoverflow.com/questions/10264949/glsl-gl-fragcoord-z-calculation-and-setting-gl-fragdepth
     
-    gl_Layer = int(totalSlicesGeom[0] * normalizedTexCoords.z);
-    gl_Position.z = 0.0f;
+    //scale from [-1, 1] to [0, 1]
+    float depth = (gl_Position.z + 1.0f) * .5f;
+    
+    gl_Layer = int(totalSlicesGeom[0] * depth);
+
     colorFrag = colorGeom[0].rgb;
 
     totalSlicesFrag = totalSlicesGeom[0];
