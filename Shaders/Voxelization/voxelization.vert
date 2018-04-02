@@ -4,11 +4,12 @@
 #version 410 core
 
 layout(location = 0) in vec3 position;
-layout(location = 1) in vec3 normal;
 
 //cube dimensions is assumed to be a power of 2
 uniform uint cubeDimensions;
 uniform sampler2D depthTexture;
+uniform sampler2D normalTexture;
+
 
 //these are assumed to be from orthographic projections
 uniform mat4 zPlaneProjection;
@@ -17,6 +18,7 @@ uniform mat4 toWorldSpace;
 
 out float totalSlicesGeom;
 out vec4 colorGeom;
+out vec3 normalGeom;
 
 void main(){
     
@@ -34,8 +36,8 @@ void main(){
 
     totalSlicesGeom = float(cubeDimensions);
     float depth = texture(depthTexture, vec2(x,y)).r;
+    normalGeom = texture(normalTexture,vec2(x,y)).xyz;
     
-    depth = depth;
     //if "if" statement fails below we are effectively throwing this vertex away
     gl_Position.x = 10000.0f;
     if(depth != 1.0f)
@@ -52,9 +54,6 @@ void main(){
         //which plane we pick here depends on the position of the camera when rendering the depth buffer sampled above
         gl_Position =  zPlaneProjection * worldSpacePos;
         
-        
         colorGeom = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-        
     }
 }

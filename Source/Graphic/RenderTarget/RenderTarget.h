@@ -23,14 +23,12 @@ public:
     virtual void Render( Scene& renderScene );
     
     virtual ~RenderTarget(){};
-    
-    inline FBO* getFBO(){ return voxelFBO;};
+
 private:
     
     
 protected:
     using RenderingQueue = const std::vector<Mesh*> &;
-    FBO* voxelFBO;
-    FBO_2D* defaultFBO;
+
 };
 

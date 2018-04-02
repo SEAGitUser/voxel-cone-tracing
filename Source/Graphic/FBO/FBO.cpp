@@ -31,6 +31,14 @@ void FBO::ClearRenderTextures()
     }
 }
 
+FBO::~FBO()
+{
+    for(Texture* texture: renderTextures)
+    {
+        delete texture;
+    }
+}
+
 ///////////////////////////////////////////////////FBO::Commands
 
 FBO* FBO::Commands::fbo = nullptr;

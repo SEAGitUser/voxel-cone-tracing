@@ -36,7 +36,7 @@ public:
         {};
     
     FBO_2D(Texture::Dimensions &dimensions,  Texture::Properties &textureProperties);
-    ~FBO_2D();
+    ~FBO_2D() override;
     
     virtual Texture* AddRenderTarget(bool depthTarget = false) override;
     inline Texture* getDepthTexture(){ return static_cast<Texture*>(depthTexture); }

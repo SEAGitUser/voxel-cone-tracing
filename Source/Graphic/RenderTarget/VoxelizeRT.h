@@ -18,6 +18,7 @@ class OrthographicCamera;
 class Material;
 class Points;
 class VoxelizationMaterial;
+class FBO_3D;
 
 class VoxelizeRT : public RenderTarget
 {
@@ -27,6 +28,8 @@ public:
     
     virtual void Render( Scene& scene ) override;
     virtual ~VoxelizeRT();
+    
+    inline std::shared_ptr<FBO_3D> getFBO(){ return voxelFBO;};
     
     
 private:
@@ -62,8 +65,9 @@ private:
     
     OrthographicCamera orthoCamera;
     ScreenQuand screenQuad;
-    
+    std::shared_ptr<FBO_3D> voxelFBO;
     glm::mat4 zPlaneProjection;
+    std::shared_ptr<FBO_2D> defaultFBO;
     
     std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

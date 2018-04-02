@@ -19,7 +19,7 @@ FBO_2D::FBO_2D(Texture::Dimensions &dimensions, Texture::Properties &textureProp
     
     assert(dimensions.width != 0 && dimensions.height != 0);
     
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, dimensions.width, dimensions.height); // Use a single rbo for both depth and stencil buffer.
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, dimensions.width, dimensions.height); // Use a single rbo for both depth and stencil buffer.
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);

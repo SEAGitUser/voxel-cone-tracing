@@ -8,13 +8,10 @@ layout(points, max_vertices = 1) out;
 
 uniform mat4 inverseProjection;
 uniform float farPlane;
-//in vec3 worldPositionGeom[];
-//in vec3 normalGeom[];
+
+in vec3 normalGeom[];
 in float totalSlicesGeom[];
 in vec4 colorGeom[];
-
-
-
 
 out vec3 normalFrag;
 //out vec3 worldPositionFrag;

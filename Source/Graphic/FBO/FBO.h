@@ -67,7 +67,7 @@ public:
     void ClearRenderTextures();
     virtual Texture* AddRenderTarget(bool depthTarget) = 0;
     
-    virtual ~FBO(){}
+    virtual ~FBO();
 
 private:
     inline void getDefaultFBODimensions();

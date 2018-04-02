@@ -32,11 +32,14 @@ FBO_3D::FBO_3D(Texture::Dimensions &_dimensions, Texture::Properties &_propertie
 
 Texture* FBO_3D::AddRenderTarget(bool depthTarget)
 {
+    GLint previousFrameBuffer = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     assert(depthTarget == false && "depth target not supported for 3D FBOs");
-    assert(renderTargets.size() < MAX_RENDER_TARGETS);
+    assert(renderTextures.size() < MAX_RENDER_TARGETS);
     
     Texture3D *target = new Texture3D();
-    renderTargets.push_back(target);
     
     target->SetWrap(textureProperties.wrap);
     
@@ -56,19 +59,17 @@ Texture* FBO_3D::AddRenderTarget(bool depthTarget)
     glError();
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (unsigned int)renderTextures.size(), target->GetTextureID(), 0);
     GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    glError();
     assert(e == GL_FRAMEBUFFER_COMPLETE);
     glError();
     
     renderTextures.push_back(target);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
     return target;
 }
 
 FBO_3D::~FBO_3D()
 {
-    for(Texture3D* texture : renderTargets)
-    {
-        delete texture;
-    }
-    
     glDeleteFramebuffers(1, &frameBuffer);
 }

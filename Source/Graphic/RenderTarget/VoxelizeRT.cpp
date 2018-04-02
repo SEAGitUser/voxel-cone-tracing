@@ -29,7 +29,11 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     
     properties.minFilter = GL_NEAREST;
     properties.magFilter = GL_NEAREST;
-    voxelFBO = new FBO_3D(dimensions, properties);
+    voxelFBO = std::make_shared<FBO_3D>(dimensions, properties);
+    
+    //add normal and albedo render targets...
+    voxelFBO->AddRenderTarget();
+    voxelFBO->AddRenderTarget();
 
     orthoCamera = OrthographicCamera(3.5f, 3.5f, 3.5f);
     
@@ -46,7 +50,7 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     textureDisplayMat = MaterialStore::GET_MAT<Material>("texture-display");
     depthPeelingMat = MaterialStore::GET_MAT<Material>("depth-peeling");
     
-    defaultFBO = new FBO_2D();
+    defaultFBO = std::make_shared<FBO_2D>();
     
     initDepthFrameBuffers(dimensions, properties);
 }
@@ -69,7 +73,7 @@ void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture:
 }
 void VoxelizeRT::voxelize(Scene& renderScene)
 {
-    FBO::Commands voxelCommands(voxelFBO);
+    FBO::Commands voxelCommands(voxelFBO.get());
     
     voxelCommands.colorMask( true );
     voxelCommands.enableBlend(false);
@@ -103,7 +107,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
 
 void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
 {
-    FBO::Commands fboCommands(defaultFBO);
+    FBO::Commands fboCommands(defaultFBO.get());
     
     fboCommands.setClearColor();
     fboCommands.clearRenderTarget();
@@ -234,8 +238,6 @@ void VoxelizeRT::Render(Scene& renderScene)
 
 VoxelizeRT::~VoxelizeRT()
 {
-    delete voxelFBO;
-    delete defaultFBO;
 }
 
 
