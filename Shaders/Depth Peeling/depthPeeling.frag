@@ -4,12 +4,15 @@
 #version 410 core
 
 
-in vec3 worldPosition;
+in vec3 diffuseColorFrag;
+in vec3 normalFrag;
 noperspective in vec4 projectedPosition;
 
 uniform sampler2D depthTexture;
 
-out vec4 color;
+layout(location = 0) out vec4 albedo;
+layout(location = 1) out vec4 normal;
+
 
 void main()
 {
@@ -19,10 +22,12 @@ void main()
     fragPosition += vec2(1.0f, 1.0f);
     fragPosition *= 0.5f;
     
-    color = texture(depthTexture, fragPosition.st);
-    color.a = 1;
+    vec4 depth = texture(depthTexture, fragPosition.st);
     
-    float previousLayerDepth = color.r;
+    float previousLayerDepth = depth.r;
+    
+    albedo = vec4(diffuseColorFrag,1.0f);
+    normal = vec4(normalFrag, 1.0f);
     if(previousLayerDepth > gl_FragCoord.z ||
        abs(gl_FragCoord.z - previousLayerDepth) < 0.001f)
     {

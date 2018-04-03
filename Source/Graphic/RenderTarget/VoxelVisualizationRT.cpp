@@ -23,7 +23,7 @@ VoxelVisualizationRT::VoxelVisualizationRT(Texture3D* _voxelTexture)
     voxelTexture = _voxelTexture;
     
     //todo: ObjLoader should return a shared pointer
-    cubeShape = ObjLoader::loadObjFile("/Assets/Models/cube.obj");
+    cubeShape = ObjLoader::loadShapeFromObj("/Assets/Models/cube.obj");
 
     //this will render to the default frame buffer
     defaultFBO = new FBO_2D();

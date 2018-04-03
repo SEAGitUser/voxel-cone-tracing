@@ -12,6 +12,7 @@
 #include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
 #include "Graphic/Material/ShaderParameter.h"
+#include "Shape/CornellBox.h"
 
 // Settings.
 namespace { unsigned int lightSphereIndex = 0; }
@@ -20,7 +21,7 @@ void CornellScene::init(unsigned int viewportWidth, unsigned int viewportHeight)
 	FirstPersonScene::init(viewportWidth, viewportHeight);
 
 	// Cornell box.
-	Shape * cornell = ObjLoader::loadObjFile("Assets\\Models\\cornell.obj");
+    CornellBox * cornell = new CornellBox();
 	shapes.push_back(cornell);
 	for (unsigned int i = 0; i < cornell->meshes.size(); ++i) {
 		renderers.push_back(((cornell->meshes[i])));
@@ -31,34 +32,24 @@ void CornellScene::init(unsigned int viewportWidth, unsigned int viewportHeight)
     cornell->transform.updateTransformMatrix();
 
 	// Light sphere.
-	lightSphere = ObjLoader::loadObjFile("Assets\\Models\\sphere.obj");
+	lightSphere = ObjLoader::loadShapeFromObj("Assets\\Models\\sphere.obj");
 	shapes.push_back(lightSphere);
 	for (unsigned int i = 0; i < lightSphere->meshes.size(); ++i) {
 		renderers.push_back((lightSphere->meshes[i]));
 	}
 	lightSphereIndex = renderers.size() - 1;
 
-    
-	// Cornell box.
-    renderers[0]->voxProperties = VoxProperties::Green(); //wall
-    renderers[1]->voxProperties = VoxProperties::White(); //floor
-    renderers[2]->voxProperties = VoxProperties::White(); //roof
-    renderers[3]->voxProperties = VoxProperties::Red(); //wall
-    renderers[4]->voxProperties = VoxProperties::White(); //wall
-    renderers[5]->voxProperties = VoxProperties::White(); //left box
-
 	renderers[5]->tweakable = true;
 
-    renderers[6]->voxProperties = VoxProperties::White();
-	renderers[6]->tweakable = true;
+    lightSphere->defaultVoxProperties = VoxProperties::White();
 
 	// Light Sphere.
-    renderers[lightSphereIndex]->voxProperties = VoxProperties::Emissive();
+    lightSphere->defaultVoxProperties = VoxProperties::Emissive();
     
-    renderers[lightSphereIndex]->voxProperties.diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    renderers[lightSphereIndex]->voxProperties.emissivity = 8.0f;
-    renderers[lightSphereIndex]->voxProperties.specularReflectivity = 0.0f;
-    renderers[lightSphereIndex]->voxProperties.diffuseReflectivity = 0.0f;
+    lightSphere->defaultVoxProperties.diffuseColor = glm::vec3( 1.0f, 1.0f, 1.0f);
+    lightSphere->defaultVoxProperties.emissivity = 8.0f;
+    lightSphere->defaultVoxProperties.specularReflectivity = 0.0f;
+    lightSphere->defaultVoxProperties.diffuseReflectivity = 0.0f;
     
 	// ----------
 	// Lighting.
@@ -84,7 +75,7 @@ void CornellScene::update() {
 	lightSphere->transform.updateTransformMatrix();
 
 	pointLights[0].position = lightSphere->transform.position;
-    renderers[lightSphereIndex]->voxProperties.diffuseColor = pointLights[0].color;
+    lightSphere->defaultVoxProperties.diffuseColor = pointLights[0].color;
 }
 
 CornellScene::~CornellScene() {

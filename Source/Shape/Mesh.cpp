@@ -56,9 +56,7 @@ Mesh::Mesh(const tinyobj::shape_t& shape)
         vertexData[j].texCoord.y = shape.mesh.texcoords[i + 1];
     }
     
-    voxProperties = VoxProperties::Default();
     glError();
-    voxConeTracing = MaterialStore::GET_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing");
     setupMeshRenderer();
 }
 
@@ -83,9 +81,6 @@ void Mesh::render(Scene& renderScene, Transform &transform)
     
     std::vector<PointLight>& lights = renderScene.pointLights;
     Camera& camera = *renderScene.renderingCamera;
-    
-    voxConeTracing->uploadVoxParametersToGPU(transform, renderScene, voxProperties);
-    voxConeTracing->SetModelMatrix(transform.getTransformMatrix());
     
     render();
 }

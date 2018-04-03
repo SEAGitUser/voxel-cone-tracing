@@ -67,10 +67,10 @@
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
-               value = "shaderResourcePath">
+               value = "Shader::shaderResourcePath ">
             </PersistentString>
             <PersistentString
-               value = "Shader::shaderResourcePath ">
+               value = "shaderResourcePath">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -97,6 +97,17 @@
       </ContextState>
       <ContextState
          contextName = "MeshRenderer::reuploadIndexDataToGPU():MeshRenderer.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "ShaderParameter::operator=(glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;):ShaderParameter.h">
+      </ContextState>
+      <ContextState
+         contextName = "Material::setValue(ShaderParameter&amp;, char const*):Material.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "settings">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "MeshRenderer::renderMesh():MeshRenderer.cpp">

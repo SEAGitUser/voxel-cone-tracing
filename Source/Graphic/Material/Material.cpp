@@ -162,6 +162,7 @@ void Material::setValue(ShaderParameter &setting, const GLchar* name)
         }
     }
     
+    glError();
     if(result == -1)
     {
         printf("WARNING: parameter %s was not found for material %s\n", name, this->name);

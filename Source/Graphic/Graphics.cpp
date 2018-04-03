@@ -103,16 +103,9 @@ void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) c
 {
     RenderingQueue &renderingQueue = renderingScene.renderers;
     
-	//for (unsigned int i = 0; i < renderingQueue.size(); ++i)
     for(Shape* shape : renderingScene.shapes)
     {
-        for(Mesh* mesh : shape->meshes)
-        {
-            if (mesh->enabled)
-            {
-                mesh->render(renderingScene, shape->transform);
-            }
-        }
+        shape->render(renderingScene);
     }
 }
 

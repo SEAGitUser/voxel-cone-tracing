@@ -4,21 +4,23 @@
 #version 410 core
 
 layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
 
-uniform mat4 M;
-uniform mat4 V;
-uniform mat4 P;
+uniform mat4 MVP;
+uniform vec3 diffuseColor;
 
-out vec3 worldPosition;
+out vec3 diffuseColorFrag;
+out vec3 normalFrag;
 noperspective out vec4 projectedPosition;
 
 
 void main()
 {
-    worldPosition = position;
-    gl_Position = P * V * M * vec4(worldPosition, 1);
+    gl_Position = MVP * vec4(position, 1);
     
     projectedPosition = gl_Position;
+    diffuseColorFrag = diffuseColor;
+    normalFrag = normal;
 }
 
 

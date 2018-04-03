@@ -8,6 +8,7 @@
 #include "Time/FrameRate.h"
 #include "Utility/ObjLoader.h"
 #include "Graphic/Material/ShaderParameter.h"
+#include "Shape/CornellBox.h"
 
 namespace {
 	unsigned int lightCubeIndex = 0;
@@ -20,7 +21,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	FirstPersonScene::init(viewportWidth, viewportHeight);
 
 	// Cornell box.
-	Shape * cornell = ObjLoader::loadObjFile("/Assets/Models/cornell.obj");
+    CornellBox * cornell = new CornellBox();
 	shapes.push_back(cornell);
 	for (unsigned int i = 0; i < cornell->meshes.size(); ++i) {
 		renderers.push_back(((cornell->meshes[i])));
@@ -32,35 +33,17 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
 
 	// Light cube.
-	Shape * lightCube = ObjLoader::loadObjFile("/Assets/Models/sphere.obj");
+	Shape * lightCube = ObjLoader::loadShapeFromObj("/Assets/Models/sphere.obj");
 	shapes.push_back(lightCube);
 	for (unsigned int i = 0; i < lightCube->meshes.size(); ++i) {
 		renderers.push_back(((lightCube->meshes[i])));
 	}
 	lightCubeIndex = renderers.size() - 1;
 
-	// Cornell box.
-    renderers[0]->voxProperties = VoxProperties::Green();
-    renderers[1]->voxProperties = VoxProperties::White();
-    renderers[2]->voxProperties = VoxProperties::White();
-    renderers[3]->voxProperties = VoxProperties::Red();
-    renderers[4]->voxProperties = VoxProperties::Blue();
-    renderers[5]->voxProperties = VoxProperties::White();
-    
-    renderers[0]->name = renderers[1]->name = renderers[2]->name = renderers[3]->name = renderers[4]->name
-        = renderers[5]->name = "cornell box";
-    
-    renderers[0]->enabled = renderers[1]->enabled = renderers[2]->enabled = renderers[3]->enabled = renderers[4]->enabled
-    = renderers[5]->enabled = true;
-	renderers[5]->enabled = false;
-    
-    renderers[6]->voxProperties = VoxProperties::White();
-	renderers[6]->enabled = false;
-     
-
+    lightCube->defaultVoxProperties = VoxProperties::White();
 	// Buddha.
 	int buddhaIndex = renderers.size();
-	Shape * buddha = ObjLoader::loadObjFile("/Assets/Models/buddha.obj");
+	Shape * buddha = ObjLoader::loadShapeFromObj("/Assets/Models/buddha.obj");
 	shapes.push_back(buddha);
 	for (unsigned int i = 0; i < buddha->meshes.size(); ++i) {
 		renderers.push_back(((buddha->meshes[i])));
@@ -75,23 +58,23 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	buddhaRenderer->name = "Buddha";
     buddhaRenderer->enabled = true;
 
-    buddhaRenderer->voxProperties = VoxProperties::White();
+    buddha->defaultVoxProperties = VoxProperties::White();
 
     
-    buddhaRenderer->voxProperties.specularColor = glm::vec3(0.99f, 0.62f, 0.43f);
-    buddhaRenderer->voxProperties.diffuseColor = glm::vec3(0.99f, 0.62f, 0.43f);
-    buddhaRenderer->voxProperties.emissivity = 0.0f;
-    buddhaRenderer->voxProperties.transparency = 1.f;
-    buddhaRenderer->voxProperties.refractiveIndex = 1.21f;
-    buddhaRenderer->voxProperties.specularReflectivity = 1.0f;
-    buddhaRenderer->voxProperties.diffuseReflectivity = 0.0f;
-    buddhaRenderer->voxProperties.specularDiffusion = 1.9f;
+    buddha->defaultVoxProperties.specularColor = glm::vec3(0.99f, 0.62f, 0.43f);
+    buddha->defaultVoxProperties.diffuseColor = (glm::vec3(0.99f, 0.62f, 0.43f));
+    buddha->defaultVoxProperties.emissivity = 0.0f;
+    buddha->defaultVoxProperties.transparency = 1.f;
+    buddha->defaultVoxProperties.refractiveIndex = 1.21f;
+    buddha->defaultVoxProperties.specularReflectivity = 1.0f;
+    buddha->defaultVoxProperties.diffuseReflectivity = 0.0f;
+    buddha->defaultVoxProperties.specularDiffusion = 1.9f;
 
 
-    renderers[lightCubeIndex]->voxProperties.diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    renderers[lightCubeIndex]->voxProperties.emissivity = 8.0f;
-    renderers[lightCubeIndex]->voxProperties.specularReflectivity = 0.0f;
-    renderers[lightCubeIndex]->voxProperties.diffuseReflectivity = 0.0f;
+    lightCube->defaultVoxProperties.diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    lightCube->defaultVoxProperties.emissivity = 8.0f;
+    lightCube->defaultVoxProperties.specularReflectivity = 0.0f;
+    lightCube->defaultVoxProperties.diffuseReflectivity = 0.0f;
     
     renderers[lightCubeIndex]->enabled = false;
     
@@ -100,13 +83,13 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
 	// An additional wall (behind the camera).
 	int backWallIndex = renderers.size();
-    Shape * backWall = ObjLoader::loadObjFile("/Assets/Models/quadn.obj");
+    Shape * backWall = ObjLoader::loadShapeFromObj("/Assets/Models/quadn.obj");
     shapes.push_back(backWall);
     for (unsigned int i = 0; i < backWall->meshes.size(); ++i) {
         renderers.push_back((backWall->meshes[i]));
     }
     Mesh * bwr = renderers[backWallIndex];
-    bwr->voxProperties = VoxProperties::White();
+    backWall->defaultVoxProperties = VoxProperties::White();
 
     backWall->transform.scale = glm::vec3(2);
     backWall->transform.position = glm::vec3(0, 0, 0.99);

@@ -220,6 +220,7 @@ GLint Material::ActivateTexture3D(const GLchar* samplerName, const GLint texture
 
 GLint Material::SetModelMatrix(const glm::mat4& mat)
 {
+    glUseProgram(program);
     GLint location = glGetUniformLocation(program, MODEL_MATRIX_NAME);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
     return location;

@@ -17,8 +17,8 @@ uniform mat4 toWorldSpace;
 
 
 out float totalSlicesGeom;
-out vec4 colorGeom;
 out vec3 normalGeom;
+out vec4 albedoGeom;
 
 void main(){
     
@@ -54,6 +54,6 @@ void main(){
         //which plane we pick here depends on the position of the camera when rendering the depth buffer sampled above
         gl_Position =  zPlaneProjection * worldSpacePos;
         
-        colorGeom = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        albedoGeom = vec4(1.0f, 1.0f, 1.0f, 1.0f);
     }
 }
