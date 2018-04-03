@@ -13,7 +13,7 @@ public:
 	/// <summary> Activates this texture and passes it on to a texture unit on the GPU. </summary>
 	void Activate(int shaderProgram, int textureUnit = 0);
 
-    Texture2D();
+    Texture2D(bool dummyTexture = false);
 	Texture2D(const std::string shaderTextureSamplerName, const std::string &path,
               const bool generateMipmaps = true, const int force_channels = SOIL_LOAD_RGB);
 	

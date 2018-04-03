@@ -39,8 +39,6 @@ private:
     
     void initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
     
-    Texture2D* renderDepthBuffer(Scene& renderScene, FBO* fbo);
-    
 private:
     bool automaticallyRegenerateMipmap = true;
     bool regenerateMipmapQueued = true;

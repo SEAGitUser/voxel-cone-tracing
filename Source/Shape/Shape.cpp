@@ -39,6 +39,7 @@ void Shape::render()
     }
 }
 
+
 void Shape::render(Scene& scene)
 {
     glm::mat4 trans = transform.getTransformMatrix();
@@ -56,14 +57,11 @@ void Shape::render(Scene& scene)
 }
 void Shape::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* _material)
 {
-    glError();
     if(active)
     {
         _material->uploadGPUParameters(group, scene);
-        
         render();
     }
-
 }
 
 Shape::~Shape()

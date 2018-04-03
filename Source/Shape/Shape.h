@@ -32,6 +32,7 @@ public:
     inline void transparency(GLfloat _transparency ){ defaultVoxProperties.transparency = _transparency; }
     inline void refractiveIndex(GLfloat _refractiveIndex ){ defaultVoxProperties.refractiveIndex = _refractiveIndex; }
     
+    inline const std::vector<VoxProperties>& getMeshProperties( ) const { return meshProperties ;}
     VoxelizationMaterial::VoxProperties defaultVoxProperties = VoxProperties::Default();;
     
     void setVoxProperites(VoxelizationMaterial::VoxProperties &voxProperties);

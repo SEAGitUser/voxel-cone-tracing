@@ -68,13 +68,16 @@ void Texture2D::SaveTextureState( GLboolean generateMipmaps, GLboolean loadTextu
     glBindTexture(GL_TEXTURE_2D, previousTexture);
 }
 
-Texture2D::Texture2D():
+Texture2D::Texture2D(bool dummyTexture):
 shaderTextureSamplerName(""),
 Texture()
 {
-    glGenTextures(1, &textureID);
-    
-    SaveTextureState();
+    textureID = 0;
+    if(!dummyTexture)
+    {
+        glGenTextures(1, &textureID);
+        SaveTextureState();
+    }
 }
 
 void Texture2D::Activate(int shaderProgram, int textureUnit)

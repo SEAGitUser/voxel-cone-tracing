@@ -8,6 +8,7 @@ in vec3 diffuseColorFrag;
 in vec3 normalFrag;
 noperspective in vec4 projectedPosition;
 
+uniform int firstRender = 0;
 uniform sampler2D depthTexture;
 
 layout(location = 0) out vec4 albedo;
@@ -22,15 +23,20 @@ void main()
     fragPosition += vec2(1.0f, 1.0f);
     fragPosition *= 0.5f;
     
-    vec4 depth = texture(depthTexture, fragPosition.st);
+    vec4 depth = firstRender == 1 ? vec4(-1.0f, 0.0f, 0.0f, 0.0f) : texture(depthTexture, fragPosition.st);
     
     float previousLayerDepth = depth.r;
     
-    albedo = vec4(diffuseColorFrag,1.0f);
+    albedo = vec4(diffuseColorFrag, 1.0f);
     normal = vec4(normalFrag, 1.0f);
-    if(previousLayerDepth > gl_FragCoord.z ||
-       abs(gl_FragCoord.z - previousLayerDepth) < 0.001f)
+    
+    if(0 == firstRender)
     {
-        discard;
+        if(previousLayerDepth > gl_FragCoord.z ||
+           abs(gl_FragCoord.z - previousLayerDepth) < 0.001f)
+        {
+            discard;
+        }
     }
+
 }

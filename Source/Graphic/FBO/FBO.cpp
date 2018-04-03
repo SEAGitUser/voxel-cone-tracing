@@ -48,7 +48,21 @@ FBO::Commands::Commands(FBO* _fbo)
     assert(fbo == nullptr && "You must call FBO::Commands::end() to indicate end of frame rendering before starting a new frame commands");
     fbo = _fbo;
     glBindFramebuffer(GL_FRAMEBUFFER, fbo->frameBuffer);
+    
+    GLuint colorAttachment[50];
+    
+    if(fbo->renderTextures.size() > 0)
+    {
+        for(GLint i = 0; i < fbo->renderTextures.size(); ++i)
+        {
+            colorAttachment[i] = GL_COLOR_ATTACHMENT0 + i;
+        }
+
+        glDrawBuffers(2, colorAttachment);
+    }
+
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    glError();
     setViewport(fbo->dimensions.width, fbo->dimensions.height);
 }
 
@@ -110,7 +124,7 @@ void FBO::Commands::end()
 
 void FBO::Commands::clearRenderTarget()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
 }
 
 void FBO::Commands::setClearColor(glm::vec4 color)

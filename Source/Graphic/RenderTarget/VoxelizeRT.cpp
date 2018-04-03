@@ -16,6 +16,7 @@
 #include "Graphic/Material/Material.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "Utility/Logger.h"
+#include "Shape/Mesh.h"
 #include "Shape.h"
 #include <stdio.h>
 
@@ -31,7 +32,7 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     properties.magFilter = GL_NEAREST;
     voxelFBO = std::make_shared<FBO_3D>(dimensions, properties);
     
-    //add albedo render targets...
+    //normal render target
     voxelFBO->AddRenderTarget();
 
     orthoCamera = OrthographicCamera(3.5f, 3.5f, 3.5f);
@@ -58,20 +59,21 @@ void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture:
 {
     bool depthTexture = true;
     depthFBOs[0] = std::make_shared<FBO_2D>(dimensions, properties);
+    depthFBOs[0]->AddRenderTarget(); //normal render target
     depthFBOs[0]->AddRenderTarget(depthTexture);
-    depthFBOs[0]->AddRenderTarget(); //albedo render target
     
     depthFBOs[1] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[1]->AddRenderTarget(depthTexture);
     depthFBOs[1]->AddRenderTarget();
+    depthFBOs[1]->AddRenderTarget(depthTexture);
     
     depthFBOs[2] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[2]->AddRenderTarget(depthTexture);
     depthFBOs[2]->AddRenderTarget();
+    depthFBOs[2]->AddRenderTarget(depthTexture);
     
     depthFBOs[3] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[3]->AddRenderTarget(depthTexture);
     depthFBOs[3]->AddRenderTarget();
+    depthFBOs[3]->AddRenderTarget(depthTexture);
+    
 }
 
 void VoxelizeRT::voxelize(Scene& renderScene)
@@ -118,8 +120,8 @@ void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
     fboCommands.enableBlend(false);
     static ShaderParameter::ShaderParamsGroup group;
     
-    Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getDepthTexture());
-    //Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getRenderTexture(0));
+    //Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getDepthTexture());
+    Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getRenderTexture(1));
     ShaderParameter::Sampler2D sampler;
     sampler.texture = depthTexture;
     
@@ -137,63 +139,47 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
 {    
     static ShaderParameter::ShaderParamsGroup params;
     
+    glm::mat4 MVP = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
+    bool firstRender = true;
+    
     ShaderParameter::Sampler2D sampler;
-    sampler.texture = static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
+    Texture2D dummyTexture(true);
+    sampler.texture = firstRender ? &dummyTexture : static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
     params["depthTexture"] = sampler;
     
-    glm::mat4 MVP = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
-    
-    for(GLint i = 1; i < depthFBOs.size(); ++i)
+    for(GLint i = 0; i < depthFBOs.size(); ++i)
     {
+        params["firstRender"]  = firstRender ? 1 : 0;
         FBO::Commands commands(depthFBOs[i].get());
+
         commands.clearRenderTarget();
-        commands.colorMask(false);
+        commands.colorMask(true);
         commands.backFaceCulling(false);
         commands.enableDepthTest(true);
         
         for(Shape* shape: renderScene.shapes)
         {
             params["MVP"] = MVP *shape->transform.getTransformMatrix();
-            params["diffuseColor"] = shape->defaultVoxProperties.diffuseColor;
-            glError();
-            shape->render(renderScene, params, depthPeelingMat.get());
+            size_t numberOfProperties = shape->getMeshProperties().size();
+
+            GLint i = 0;
+            for(Mesh* mesh : shape->meshes)
+            {
+                params["diffuseColor"] = i < numberOfProperties ? shape->getMeshProperties()[i].diffuseColor : shape->defaultVoxProperties.diffuseColor;
+                depthPeelingMat->uploadGPUParameters(params, renderScene);
+                mesh->render();
+                ++i;
+            }
         }
         commands.end();
-        
+        firstRender = false;
         sampler.texture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
         params["depthTexture"] = sampler;
     }
 }
 
-Texture2D* VoxelizeRT::renderDepthBuffer(Scene& renderScene, FBO* fbo)
-{
-    static ShaderParameter::ShaderParamsGroup group;
-    
-    group["V"] = orthoCamera.viewMatrix;
-    group["P"] = orthoCamera.getProjectionMatrix();
-
-    fbo->ClearRenderTextures();
-    FBO::Commands commands(fbo);
-    commands.setClearColor();
-    commands.clearRenderTarget();
-    commands.colorMask(false);
-    commands.backFaceCulling(false);
-    commands.enableDepthTest(true);
-    for (Shape* shape : renderScene.shapes)
-    {
-        shape->transform.updateTransformMatrix();
-        group["M"] = shape->transform.getTransformMatrix();
-        
-        shape->render(renderScene, group, positionsMaterial.get());
-    }
-    commands.end();
-    
-    return static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
-}
-
 void VoxelizeRT::fillUpVoxelTexture(Scene& renderScene)
 {
-    renderDepthBuffer(renderScene, depthFBOs[0].get());
     generateDepthPeelingMaps(renderScene);
     voxelize(renderScene);
 }
@@ -207,8 +193,9 @@ void VoxelizeRT::Render(Scene& renderScene)
     orthoCamera.forward =  glm::vec3(0.0f, -1.0f, 0.0f);
     orthoCamera.up = glm::vec3(1.0f, 0.0f, 0.0f);
     orthoCamera.updateViewMatrix();
-
+    
     fillUpVoxelTexture(renderScene);
+    
 
     //from z plane
     orthoCamera.position = glm::vec3(0.0f, .0f, 1.5f);
