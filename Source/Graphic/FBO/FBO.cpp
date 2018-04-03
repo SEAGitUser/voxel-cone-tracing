@@ -58,7 +58,7 @@ FBO::Commands::Commands(FBO* _fbo)
             colorAttachment[i] = GL_COLOR_ATTACHMENT0 + i;
         }
 
-        glDrawBuffers(2, colorAttachment);
+        glDrawBuffers(fbo->renderTextures.size(), colorAttachment);
     }
 
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
