@@ -88,12 +88,25 @@ void VoxelizeRT::voxelize(Scene& renderScene)
     {
         
         Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
+        Texture2D* albedoTexture = static_cast<Texture2D*>(depthFBOs[i]->getRenderTexture(0));
+        Texture2D* normalTexture = static_cast<Texture2D*>(depthFBOs[i]->getRenderTexture(1));
         
         static ShaderParameter::ShaderParamsGroup settings;
-        ShaderParameter::Sampler2D sampler;
-        sampler.texture = depthTexture;
+        ShaderParameter::Sampler2D normalSampler;
+        ShaderParameter::Sampler2D albedoSampler;
+        ShaderParameter::Sampler2D depthSampler;
         
-        settings["depthTexture"] = sampler;
+        depthSampler.texture = depthTexture;
+        depthSampler.textureUnit = 0;
+        albedoSampler.texture = albedoTexture;
+        albedoSampler.textureUnit = 1;
+        normalSampler.texture = normalTexture;
+        normalSampler.textureUnit = 2;
+        
+        settings["depthTexture"] = depthSampler;
+        settings["albedoTexture"] = albedoSampler;
+        settings["normalTexture"] = normalSampler;
+        
         glm::mat4 toWorldSpace = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
         toWorldSpace = glm::inverse(toWorldSpace);
         settings["zPlaneProjection"] = zPlaneProjection;
@@ -120,8 +133,8 @@ void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
     fboCommands.enableBlend(false);
     static ShaderParameter::ShaderParamsGroup group;
     
-    //Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getDepthTexture());
-    Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getRenderTexture(1));
+    Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getDepthTexture());
+    //Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getRenderTexture(1));
     ShaderParameter::Sampler2D sampler;
     sampler.texture = depthTexture;
     
@@ -191,9 +204,9 @@ void VoxelizeRT::Render(Scene& renderScene)
     //from y plane
     orthoCamera.position = glm::vec3(0.0f, 1.5f, 0.0f);
     orthoCamera.forward =  glm::vec3(0.0f, -1.0f, 0.0f);
-    orthoCamera.up = glm::vec3(1.0f, 0.0f, 0.0f);
+    orthoCamera.up = glm::vec3(-1.0f, 0.0f, 0.0f);
     orthoCamera.updateViewMatrix();
-    
+
     fillUpVoxelTexture(renderScene);
     
 
@@ -202,7 +215,7 @@ void VoxelizeRT::Render(Scene& renderScene)
     orthoCamera.forward =  glm::vec3(0.0f, 0.0f, -1.0f);
     orthoCamera.up = glm::vec3(0.0f, 1.0f, 0.0f);
     orthoCamera.updateViewMatrix();
-    
+
     fillUpVoxelTexture(renderScene);
     
     //from x plane

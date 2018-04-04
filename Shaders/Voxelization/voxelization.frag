@@ -44,7 +44,8 @@ in vec3 normalFrag;
 in vec3 colorFrag;
 in float totalSlicesFrag;
 
-out vec4 color;
+layout(location = 0) out vec4 color;
+layout(location = 1) out vec4 normal;
 
 vec3 calculatePointLight(const PointLight light)
 {
@@ -63,7 +64,9 @@ bool isInsideCube(const vec3 p, float e) { return abs(p.x) < 1 + e && abs(p.y) <
 
 void main()
 {
-    color = vec4(colorFrag,1.0f);
+    color = vec4(colorFrag,.4f);
+    normal = vec4(normalFrag,.4f);
+    
     
 //    the code below hasn't been testest, commented out for this reason
 //    color = vec4(depth.rrr, 1.0f);

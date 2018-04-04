@@ -56,7 +56,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	buddha->transform.updateTransformMatrix();
 	buddhaRenderer->tweakable = true;
 	buddhaRenderer->name = "Buddha";
-    buddhaRenderer->enabled = true;
+    buddhaRenderer->enabled = false;
 
     buddha->defaultVoxProperties = VoxProperties::White();
 
@@ -83,18 +83,6 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
 	// An additional wall (behind the camera).
 	int backWallIndex = renderers.size();
-    Shape * backWall = ObjLoader::loadShapeFromObj("/Assets/Models/quadn.obj");
-    shapes.push_back(backWall);
-    for (unsigned int i = 0; i < backWall->meshes.size(); ++i) {
-        renderers.push_back((backWall->meshes[i]));
-    }
-    Mesh * bwr = renderers[backWallIndex];
-    backWall->defaultVoxProperties = VoxProperties::White();
-
-    backWall->transform.scale = glm::vec3(2);
-    backWall->transform.position = glm::vec3(0, 0, 0.99);
-    backWall->transform.rotation = glm::vec3(-1.57079632679, 0, 0);
-    bwr->tweakable = true;
     
 	// Lighting.
 	PointLight p;

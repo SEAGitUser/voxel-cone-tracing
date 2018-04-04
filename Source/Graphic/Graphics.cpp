@@ -39,7 +39,7 @@ void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
     GLfloat const worldCubeDimensions = 10.0f;
     voxelizeRenderTarget = new VoxelizeRT(worldCubeDimensions, worldCubeDimensions,worldCubeDimensions);
 
-    Texture3D* texture = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(0) );
+    Texture3D* texture = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(1) );
     voxVisualizationRT = new VoxelVisualizationRT(texture);
 }
 

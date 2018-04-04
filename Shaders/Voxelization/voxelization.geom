@@ -10,12 +10,11 @@ uniform mat4 inverseProjection;
 uniform float farPlane;
 
 in vec3 normalGeom[];
-in vec4 albedoGeom[];
+in vec3 albedoGeom[];
 in float totalSlicesGeom[];
 
 
 out vec3 normalFrag;
-//out vec3 worldPositionFrag;
 out vec3 colorFrag;
 out float totalSlicesFrag;
 
@@ -36,6 +35,7 @@ void main(){
     gl_Layer = int(totalSlicesGeom[0] * depth);
 
     colorFrag = albedoGeom[0].rgb;
+    normalFrag = normalGeom[0].rgb;
 
     totalSlicesFrag = totalSlicesGeom[0];
     

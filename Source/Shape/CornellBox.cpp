@@ -30,6 +30,7 @@ Shape()
     //random boxes inside of the cornell box mesh
     meshes[6]->enabled = false;
     meshes[5]->enabled = false;
+
 }
 
 

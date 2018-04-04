@@ -28,6 +28,8 @@ FBO_2D::FBO_2D(Texture::Dimensions &dimensions, Texture::Properties &textureProp
 
 Texture* FBO_2D::AddRenderTarget(bool depthTarget)
 {
+    
+    //todo: break this function into 2, one for color render targets, and another for depth render targets
     GLint previousFrameBuffer;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
