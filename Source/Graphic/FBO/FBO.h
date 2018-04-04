@@ -85,7 +85,7 @@ protected:
     GLuint  frameBuffer, textureColorBuffer, attachment, rbo;
     
     std::vector<Texture*> renderTextures;
-    GLint AddRenderTarget(Texture* target);
+    GLint setupRenderTarget(Texture* target);
     
 };
 

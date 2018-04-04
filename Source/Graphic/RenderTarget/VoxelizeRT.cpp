@@ -189,7 +189,7 @@ void VoxelizeRT::Render(Scene& renderScene)
     voxelFBO->ClearRenderTextures();
     
     //from y plane
-    orthoCamera.position = glm::vec3(0.0f, 2.5f, 0.0f);
+    orthoCamera.position = glm::vec3(0.0f, 1.5f, 0.0f);
     orthoCamera.forward =  glm::vec3(0.0f, -1.0f, 0.0f);
     orthoCamera.up = glm::vec3(1.0f, 0.0f, 0.0f);
     orthoCamera.updateViewMatrix();

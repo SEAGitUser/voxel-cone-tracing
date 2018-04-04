@@ -36,10 +36,11 @@ Texture* FBO_2D::AddRenderTarget(bool depthTarget)
     assert(frameBuffer != DEFAULT_FRAMEBUFFER && "Cannot add a render target to a frame buffer object whose frame buffer is the default");
 
     Texture2D *target = new Texture2D();
-    GLint targetID = FBO::AddRenderTarget(target);
+    GLint targetID = FBO::setupRenderTarget(target);
     
     if(!depthTarget)
     {
+        renderTextures.push_back(target);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)(renderTextures.size() -1), GL_TEXTURE_2D, targetID, 0);
     }
     else

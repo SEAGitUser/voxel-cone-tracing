@@ -5,7 +5,7 @@
 #include "OpenGL_Includes.h"
 
 
-GLint FBO::AddRenderTarget(Texture* target)
+GLint FBO::setupRenderTarget(Texture* target)
 {
     target->SetWrap(textureProperties.wrap);
     
@@ -17,8 +17,6 @@ GLint FBO::AddRenderTarget(Texture* target)
     target->SetDataType(textureProperties.dataFormat);
     
     target->SaveTextureState();
-    
-    renderTextures.push_back(target);
     
     return target->GetTextureID();
 }
@@ -62,7 +60,6 @@ FBO::Commands::Commands(FBO* _fbo)
     }
 
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
-    glError();
     setViewport(fbo->dimensions.width, fbo->dimensions.height);
 }
 
