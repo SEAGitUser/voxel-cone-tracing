@@ -15,7 +15,6 @@
 		B98CE5A52027A19300B45558 /* voxel_cone_tracing_macTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B98CE5A42027A19300B45558 /* voxel_cone_tracing_macTests.m */; };
 		B98CE5B02027A19300B45558 /* voxel_cone_tracing_macUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B98CE5AF2027A19300B45558 /* voxel_cone_tracing_macUITests.m */; };
 		B98CE69E2027A25D00B45558 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6422027A25C00B45558 /* Mesh.cpp */; };
-		B98CE69F2027A25D00B45558 /* StandardShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6432027A25C00B45558 /* StandardShapes.cpp */; };
 		B98CE6A02027A25D00B45558 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6462027A25C00B45558 /* Transform.cpp */; };
 		B98CE6A12027A25D00B45558 /* FrameRate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE64D2027A25C00B45558 /* FrameRate.cpp */; };
 		B98CE6A32027A25D00B45558 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98CE6542027A25C00B45558 /* Camera.cpp */; };
@@ -209,11 +208,9 @@
 		B98CE5B12027A19300B45558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B98CE6402027A25C00B45558 /* OpenGL_Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL_Includes.h; sourceTree = "<group>"; };
 		B98CE6422027A25C00B45558 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
-		B98CE6432027A25C00B45558 /* StandardShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandardShapes.cpp; sourceTree = "<group>"; };
 		B98CE6442027A25C00B45558 /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
 		B98CE6452027A25C00B45558 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		B98CE6462027A25C00B45558 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
-		B98CE6472027A25C00B45558 /* StandardShapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardShapes.h; sourceTree = "<group>"; };
 		B98CE6482027A25C00B45558 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		B98CE6492027A25C00B45558 /* VertexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexData.h; sourceTree = "<group>"; };
 		B98CE64A2027A25C00B45558 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
@@ -669,8 +666,6 @@
 				B996F71A2058F87200C8D62D /* Points.cpp */,
 				B98CE6452027A25C00B45558 /* Mesh.h */,
 				B98CE6422027A25C00B45558 /* Mesh.cpp */,
-				B98CE6472027A25C00B45558 /* StandardShapes.h */,
-				B98CE6432027A25C00B45558 /* StandardShapes.cpp */,
 				B98CE6482027A25C00B45558 /* Transform.h */,
 				B98CE6462027A25C00B45558 /* Transform.cpp */,
 				B98CE6442027A25C00B45558 /* Shape.h */,
@@ -1460,7 +1455,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B98CE69F2027A25D00B45558 /* StandardShapes.cpp in Sources */,
 				B98CE6AF2027A25D00B45558 /* MaterialStore.cpp in Sources */,
 				B98CE6A92027A25D00B45558 /* FBO.cpp in Sources */,
 				B98CE6AE2027A25D00B45558 /* VoxelizationMaterial.cpp in Sources */,

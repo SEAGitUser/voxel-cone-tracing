@@ -15,7 +15,6 @@
 #include "Material/MaterialStore.h"
 #include "Time/FrameRate.h"
 #include "Shape/Mesh.h"
-#include "Shape/StandardShapes.h"
 #include "Utility/ObjLoader.h"
 #include "Shape/Shape.h"
 #include "Application.h"
