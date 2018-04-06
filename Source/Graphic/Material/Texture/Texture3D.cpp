@@ -87,7 +87,7 @@ void Texture3D::Clear()
     //TODO: find a way to get rid of this clearData array
     if(clearData.size() == 0)
     {
-        clearData.resize(4 * width * height * depth * sizeof(GLfloat), .000f);
+        clearData.resize(4 * width * height * depth * sizeof(GLfloat), .0f);
     }
     glClearTexImage(textureID, levels, GL_RGBA, GL_FLOAT, &clearData[0]);
     glError();

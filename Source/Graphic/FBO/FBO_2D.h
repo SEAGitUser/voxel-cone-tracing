@@ -32,6 +32,9 @@ public:
     
     };
     
+    
+    static std::shared_ptr<FBO_2D>& getDefault();
+    
     FBO_2D():FBO(),depthTexture(nullptr)
         {};
     
@@ -40,10 +43,16 @@ public:
     
     virtual Texture* AddRenderTarget(bool depthTarget = false) override;
     inline Texture* getDepthTexture(){ return static_cast<Texture*>(depthTexture); }
+    
+public:
+
 private:
     
     GLuint generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
+    void getPreviousViewportDimensions();
     
+private:
+    static std::shared_ptr<FBO_2D> defaultFBO;
     Texture2D* depthTexture;
     
 };

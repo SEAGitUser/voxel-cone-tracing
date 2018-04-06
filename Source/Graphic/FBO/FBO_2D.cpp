@@ -3,6 +3,8 @@
 #include <iostream>
 #include <assert.h>
 
+std::shared_ptr<FBO_2D> FBO_2D::defaultFBO = nullptr;
+
 FBO_2D::FBO_2D(Texture::Dimensions &dimensions, Texture::Properties &textureProperties)
 : FBO(dimensions, textureProperties)
 {
@@ -58,6 +60,16 @@ Texture* FBO_2D::AddRenderTarget(bool depthTarget)
     
     return target;
 
+}
+
+std::shared_ptr<FBO_2D>& FBO_2D::getDefault()
+{
+    if(defaultFBO == nullptr)
+    {
+        defaultFBO = std::make_shared<FBO_2D>();
+    }
+    
+    return defaultFBO;
 }
 
 FBO_2D::~FBO_2D()

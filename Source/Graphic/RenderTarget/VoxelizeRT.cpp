@@ -50,8 +50,6 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     textureDisplayMat = MaterialStore::GET_MAT<Material>("texture-display");
     depthPeelingMat = MaterialStore::GET_MAT<Material>("depth-peeling");
     
-    defaultFBO = std::make_shared<FBO_2D>();
-    
     initDepthFrameBuffers(dimensions, properties);
 }
 
@@ -125,7 +123,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
 
 void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
 {
-    FBO::Commands fboCommands(defaultFBO.get());
+    FBO::Commands fboCommands(FBO_2D::getDefault().get());
     
     fboCommands.setClearColor();
     fboCommands.clearRenderTarget();

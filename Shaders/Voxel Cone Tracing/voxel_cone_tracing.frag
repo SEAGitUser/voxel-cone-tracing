@@ -324,23 +324,23 @@ void main(){
 	if(settings.indirectDiffuseLight && material.diffuseReflectivity * (1.0f - material.transparency) > 0.01f) 
 		color.rgb += indirectDiffuseLight();
 
-	// Indirect specular light (glossy reflections).
-	if(settings.indirectSpecularLight && material.specularReflectivity * (1.0f - material.transparency) > 0.01f) 
-		color.rgb += indirectSpecularLight(viewDirection);
+//    // Indirect specular light (glossy reflections).
+//    if(settings.indirectSpecularLight && material.specularReflectivity * (1.0f - material.transparency) > 0.01f)
+//        color.rgb += indirectSpecularLight(viewDirection);
+//
+//    // Emissivity.
+//    color.rgb += material.emissivity * material.diffuseColor;
+//
+//    // Transparency
+//    if(material.transparency > 0.01f)
+//        color.rgb = mix(color.rgb, indirectRefractiveLight(viewDirection), material.transparency);
 
-	// Emissivity.
-	color.rgb += material.emissivity * material.diffuseColor;
-
-	// Transparency
-	if(material.transparency > 0.01f)
-		color.rgb = mix(color.rgb, indirectRefractiveLight(viewDirection), material.transparency);
-
-	// Direct light.
-	if(settings.directLight)
-		color.rgb += directLight(viewDirection);
+//    // Direct light.
+//    if(settings.directLight)
+//        color.rgb += directLight(viewDirection);
 
 #if (GAMMA_CORRECTION == 1)
-	color.rgb = pow(color.rgb, vec3(1.0 / 2.2));
+	//color.rgb = pow(color.rgb, vec3(1.0 / 2.2));
 #endif
     
 }

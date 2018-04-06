@@ -41,7 +41,9 @@ FBO::~FBO()
 
 FBO* FBO::Commands::fbo = nullptr;
 
-FBO::Commands::Commands(FBO* _fbo)
+FBO::Commands::Commands(FBO* _fbo):
+previousViewportWidth(0),
+previousViewportHeight(0)
 {
     assert(fbo == nullptr && "You must call FBO::Commands::end() to indicate end of frame rendering before starting a new frame commands");
     fbo = _fbo;
@@ -60,12 +62,26 @@ FBO::Commands::Commands(FBO* _fbo)
     }
 
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    getPreviousViewportSize();
+    
+    fbo->dimensions.width = fbo->dimensions.width == 0 ? previousViewportWidth : fbo->dimensions.width;
+    fbo->dimensions.height= fbo->dimensions.height == 0 ? previousViewportHeight : fbo->dimensions.height;
+    
     setViewport(fbo->dimensions.width, fbo->dimensions.height);
 }
 
 void FBO::Commands::setViewport(GLint width, GLint height)
 {
      glViewport(0, 0, width, height);
+    
+}
+
+void FBO::Commands::getPreviousViewportSize()
+{
+    GLint dims[4];
+    glGetIntegerv(GL_VIEWPORT, dims);
+    previousViewportWidth = dims[2];
+    previousViewportHeight = dims[3];
 }
 
 void FBO::Commands::colorMask(bool _value)
@@ -116,6 +132,7 @@ void FBO::Commands::backFaceCulling(bool _value)
 void FBO::Commands::end()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
+    setViewport(previousViewportWidth, previousViewportHeight);
     fbo = nullptr;
 }
 
@@ -134,10 +151,16 @@ void FBO::Commands::setDetphClearValue(GLfloat depth)
     glClearDepth(depth);
 }
 
+void FBO::Commands::blendSrcAlphaOneMinusSrcAlpha()
+{
+    enableBlend(true);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 FBO::Commands::~Commands()
 {
     assert(fbo == nullptr &&
-           "You must call end() to signal end of frame rendering before FBO::Commands object gets destoroyed");
+           "You must call end() to signal end of frame rendering before FBO::Commands object gets destroyed");
 }
 
 

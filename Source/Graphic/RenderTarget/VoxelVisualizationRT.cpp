@@ -25,8 +25,6 @@ VoxelVisualizationRT::VoxelVisualizationRT(Texture3D* _voxelTexture)
     //todo: ObjLoader should return a shared pointer
     cubeShape = ObjLoader::loadShapeFromObj("/Assets/Models/cube.obj");
 
-    //this will render to the default frame buffer
-    defaultFBO = new FBO_2D();
 
 }
 
@@ -48,7 +46,8 @@ void VoxelVisualizationRT::Render( Scene& scene )
 
     group["MVP"] = mvp;
 
-    FBO::Commands commands(defaultFBO);
+    
+    FBO::Commands commands(FBO_2D::getDefault().get());
     commands.setClearColor();
     commands.clearRenderTarget();
     commands.backFaceCulling(false);
@@ -64,6 +63,5 @@ void VoxelVisualizationRT::Render( Scene& scene )
 VoxelVisualizationRT::~VoxelVisualizationRT()
 {
     delete cubeShape;
-    delete defaultFBO;
 }
 

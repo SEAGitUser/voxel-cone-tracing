@@ -65,7 +65,6 @@ private:
     ScreenQuand screenQuad;
     std::shared_ptr<FBO_3D> voxelFBO;
     glm::mat4 zPlaneProjection;
-    std::shared_ptr<FBO_2D> defaultFBO;
     
     std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

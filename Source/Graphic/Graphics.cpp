@@ -75,7 +75,8 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 // ----------------------
 void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
 {
-
+    
+    
 	// Fetch references.
 	auto & camera = *renderingScene.renderingCamera;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -83,18 +84,19 @@ void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, u
     GLint frameBufferWidth, frameBufferHeight;
     GLFWwindow * window = Application::getInstance().currentWindow;
     glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
-	// GL Settings.
-	glViewport(0, 0, frameBufferWidth, frameBufferHeight);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    
+    FBO::Commands commands(FBO_2D::getDefault().get());
+    
+    commands.setViewport(frameBufferWidth, frameBufferHeight);
+    commands.setClearColor();
+    commands.clearRenderTarget();
+    commands.enableDepthTest(true);
+    commands.backFaceCulling(true);
+    commands.blendSrcAlphaOneMinusSrcAlpha();
+    
 	renderQueue(renderingScene, true);
+    
+    commands.end();
     
 }
 

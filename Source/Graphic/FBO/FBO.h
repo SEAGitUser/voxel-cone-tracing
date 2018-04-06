@@ -18,6 +18,8 @@ public:
         ~Commands();
         
         void setViewport(GLint width, GLint height);
+        void getPreviousViewportSize();
+        
         void backFaceCulling(bool value);
         void enableDepthTest(bool value);
         void colorMask( bool value);
@@ -25,10 +27,13 @@ public:
         void activateCulling(bool value);
         void enableBlend(bool value);
         void enableAdditiveBlending();
+        void blendSrcAlphaOneMinusSrcAlpha();
         void setClearColor(glm::vec4 color = glm::vec4(0.0f));
         void setDetphClearValue(GLfloat value = 0.0f);
         void clearRenderTarget();
         void end();
+        
+        
         
     protected:
         static FBO* fbo;
@@ -39,6 +44,9 @@ public:
         //this is because rvalues get destroyed immidiately, causing things to malfunction
         Commands(const Commands& rhs);
         FBO& operator=(Commands& rhs);
+        
+        GLint previousViewportWidth;
+        GLint previousViewportHeight;
     };
     
     
@@ -47,7 +55,6 @@ public:
     
     FBO():  frameBuffer(DEFAULT_FRAMEBUFFER)
     {
-        getDefaultFBODimensions();
     }
     
     FBO(Texture::Dimensions &_dimensions, Texture::Properties &_textureProperties)
@@ -57,20 +64,19 @@ public:
         renderTextures.reserve(MAX_RENDER_TARGETS);
     }
     
+    
     inline          GLint getFrameBufferID();
     inline const    Texture::Dimensions& getDimensions();
     inline          GLint getColorBufferTextureName();
     inline          Texture* getRenderTexture(GLuint index);
     inline Commands& getCommands();
+    inline void      getPreviousViewportDimensions();
     
     
     void ClearRenderTextures();
     virtual Texture* AddRenderTarget(bool depthTarget) = 0;
     
     virtual ~FBO();
-
-private:
-    inline void getDefaultFBODimensions();
     
 protected:
     
@@ -88,17 +94,6 @@ protected:
     GLint setupRenderTarget(Texture* target);
     
 };
-
-
-void FBO::getDefaultFBODimensions()
-{
-    GLint dims[4] = {0};
-    glGetIntegerv(GL_VIEWPORT, dims);
-    
-    dimensions.width = dims[2];
-    dimensions.height = dims[3];
-    dimensions.depth = 0;
-}
 
 const Texture::Dimensions& FBO::getDimensions()
 {

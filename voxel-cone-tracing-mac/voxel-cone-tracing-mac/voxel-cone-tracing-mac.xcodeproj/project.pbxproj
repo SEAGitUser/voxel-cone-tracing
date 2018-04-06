@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B92071512071F737002AB489 /* CornellBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B920714F2071F737002AB489 /* CornellBox.cpp */; };
+		B948EB0620772AB5008A413E /* VoxelConeTracingRT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B948EB0420772AB5008A413E /* VoxelConeTracingRT.cpp */; };
 		B98CE5942027A19300B45558 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B98CE5932027A19300B45558 /* Assets.xcassets */; };
 		B98CE5972027A19300B45558 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B98CE5952027A19300B45558 /* MainMenu.xib */; };
 		B98CE59A2027A19300B45558 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B98CE5992027A19300B45558 /* main.mm */; };
@@ -192,6 +193,8 @@
 /* Begin PBXFileReference section */
 		B920714F2071F737002AB489 /* CornellBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CornellBox.cpp; sourceTree = "<group>"; };
 		B92071502071F737002AB489 /* CornellBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CornellBox.h; sourceTree = "<group>"; };
+		B948EB0420772AB5008A413E /* VoxelConeTracingRT.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelConeTracingRT.cpp; sourceTree = "<group>"; };
+		B948EB0520772AB5008A413E /* VoxelConeTracingRT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoxelConeTracingRT.h; sourceTree = "<group>"; };
 		B98CE58D2027A19300B45558 /* voxel-cone-tracing-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxel-cone-tracing-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B98CE5932027A19300B45558 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B98CE5962027A19300B45558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -804,6 +807,8 @@
 				B98CE6832027A25C00B45558 /* VoxelVisualizationRT.cpp */,
 				B98CE6842027A25C00B45558 /* VoxelizeRT.h */,
 				B98CE6862027A25C00B45558 /* VoxelizeRT.cpp */,
+				B948EB0420772AB5008A413E /* VoxelConeTracingRT.cpp */,
+				B948EB0520772AB5008A413E /* VoxelConeTracingRT.h */,
 			);
 			path = RenderTarget;
 			sourceTree = "<group>";
@@ -1480,6 +1485,7 @@
 				B98CE6AA2027A25D00B45558 /* FBO_2D.cpp in Sources */,
 				B98CE6A52027A25D00B45558 /* FirstPersonController.cpp in Sources */,
 				B996F71C2058F87200C8D62D /* Points.cpp in Sources */,
+				B948EB0620772AB5008A413E /* VoxelConeTracingRT.cpp in Sources */,
 				B9C2B4252047D2B9002484F0 /* Logger.cpp in Sources */,
 				B98CE6B02027A25D00B45558 /* ShaderParameter.cpp in Sources */,
 				B98CE6BA2027A25D00B45558 /* GlassScene.cpp in Sources */,
