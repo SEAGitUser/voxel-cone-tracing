@@ -224,15 +224,16 @@ void VoxelizeRT::Render(Scene& renderScene)
 
     fillUpVoxelTexture(renderScene);
     
-    
-    
-    //voxelTexture->generateMipMap();
-    //TODO: optimization oportunity
-    //        if (automaticallyRegenerateMipmap || regenerateMipmapQueued) {
-    //            glGenerateMipmap(GL_TEXTURE_3D);
-    //            regenerateMipmapQueued = false;
-    //        }
 
+    Texture3D* albedo = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
+    Texture3D::Commands commands(albedo);
+    commands.generateMipmaps();
+    commands.end();
+    
+    Texture3D* normals = static_cast<Texture3D*>(voxelFBO->getRenderTexture(1));
+    Texture3D::Commands commands2(normals);
+    commands.generateMipmaps();
+    commands.end();
     glError();
     ticksSinceLastVoxelization = 0;
     voxelizationQueued = false;

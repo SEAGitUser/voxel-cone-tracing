@@ -11,54 +11,6 @@
 
 std::vector<GLfloat> Texture3D::clearData = std::vector<GLfloat>();
 
-void Texture3D::glTexStorage3D(	GLenum target,
-                        GLsizei levels,
-                        GLenum internalformat)
-{
-    //based off of https://www.khronos.org/opengl/wiki/GLAPI/glTexStorage3D
-    
-    GLint tempWidth = width;
-    GLint tempHeight = height;
-    GLint tempDepth = depth;
-    
-    assert(target == GL_TEXTURE_3D || target == GL_PROXY_TEXTURE_3D && "update implementation of glTexStorate3D to support the texture target");
-
-    glError();
-    for (GLsizei i = 0; i < levels; i++)
-    {
-        GLuint dataType = GL_FLOAT;
-        glTexImage3D(target, i, internalformat, tempWidth, tempHeight, tempDepth, 0, pixelFormat, dataType, NULL);
-        tempWidth = std::max(1, (tempWidth / 2));
-        tempHeight = std::max(1, (tempHeight / 2));
-        tempDepth = std::max(1, (tempDepth / 2));
-    }
-    glError();
-}
-
-
-void Texture3D::glClearTexImage(	GLuint texture,
-                     GLuint levels,
-                     GLenum format,
-                     GLenum type,
-                     const void * data)
-{
-    //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
-
-    
-    GLint tempWidth = width;
-    GLint tempHeight = height;
-    GLint tempDepth = depth;
-    for (GLint i = 0; i < levels; i++)
-    {
-        
-        glTexSubImage3D(GL_TEXTURE_3D, i, 0, 0, 0, tempWidth, tempHeight, tempDepth, pixelFormat, dataType, data);
-        
-        tempWidth = std::max(1, (tempWidth >> 1));
-        tempHeight = std::max(1, (tempHeight >> 1));
-        tempDepth = std::max(1, (tempDepth >> 1));
-    }
-}
-
 #endif
 
 
@@ -76,63 +28,122 @@ Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _w
     SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
-void Texture3D::Clear()
-{
-	GLint previousBoundTextureID;
-	glGetIntegerv(GL_TEXTURE_BINDING_3D, &previousBoundTextureID);
-	glBindTexture(GL_TEXTURE_3D, textureID);
-    
-    glError();
-
-    //TODO: find a way to get rid of this clearData array
-    if(clearData.size() == 0)
-    {
-        clearData.resize(4 * width * height * depth * sizeof(GLfloat), .0f);
-    }
-    glClearTexImage(textureID, levels, GL_RGBA, GL_FLOAT, &clearData[0]);
-    glError();
-    glBindTexture(GL_TEXTURE_3D, previousBoundTextureID);
-}
-
 
 void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTexture)
 {
-    GLint previousTexture;
-    glGetIntegerv(GL_TEXTURE_BINDING_3D, &previousTexture);
-    
+
+    Texture3D::Commands commands (this);
+    commands.setWrapMode(wrap);
     glError();
-    if(textureID == INVALID_TEXTURE)
+    commands.setMinFiltering(minFilter);
+    commands.setMagFiltering(magFilter);
+
+    commands.allocateOnGPU();
+    glError();
+}
+
+
+Texture3D::~Texture3D()
+{
+    Texture3D::Commands commands(this);
+    commands.deleteTexture();
+    commands.end();
+    glError();
+}
+
+///COMMANDS
+Texture3D::Commands::Commands(Texture3D* _texture):
+Texture::Commands(_texture)
+{
+    texture = _texture;
+    if(texture->textureID == INVALID_TEXTURE)
     {
-        glGenTextures(1, &textureID);
+        glGenTextures(1, &texture->textureID);
     }
     
-    glBindTexture(GL_TEXTURE_3D, textureID);
+    glBindTexture(GL_TEXTURE_3D, texture->textureID);
+}
+
+#ifdef __APPLE__
+
+void Texture3D::Commands::glClearTexImage(GLuint texture_id, GLuint levels, GLenum format, GLenum type, const void *data)
+{
+    //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
+    
+    GLuint tempWidth = texture->width;
+    GLuint tempHeight = texture->height;
+    GLuint tempDepth = texture->depth;
+    
+    for (GLint i = 0; i < levels; i++)
+    {
+        
+        glTexSubImage3D(GL_TEXTURE_3D, i, 0, 0, 0, tempWidth, tempHeight, tempDepth, texture->pixelFormat, texture->dataType, data);
+        
+        tempWidth = std::max(1, (GLint)(tempWidth >> 1));
+        tempHeight = std::max(1, (GLint)(tempHeight >> 1));
+        tempDepth = std::max(1, (GLint)(tempDepth >> 1));
+    }
+}
+void Texture3D::Commands::glTexStorage3D(    GLenum target,
+                               GLsizei levels,
+                               GLenum internalformat)
+{
+    //based off of https://www.khronos.org/opengl/wiki/GLAPI/glTexStorage3D
+    
+    GLuint tempWidth = texture->width;
+    GLuint tempHeight = texture->height;
+    GLuint tempDepth = texture->depth;
+    
+    assert(target == GL_TEXTURE_3D || target == GL_PROXY_TEXTURE_3D && "update implementation of glTexStorate3D to support the texture target");
     
     glError();
-    // Parameter options.
+    for (GLsizei i = 0; i < levels; i++)
+    {
+        GLuint dataType = GL_FLOAT;
+        glTexImage3D(target, i, internalformat, tempWidth, tempHeight, tempDepth, 0, texture->pixelFormat, dataType, NULL);
+        tempWidth = std::max(1, (GLint)(tempWidth >> 1));
+        tempHeight = std::max(1, (GLint)(tempHeight >> 1));
+        tempDepth = std::max(1, (GLint)(tempDepth >> 1));
+    }
+    glError();
+}
+#endif
+
+void Texture3D::Commands::setWrapMode(GLuint wrap)
+{
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrap);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap);
-    
-    glError();
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glError();
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, magFilter);
-    glError();
+}
 
-    glTexStorage3D(GL_TEXTURE_3D, levels, pixelFormat);
+void Texture3D::Commands::setMinFiltering(GLuint filter)
+{
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, filter);
+}
+
+void Texture3D::Commands::setMagFiltering(GLuint filter)
+{
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, filter);
+}
+
+void Texture3D::Commands::allocateOnGPU()
+{
+    glTexStorage3D(GL_TEXTURE_3D, levels, texture->pixelFormat);
     GLint level = 0, border = 0;
-    glTexImage3D(GL_TEXTURE_3D, level, internalFormat, width, height, depth, border, pixelFormat, dataType, &textureBuffer[0]);
-    glError();
-    if (generateMipmaps) glGenerateMipmap(GL_TEXTURE_3D);
-    glBindTexture(GL_TEXTURE_3D, previousTexture);
-    
+    glTexImage3D(GL_TEXTURE_3D, level, texture->internalFormat, texture->width, texture->height, texture->depth, border, texture->pixelFormat, texture->dataType, &texture->textureBuffer[0]);
     glError();
 }
 
-void Texture3D::generateMipMap()
+void Texture3D::Commands::end()
+{
+    Texture::Commands::end();
+    glBindTexture(GL_TEXTURE_2D, previousTexture);
+}
+void Texture3D::Commands::generateMipmaps()
 {
     glGenerateMipmap(GL_TEXTURE_3D);
 }
-
-
+Texture3D::Commands::~Commands()
+{
+    end();
+}

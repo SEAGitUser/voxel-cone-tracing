@@ -73,7 +73,7 @@ public:
     inline void      getPreviousViewportDimensions();
     
     
-    void ClearRenderTextures();
+    virtual void ClearRenderTextures() = 0;
     virtual Texture* AddRenderTarget(bool depthTarget) = 0;
     
     virtual ~FBO();
@@ -107,6 +107,7 @@ GLint FBO::getColorBufferTextureName()
 
 Texture* FBO::getRenderTexture(GLuint index)
 {
+    assert(renderTextures.size() > index);
     return renderTextures[index];
 };
 

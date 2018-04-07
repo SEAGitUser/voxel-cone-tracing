@@ -21,14 +21,6 @@ GLint FBO::setupRenderTarget(Texture* target)
     return target->GetTextureID();
 }
 
-void FBO::ClearRenderTextures()
-{
-    for(Texture* texture : renderTextures)
-    {
-        texture->Clear();
-    }
-}
-
 FBO::~FBO()
 {
     for(Texture* texture: renderTextures)

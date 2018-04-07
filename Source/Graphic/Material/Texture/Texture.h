@@ -10,13 +10,46 @@
 
 #include "OpenGL_Includes.h"
 #include <string>
-
+#include "glm.hpp"
 #include "Graphic/Material/Resource.h"
 
 class Texture : public Resource
 {
-    
 public:
+    
+    class Commands
+    {
+    public:
+        Commands(Texture* texture);
+        virtual void setWrapMode(GLuint wrap) = 0;
+        virtual void clear(glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+        virtual void setMinFiltering(GLuint minFilter) = 0;
+        virtual void setMagFiltering(GLuint magFilter) = 0;
+        virtual void generateMipmaps() =0;
+        virtual void end();
+        virtual void allocateOnGPU() = 0;
+        
+        void deleteTexture();
+        virtual ~Commands();
+        
+    private:
+#if __APPLE__
+        //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implement it manually
+        virtual void glClearTexImage(    GLuint texture,
+                                     GLuint level,
+                                     GLenum format,
+                                     GLenum type,
+                                     const void * data) = 0;
+#endif
+        
+    protected:
+        GLint previousTexture;
+    private:
+
+        static GLuint activeTexture;
+        Texture* tex;
+        
+    };
     
     typedef struct Dimensions
     {
@@ -77,7 +110,6 @@ public:
     ///<summary> This saves the texture state in the GPU using the platform's graphics library based on arguments passed in setter functions and constructor arguments </summary>
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) = 0;
     
-    
     inline void SetWrap(GLuint _wrap){ wrap = _wrap; }
     inline void SetPixelFormat(GLuint _format){ pixelFormat = _format; }
     inline void SetWidth(GLuint _width){ width = _width;};
@@ -88,24 +120,11 @@ public:
     
     inline GLint  GetTextureID() const { return textureID; }
     
-    virtual void Clear() = 0;
-    virtual void generateMipMap() = 0;
-    
     ~Texture()
     {
         glDeleteTextures(1, &textureID);
     }
     
-protected:
-#if __APPLE__
-    //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implement it manually
-    virtual void glClearTexImage(	GLuint texture,
-                                 GLuint level,
-                                 GLenum format,
-                                 GLenum type,
-                                 const void * data) = 0;
-    
-#endif
 protected:
     
     static const GLuint INVALID_TEXTURE = 0;

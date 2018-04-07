@@ -62,6 +62,17 @@ Texture* FBO_2D::AddRenderTarget(bool depthTarget)
 
 }
 
+void FBO_2D::ClearRenderTextures()
+{
+    for(Texture* texture : renderTextures)
+    {
+        Texture2D* texture2D = static_cast<Texture2D*>(texture);
+        Texture2D::Commands commands(texture2D);
+        
+        commands.clear();
+    }
+}
+
 std::shared_ptr<FBO_2D>& FBO_2D::getDefault()
 {
     if(defaultFBO == nullptr)

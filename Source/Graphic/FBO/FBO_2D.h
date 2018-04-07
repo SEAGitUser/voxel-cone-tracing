@@ -43,9 +43,8 @@ public:
     
     virtual Texture* AddRenderTarget(bool depthTarget = false) override;
     inline Texture* getDepthTexture(){ return static_cast<Texture*>(depthTexture); }
+    void ClearRenderTextures() override;
     
-public:
-
 private:
     
     GLuint generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);

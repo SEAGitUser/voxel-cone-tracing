@@ -25,6 +25,7 @@ public:
     
     void ActivateAsTexture(const int shaderProgram, const std::string glSamplerName, const int textureUnit = GL_TEXTURE0);
 
+    void ClearRenderTextures() override;
     ~FBO_3D() override;
     
     virtual Texture* AddRenderTarget(bool depthTarget = false) override;

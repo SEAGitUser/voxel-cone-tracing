@@ -69,6 +69,16 @@ Texture* FBO_3D::AddRenderTarget(bool depthTarget)
     return target;
 }
 
+void FBO_3D::ClearRenderTextures()
+{
+    for(Texture* texture : renderTextures)
+    {
+        Texture3D* texture2D = static_cast<Texture3D*>(texture);
+        Texture3D::Commands commands(texture2D);
+        
+        commands.clear();
+    }
+}
 FBO_3D::~FBO_3D()
 {
     glDeleteFramebuffers(1, &frameBuffer);

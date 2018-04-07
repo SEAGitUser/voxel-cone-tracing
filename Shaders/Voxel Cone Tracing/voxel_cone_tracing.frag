@@ -315,6 +315,12 @@ vec3 directLight(vec3 viewDirection){
 	return direct;
 }
 
+
+float ambientOcclusion()
+{
+    
+    return 0;
+}
 void main(){
 	color = vec4(0, 0, 0, 1);
     
