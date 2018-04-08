@@ -13,7 +13,8 @@ GLuint Texture::Commands::activeTexture = 0;
 Texture::Commands::Commands(Texture* texture):
 previousTexture(0)
 {
-    assert(activeTexture == 0 && "You cannot have two active textures at the same time, please call Texture::end() on current command before creating a new command");
+    assert(activeTexture == 0 && "You cannot have two active textures at the same time, please call Texture::end() on active \
+           command before creating a new command");
     activeTexture = texture->textureID;
     tex = texture;
 }

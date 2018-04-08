@@ -33,6 +33,11 @@ public:
         virtual ~Commands();
         
     private:
+        //in certain situations, copying a Commands objects may trigger the destructor of the class which might deactivate the texture
+        //in OpenGL, I don't think the sequence in which the copy constructor and destructor is guaranteed, in short, try not to copy
+        //these classes
+        Commands( Commands& rhs);
+        
 #if __APPLE__
         //this function is implemented  on opengl 4.4 and above, macs run on 4.1 so we'll implement it manually
         virtual void glClearTexImage(    GLuint texture,

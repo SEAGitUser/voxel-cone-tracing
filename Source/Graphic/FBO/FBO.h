@@ -15,7 +15,7 @@ public:
     {
     public:
         Commands(FBO* fbo);
-        ~Commands();
+        virtual ~Commands();
         
         void setViewport(GLint width, GLint height);
         void getPreviousViewportSize();
@@ -32,13 +32,14 @@ public:
         void setDetphClearValue(GLfloat value = 0.0f);
         void clearRenderTarget();
         void end();
-        
-        
+        void setupTargetsForRendering(bool threeDimensions = false);
         
     protected:
         static FBO* fbo;
-    private:
+        void init(FBO* fbo);
         Commands();
+        
+    private:
         
         //if you make these public, you'll have to think about changing the code in destructor of this class as well.
         //this is because rvalues get destroyed immidiately, causing things to malfunction
@@ -47,6 +48,8 @@ public:
         
         GLint previousViewportWidth;
         GLint previousViewportHeight;
+        GLint previousFBO;
+
     };
     
     
@@ -74,7 +77,7 @@ public:
     
     
     virtual void ClearRenderTextures() = 0;
-    virtual Texture* AddRenderTarget(bool depthTarget) = 0;
+    virtual Texture* addRenderTarget() = 0;
     
     virtual ~FBO();
     
@@ -85,9 +88,8 @@ protected:
     static const GLuint DEFAULT_FRAMEBUFFER = 0;
     
     //keep the variable frameBuffer protected as it guarantees that the only classes that can create
-    //FBO::Commands objects are the FBO family of classes.  It also forces the clients to call Activate() on
-    //the FBO object.  This will make sure the FBO is active on the OpenGL side before opengl commands against this FBO
-    //are ran.
+    //FBO::Commands objects are the FBO family of classes.  This should guarantee that when you start
+    //executing commands against a frame buffer, the frame buffer is active.
     GLuint  frameBuffer, textureColorBuffer, attachment, rbo;
     
     std::vector<Texture*> renderTextures;

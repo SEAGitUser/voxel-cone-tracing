@@ -33,7 +33,7 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     voxelFBO = std::make_shared<FBO_3D>(dimensions, properties);
     
     //normal render target
-    voxelFBO->AddRenderTarget();
+    voxelFBO->addRenderTarget();
 
     orthoCamera = OrthographicCamera(3.5f, 3.5f, 3.5f);
     
@@ -55,23 +55,24 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
 
 void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties)
 {
-    bool depthTexture = true;
+    //bool depthTexture = true;
     depthFBOs[0] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[0]->AddRenderTarget(); //normal render target
-    depthFBOs[0]->AddRenderTarget(depthTexture);
-    
+    depthFBOs[0]->addRenderTarget(); //normal render target
+    //depthFBOs[0]->AddRenderTarget(depthTexture);
+    depthFBOs[0]->addDepthTarget();
     depthFBOs[1] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[1]->AddRenderTarget();
-    depthFBOs[1]->AddRenderTarget(depthTexture);
+    depthFBOs[1]->addRenderTarget();
+    //depthFBOs[1]->AddRenderTarget(depthTexture);
+    depthFBOs[1]->addDepthTarget();
     
     depthFBOs[2] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[2]->AddRenderTarget();
-    depthFBOs[2]->AddRenderTarget(depthTexture);
-    
+    depthFBOs[2]->addRenderTarget();
+    //depthFBOs[2]->AddRenderTarget(depthTexture);
+    depthFBOs[2]->addDepthTarget();
     depthFBOs[3] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[3]->AddRenderTarget();
-    depthFBOs[3]->AddRenderTarget(depthTexture);
-    
+    depthFBOs[3]->addRenderTarget();
+    //depthFBOs[3]->AddRenderTarget(depthTexture);
+    depthFBOs[3]->addDepthTarget();
 }
 
 void VoxelizeRT::voxelize(Scene& renderScene)
@@ -197,6 +198,12 @@ void VoxelizeRT::fillUpVoxelTexture(Scene& renderScene)
 
 void VoxelizeRT::Render(Scene& renderScene)
 {
+    
+    //for opengl 4.2  (Macs support up to  4.1) this code isn't necessary because you have access to extensions that allow you to
+    //to do this much easier in a shader, check out imageLoad/imageStore glsl functions.  Also, check out
+    //this article which explains how to voxelize a scene using an octree:
+    //https://www.seas.upenn.edu/~pcozzi/OpenGLInsights/OpenGLInsights-SparseVoxelization.pdf (chapter 22)
+    
     voxelFBO->ClearRenderTextures();
     
     //from y plane

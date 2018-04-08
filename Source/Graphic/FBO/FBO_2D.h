@@ -23,13 +23,18 @@ class FBO_2D : public FBO
 {
 public:
     
-    //todo: create a commands class for FBO2D
     class Commands : public FBO::Commands
     {
     public:
-
+        Commands(FBO_2D* fbo);
+        void allocateOnGPU(Texture::Dimensions &dimensions);
+        void addDepthTarget(GLint targetID);
+        void deleteFrameBuffer();
+        
+        ~Commands() override;
+        
     private:
-    
+        FBO_2D* fbo2d;
     };
     
     
@@ -41,7 +46,8 @@ public:
     FBO_2D(Texture::Dimensions &dimensions,  Texture::Properties &textureProperties);
     ~FBO_2D() override;
     
-    virtual Texture* AddRenderTarget(bool depthTarget = false) override;
+    virtual Texture* addRenderTarget() override;
+    virtual Texture* addDepthTarget();
     inline Texture* getDepthTexture(){ return static_cast<Texture*>(depthTexture); }
     void ClearRenderTextures() override;
     

@@ -35,14 +35,29 @@ FBO* FBO::Commands::fbo = nullptr;
 
 FBO::Commands::Commands(FBO* _fbo):
 previousViewportWidth(0),
-previousViewportHeight(0)
+previousViewportHeight(0),
+previousFBO(0)
+{
+    init(_fbo);
+}
+
+
+FBO::Commands::Commands():
+previousViewportWidth(0),
+previousViewportHeight(0),
+previousFBO(0)
+{
+    //glBindBuffer(GL_FRAMEBUFFER, 0);
+}
+
+void FBO::Commands::init(FBO* _fbo)
 {
     assert(fbo == nullptr && "You must call FBO::Commands::end() to indicate end of frame rendering before starting a new frame commands");
     fbo = _fbo;
     glBindFramebuffer(GL_FRAMEBUFFER, fbo->frameBuffer);
-    
+
     GLuint colorAttachment[50];
-    
+
     if(fbo->renderTextures.size() > 0)
     {
         for(GLint i = 0; i < fbo->renderTextures.size(); ++i)
@@ -53,15 +68,13 @@ previousViewportHeight(0)
         glDrawBuffers(fbo->renderTextures.size(), colorAttachment);
     }
 
-    assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
     getPreviousViewportSize();
-    
+
     fbo->dimensions.width = fbo->dimensions.width == 0 ? previousViewportWidth : fbo->dimensions.width;
     fbo->dimensions.height= fbo->dimensions.height == 0 ? previousViewportHeight : fbo->dimensions.height;
-    
+
     setViewport(fbo->dimensions.width, fbo->dimensions.height);
 }
-
 void FBO::Commands::setViewport(GLint width, GLint height)
 {
      glViewport(0, 0, width, height);
@@ -123,7 +136,7 @@ void FBO::Commands::backFaceCulling(bool _value)
 
 void FBO::Commands::end()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, DEFAULT_FRAMEBUFFER);
+    glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
     setViewport(previousViewportWidth, previousViewportHeight);
     fbo = nullptr;
 }
@@ -149,11 +162,31 @@ void FBO::Commands::blendSrcAlphaOneMinusSrcAlpha()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void FBO::Commands::setupTargetsForRendering(bool threeDimensions)
+{
+    GLuint colorAttachment[50];
+    
+    GLuint dimensions = threeDimensions ? GL_TEXTURE_3D :GL_TEXTURE_2D ;
+    if(fbo->renderTextures.size() > 0)
+    {
+        GLint size = fbo->renderTextures.size();
+        
+        for(GLint i = 0; i < size; ++i)
+        {
+            colorAttachment[i] = GL_COLOR_ATTACHMENT0 + i;
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)(i), dimensions, fbo->renderTextures[i]->GetTextureID(), 0);
+        }
+        
+        glError();
+        glDrawBuffers(fbo->renderTextures.size(), colorAttachment);
+    }
+}
+
 FBO::Commands::~Commands()
 {
-    assert(fbo == nullptr &&
-           "You must call end() to signal end of frame rendering before FBO::Commands object gets destroyed");
+    end();
 }
+
 
 
 

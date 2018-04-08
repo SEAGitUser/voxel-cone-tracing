@@ -20,7 +20,7 @@ FBO_3D::FBO_3D(Texture::Dimensions &_dimensions, Texture::Properties &_propertie
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     glError();
-    AddRenderTarget();
+    addRenderTarget();
     glError();
     GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     assert( e == GL_FRAMEBUFFER_COMPLETE);
@@ -30,13 +30,12 @@ FBO_3D::FBO_3D(Texture::Dimensions &_dimensions, Texture::Properties &_propertie
 }
 
 
-Texture* FBO_3D::AddRenderTarget(bool depthTarget)
+Texture* FBO_3D::addRenderTarget()
 {
     GLint previousFrameBuffer = 0;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
     
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    assert(depthTarget == false && "depth target not supported for 3D FBOs");
     assert(renderTextures.size() < MAX_RENDER_TARGETS);
     
     Texture3D *target = new Texture3D();
