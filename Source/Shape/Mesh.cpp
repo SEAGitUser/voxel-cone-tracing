@@ -7,7 +7,6 @@
 #include "Mesh.h"
 #include "Scene.h"
 #include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
-#include "Graphic/Material/MaterialStore.h"
 
 
 Mesh::Mesh()

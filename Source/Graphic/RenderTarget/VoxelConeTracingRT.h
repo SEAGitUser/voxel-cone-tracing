@@ -10,6 +10,7 @@
 
 #include "RenderTarget.h"
 
+class VoxelizationConeTracingMaterial;
 
 class VoxelConeTracingRT : public RenderTarget
 {
@@ -21,4 +22,6 @@ public:
     ~VoxelConeTracingRT() override;
     
 private:
+    
+    std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;
 };

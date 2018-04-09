@@ -20,7 +20,7 @@ public:
     
 public:
     void render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* material);
-    virtual void render(Scene& scene);
+
     void render();
     
     inline void diffuseColor(glm::vec3 _diffuseColor){ defaultVoxProperties.diffuseColor = _diffuseColor;}
@@ -44,13 +44,13 @@ public:
 public:
     Transform transform;
     bool active = true;
+    std::vector<VoxProperties> meshProperties;
     
 protected:
-    std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;
     void loadMesh(std::vector<tinyobj::shape_t>& shapes );
     
 protected:
-    std::vector<VoxProperties> meshProperties;
+
     
     
 };

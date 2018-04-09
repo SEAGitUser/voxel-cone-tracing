@@ -24,6 +24,7 @@
 #include "Graphic/Material/Voxelization/VoxelVisualizationMaterial.h"
 #include "Graphic/RenderTarget/VoxelizeRT.h"
 #include "Graphic/RenderTarget/VoxelVisualizationRT.h"
+#include "Graphic/RenderTarget/VoxelConeTracingRT.h"
 #include "Graphic/FBO/FBO_2D.h"
 #include "Graphic/FBO/FBO_3D.h"
 #include "Texture3D.h"
@@ -40,6 +41,8 @@ void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
 
     Texture3D* texture = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(1) );
     voxVisualizationRT = new VoxelVisualizationRT(texture);
+    
+    voxConeTracingRT = new VoxelConeTracingRT();
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)
@@ -51,7 +54,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
         voxVisualizationRT->Render(renderingScene);
 		break;
 	case RenderingMode::VOXEL_CONE_TRACING:
-		renderScene(renderingScene, viewportWidth, viewportHeight);
+        voxConeTracingRT->Render(renderingScene);
 		break;
     case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_0:
         voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 0);
@@ -69,46 +72,6 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
     
 }
 
-// ----------------------
-// Scene rendering.
-// ----------------------
-void Graphics::renderScene(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight)
-{
-    
-    
-	// Fetch references.
-	auto & camera = *renderingScene.renderingCamera;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-    GLint frameBufferWidth, frameBufferHeight;
-    GLFWwindow * window = Application::getInstance().currentWindow;
-    glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
-    
-    FBO::Commands commands(FBO_2D::getDefault().get());
-    
-    commands.setViewport(frameBufferWidth, frameBufferHeight);
-    commands.setClearColor();
-    commands.clearRenderTarget();
-    commands.enableDepthTest(true);
-    commands.backFaceCulling(true);
-    commands.blendSrcAlphaOneMinusSrcAlpha();
-    
-	renderQueue(renderingScene, true);
-    
-    commands.end();
-    
-}
-
-
-void Graphics::renderQueue(Scene& renderingScene, bool uploadMaterialSettings) const
-{
-    RenderingQueue &renderingQueue = renderingScene.renderers;
-    
-    for(Shape* shape : renderingScene.shapes)
-    {
-        shape->render(renderingScene);
-    }
-}
 
 Graphics::~Graphics()
 {
@@ -120,4 +83,5 @@ Graphics::~Graphics()
     delete voxelTexture;
     delete voxelizeRenderTarget;
     delete voxVisualizationRT;
+    delete voxConeTracingRT;
 }

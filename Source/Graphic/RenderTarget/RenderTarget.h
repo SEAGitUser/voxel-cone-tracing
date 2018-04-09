@@ -20,7 +20,7 @@ class RenderTarget {
 public:
     RenderTarget(){};
     
-    virtual void Render( Scene& renderScene );
+    virtual void Render( Scene& renderScene ) = 0;
     
     virtual ~RenderTarget(){};
 

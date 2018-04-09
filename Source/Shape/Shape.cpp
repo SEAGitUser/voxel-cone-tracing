@@ -12,13 +12,11 @@
 
 Shape::Shape()
 {
-    voxConeTracing = MaterialStore::GET_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing");
 }
 
 Shape::Shape(std::vector<tinyobj::shape_t>& shapes)
 {
     loadMesh(shapes);
-    voxConeTracing = MaterialStore::GET_MAT<VoxelizationConeTracingMaterial>("voxelization-cone-tracing");
 }
 
 void Shape::loadMesh(std::vector<tinyobj::shape_t> &shapes)
@@ -39,22 +37,6 @@ void Shape::render()
     }
 }
 
-
-void Shape::render(Scene& scene)
-{
-    glm::mat4 trans = transform.getTransformMatrix();
-    voxConeTracing->SetModelMatrix(trans);
-
-    int i = 0;
-    for(Mesh* mesh : meshes)
-    {
-        VoxProperties prop = i < meshProperties.size()  ? meshProperties[i] : defaultVoxProperties;
-        voxConeTracing->uploadVoxParametersToGPU(transform, scene, prop);
-        mesh->render(scene, transform);
-        ++i;
-    }
-    
-}
 void Shape::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* _material)
 {
     if(active)

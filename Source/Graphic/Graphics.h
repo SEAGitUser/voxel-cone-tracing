@@ -22,6 +22,7 @@ class FBO_3D;
 class Texture3D;
 class VoxelizeRT;
 class VoxelVisualizationRT;
+class VoxelConeTracingRT;
 
 
 /// <summary> A graphical context used for rendering. </summary>
@@ -49,32 +50,17 @@ public:
     
 	~Graphics();
 private:
- 
-	// ----------------
-	// Rendering.
-	// ----------------
-	void renderScene(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight);
-    void renderQueue(Scene & renderingScene,  bool uploadMaterialSettings = false) const;
-    void renderVoxelize(Scene& renderScene);
-    
-	void uploadGlobalConstants(const GLuint program, unsigned int viewportWidth, unsigned int viewportHeight) const;
-	void uploadCamera(Camera & camera, const GLuint program);
-	void uploadLighting(Scene & renderingScene, const GLuint glProgram) const;
-	void uploadRenderingSettings(const GLuint glProgram) const;
 
 	// ----------------
 	// Voxel cone tracing.
 	// ----------------
-    VoxelizationConeTracingMaterial * voxelConeTracingMaterial;
-
-    VoxelizationMaterial * voxelizationMaterial;
+    VoxelizationConeTracingMaterial * voxelConeTracingMaterial = nullptr;
+    VoxelizationMaterial * voxelizationMaterial = nullptr;
     
     //TODO: turn these into smart pointers
 
     Material * worldPositionMaterial;
     VoxelVisualizationMaterial * voxelVisualizationMaterial;
-	// --- Screen quad. ---
-	//MeshRenderer * quadMeshRenderer;
 	Mesh quad;
 
 	Shape * cubeShape;
@@ -82,4 +68,5 @@ private:
     
     VoxelizeRT* voxelizeRenderTarget = nullptr;
     VoxelVisualizationRT* voxVisualizationRT = nullptr;
+    VoxelConeTracingRT* voxConeTracingRT = nullptr;
 };
