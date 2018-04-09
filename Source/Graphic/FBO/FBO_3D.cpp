@@ -13,33 +13,15 @@
 FBO_3D::FBO_3D(Texture::Dimensions &_dimensions, Texture::Properties &_properties)
 : FBO(_dimensions, _properties)
 {
-    
-    GLint previousFrameBuffer;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
-    
-    glGenFramebuffers(1, &frameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    glError();
     addRenderTarget();
-    glError();
-    GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    assert( e == GL_FRAMEBUFFER_COMPLETE);
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
-
 }
 
 
 Texture* FBO_3D::addRenderTarget()
 {
-    GLint previousFrameBuffer = 0;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFrameBuffer);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     assert(renderTextures.size() < MAX_RENDER_TARGETS);
-    
+    FBO_3D::Commands commands(this);
     Texture3D *target = new Texture3D();
-    
     target->SetWrap(textureProperties.wrap);
     
     target->SetWidth(dimensions.width);
@@ -50,21 +32,16 @@ Texture* FBO_3D::addRenderTarget()
     target->SetPixelFormat(textureProperties.pixelFormat);
     target->SetDataType(textureProperties.dataFormat);
     target->SetInternalFormat(textureProperties.internalFormat);
-    
     target->SaveTextureState();
+    
+    renderTextures.push_back(target);
 
-    glError();
-    glBindTexture(GL_TEXTURE_3D, target->GetTextureID());
-    glError();
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (unsigned int)renderTextures.size(), target->GetTextureID(), 0);
+    bool threeDimensions = true;
+    commands.setupTargetsForRendering(threeDimensions);
+
     GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     glError();
     assert(e == GL_FRAMEBUFFER_COMPLETE);
-    glError();
-    
-    renderTextures.push_back(target);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, previousFrameBuffer);
     return target;
 }
 
@@ -82,3 +59,24 @@ FBO_3D::~FBO_3D()
 {
     glDeleteFramebuffers(1, &frameBuffer);
 }
+
+//Commands
+
+FBO_3D::Commands::Commands(FBO_3D* _fbo3d):
+fbo3d(nullptr),
+FBO::Commands()
+{
+    fbo3d = _fbo3d;
+    if(fbo3d->frameBuffer == 0)
+    {
+        glGenFramebuffers(1, &fbo3d->frameBuffer);
+    }
+    init(_fbo3d);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo3d->frameBuffer);
+}
+
+FBO_3D::Commands::~Commands()
+{
+    
+}
+

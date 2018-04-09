@@ -20,6 +20,15 @@ class Texture3D;
 class FBO_3D : public FBO
 {
 public:
+    class Commands : public FBO::Commands
+    {
+    public:
+        Commands(FBO_3D* fbo3d);
+        ~Commands() override;
+    private:
+        FBO_3D* fbo3d;
+    };
+    
     
     FBO_3D( Texture::Dimensions &dimensions, Texture::Properties &properties);
     

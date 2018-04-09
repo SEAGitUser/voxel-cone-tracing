@@ -9,12 +9,7 @@ FBO_2D::FBO_2D(Texture::Dimensions &dimensions, Texture::Properties &textureProp
 : FBO(dimensions, textureProperties)
 {
     assert(dimensions.width != 0 && dimensions.height != 0);
-    FBO_2D::Commands commands(this);
-    //todo: are you always going to need a render target?
-    glError();
-    commands.end();
     addRenderTarget();
-
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }
 
@@ -101,8 +96,6 @@ void FBO_2D::Commands::allocateOnGPU(Texture::Dimensions& dimensions)
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, dimensions.width, dimensions.height); // Use a single rbo for both depth and stencil buffer.
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo2d->rbo);
 }
-
-
 
 void FBO_2D::Commands::addDepthTarget(GLint targetID)
 {

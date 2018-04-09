@@ -60,7 +60,8 @@ public:
     {
     }
     
-    FBO(Texture::Dimensions &_dimensions, Texture::Properties &_textureProperties)
+    FBO(Texture::Dimensions &_dimensions, Texture::Properties &_textureProperties):
+    frameBuffer(DEFAULT_FRAMEBUFFER)
     {
         dimensions = _dimensions;
         textureProperties = _textureProperties;
@@ -70,7 +71,6 @@ public:
     
     inline          GLint getFrameBufferID();
     inline const    Texture::Dimensions& getDimensions();
-    inline          GLint getColorBufferTextureName();
     inline          Texture* getRenderTexture(GLuint index);
     inline Commands& getCommands();
     inline void      getPreviousViewportDimensions();
@@ -90,7 +90,7 @@ protected:
     //keep the variable frameBuffer protected as it guarantees that the only classes that can create
     //FBO::Commands objects are the FBO family of classes.  This should guarantee that when you start
     //executing commands against a frame buffer, the frame buffer is active.
-    GLuint  frameBuffer, textureColorBuffer, attachment, rbo;
+    GLuint  frameBuffer, rbo;
     
     std::vector<Texture*> renderTextures;
     GLint setupRenderTarget(Texture* target);
@@ -102,10 +102,6 @@ const Texture::Dimensions& FBO::getDimensions()
     return dimensions;
 }
 
-GLint FBO::getColorBufferTextureName()
-{
-    return textureColorBuffer;
-}
 
 Texture* FBO::getRenderTexture(GLuint index)
 {

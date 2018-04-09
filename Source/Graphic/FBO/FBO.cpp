@@ -174,7 +174,16 @@ void FBO::Commands::setupTargetsForRendering(bool threeDimensions)
         for(GLint i = 0; i < size; ++i)
         {
             colorAttachment[i] = GL_COLOR_ATTACHMENT0 + i;
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)(i), dimensions, fbo->renderTextures[i]->GetTextureID(), 0);
+            if(!threeDimensions)
+            {
+                glBindTexture(GL_TEXTURE_2D, fbo->renderTextures[i]->GetTextureID());
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)(i), GL_TEXTURE_2D, fbo->renderTextures[i]->GetTextureID(), 0);
+            }
+            else
+            {
+                glBindTexture(GL_TEXTURE_3D, fbo->renderTextures[i]->GetTextureID());
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)i, fbo->renderTextures[i]->GetTextureID(), 0);
+            }
         }
         
         glError();
