@@ -39,9 +39,7 @@ Texture* FBO_3D::addRenderTarget()
     bool threeDimensions = true;
     commands.setupTargetsForRendering(threeDimensions);
 
-    GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    glError();
-    assert(e == GL_FRAMEBUFFER_COMPLETE);
+    assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
     return target;
 }
 

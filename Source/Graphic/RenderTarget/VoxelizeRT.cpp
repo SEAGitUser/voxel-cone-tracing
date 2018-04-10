@@ -20,6 +20,9 @@
 #include "Shape.h"
 #include <stdio.h>
 
+
+const float VoxelizeRT::VOXELS_WORLD_SCALE = 3.5f;
+
 VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth )
 {
     Texture::Dimensions dimensions;
@@ -35,14 +38,14 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     //normal render target
     voxelFBO->addRenderTarget();
 
-    orthoCamera = OrthographicCamera(3.5f, 3.5f, 3.5f);
+    orthoCamera = OrthographicCamera(VOXELS_WORLD_SCALE, VOXELS_WORLD_SCALE, VOXELS_WORLD_SCALE);
     
     orthoCamera.position = glm::vec3(0.0f, .0f, 1.5f);
     orthoCamera.forward =  glm::vec3(0.0f, 0.0f, -1.0f);
     orthoCamera.up = glm::vec3(0.0f, 1.0f, 0.0f);
     orthoCamera.updateViewMatrix();
     
-    zPlaneProjection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
+    voxViewProjection = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
     
     positionsMaterial = MaterialStore::GET_MAT<Material>("world-position");
     points = std::make_shared<Points>(dimensions.width * dimensions.height );
@@ -105,7 +108,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         
         glm::mat4 toWorldSpace = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
         toWorldSpace = glm::inverse(toWorldSpace);
-        settings["zPlaneProjection"] = zPlaneProjection;
+        settings["zPlaneProjection"] = voxViewProjection;
         settings["toWorldSpace"] = toWorldSpace;
         settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
         

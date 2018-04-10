@@ -30,7 +30,9 @@ public:
     virtual ~VoxelizeRT();
     
     inline std::shared_ptr<FBO_3D> getFBO(){ return voxelFBO;};
+    inline glm::mat4 getVoxViewProjection(){ return voxViewProjection; }
     
+    static const float VOXELS_WORLD_SCALE;
     
 private:
     void fillUpVoxelTexture( Scene& renderScene);
@@ -64,7 +66,7 @@ private:
     OrthographicCamera orthoCamera;
     ScreenQuand screenQuad;
     std::shared_ptr<FBO_3D> voxelFBO;
-    glm::mat4 zPlaneProjection;
+    glm::mat4 voxViewProjection;
     
     std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

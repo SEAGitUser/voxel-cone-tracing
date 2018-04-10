@@ -39,10 +39,12 @@ void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
     GLfloat const worldCubeDimensions = 10.0f;
     voxelizeRenderTarget = new VoxelizeRT(worldCubeDimensions, worldCubeDimensions,worldCubeDimensions);
 
-    Texture3D* texture = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(1) );
-    voxVisualizationRT = new VoxelVisualizationRT(texture);
+    Texture3D* albedoVoxels = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(0));
+    Texture3D* normalVoxels = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(1));
+    voxVisualizationRT = new VoxelVisualizationRT(albedoVoxels);
     
-    voxConeTracingRT = new VoxelConeTracingRT();
+    glm::mat4 voxViewProj = voxelizeRenderTarget->getVoxViewProjection();
+    voxConeTracingRT = new VoxelConeTracingRT(albedoVoxels, normalVoxels, voxViewProj);
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)

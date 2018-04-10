@@ -21,14 +21,14 @@ MaterialStore::MaterialStore()
     ShaderSharedPtr voxelizationVert = AddShader("Voxelization/voxelization.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr voxelVisualizationVert = AddShader("Voxelization/Visualization/voxel_visualization.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr wordPositionVert = AddShader("Positions/world_position.vert", Shader::ShaderType::VERTEX);
-    ShaderSharedPtr voxelConeTractingVert = AddShader("Voxel Cone Tracing/voxel_cone_tracing.vert", Shader::ShaderType::VERTEX);
+    ShaderSharedPtr voxelConeTractingVert = AddShader("Voxel Cone Tracing/voxelConeTracing.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr textureDisplayVert = AddShader("Texture Display/textureDisplay.vert", Shader::ShaderType::VERTEX);
     ShaderSharedPtr depthPeelingVert = AddShader("Depth Peeling/depthPeeling.vert", Shader::ShaderType::VERTEX);
 
     ShaderSharedPtr voxelizationGeom = AddShader("Voxelization/voxelization.geom", Shader::ShaderType::GEOMETRY);
     
     ShaderSharedPtr voxelizationFrag = AddShader("Voxelization/voxelization.frag", Shader::ShaderType::FRAGMENT);
-    ShaderSharedPtr voxelConeTracingFrag = AddShader("Voxel Cone Tracing/voxel_cone_tracing.frag", Shader::ShaderType::FRAGMENT);
+    ShaderSharedPtr voxelConeTracingFrag = AddShader("Voxel Cone Tracing/voxelConeTracing.frag", Shader::ShaderType::FRAGMENT);
     ShaderSharedPtr voxelVisualizationFrag = AddShader("Voxelization/Visualization/voxel_visualization.frag", Shader::ShaderType::FRAGMENT);
     ShaderSharedPtr worldPositionFrag = AddShader("Positions/world_position.frag", Shader::ShaderType::FRAGMENT);
     ShaderSharedPtr textureDisplayFrag = AddShader("Texture Display/textureDisplay.frag", Shader::ShaderType::FRAGMENT);

@@ -19,12 +19,9 @@ public:
     
     VoxelizationConeTracingMaterial( const GLchar *_name, const ShaderSharedPtr& voxelVert, const ShaderSharedPtr& voxelFrag);
     
-    void uploadVoxParametersToGPU(Transform& worldTransform, Scene& scene, VoxProperties& properties);
     
 private:
     
-    using VoxelizationMaterial::uploadGPUParameters;
-    using Material::uploadGPUParameters;
     ShaderParameter::ShaderParamsGroup group;
         
 };

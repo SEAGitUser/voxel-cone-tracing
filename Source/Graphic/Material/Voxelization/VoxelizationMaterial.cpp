@@ -22,17 +22,17 @@ Material(_name, vertexShader, fragmentShader, geometryShader)
 {
 }
 
-void VoxelizationMaterial::GetVoxSettings(ShaderParameter::ShaderParamsGroup &settings, VoxProperties &voxProperties)
-{
-    settings["material.diffuseColor"] = voxProperties.diffuseColor;
-    settings["material.specularColor"] = voxProperties.specularColor;
-    settings["material.emissivity"] = voxProperties.emissivity;
-    settings["material.specularReflectivity"] = voxProperties.specularReflectivity;
-    settings["material.specularDiffusion"] = voxProperties.specularDiffusion;
-    settings["material.transparency"] = voxProperties.transparency;
-    settings["material.refractiveIndex"] = voxProperties.refractiveIndex;
-    settings["material.diffuseReflectivity"] = voxProperties.diffuseReflectivity;
-}
+//void VoxelizationMaterial::GetVoxSettings(ShaderParameter::ShaderParamsGroup &settings, VoxProperties &voxProperties)
+//{
+//    settings["material.diffuseColor"] = voxProperties.diffuseColor;
+//    settings["material.specularColor"] = voxProperties.specularColor;
+//    settings["material.emissivity"] = voxProperties.emissivity;
+//    settings["material.specularReflectivity"] = voxProperties.specularReflectivity;
+//    settings["material.specularDiffusion"] = voxProperties.specularDiffusion;
+//    settings["material.transparency"] = voxProperties.transparency;
+//    settings["material.refractiveIndex"] = voxProperties.refractiveIndex;
+//    settings["material.diffuseReflectivity"] = voxProperties.diffuseReflectivity;
+//}
 
 void VoxelizationMaterial::uploadGPUVoxParams(Transform& worldTransform, Scene& scene,
                                             VoxProperties& voxProperties, OrthographicCamera& orthoCamera)

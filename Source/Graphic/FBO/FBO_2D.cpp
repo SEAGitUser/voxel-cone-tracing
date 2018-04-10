@@ -87,8 +87,6 @@ FBO::Commands()
     
     glBindFramebuffer(GL_FRAMEBUFFER, fbo2d->frameBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, fbo2d->rbo);
-    
-    
 }
 
 void FBO_2D::Commands::allocateOnGPU(Texture::Dimensions& dimensions)

@@ -20,10 +20,3 @@ VoxelizationMaterial(_name, voxelVert, voxelFrag, nullptr)
 {
 }
 
-
-void VoxelizationConeTracingMaterial::uploadVoxParametersToGPU(Transform& worldTransform, Scene& scene, VoxProperties& voxProperties)
-{
-    GetVoxSettings(group, voxProperties);
-    Material::uploadGPUParameters(group, scene);
-}
-
