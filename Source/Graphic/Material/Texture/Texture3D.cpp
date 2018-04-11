@@ -39,6 +39,11 @@ void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTextur
     commands.setMagFiltering(magFilter);
 
     commands.allocateOnGPU();
+    
+    if(generateMipmaps)
+    {
+        commands.enableMipMaps();
+    }
     glError();
 }
 
@@ -143,6 +148,12 @@ void Texture3D::Commands::generateMipmaps()
 {
     glGenerateMipmap(GL_TEXTURE_3D);
 }
+
+void Texture3D::Commands::enableMipMaps()
+{
+    glTexParameteri(GL_TEXTURE_3D, GL_GENERATE_MIPMAP, GL_TRUE);
+}
+
 Texture3D::Commands::~Commands()
 {
     end();

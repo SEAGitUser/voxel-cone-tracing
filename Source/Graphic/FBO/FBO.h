@@ -74,10 +74,11 @@ public:
     inline          Texture* getRenderTexture(GLuint index);
     inline Commands& getCommands();
     inline void      getPreviousViewportDimensions();
-    
+    inline int      getNumOfRenderTargets();
     
     virtual void ClearRenderTextures() = 0;
     virtual Texture* addRenderTarget() = 0;
+    
     
     virtual ~FBO();
     
@@ -102,6 +103,10 @@ const Texture::Dimensions& FBO::getDimensions()
     return dimensions;
 }
 
+int FBO::getNumOfRenderTargets()
+{
+    return renderTextures.size();
+}
 
 Texture* FBO::getRenderTexture(GLuint index)
 {

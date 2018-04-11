@@ -19,6 +19,7 @@ public:
         void setMinFiltering(GLuint filter) override;
         void setMagFiltering(GLuint filter) override;
         void generateMipmaps() override;
+        void enableMipMaps() override;
         void allocateOnGPU() override;
         void end() override;
         void clear(glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));

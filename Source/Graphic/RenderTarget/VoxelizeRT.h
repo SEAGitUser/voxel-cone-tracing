@@ -13,6 +13,7 @@
 #include "Texture2D.h"
 #include "ScreenQuad.h"
 #include <array>
+#include "ComputeShader.h"
 
 class OrthographicCamera;
 class Material;
@@ -38,6 +39,7 @@ private:
     void fillUpVoxelTexture( Scene& renderScene);
     void voxelize(Scene& renderScene);
     void generateDepthPeelingMaps(Scene& renderScene);
+    void initDepthBuffer(int index, Texture::Dimensions &dimensions, Texture::Properties& properties);
     
     void initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
     
@@ -67,6 +69,7 @@ private:
     ScreenQuand screenQuad;
     std::shared_ptr<FBO_3D> voxelFBO;
     glm::mat4 voxViewProjection;
+    ComputeShader downSample;
     
     std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

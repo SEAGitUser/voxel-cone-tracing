@@ -56,7 +56,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	buddha->transform.updateTransformMatrix();
 	buddhaRenderer->tweakable = true;
 	buddhaRenderer->name = "Buddha";
-    buddhaRenderer->enabled = false;
+    buddhaRenderer->enabled = true;
 
     buddha->defaultVoxProperties = VoxProperties::White();
 

@@ -27,6 +27,7 @@ public:
         virtual void setMagFiltering(GLuint magFilter) = 0;
         virtual void generateMipmaps() =0;
         virtual void end();
+        virtual void enableMipMaps() = 0;
         virtual void allocateOnGPU() = 0;
         
         void deleteTexture();

@@ -23,7 +23,8 @@ void Texture2D::SaveTextureState( GLboolean generateMipmaps, GLboolean loadTextu
     glError();
     
     if (generateMipmaps) {
-        commands.generateMipmaps();
+        //commands.generateMipmaps();
+        commands.enableMipMaps();
     }
     
     commands.allocateOnGPU();
@@ -107,6 +108,11 @@ void Texture2D::Commands::setMinFiltering(GLuint filter)
 void Texture2D::Commands::generateMipmaps()
 {
     glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+void Texture2D::Commands::enableMipMaps()
+{
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 }
 
 void Texture2D::Commands::allocateOnGPU()

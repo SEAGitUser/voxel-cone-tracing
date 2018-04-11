@@ -18,6 +18,7 @@ public:
         void setWrapMode(GLuint mode) override;
         void setMinFiltering(GLuint filter) override;
         void setMagFiltering(GLuint filter) override;
+        void enableMipMaps() override;
         void generateMipmaps() override;
         void allocateOnGPU() override;
         void end() override;

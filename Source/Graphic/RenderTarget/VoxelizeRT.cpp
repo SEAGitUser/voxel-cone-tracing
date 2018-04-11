@@ -23,7 +23,8 @@
 
 const float VoxelizeRT::VOXELS_WORLD_SCALE = 3.5f;
 
-VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth )
+VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth ):
+downSample("downsize.cl", "downsample")
 {
     Texture::Dimensions dimensions;
     dimensions.width = dimensions.height = dimensions.depth = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
@@ -56,23 +57,34 @@ VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLflo
     initDepthFrameBuffers(dimensions, properties);
 }
 
+void VoxelizeRT::initDepthBuffer(int index, Texture::Dimensions &dimensions, Texture::Properties& properties)
+{
+    depthFBOs[index] = std::make_shared<FBO_2D>(dimensions, properties);
+    depthFBOs[index]->addRenderTarget(); //normal render target
+    depthFBOs[index]->addDepthTarget();
+}
+
 void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties)
 {
-    depthFBOs[0] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[0]->addRenderTarget(); //normal render target
-    depthFBOs[0]->addDepthTarget();
-    
-    depthFBOs[1] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[1]->addRenderTarget();
-    depthFBOs[1]->addDepthTarget();
-    
-    depthFBOs[2] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[2]->addRenderTarget();
-    depthFBOs[2]->addDepthTarget();
-    
-    depthFBOs[3] = std::make_shared<FBO_2D>(dimensions, properties);
-    depthFBOs[3]->addRenderTarget();
-    depthFBOs[3]->addDepthTarget();
+    initDepthBuffer(0, dimensions, properties);
+    initDepthBuffer(1, dimensions, properties);
+    initDepthBuffer(2, dimensions, properties);
+    initDepthBuffer(3, dimensions, properties);
+//    depthFBOs[0] = std::make_shared<FBO_2D>(dimensions, properties);
+//    depthFBOs[0]->addRenderTarget(); //normal render target
+//    depthFBOs[0]->addDepthTarget();
+//
+//    depthFBOs[1] = std::make_shared<FBO_2D>(dimensions, properties);
+//    depthFBOs[1]->addRenderTarget();
+//    depthFBOs[1]->addDepthTarget();
+//
+//    depthFBOs[2] = std::make_shared<FBO_2D>(dimensions, properties);
+//    depthFBOs[2]->addRenderTarget();
+//    depthFBOs[2]->addDepthTarget();
+//
+//    depthFBOs[3] = std::make_shared<FBO_2D>(dimensions, properties);
+//    depthFBOs[3]->addRenderTarget();
+//    depthFBOs[3]->addDepthTarget();
 }
 
 void VoxelizeRT::voxelize(Scene& renderScene)

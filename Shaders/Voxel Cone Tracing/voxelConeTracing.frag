@@ -63,4 +63,5 @@ void main()
     vec4 albedo = texture(albedoVoxels, voxelSpacePos.xyz);
     color = vec4(albedo.xyz, 1.0f);
     
+    
 }

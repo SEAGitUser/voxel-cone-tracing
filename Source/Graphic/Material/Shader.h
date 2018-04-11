@@ -7,7 +7,8 @@
 
 
 /// <summary> Represents a shader program. </summary>
-class Shader : public Resource{
+class Shader : public Resource
+{
 public:
     
 	enum class ShaderType {
@@ -40,9 +41,6 @@ protected:
 	std::string path;
     
     GLint shaderID;
-
-
-
 
 private:
 	std::string rawShader;
