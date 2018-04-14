@@ -26,11 +26,16 @@ public:
     
 private:
     void getVoxParameters(ShaderParameter::ShaderParamsGroup &settings, VoxProperties &voxProperties);
+    void setLightingParameters(ShaderParameter::ShaderParamsGroup& settings, std::vector<PointLight> &lights);
+    void setCameraParameters(ShaderParameter::ShaderParamsGroup& params, Camera &camera);
+    void uploadRenderingSettings(ShaderParameter::ShaderParamsGroup& params, std::shared_ptr<VoxelizationConeTracingMaterial> &material );
 private:
     
     Texture3D* albedoVoxels = nullptr;
     Texture3D* normalVoxels = nullptr;
 
+    std::string lightPosition ;
+    std::string lightColor;
     glm::mat4 voxViewProjection;
     
     std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;

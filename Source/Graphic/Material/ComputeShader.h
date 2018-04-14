@@ -12,24 +12,31 @@
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
 #include "Resource.h"
-
+#include <unordered_map>
 
 class ComputeShader : public Resource
 {
 public:
     
     ComputeShader(const char* path, const char* methodName);
+    
+    void setArgument(int index, int value);
+    void setArgument(int index, float value );
+    void setImageArgument(int index, int value);
+    void run();
+    
+    
     ~ComputeShader();
+
+    static const std::string computeShaderResourcePath;
+
+protected:
+    
+    void aquireResources();
     
     inline const dispatch_queue_t getDispatchQueue(){ return dispatch_queue; };
     inline const CGLShareGroupObj getShareGroupObj(){ return shareGroup; };
     
-    int fileToString(const char *file_name, char **result_string, size_t *string_len);
-    
-    static const std::string computeShaderResourcePath;
-    
-    
-protected:
     cl_kernel setupComputeKernel(const char* const shaderFilePath, const char* const methodName, const char* const options = nullptr);
     cl_kernel assembleProgram(const char* source, const char* methodName, const char* options = nullptr);
     bool init();
@@ -54,4 +61,6 @@ protected:
     cl_command_queue command_queue;
     size_t workgroup_size;
     cl_kernel kernel;
+    
+    std::unordered_map<int, cl_image> images;
 };

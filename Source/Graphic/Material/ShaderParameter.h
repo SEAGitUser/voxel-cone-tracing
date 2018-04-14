@@ -28,6 +28,7 @@ public:
         VEC2,
         FLOAT,
         INT,
+        BOOLEAN,
         UINT,
         SAMPLER_2D,
         SAMPLER_3D,
@@ -67,6 +68,7 @@ private
         Sampler3D   sampler3D;
         glm::mat4 mat4;
         PointLight pointLight;
+        bool     boolean;
         
         SettingValue()
         {
@@ -151,6 +153,12 @@ public:
         return value.pointLight;
     }
     
+    inline bool getBoolValue()
+    {
+        assert(type == Type::BOOLEAN);
+        return value.boolean;
+    }
+    
     inline ShaderParameter& operator=(const glm::mat4 &value)
     {
         type = Type::MAT4;
@@ -219,6 +227,13 @@ public:
     {
         type = Type::POINT_LIGHT;
         this->value.pointLight = light;
+        return *this;
+    }
+    
+    inline ShaderParameter& operator=(const bool value)
+    {
+        type = Type::BOOLEAN;
+        this->value.boolean = value;
         return *this;
     }
 

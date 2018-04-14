@@ -70,21 +70,6 @@ void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture:
     initDepthBuffer(1, dimensions, properties);
     initDepthBuffer(2, dimensions, properties);
     initDepthBuffer(3, dimensions, properties);
-//    depthFBOs[0] = std::make_shared<FBO_2D>(dimensions, properties);
-//    depthFBOs[0]->addRenderTarget(); //normal render target
-//    depthFBOs[0]->addDepthTarget();
-//
-//    depthFBOs[1] = std::make_shared<FBO_2D>(dimensions, properties);
-//    depthFBOs[1]->addRenderTarget();
-//    depthFBOs[1]->addDepthTarget();
-//
-//    depthFBOs[2] = std::make_shared<FBO_2D>(dimensions, properties);
-//    depthFBOs[2]->addRenderTarget();
-//    depthFBOs[2]->addDepthTarget();
-//
-//    depthFBOs[3] = std::make_shared<FBO_2D>(dimensions, properties);
-//    depthFBOs[3]->addRenderTarget();
-//    depthFBOs[3]->addDepthTarget();
 }
 
 void VoxelizeRT::voxelize(Scene& renderScene)
@@ -124,7 +109,9 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         settings["toWorldSpace"] = toWorldSpace;
         settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
         
-        voxMaterial->uploadGPUParameters(settings, renderScene);
+        Material::Commands commands(voxMaterial.get());
+        
+        commands.uploadParameters(settings);
         
         Points::Commands pointsCommands (points.get());
         pointsCommands.render();
@@ -151,7 +138,9 @@ void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
     
     group["displayTexture"] = sampler;
     
-    textureDisplayMat->uploadGPUParameters(group);
+    Material::Commands matCommands(textureDisplayMat.get());
+    matCommands.uploadParameters(group);
+    
     ScreenQuand::Commands commands(&screenQuad);
     
     commands.render();
@@ -171,6 +160,7 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
     sampler.texture = firstRender ? &dummyTexture : static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
     params["depthTexture"] = sampler;
     
+    Material::Commands depthPeelingCommands(depthPeelingMat.get());
     for(GLint i = 0; i < depthFBOs.size(); ++i)
     {
         params["firstRender"]  = firstRender ? 1 : 0;
@@ -189,9 +179,11 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
             GLint i = 0;
             for(Mesh* mesh : shape->meshes)
             {
+                glError();
                 params["diffuseColor"] = i < numberOfProperties ? shape->getMeshProperties()[i].diffuseColor : shape->defaultVoxProperties.diffuseColor;
-                depthPeelingMat->uploadGPUParameters(params, renderScene);
-                mesh->render();
+                
+                mesh->render(params, depthPeelingCommands);
+                glError();
                 ++i;
             }
         }
@@ -244,6 +236,7 @@ void VoxelizeRT::Render(Scene& renderScene)
     fillUpVoxelTexture(renderScene);
     
 
+    //TODO: RE-WRITE THIS TO USE THE COMPUTE SHADER IN ORDER TO DOWNSIZE THE TEXTURE
     Texture3D* albedo = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
     Texture3D::Commands commands(albedo);
     commands.generateMipmaps();

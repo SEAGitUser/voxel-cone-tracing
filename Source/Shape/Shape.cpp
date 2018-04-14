@@ -29,20 +29,16 @@ void Shape::loadMesh(std::vector<tinyobj::shape_t> &shapes)
     }
 }
 
-void Shape::render()
-{
-    for(Mesh* mesh : meshes)
-    {
-        mesh->render();
-    }
-}
-
-void Shape::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* _material)
+void Shape::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material::Commands& commands)
 {
     if(active)
     {
-        _material->uploadGPUParameters(group, scene);
-        render();
+        commands.uploadParameters(group);
+        for(Mesh* mesh: meshes)
+        {
+            Mesh::Commands meshCommands(mesh);
+            meshCommands.render();
+        }
     }
 }
 

@@ -19,9 +19,7 @@ public:
 	std::vector<Mesh*> meshes;
     
 public:
-    void render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* material);
-
-    void render();
+    void render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material::Commands& commands);
     
     inline void diffuseColor(glm::vec3 _diffuseColor){ defaultVoxProperties.diffuseColor = _diffuseColor;}
     inline void specularColor(glm::vec3 _specularColor){ defaultVoxProperties.specularColor = _specularColor;}

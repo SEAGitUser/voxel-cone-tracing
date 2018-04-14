@@ -33,9 +33,6 @@
          contextName = "Primitive::Commands::Commands(Primitive*):Primitive.cpp">
       </ContextState>
       <ContextState
-         contextName = "Primitive::Commands::uploadGPUVertexData():Primitive.cpp">
-      </ContextState>
-      <ContextState
          contextName = "FBO::Commands::Commands(FBO*):FBO.cpp">
       </ContextState>
       <ContextState
@@ -45,6 +42,9 @@
                value = "fbo">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Primitive::Commands::uploadGPUVertexData():Primitive.cpp">
       </ContextState>
       <ContextState
          contextName = "::__cxx_global_var_init():Shader.cpp">
@@ -78,10 +78,10 @@
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
-               value = "shaderResourcePath">
+               value = "Shader::shaderResourcePath ">
             </PersistentString>
             <PersistentString
-               value = "Shader::shaderResourcePath ">
+               value = "shaderResourcePath">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -90,6 +90,14 @@
       </ContextState>
       <ContextState
          contextName = "Mesh::Commands::render():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Material::Commands::setValue(ShaderParameter&amp;, char const*):Material.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "name[0]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "VoxelizeRT::VoxelizeRT():VoxelizeRT.cpp">
@@ -105,6 +113,14 @@
       </ContextState>
       <ContextState
          contextName = "Mesh::Commands::uploadIndexDataToGPU():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "VoxelConeTracingRT::setLightingParameters(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;, std::__1::vector&lt;PointLight, std::__1::allocator&lt;PointLight&gt; &gt;&amp;):VoxelConeTracingRT.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "lightPosition.length()">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "ShaderParameter::operator=(glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;):ShaderParameter.h">

@@ -20,8 +20,8 @@ public:
     };
     
     void render(Scene& renderScene, Transform &transform);
-    void render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* _material);
-    void render();
+    void render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material::Commands* commands);
+    void render(ShaderParameter::ShaderParamsGroup& group, Material::Commands& commands);
     
     Mesh(const tinyobj::shape_t& shape);
     Mesh();
@@ -35,10 +35,12 @@ public:
     // Used for (shared) rendering.  TODO: look into what he means by this
 	int program;
     
+protected:
+    void render();
+    
 private:
     void setupMeshRenderer();
     Mesh(Mesh& mesh);
-
 private:
 	static GLuint idCounter;
 };

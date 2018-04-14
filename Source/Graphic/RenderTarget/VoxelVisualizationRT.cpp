@@ -55,7 +55,8 @@ void VoxelVisualizationRT::Render( Scene& scene )
     commands.enableBlend(true);
 
     std::shared_ptr<Material> material =  std::static_pointer_cast<Material>(voxelVisualizationMaterial);
-    cubeShape->render(scene, group, material.get());
+    Material::Commands materialCommands(voxelVisualizationMaterial.get());
+    cubeShape->render(scene, group, materialCommands);
     commands.enableDepthTest(true);
     commands.end();
 }

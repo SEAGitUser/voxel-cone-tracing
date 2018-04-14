@@ -23,6 +23,8 @@ VoxelConeTracingRT::VoxelConeTracingRT(Texture3D* _albedoVoxels, Texture3D* _nor
     albedoVoxels = _albedoVoxels;
     normalVoxels = _normalVoxels;
     voxViewProjection = _voxViewProjection;
+    lightPosition.reserve(50);
+    lightColor.reserve(50);
 }
 
 
@@ -49,20 +51,25 @@ void VoxelConeTracingRT::Render(Scene& scene)
     params["normalVoxels"] = normalSampler;
     params["voxViewProjection"] = voxViewProjection;
     
+    Material::Commands matCommands(voxConeTracing.get());
+    
     for(Shape* shape: scene.shapes)
     {
         size_t numberOfProperties = shape->getMeshProperties().size();
         glm::mat4 trans = shape->transform.getTransformMatrix();
-        voxConeTracing->SetModelMatrix(trans);
         
+        Material::Commands commands(voxConeTracing.get());
+        params[Material::Commands::MODEL_MATRIX_NAME] = trans;
+        
+        setLightingParameters(params, scene.pointLights);
+        setCameraParameters(params, *scene.renderingCamera);
+        uploadRenderingSettings(params, voxConeTracing);
         GLint i = 0;
         for(Mesh* mesh : shape->meshes)
         {
             VoxProperties prop = i < shape->meshProperties.size()  ? shape->meshProperties[i] : shape->defaultVoxProperties;
             getVoxParameters(params, prop);
-            voxConeTracing->uploadGPUParameters(params, scene);
-            
-            mesh->render();
+            mesh->render(params, matCommands);
             ++i;
         }
     }
@@ -81,6 +88,40 @@ void VoxelConeTracingRT::getVoxParameters(ShaderParameter::ShaderParamsGroup &se
     settings["material.refractiveIndex"] = voxProperties.refractiveIndex;
     settings["material.diffuseReflectivity"] = voxProperties.diffuseReflectivity;
     
+}
+
+void VoxelConeTracingRT::setLightingParameters(ShaderParameter::ShaderParamsGroup& settings, std::vector<PointLight> &lights)
+{
+    GLuint index = 0;
+    for(PointLight &light : lights)
+    {
+        lightPosition = ("pointLights[" + std::to_string(index) + "].position");
+        lightColor = ("pointLights[" + std::to_string(index) + "].color");
+        
+        settings[lightPosition.c_str()] = light.position;
+        settings[lightColor.c_str()] = light.color;
+        ++index;
+    }
+    
+    settings[Material::Commands::NUMBER_OF_LIGHTS_NAME] = (unsigned int)lights.size();
+
+}
+
+void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup& params, Camera &camera)
+{
+    params[Material::Commands::VIEW_MATRIX_NAME] = camera.viewMatrix;
+
+    params[Material::Commands::PROJECTION_MATRIX_NAME] = camera.getProjectionMatrix();
+
+    params[Material::Commands::CAMERA_POSITION_NAME] = camera.position;
+}
+
+void VoxelConeTracingRT::uploadRenderingSettings(ShaderParameter::ShaderParamsGroup& params, std::shared_ptr<VoxelizationConeTracingMaterial> &material )
+{
+    params["settings.shadows"] = material->shadows;
+    params["settings.indirectDiffuseLight"] = material->indirectDiffuseLight;
+    params["settings.directLight"] = material->directLight;
+    params["settings.indirectSpecularLight"] = material->indirectSpecularLight;
 }
 
 VoxelConeTracingRT::~VoxelConeTracingRT()

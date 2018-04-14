@@ -77,19 +77,35 @@ void Mesh::render()
 
 void Mesh::render(Scene& renderScene, Transform &transform)
 {
-    
-    std::vector<PointLight>& lights = renderScene.pointLights;
-    Camera& camera = *renderScene.renderingCamera;
-    
-    render();
+    if(enabled)
+    {
+        std::vector<PointLight>& lights = renderScene.pointLights;
+        Camera& camera = *renderScene.renderingCamera;
+        
+        render();
+    }
 }
 
-void Mesh::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material* _material)
+void Mesh::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material::Commands* commands)
 {
-    _material->uploadGPUParameters(group, scene);
-    Mesh::Commands commands(this);
-    commands.render();
+    if(enabled)
+    {
+        //commands->uploadParameters(group, scene);
+        commands->uploadParameters(group);
+        Mesh::Commands meshCommands(this);
+        meshCommands.render();
+    }
 }
+void Mesh::render(ShaderParameter::ShaderParamsGroup& group, Material::Commands& commands)
+{
+    if(enabled)
+    {
+        commands.uploadParameters(group);
+        Mesh::Commands meshCommands(this);
+        meshCommands.render();
+    }
+}
+
 
 Mesh::~Mesh()
 {

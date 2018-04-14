@@ -47,7 +47,8 @@ void VoxelizationMaterial::uploadGPUVoxParams(Transform& worldTransform, Scene& 
     assert(lights.size() == 1 && "only one light supported at the moment");
     settings["pointLight"] = lights[0];
     
-    uploadGPUParameters(settings, scene);
+    Material::Commands commands(this);
+    commands.uploadParameters(settings);
     
     glError();
 }

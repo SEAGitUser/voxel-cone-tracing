@@ -76,14 +76,23 @@ bool ComputeShader::init()
     platforms_id = (cl_platform_id*)malloc(platform_count*sizeof(cl_platform_id));
     clGetPlatformIDs(platform_count, platforms_id, NULL);
     
-    
-    cl_int error = clGetDeviceIDs(platforms_id[0], CL_DEVICE_TYPE_CPU, 1, &device_id, &device_count);
+    cl_device_id device_id_temp[10];
+    cl_int error = clGetDeviceIDs(platforms_id[0], CL_DEVICE_TYPE_CPU, 10, &device_id_temp[0], &device_count);
     
     free(platforms_id);
     assert(error == CL_SUCCESS);
     
+    int computeUnits = 0;
+    for(int i = 0; i < device_count; ++i)
+    {
+        int currentUnits = printDeviceInfo(device_id_temp[i]);
+        if(computeUnits < currentUnits)
+        {
+            device_id = device_id_temp[i];
+            computeUnits = currentUnits;
+        }
+    }
     
-    printDeviceInfo(device_id);
     cl_context_properties properties[] = {
         CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE,
         (cl_context_properties)shareGroup, 0
@@ -240,6 +249,31 @@ cl_kernel ComputeShader::setupComputeKernel(const char *const _path, const char 
     buildProgram(rawShader.c_str(), options);
     
     return assembleProgram(rawShader.c_str(), methodName, options);
+}
+
+
+//to implement
+void ComputeShader::setArgument(int index, int value)
+{
+    
+}
+void ComputeShader::setArgument(int index, float value )
+{
+    
+}
+void ComputeShader::setImageArgument(int index, int value)
+{
+    
+}
+
+void ComputeShader::aquireResources()
+{
+    
+}
+
+void ComputeShader::run()
+{
+    
 }
 
 
