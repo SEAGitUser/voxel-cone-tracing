@@ -34,9 +34,10 @@ private:
     Texture3D* albedoVoxels = nullptr;
     Texture3D* normalVoxels = nullptr;
 
-    std::string lightPosition ;
-    std::string lightColor;
     glm::mat4 voxViewProjection;
+    
+    static const int MAX_ARGUMENTS = 80;
+    char arguments[MAX_ARGUMENTS ][MAX_ARGUMENTS ];
     
     std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;
 };

@@ -16,7 +16,8 @@ std::vector<GLfloat> Texture3D::clearData = std::vector<GLfloat>();
 
 Texture3D::Texture3D():
     Texture(),
-    depth(0.0f)
+    depth(0.0f),
+    internalFormat(GL_RGBA32F)
 {
 
 }
@@ -133,6 +134,7 @@ void Texture3D::Commands::setMagFiltering(GLuint filter)
 
 void Texture3D::Commands::allocateOnGPU()
 {
+    glError();
     glTexStorage3D(GL_TEXTURE_3D, levels, texture->pixelFormat);
     GLint level = 0, border = 0;
     glTexImage3D(GL_TEXTURE_3D, level, texture->internalFormat, texture->width, texture->height, texture->depth, border, texture->pixelFormat, texture->dataType, &texture->textureBuffer[0]);

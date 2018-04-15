@@ -24,7 +24,8 @@
 const float VoxelizeRT::VOXELS_WORLD_SCALE = 3.5f;
 
 VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth ):
-downSample("downsize.cl", "downsample")
+downSample("downsize.cl", "downsample",
+           glm::vec3(VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS, VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS, VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS), 3)
 {
     Texture::Dimensions dimensions;
     dimensions.width = dimensions.height = dimensions.depth = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
@@ -54,7 +55,47 @@ downSample("downsize.cl", "downsample")
     textureDisplayMat = MaterialStore::GET_MAT<Material>("texture-display");
     depthPeelingMat = MaterialStore::GET_MAT<Material>("depth-peeling");
     
-    initDepthFrameBuffers(dimensions, properties);
+    initDepthPeelingBuffers(dimensions, properties);
+    initMipMaps(properties);
+}
+
+void VoxelizeRT::initMipMaps(Texture::Properties &properties)
+{
+    GLuint downDimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+    assert( downDimensions % 2 == 0);
+    downDimensions = downDimensions >> 1;
+    while(downDimensions)
+    {
+        std::shared_ptr<Texture3D>  albedoTexture = std::make_shared<Texture3D>();
+        std::shared_ptr<Texture3D>  normalTexture = std::make_shared<Texture3D>();
+        
+        albedoTexture->SetWidth(downDimensions);
+        albedoTexture->SetHeight(downDimensions);
+        albedoTexture->SetDepth(downDimensions);
+        albedoTexture->SetWrap(properties.wrap);
+        albedoTexture->SetMinFilter(properties.minFilter);
+        albedoTexture->SetMagFilter(properties.magFilter);
+        albedoTexture->SetPixelFormat(properties.pixelFormat);
+        albedoTexture->SetDataType(properties.dataFormat);
+        albedoTexture->SetInternalFormat(properties.internalFormat);
+        
+        normalTexture->SetWidth(downDimensions);
+        normalTexture->SetHeight(downDimensions);
+        normalTexture->SetDepth(downDimensions);
+        normalTexture->SetWrap(properties.wrap);
+        normalTexture->SetMinFilter(properties.minFilter);
+        normalTexture->SetMagFilter(properties.magFilter);
+        normalTexture->SetPixelFormat(properties.pixelFormat);
+        normalTexture->SetDataType(properties.dataFormat);
+        normalTexture->SetInternalFormat(properties.internalFormat);
+        
+        albedoTexture->SaveTextureState();
+        normalTexture->SaveTextureState();
+        albedoMipMaps.push_back(albedoTexture);
+        normalMipMaps.push_back(normalTexture);
+    
+        downDimensions = downDimensions >> 1;
+    }
 }
 
 void VoxelizeRT::initDepthBuffer(int index, Texture::Dimensions &dimensions, Texture::Properties& properties)
@@ -64,7 +105,7 @@ void VoxelizeRT::initDepthBuffer(int index, Texture::Dimensions &dimensions, Tex
     depthFBOs[index]->addDepthTarget();
 }
 
-void VoxelizeRT::initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties)
+void VoxelizeRT::initDepthPeelingBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties)
 {
     initDepthBuffer(0, dimensions, properties);
     initDepthBuffer(1, dimensions, properties);
@@ -235,21 +276,31 @@ void VoxelizeRT::Render(Scene& renderScene)
 
     fillUpVoxelTexture(renderScene);
     
-
-    //TODO: RE-WRITE THIS TO USE THE COMPUTE SHADER IN ORDER TO DOWNSIZE THE TEXTURE
-    Texture3D* albedo = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
-    Texture3D::Commands commands(albedo);
-    commands.generateMipmaps();
-    commands.end();
+    Texture3D* currentAlbedoTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
+    Texture3D* currentNormalTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(1));
     
-    Texture3D* normals = static_cast<Texture3D*>(voxelFBO->getRenderTexture(1));
-    Texture3D::Commands commands2(normals);
-    commands.generateMipmaps();
-    commands.end();
-    glError();
-    ticksSinceLastVoxelization = 0;
-    voxelizationQueued = false;
-
+    GLuint dimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+    int i = 0;
+    for( std::shared_ptr<Texture3D> albedoMipMap : albedoMipMaps)
+    {
+        dimensions = dimensions >> 1;
+        if( dimensions == 0) break;
+        
+        std::shared_ptr<Texture3D> normalMipMap = normalMipMaps[i];
+        GLint error = downSample.setReadWriteImage3DArgument(0, currentAlbedoTexture->GetTextureID());
+        error |= downSample.setReadWriteImage3DArgument(1, currentNormalTexture->GetTextureID());
+        
+        error |= downSample.setReadWriteImage3DArgument(2, albedoMipMap->GetTextureID());
+        assert(error == CL_SUCCESS);
+        error |= downSample.setReadWriteImage3DArgument(3, normalMipMap->GetTextureID());
+        assert(error == CL_SUCCESS);
+        downSample.setGlobalWorkSize(glm::vec3(float(dimensions), float(dimensions), float(dimensions)));
+        downSample.run();
+        currentAlbedoTexture = albedoMipMap.get();
+        currentNormalTexture = normalMipMap.get();
+        ++i;
+    }
+    
     glError();
 }
 

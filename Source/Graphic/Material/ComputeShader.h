@@ -11,6 +11,7 @@
 #include <OpenCL/OpenCL.h>
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
+#include "glm.hpp"
 #include "Resource.h"
 #include <unordered_map>
 
@@ -18,11 +19,19 @@ class ComputeShader : public Resource
 {
 public:
     
-    ComputeShader(const char* path, const char* methodName);
+    ComputeShader(const char* path, const char* methodName, glm::vec3 globalWorkSize, GLuint dimensions);
     
     void setArgument(int index, int value);
     void setArgument(int index, float value );
-    void setImageArgument(int index, int value);
+    GLint setWriteImage3DArgument(int index, int textureID);
+    GLint setReadImage3DArgument(int index, int textureID);
+    GLint setReadWriteImage3DArgument(int index, int textureID);
+    
+    void setWriteImage2DArgument(int index, int textureID);
+    void setReadImage2DArgument(int index, int textureID);
+    void setReadWriteImage2DArgument(int index, int textureID);
+    
+    void setGlobalWorkSize(glm::vec3 globalSize){ globalWorkSize[0] = globalSize.x; globalWorkSize[1] = globalSize.y; globalWorkSize[2] = globalSize.z; }
     void run();
     
     
@@ -33,6 +42,8 @@ public:
 protected:
     
     void aquireResources();
+    void releaseResources();
+    void addTexture(GLint textureID, GLint textureType);
     
     inline const dispatch_queue_t getDispatchQueue(){ return dispatch_queue; };
     inline const CGLShareGroupObj getShareGroupObj(){ return shareGroup; };
@@ -40,7 +51,7 @@ protected:
     cl_kernel setupComputeKernel(const char* const shaderFilePath, const char* const methodName, const char* const options = nullptr);
     cl_kernel assembleProgram(const char* source, const char* methodName, const char* options = nullptr);
     bool init();
-    
+    bool checkError(cl_int errMsg);
     
 private:
     
@@ -62,5 +73,15 @@ protected:
     size_t workgroup_size;
     cl_kernel kernel;
     
+    size_t globalWorkSize[3] = {0,0,0};
+    
+    static const int MAX_IMAGES = 9;
+    cl_image image_objects[MAX_IMAGES];
+    
+    GLuint dimensions;
+    
+    const char* methodName = nullptr;
+    
     std::unordered_map<int, cl_image> images;
+    std::unordered_map<int, cl_image> argument_images;
 };

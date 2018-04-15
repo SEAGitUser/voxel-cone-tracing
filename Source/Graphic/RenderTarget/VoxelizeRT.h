@@ -20,6 +20,7 @@ class Material;
 class Points;
 class VoxelizationMaterial;
 class FBO_3D;
+class Texture3D;
 
 class VoxelizeRT : public RenderTarget
 {
@@ -41,7 +42,8 @@ private:
     void generateDepthPeelingMaps(Scene& renderScene);
     void initDepthBuffer(int index, Texture::Dimensions &dimensions, Texture::Properties& properties);
     
-    void initDepthFrameBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
+    void initMipMaps(Texture::Properties& properties);
+    void initDepthPeelingBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
     
 private:
     bool automaticallyRegenerateMipmap = true;
@@ -70,6 +72,9 @@ private:
     std::shared_ptr<FBO_3D> voxelFBO;
     glm::mat4 voxViewProjection;
     ComputeShader downSample;
+    
+    std::vector< std::shared_ptr<Texture3D> > albedoMipMaps;
+    std::vector< std::shared_ptr<Texture3D> > normalMipMaps;
     
     std::array<std::shared_ptr<FBO_2D>, 4> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

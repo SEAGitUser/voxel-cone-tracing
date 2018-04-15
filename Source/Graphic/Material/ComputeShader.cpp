@@ -20,10 +20,16 @@ const std::string ComputeShader::computeShaderResourcePath =  "/Compute Shaders/
 
 static const char* SEPARATOR = "----------------\n";
 
-ComputeShader::ComputeShader(const char* path, const char* methodName):
+ComputeShader::ComputeShader(const char* path, const char* methodName,
+                             glm::vec3 _globalWorkSize, GLuint _dimensions):
 dispatch_queue(0),
 device_id(0)
 {
+    globalWorkSize[0] = _globalWorkSize.x;
+    globalWorkSize[1] = _globalWorkSize.y;
+    globalWorkSize[2] = _globalWorkSize.z;
+    dimensions = _dimensions;
+    
     init();
     kernel = setupComputeKernel(path, methodName);
 }
@@ -191,7 +197,6 @@ void ComputeShader::buildProgram(const char *source, const char* options)
         char buffer[20000];
         
         std::cout << SEPARATOR;
-        //printf("Error: Failed to build program executable!\n");
         std::cerr << "Error: Failed to build program executable!\n";
         clGetProgramBuildInfo(program, device_id, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
         std::cout << SEPARATOR;
@@ -224,10 +229,10 @@ cl_kernel ComputeShader::assembleProgram(const char* source, const char* methodN
     return kernel;
 }
 
-cl_kernel ComputeShader::setupComputeKernel(const char *const _path, const char *const methodName, const char* const options)
+cl_kernel ComputeShader::setupComputeKernel(const char *const _path, const char *const _methodName, const char* const options)
 {
     std::string rawShader;
-    
+    methodName = _methodName;
     std::string path = Resource::resourceRoot + ComputeShader::computeShaderResourcePath + _path;
 
     std::ifstream fileStream(path, std::ios::in);
@@ -252,28 +257,102 @@ cl_kernel ComputeShader::setupComputeKernel(const char *const _path, const char 
 }
 
 
-//to implement
 void ComputeShader::setArgument(int index, int value)
 {
-    
+    GLint error = clSetKernelArg(kernel, index, sizeof(value), &value);
+    if(error != CL_SUCCESS)
+        std::cout << "parameter " << index << " for method " << methodName << " has failed" << std::endl;
 }
+
 void ComputeShader::setArgument(int index, float value )
 {
-    
+    GLint error = clSetKernelArg(kernel, index, sizeof(value), &value);
+    if(error != CL_SUCCESS)
+        std::cout << "parameter " << index << " for method " << methodName << " has failed" << std::endl;
 }
-void ComputeShader::setImageArgument(int index, int value)
+
+void ComputeShader::addTexture(GLint textureID, GLint textureType)
 {
+    if(images.count(textureID) == 0)
+    {
+        GLint error;
+        cl_image image = clCreateFromGLTexture(context, textureType, GL_TEXTURE_3D, 0, textureID, &error);
+        assert(error == CL_SUCCESS);
+        images[textureID] = image;
+    }
+}
+GLint ComputeShader::setReadImage3DArgument(int index, int textureID)
+{
+
+    addTexture(textureID, CL_MEM_READ_ONLY);
     
+    argument_images[index] =images[textureID];
+    GLint error = clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
+    return error;
+}
+
+GLint ComputeShader::setWriteImage3DArgument(int index, int textureID)
+{
+    addTexture(textureID, CL_MEM_WRITE_ONLY);
+    argument_images[index] = images[textureID];
+    GLint error = clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
+    return error;
+}
+
+GLint ComputeShader::setReadWriteImage3DArgument(int index, int textureID)
+{
+    addTexture(textureID, CL_MEM_READ_WRITE);
+    argument_images[index] = images[textureID];
+    GLint error =  clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
+    return error;
 }
 
 void ComputeShader::aquireResources()
 {
+    static int MAX_IMAGES = 9;
+    cl_image image_objects[MAX_IMAGES];
+    assert(MAX_IMAGES > argument_images.size());
     
+    int i = 0;
+    for( std::pair<int, cl_image> element : argument_images)
+    {
+        image_objects[i] = element.second;
+        ++i;
+    }
+    cl_event opengl_get_completion;
+    GLint err = clEnqueueAcquireGLObjects(command_queue, i, image_objects, 0,0, &opengl_get_completion);
+    clWaitForEvents(1, &opengl_get_completion);
+    assert(err == CL_SUCCESS);
+}
+
+void ComputeShader::releaseResources()
+{
+    int i = 0;
+    for( std::pair<int, cl_image> element : argument_images)
+    {
+        image_objects[i] = element.second;
+        ++i;
+    }
+    cl_event opengl_get_completion;
+    int size = (int)argument_images.size();
+    GLint err = clEnqueueReleaseGLObjects(command_queue, size, image_objects, 0,0, &opengl_get_completion);
+    clWaitForEvents(1, &opengl_get_completion);
+    assert(err == CL_SUCCESS);
 }
 
 void ComputeShader::run()
 {
+    aquireResources();
     
+    cl_event kernel_completion;
+
+    GLint error = clEnqueueNDRangeKernel(command_queue, kernel, dimensions, NULL, globalWorkSize, nullptr, 0, NULL, &kernel_completion);
+    checkError(error);
+    error = clWaitForEvents(1, &kernel_completion);
+    error |= clReleaseEvent(kernel_completion);
+    checkError(error);
+    
+    releaseResources();
 }
 
 
@@ -283,4 +362,69 @@ ComputeShader::~ComputeShader()
     {
         dispatch_release(dispatch_queue);
     }
+}
+
+bool ComputeShader::checkError(cl_int errMsg)
+{
+#ifdef DEBUG
+    char errorMessage[255];
+    
+    switch(errMsg)
+    {
+        case CL_SUCCESS: strcpy(errorMessage, "CL_SUCCESS"); return true;
+        case CL_DEVICE_NOT_FOUND: strcpy(errorMessage, "CL_DEVICE_NOT_FOUND"); break;
+        case CL_DEVICE_NOT_AVAILABLE: strcpy(errorMessage, "CL_DEVICE_NOT_AVAILABLE"); break;
+        case CL_COMPILER_NOT_AVAILABLE: strcpy(errorMessage, "CL_COMPILER_NOT_AVAILABLE"); break;
+        case CL_MEM_OBJECT_ALLOCATION_FAILURE: strcpy(errorMessage, "CL_MEM_OBJECT_ALLOCATION_FAILURE"); break;
+        case CL_OUT_OF_RESOURCES: strcpy(errorMessage, "CL_OUT_OF_RESOURCES"); break;
+        case CL_OUT_OF_HOST_MEMORY: strcpy(errorMessage, "CL_OUT_OF_HOST_MEMORY"); break;
+        case CL_PROFILING_INFO_NOT_AVAILABLE: strcpy(errorMessage, "CL_PROFILING_INFO_NOT_AVAILABLE"); break;
+        case CL_MEM_COPY_OVERLAP: strcpy(errorMessage, "CL_MEM_COPY_OVERLAP"); break;
+        case CL_IMAGE_FORMAT_MISMATCH: strcpy(errorMessage, "CL_IMAGE_FORMAT_MISMATCH"); break;
+        case CL_IMAGE_FORMAT_NOT_SUPPORTED: strcpy(errorMessage, "CL_IMAGE_FORMAT_NOT_SUPPORTED"); break;
+        case CL_BUILD_PROGRAM_FAILURE: strcpy(errorMessage, "CL_BUILD_PROGRAM_FAILURE"); break;
+        case CL_MAP_FAILURE: strcpy(errorMessage, "CL_MAP_FAILURE"); break;
+        case CL_MISALIGNED_SUB_BUFFER_OFFSET: strcpy(errorMessage, "CL_MISALIGNED_SUB_BUFFER_OFFSET"); break;
+        case CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST: strcpy(errorMessage, "CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST"); break;
+        case CL_INVALID_VALUE: strcpy(errorMessage, "CL_INVALID_VALUE"); break;
+        case CL_INVALID_DEVICE_TYPE: strcpy(errorMessage, "CL_INVALID_DEVICE_TYPE"); break;
+        case CL_INVALID_PLATFORM: strcpy(errorMessage, "CL_INVALID_PLATFORM"); break;
+        case CL_INVALID_DEVICE: strcpy(errorMessage, "CL_INVALID_DEVICE"); break;
+        case CL_INVALID_CONTEXT: strcpy(errorMessage, "CL_INVALID_CONTEXT"); break;
+        case CL_INVALID_QUEUE_PROPERTIES: strcpy(errorMessage, "CL_INVALID_QUEUE_PROPERTIES"); break;
+        case CL_INVALID_COMMAND_QUEUE: strcpy(errorMessage, "CL_INVALID_COMMAND_QUEUE"); break;
+        case CL_INVALID_HOST_PTR: strcpy(errorMessage, "CL_INVALID_HOST_PTR"); break;
+        case CL_INVALID_MEM_OBJECT: strcpy(errorMessage, "CL_INVALID_MEM_OBJECT"); break;
+        case CL_INVALID_IMAGE_FORMAT_DESCRIPTOR: strcpy(errorMessage, "CL_INVALID_IMAGE_FORMAT_DESCRIPTOR"); break;
+        case CL_INVALID_IMAGE_SIZE: strcpy(errorMessage, "CL_INVALID_IMAGE_SIZE"); break;
+        case CL_INVALID_SAMPLER: strcpy(errorMessage, "CL_INVALID_SAMPLER"); break;
+        case CL_INVALID_BINARY: strcpy(errorMessage, "CL_INVALID_BINARY"); break;
+        case CL_INVALID_BUILD_OPTIONS: strcpy(errorMessage, "CL_INVALID_BUILD_OPTIONS"); break;
+        case CL_INVALID_PROGRAM: strcpy(errorMessage, "CL_INVALID_PROGRAM"); break;
+        case CL_INVALID_PROGRAM_EXECUTABLE: strcpy(errorMessage, "CL_INVALID_PROGRAM_EXECUTABLE"); break;
+        case CL_INVALID_KERNEL_NAME: strcpy(errorMessage, "CL_INVALID_KERNEL_NAME"); break;
+        case CL_INVALID_KERNEL_DEFINITION: strcpy(errorMessage, "CL_INVALID_KERNEL_DEFINITION"); break;
+        case CL_INVALID_KERNEL: strcpy(errorMessage, "CL_INVALID_KERNEL"); break;
+        case CL_INVALID_ARG_INDEX: strcpy(errorMessage, "CL_INVALID_ARG_INDEX"); break;
+        case CL_INVALID_ARG_VALUE: strcpy(errorMessage, "CL_INVALID_ARG_VALUE"); break;
+        case CL_INVALID_ARG_SIZE: strcpy(errorMessage, "CL_INVALID_ARG_SIZE"); break;
+        case CL_INVALID_KERNEL_ARGS: strcpy(errorMessage, "CL_INVALID_KERNEL_ARGS"); break;
+        case CL_INVALID_WORK_DIMENSION: strcpy(errorMessage, "CL_INVALID_WORK_DIMENSION"); break;
+        case CL_INVALID_WORK_GROUP_SIZE: strcpy(errorMessage, "CL_INVALID_WORK_GROUP_SIZE"); break;
+        case CL_INVALID_WORK_ITEM_SIZE: strcpy(errorMessage, "CL_INVALID_WORK_ITEM_SIZE"); break;
+        case CL_INVALID_GLOBAL_OFFSET: strcpy(errorMessage, "CL_INVALID_GLOBAL_OFFSET"); break;
+        case CL_INVALID_EVENT_WAIT_LIST: strcpy(errorMessage, "CL_INVALID_EVENT_WAIT_LIST"); break;
+        case CL_INVALID_EVENT: strcpy(errorMessage, "CL_INVALID_EVENT"); break;
+        case CL_INVALID_OPERATION: strcpy(errorMessage, "CL_INVALID_OPERATION"); break;
+        case CL_INVALID_GL_OBJECT: strcpy(errorMessage, "CL_INVALID_GL_OBJECT"); break;
+        case CL_INVALID_BUFFER_SIZE: strcpy(errorMessage, "CL_INVALID_BUFFER_SIZE"); break;
+        case CL_INVALID_MIP_LEVEL: strcpy(errorMessage, "CL_INVALID_MIP_LEVEL"); break;
+        case CL_INVALID_GLOBAL_WORK_SIZE: strcpy(errorMessage, "CL_INVALID_GLOBAL_WORK_SIZE"); break;
+        case CL_INVALID_PROPERTY: strcpy(errorMessage, "CL_INVALID_PROPERTY"); break;
+        default: strcpy(errorMessage, "unknown error"); break;
+    }
+    std::cout << errorMessage <<  std::endl;
+    assert(errMsg == CL_SUCCESS);
+#endif
+    return false;
 }

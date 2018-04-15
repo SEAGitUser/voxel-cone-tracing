@@ -5,31 +5,29 @@
 
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-
 static float4 getAverage(read_only image3d_t source, const sampler_t sampler, int4 coord)
 {
-    float4 value = read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2,    coord.z * 2,    1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2,    coord.z * 2,    1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2 + 1,coord.z * 2,    1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2 + 1,coord.z * 2,    1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2,    coord.z * 2 + 1,1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2,    coord.z * 2 + 1,1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2 + 1,coord.z * 2 + 1,1)) +
-    read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2 + 1,coord.z * 2 + 1,1));
-    value *= 0.125f;
-
+        float4 value = read_imagef(source, sampler, (int4)(  coord.x * 2,    coord.y * 2,    coord.z * 2,    1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2,    coord.z * 2,    1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2 + 1,coord.z * 2,    1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2 + 1,coord.z * 2,    1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2,    coord.z * 2+ 1,1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2,    coord.z * 2+ 1,1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2,     coord.y * 2 + 1,coord.z * 2+ 1,1)) +
+        read_imagef(source, sampler, (int4)(coord.x * 2 + 1, coord.y * 2 + 1,coord.z * 2+ 1,1));
+        value *= 0.125f;
+    
     return value;
 }
 
 kernel void downsample
 (
-    read_only image3d_t sourceRed,
-    read_only image3d_t sourceGreen,
-    read_only image3d_t sourceBlue,
+    read_only image3d_t albedo,
+    read_only image3d_t normal,
 
-    write_only image3d_t destinationRed,
-    write_only image3d_t destinationGreen,
-    write_only image3d_t destinationBlue
+    write_only image3d_t albedoDest,
+    write_only image3d_t normalDest
+
 )
 {
     int4 coord;
@@ -39,12 +37,9 @@ kernel void downsample
     coord.w = 1;
 
 
-    float4 valueRed = getAverage(sourceRed, sampler, coord);
-    float4 valueGreen = getAverage(sourceGreen, sampler, coord);
-    float4 valueBlue = getAverage(sourceBlue, sampler, coord);
-
-    write_imagef(destinationRed, (int4)coord, convert_float4(valueRed));
-    write_imagef(destinationGreen, (int4)coord, convert_float4(valueGreen));
-    write_imagef(destinationBlue, (int4)coord, convert_float4(valueBlue));
-
+    float4 albedoAvg = getAverage(albedo, sampler, coord);
+    float4 normalAvg = getAverage(normal, sampler, coord);
+    
+    write_imagef(albedoDest, (int4)coord, convert_float4(albedoAvg));
+    write_imagef(normalDest, (int4)coord, convert_float4(normalAvg));
 }

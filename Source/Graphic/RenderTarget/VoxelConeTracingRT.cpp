@@ -15,6 +15,7 @@
 #include "Shape/Shape.h"
 #include "Graphic/FBO/FBO.h"
 #include "Graphic/FBO/FBO_2D.h"
+#include <stdio.h>
 
 
 VoxelConeTracingRT::VoxelConeTracingRT(Texture3D* _albedoVoxels, Texture3D* _normalVoxels, glm::mat4& _voxViewProjection)
@@ -23,8 +24,6 @@ VoxelConeTracingRT::VoxelConeTracingRT(Texture3D* _albedoVoxels, Texture3D* _nor
     albedoVoxels = _albedoVoxels;
     normalVoxels = _normalVoxels;
     voxViewProjection = _voxViewProjection;
-    lightPosition.reserve(50);
-    lightColor.reserve(50);
 }
 
 
@@ -53,6 +52,10 @@ void VoxelConeTracingRT::Render(Scene& scene)
     
     Material::Commands matCommands(voxConeTracing.get());
     
+    setLightingParameters(params, scene.pointLights);
+    setCameraParameters(params, *scene.renderingCamera);
+    uploadRenderingSettings(params, voxConeTracing);
+    
     for(Shape* shape: scene.shapes)
     {
         size_t numberOfProperties = shape->getMeshProperties().size();
@@ -60,10 +63,7 @@ void VoxelConeTracingRT::Render(Scene& scene)
         
         Material::Commands commands(voxConeTracing.get());
         params[Material::Commands::MODEL_MATRIX_NAME] = trans;
-        
-        setLightingParameters(params, scene.pointLights);
-        setCameraParameters(params, *scene.renderingCamera);
-        uploadRenderingSettings(params, voxConeTracing);
+
         GLint i = 0;
         for(Mesh* mesh : shape->meshes)
         {
@@ -93,18 +93,24 @@ void VoxelConeTracingRT::getVoxParameters(ShaderParameter::ShaderParamsGroup &se
 void VoxelConeTracingRT::setLightingParameters(ShaderParameter::ShaderParamsGroup& settings, std::vector<PointLight> &lights)
 {
     GLuint index = 0;
+    GLuint argumentIndex = 0;
     for(PointLight &light : lights)
     {
-        lightPosition = ("pointLights[" + std::to_string(index) + "].position");
-        lightColor = ("pointLights[" + std::to_string(index) + "].color");
-        
-        settings[lightPosition.c_str()] = light.position;
-        settings[lightColor.c_str()] = light.color;
+        assert(index < MAX_ARGUMENTS);
+
+        sprintf(arguments[argumentIndex], "pointLights[%d].position", index);
+        sprintf(arguments[argumentIndex+1], "pointLights[%d].color", index);
+
+        const GLchar* str = arguments[argumentIndex];
+        settings[str] = light.position;
+        str = arguments[argumentIndex +1];
+        settings[str] = light.color;
         ++index;
+        argumentIndex += 2;
     }
     
     settings[Material::Commands::NUMBER_OF_LIGHTS_NAME] = (unsigned int)lights.size();
-
+    
 }
 
 void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup& params, Camera &camera)

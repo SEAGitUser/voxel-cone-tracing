@@ -78,10 +78,18 @@
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
-               value = "Shader::shaderResourcePath ">
+               value = "shaderResourcePath">
             </PersistentString>
             <PersistentString
-               value = "shaderResourcePath">
+               value = "Shader::shaderResourcePath ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Texture3D::Commands::allocateOnGPU():Texture3D.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "texture-&gt;width">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -118,9 +126,18 @@
          contextName = "VoxelConeTracingRT::setLightingParameters(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;, std::__1::vector&lt;PointLight, std::__1::allocator&lt;PointLight&gt; &gt;&amp;):VoxelConeTracingRT.cpp">
          <PersistentStrings>
             <PersistentString
+               value = "arguments[1]">
+            </PersistentString>
+            <PersistentString
                value = "lightPosition.length()">
             </PersistentString>
+            <PersistentString
+               value = "arguments[0]">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Material::Commands::uploadParameters(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;):Material.cpp">
       </ContextState>
       <ContextState
          contextName = "ShaderParameter::operator=(glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;):ShaderParameter.h">
