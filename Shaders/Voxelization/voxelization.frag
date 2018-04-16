@@ -64,8 +64,8 @@ bool isInsideCube(const vec3 p, float e) { return abs(p.x) < 1 + e && abs(p.y) <
 
 void main()
 {
-    color = vec4(colorFrag,.4f);
-    normal = vec4(normalFrag,.4f);
+    color = vec4(colorFrag,1.f);
+    normal = vec4(normalFrag,1.f);
     
     
 //    the code below hasn't been testest, commented out for this reason

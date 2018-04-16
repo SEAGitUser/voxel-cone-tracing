@@ -41,10 +41,13 @@ void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
 
     Texture3D* albedoVoxels = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(0));
     Texture3D* normalVoxels = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(1));
+    
+    //std::shared_ptr<Texture3D> mipMap = voxelizeRenderTarget->getNormalMipMapLevel(5);
     voxVisualizationRT = new VoxelVisualizationRT(albedoVoxels);
     
     glm::mat4 voxViewProj = voxelizeRenderTarget->getVoxViewProjection();
-    voxConeTracingRT = new VoxelConeTracingRT(albedoVoxels, normalVoxels, voxViewProj);
+    voxConeTracingRT = new VoxelConeTracingRT(albedoVoxels, normalVoxels, voxelizeRenderTarget->getAlbedoMipMaps(), voxelizeRenderTarget->getNormalMipMaps(),
+                                              voxViewProj);
 }
 
 void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsigned int viewportHeight, RenderingMode renderingMode)

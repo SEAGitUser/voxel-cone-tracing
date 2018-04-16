@@ -13,11 +13,11 @@ uniform mat4 P;
 
 
 
-out vec3 voxViewPosFrag;
+out vec3 worldPosition;
 out vec3 normalFrag;
 
 void main(){
-    voxViewPosFrag = (  M * vec4(position, 1)).xyz;
+    worldPosition = (  M * vec4(position, 1)).xyz;
     
     normalFrag = normalize(mat3(transpose(inverse(M))) * normal);
     gl_Position = P * V * M * vec4(position, 1);

@@ -241,6 +241,34 @@ void VoxelizeRT::fillUpVoxelTexture(Scene& renderScene)
     voxelize(renderScene);
 }
 
+void VoxelizeRT::generateMipMaps()
+{
+    Texture3D* currentAlbedoTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
+    Texture3D* currentNormalTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(1));
+    
+    GLuint dimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+    int i = 0;
+    for( std::shared_ptr<Texture3D> albedoMipMap : albedoMipMaps)
+    {
+        dimensions = dimensions >> 1;
+        if( dimensions == 0) break;
+        
+        std::shared_ptr<Texture3D> normalMipMap = normalMipMaps[i];
+        GLint error = downSample.setReadWriteImage3DArgument(0, currentAlbedoTexture->GetTextureID());
+        error |= downSample.setReadWriteImage3DArgument(1, currentNormalTexture->GetTextureID());
+        
+        error |= downSample.setReadWriteImage3DArgument(2, albedoMipMap->GetTextureID());
+        assert(error == CL_SUCCESS);
+        error |= downSample.setReadWriteImage3DArgument(3, normalMipMap->GetTextureID());
+        assert(error == CL_SUCCESS);
+        downSample.setGlobalWorkSize(glm::vec3(float(dimensions), float(dimensions), float(dimensions)));
+        downSample.run();
+        currentAlbedoTexture = albedoMipMap.get();
+        currentNormalTexture = normalMipMap.get();
+        ++i;
+    }
+    
+}
 void VoxelizeRT::Render(Scene& renderScene)
 {
     
@@ -276,31 +304,8 @@ void VoxelizeRT::Render(Scene& renderScene)
 
     fillUpVoxelTexture(renderScene);
     
-    Texture3D* currentAlbedoTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
-    Texture3D* currentNormalTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(1));
-    
-    GLuint dimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
-    int i = 0;
-    for( std::shared_ptr<Texture3D> albedoMipMap : albedoMipMaps)
-    {
-        dimensions = dimensions >> 1;
-        if( dimensions == 0) break;
-        
-        std::shared_ptr<Texture3D> normalMipMap = normalMipMaps[i];
-        GLint error = downSample.setReadWriteImage3DArgument(0, currentAlbedoTexture->GetTextureID());
-        error |= downSample.setReadWriteImage3DArgument(1, currentNormalTexture->GetTextureID());
-        
-        error |= downSample.setReadWriteImage3DArgument(2, albedoMipMap->GetTextureID());
-        assert(error == CL_SUCCESS);
-        error |= downSample.setReadWriteImage3DArgument(3, normalMipMap->GetTextureID());
-        assert(error == CL_SUCCESS);
-        downSample.setGlobalWorkSize(glm::vec3(float(dimensions), float(dimensions), float(dimensions)));
-        downSample.run();
-        currentAlbedoTexture = albedoMipMap.get();
-        currentNormalTexture = normalMipMap.get();
-        ++i;
-    }
-    
+    generateMipMaps();
+
     glError();
 }
 

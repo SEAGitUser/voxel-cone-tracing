@@ -33,6 +33,11 @@ public:
     
     inline std::shared_ptr<FBO_3D> getFBO(){ return voxelFBO;};
     inline glm::mat4 getVoxViewProjection(){ return voxViewProjection; }
+    inline std::shared_ptr<Texture3D> getAlbedoMipMapLevel( int index) { assert(index < albedoMipMaps.size()); return albedoMipMaps[index];}
+    inline std::shared_ptr<Texture3D> getNormalMipMapLevel( int index ){ assert(index < normalMipMaps.size()); return normalMipMaps[index];}
+    
+    std::vector<std::shared_ptr<Texture3D>>& getNormalMipMaps(){ return normalMipMaps; }
+    std::vector<std::shared_ptr<Texture3D>>& getAlbedoMipMaps(){ return albedoMipMaps; }
     
     static const float VOXELS_WORLD_SCALE;
     
@@ -41,7 +46,7 @@ private:
     void voxelize(Scene& renderScene);
     void generateDepthPeelingMaps(Scene& renderScene);
     void initDepthBuffer(int index, Texture::Dimensions &dimensions, Texture::Properties& properties);
-    
+    void generateMipMaps();
     void initMipMaps(Texture::Properties& properties);
     void initDepthPeelingBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties);
     
