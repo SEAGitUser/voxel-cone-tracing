@@ -5,7 +5,7 @@
 #version 410 core
 
 #define NUM_SAMPLING_RAYS 6
-#define NUM_MIP_MAPS 6
+#define NUM_MIP_MAPS 7
 
 struct PointLight {
     vec3 position;
@@ -37,8 +37,7 @@ struct Settings {
 //uniform int numberOfLights; // Number of lights currently uploaded.
 //uniform vec3 cameraPosition; // World campera position.
 //uniform int state; // Only used for testing / debugging.
-uniform sampler3D albedoVoxels; // Voxelization texture.
-uniform sampler3D normalVoxels;
+
 
 uniform sampler3D normalMipMaps[NUM_MIP_MAPS];
 uniform sampler3D albedoMipMaps[NUM_MIP_MAPS];
@@ -73,7 +72,6 @@ vec4 ambientOcclusion( mat3 rotation )
         float j = voxelDimensionsInWorldSpace;
         while(j < 4.0f && color.a != 1)
         {
-
             vec3 worldPos = j * direction + worldPosition;
             vec4 proj = voxViewProjection * vec4(worldPos, 1.0f);
 
@@ -82,9 +80,8 @@ vec4 ambientOcclusion( mat3 rotation )
                 proj += 1.0f;
                 proj *= .5f;
 
-                color += texture(albedoVoxels, proj.xyz);
+                color += texture(albedoMipMaps[0], proj.xyz);
             }
-
 
             j +=  voxelDimensionsInWorldSpace;
         }

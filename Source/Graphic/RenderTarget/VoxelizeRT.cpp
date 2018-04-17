@@ -134,11 +134,8 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         ShaderParameter::Sampler2D depthSampler;
         
         depthSampler.texture = depthTexture;
-        depthSampler.textureUnit = 0;
         albedoSampler.texture = albedoTexture;
-        albedoSampler.textureUnit = 1;
         normalSampler.texture = normalTexture;
-        normalSampler.textureUnit = 2;
         
         settings["depthTexture"] = depthSampler;
         settings["albedoTexture"] = albedoSampler;

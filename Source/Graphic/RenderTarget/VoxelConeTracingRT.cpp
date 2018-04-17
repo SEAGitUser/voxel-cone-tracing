@@ -43,16 +43,7 @@ void VoxelConeTracingRT::Render(Scene& scene)
     commands.blendSrcAlphaOneMinusSrcAlpha();
     
     static ShaderParameter::ShaderParamsGroup params;
-    ShaderParameter::Sampler3D albedoSampler;
-    ShaderParameter::Sampler3D normalSampler;
-    
-    albedoSampler.texture = albedoVoxels;
-    albedoSampler.textureUnit = 0;
-    normalSampler.texture = normalVoxels;
-    normalSampler.textureUnit = 1;
-    
-    params["albedoVoxels"] = albedoSampler;
-    params["normalVoxels"] = normalSampler;
+
     params["voxViewProjection"] = voxViewProjection;
     params["voxelDimensionsInWorldSpace"] = float(VoxelizeRT::VOXELS_WORLD_SCALE) / float(VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS);
     
@@ -128,21 +119,40 @@ void VoxelConeTracingRT::getVoxParameters(ShaderParameter::ShaderParamsGroup &se
 void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup& settings)
 {
     GLint index = 0;
-    GLuint argumentIndex = 0;
+    
+    ShaderParameter::Sampler3D albedoSampler;
+    ShaderParameter::Sampler3D normalSampler;
+    
+    albedoSampler.texture = albedoVoxels;
+    normalSampler.texture = normalVoxels;
+    
+    sprintf(albedoArgs[index], "albedoMipMaps[%d]", index);
+    sprintf(normalArgs[index] , "normalMipMaps[%d]", index);
+    
+    settings[albedoArgs[index]] = albedoSampler;
+    settings[normalArgs[index]] = normalSampler;
+    
+    ++index;
+    
+    assert(albedoMipMaps.size() == normalMipMaps.size());
     for( std::shared_ptr<Texture3D> voxels : albedoMipMaps)
     {
         assert(index < MAX_ARGUMENTS);
-        sprintf(albedoArgs[argumentIndex], "albedoMipMaps[%d]", index);
-        sprintf(normalArgs[argumentIndex+1] , "normalMipMaps[%d]", index);
+        sprintf(albedoArgs[index], "albedoMipMaps[%d]", index);
+        sprintf(normalArgs[index] , "normalMipMaps[%d]", index);
         
-        ShaderParameter::Sampler3D sampler;
-        sampler.texture = voxels.get();
-        sampler.textureUnit = index;
+
+        std::shared_ptr<Texture3D> normalVoxels = normalMipMaps[index - 1];
+        albedoSampler.texture = voxels.get();
+        normalSampler.texture = normalVoxels.get();
         
-        settings[albedoArgs[argumentIndex]] = sampler;
+        assert(normalSampler.texture != nullptr);
+        assert(albedoSampler.texture != nullptr);
+        settings[albedoArgs[index]] = albedoSampler;
+        settings[normalArgs[index]] = normalSampler;
         
         ++index;
-        argumentIndex += 2;
+
     }
 }
 

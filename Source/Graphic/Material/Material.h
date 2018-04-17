@@ -65,6 +65,8 @@ public:
         ~Commands();
     private:
         Material* material = nullptr;
+        
+        GLuint textureUnits;
     };
     
 	Material(const GLchar *_name,

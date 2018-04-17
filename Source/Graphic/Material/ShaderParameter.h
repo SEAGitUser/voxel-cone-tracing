@@ -39,17 +39,15 @@ public:
     
     struct Sampler2D
     {
-        GLint textureUnit;
         Texture2D* texture;
-        Sampler2D():textureUnit(0),texture(nullptr)
+        Sampler2D():texture(nullptr)
         {}
     };
     
     struct Sampler3D
     {
-        GLint textureUnit;
         Texture3D* texture;
-        Sampler3D():textureUnit(0), texture(nullptr)
+        Sampler3D():texture(nullptr)
         {}
     };
     

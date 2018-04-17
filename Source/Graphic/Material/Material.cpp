@@ -101,7 +101,8 @@ void Material::AssembleProgram(
 
 ///Comands
 
-Material::Commands::Commands(Material* _material)
+Material::Commands::Commands(Material* _material):
+textureUnits(0)
 {
     material = _material;
     glUseProgram(material->program);
@@ -249,13 +250,13 @@ GLint Material::Commands::SetParamatermat4(const GLchar* parameterName, const gl
 
 GLint Material::Commands::SetParameterSampler2D(const GLchar* parameterName, const ShaderParameter::Sampler2D& sampler)
 {
-    GLint result = ActivateTexture2D(parameterName, sampler.texture->GetTextureID() , sampler.textureUnit);
+    GLint result = ActivateTexture2D(parameterName, sampler.texture->GetTextureID() , textureUnits);
     return result;
 }
 
 GLint Material::Commands::SetParameterSampler3D(const GLchar* parameterName, const ShaderParameter::Sampler3D& sampler)
 {
-    GLint result = ActivateTexture3D(parameterName, sampler.texture->GetTextureID() , sampler.textureUnit);
+    GLint result = ActivateTexture3D(parameterName, sampler.texture->GetTextureID() , textureUnits);
     return result;
 }
 
@@ -271,6 +272,7 @@ GLint Material::Commands::SetPointLight(const GLchar *parameterName, const Point
 
 GLint Material::Commands::ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
 {
+    assert(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS > textureUnit);
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, textureName);
     GLint location = glGetUniformLocation(material->program, samplerName);
@@ -314,19 +316,25 @@ GLint Material::Commands::ActivateTexture3D(const GLchar* samplerName, const GLi
 
 GLint Material::Commands::SetMatrix(const GLchar* parameterName, const glm::mat4& mat)
 {
-    GLint location = glGetUniformLocation(material->program, /*Material::Commands::MODEL_MATRIX_NAME*/parameterName);
+    GLint location = glGetUniformLocation(material->program, parameterName);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
     return location;
 }
 
 void Material::Commands::uploadParameters(ShaderParameter::ShaderParamsGroup &group)
 {
+    textureUnits = 0;
     for (std::pair<const GLchar* , ShaderParameter > pair : group)
     {
         const GLchar* name = pair.first;
         ShaderParameter setting = pair.second;
         setValue(setting, name);
+        
+        textureUnits += (setting.getType() == ShaderParameter::Type::SAMPLER_2D ||
+                         setting.getType() == ShaderParameter::Type::SAMPLER_3D ) ? 1:0;
     }
+    
+    textureUnits = 0;
 }
 
 Material::Commands::~Commands()

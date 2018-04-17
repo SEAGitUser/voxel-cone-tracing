@@ -84,6 +84,8 @@ Texture::Commands(_texture)
     {
         glGenTextures(1, &texture->textureID);
     }
+    
+    assert((GL_TEXTURE0 + textureUnit) < GL_ACTIVE_TEXTURE);
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, texture->textureID);
 }
