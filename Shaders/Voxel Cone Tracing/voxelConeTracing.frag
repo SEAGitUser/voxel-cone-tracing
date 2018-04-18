@@ -69,33 +69,44 @@ vec4 ambientOcclusion( mat3 rotation )
     {
         vec3 direction = rotation * samplingRays[4];
         direction = normalize(direction) ;
-        
-        float j = voxelDimensionsInWorldSpace;
 
         vec4 sampleColor = vec4(0.0f);
-        while(j < 5.0 )
+        float limit = 5.0f * voxelDimensionsInWorldSpace;
+        float step = limit / 6.0f;
+        float j = voxelDimensionsInWorldSpace ;
+        
+        int lod = 0;
+        while(j < limit && sampleColor.a < 1.0f)
         {
             vec3 worldPos = j * direction + worldPosition;
             vec4 proj = voxViewProjection * vec4(worldPos, 1.0f);
-
+            
+            float lambda = 8.0f;
+            float attenuation = (1/(1 + j*lambda));
             //if(!outOfBox( vec3(proj.xyz) ))
             {
                 proj += 1.0f;
                 proj *= .5f;
 
-                sampleColor += texture(albedoMipMaps[0], proj.xyz);
-
-                if(abs(sampleColor.a -1.0f) < 0.00001f)
+                vec4 fromLOD = texture(albedoMipMaps[lod], proj.xyz);
+                sampleColor.a += (1 - sampleColor.a) * fromLOD.a;
+                
+                if(sampleColor.a >= 1.0f)
                 {
                     break;
                 }
             }
             
-            j +=  voxelDimensionsInWorldSpace ;
+            lod += 1;
+            j +=  step ;
+            lod = min(lod, 4);
         }
+        sampleColor.a *= float(1.0f)/float(NUM_SAMPLING_RAYS);
+        
         ambient += sampleColor;
     }
-    return (ambient);
+
+    return vec4(ambient.aaa, 1.0f);
 }
 
 
