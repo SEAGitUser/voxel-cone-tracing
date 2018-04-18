@@ -4,7 +4,7 @@
 
 #version 410 core
 
-#define NUM_SAMPLING_RAYS 6
+#define NUM_SAMPLING_RAYS 5
 #define NUM_MIP_MAPS 7
 
 struct PointLight {
@@ -63,45 +63,56 @@ bool outOfBox(vec3 pos)
 
 vec4 ambientOcclusion( mat3 rotation )
 {
-    vec4 color = vec4(0.f, 0.f, 0.f, 0.f);
-    for(int i = 0; i < 1; ++i)
+    vec4 ambient = vec4(0.f);
+    
+    for(int i = 0; i < NUM_SAMPLING_RAYS; ++i)
     {
-        vec3 direction = rotation * samplingRays[i];
-        direction = normalize(direction);
-
+        vec3 direction = rotation * samplingRays[4];
+        direction = normalize(direction) ;
+        
         float j = voxelDimensionsInWorldSpace;
-        while(j < 4.0f && color.a != 1)
+
+        vec4 sampleColor = vec4(0.0f);
+        while(j < 5.0 )
         {
             vec3 worldPos = j * direction + worldPosition;
             vec4 proj = voxViewProjection * vec4(worldPos, 1.0f);
 
-            if(!outOfBox(worldPos))
+            //if(!outOfBox( vec3(proj.xyz) ))
             {
                 proj += 1.0f;
                 proj *= .5f;
 
-                color += texture(albedoMipMaps[0], proj.xyz);
-            }
+                sampleColor += texture(albedoMipMaps[0], proj.xyz);
 
-            j +=  voxelDimensionsInWorldSpace;
+                if(abs(sampleColor.a -1.0f) < 0.00001f)
+                {
+                    break;
+                }
+            }
+            
+            j +=  voxelDimensionsInWorldSpace ;
         }
+        ambient += sampleColor;
     }
-    
-    return color;
+    return (ambient);
 }
 
-void generateRotationMatrix( out mat3 rot, vec3 normal)
+
+void branchlessONB(vec3 n, out mat3 rotation)
 {
-    vec3 yDimension = normal;
-    vec3 xDimension = vec3(1.0f, 0.f, 0.f);
-    xDimension = (normal == xDimension) ? vec3(1.0f, 0.001f, 0.0f) : xDimension;
+    //based off of "Building Orthonormal Basis, Revisited", Pixar Animation Studios
+    //https://graphics.pixar.com/library/OrthonormalB/paper.pdf
+    float s = sign(n.z) ;
+    s = s == 0 ? 1 : s;
+    float a = -1.0f / (s + n.z);
+    float b = n.x * n.y * a;
+    vec3 b1 = vec3(1.0f + s * n.x * n.x * a, s * b, -s * n.x);
+    vec3 b2 = vec3(b, s + n.y * n.y * a, -n.y);
     
-    vec3 zDimension = cross(xDimension, yDimension);
-    xDimension = cross(zDimension, yDimension);
-    
-    rot[0] = normalize(xDimension);
-    rot[1] = normalize(yDimension);
-    rot[2] = normalize(zDimension);
+    rotation[0] = b1;
+    rotation[1] = n;
+    rotation[2] = b2;
 }
 
 void main()
@@ -111,8 +122,14 @@ void main()
     voxelSpacePos += 1.0f;
     voxelSpacePos *= .5f;
     
-    mat3 rotation;
-    generateRotationMatrix(rotation, normalFrag);
-    color = ambientOcclusion(rotation);
+    {
+        
+
+        mat3 rotation;
+        branchlessONB(normalFrag, rotation);
+        color = ambientOcclusion(rotation);
+
+    }
+
 
 }

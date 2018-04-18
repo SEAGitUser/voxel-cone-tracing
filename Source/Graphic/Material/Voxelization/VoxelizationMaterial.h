@@ -83,6 +83,7 @@ public:
         static VoxProperties Blue();
         static VoxProperties Emissive();
         static VoxProperties Default();
+        static VoxProperties Black();
     };
     
 public:

@@ -21,11 +21,11 @@ Shape()
     loadMesh(objData.shapes);
     
     meshProperties.push_back(VoxProperties::Green());
-    meshProperties.push_back(VoxProperties::White());
-    meshProperties.push_back(VoxProperties::Red());
+    meshProperties.push_back(VoxProperties::White()); //bottom
+    meshProperties.push_back(VoxProperties::Purple());//top
     meshProperties.push_back(VoxProperties::Red());
     meshProperties.push_back(VoxProperties::Blue());
-    meshProperties.push_back(VoxProperties::White());
+    meshProperties.push_back(VoxProperties::Cyan());
     
     //random boxes inside of the cornell box mesh
     meshes[6]->enabled = false;

@@ -62,7 +62,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
     
     buddha->defaultVoxProperties.specularColor = glm::vec3(0.99f, 0.62f, 0.43f);
-    buddha->defaultVoxProperties.diffuseColor = (glm::vec3(0.99f, 0.62f, 0.43f));
+    buddha->defaultVoxProperties.diffuseColor = (glm::vec3(0.2f, 0.2f, 0.2f));
     buddha->defaultVoxProperties.emissivity = 0.0f;
     buddha->defaultVoxProperties.transparency = 1.f;
     buddha->defaultVoxProperties.refractiveIndex = 1.21f;

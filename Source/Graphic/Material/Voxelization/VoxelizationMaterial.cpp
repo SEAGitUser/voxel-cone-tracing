@@ -100,6 +100,15 @@ VoxProperties VoxProperties::Emissive()
     return props;
 }
 
+VoxProperties VoxProperties::Black()
+{
+    VoxProperties props;
+    props.diffuseColor = glm::vec3(0.0f, 0.0f, 0.0f);
+    props.emissivity = 0.0f;
+    
+    return props;
+}
+
 VoxProperties VoxProperties::Default()
 {
     VoxProperties properties;
