@@ -3,7 +3,7 @@ Adapting work created by Fredrik Präntare for Mac OS X.  It is still under cons
 <p align="center">
 
 The following is a screenshot of the ambient occlusion cone:
-<img src="https://github.com/Friduric/voxel-cone-tracing/blob/master/Assets/Screenshots/ambient-occlusion.png">
+<img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/ambient-occlusion.png">
 
 </a>
 
