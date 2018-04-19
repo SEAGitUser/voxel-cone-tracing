@@ -53,56 +53,64 @@ in vec3 normalFrag;
 out vec4 color;
 
 
-bool outOfBox(vec3 pos)
+bool withinBounds(vec3 pos)
 {
     
-    return pos.x > 0.0f && pos.x < 1.0f &&
-           pos.y > 0.0f && pos.y < 1.0f &&
-        pos.z > 0.0f && pos.z < 1.0f;
+    return pos.x > -1.0f && pos.x < 1.0f &&
+           pos.y > -1.0f && pos.y < 1.0f &&
+        pos.z > -1.0f && pos.z < 1.0f;
 }
 
 vec4 ambientOcclusion( mat3 rotation )
 {
     vec4 ambient = vec4(0.f);
     
+    float dimensionInverse = 1/voxelDimensionsInWorldSpace;
+    float numSamplingRaysInverse = float(1.0f)/float(NUM_SAMPLING_RAYS);
+    float limit = 8.f * voxelDimensionsInWorldSpace;
+    float step = limit / 5.0f;
+    
     for(int i = 0; i < NUM_SAMPLING_RAYS; ++i)
     {
-        vec3 direction = rotation * samplingRays[4];
-        direction = normalize(direction) ;
+        vec3 direction = rotation * samplingRays[i];
+        //typically you would want to normalize because rotating a normal does not guarantee that it remains
+        //unit length one.  In this case, I've commented the line below because it doesn't have much of an effect on the final result.
+        //direction = normalize(direction) ;
 
         vec4 sampleColor = vec4(0.0f);
-        float limit = 5.0f * voxelDimensionsInWorldSpace;
-        float step = limit / 6.0f;
+
         float j = voxelDimensionsInWorldSpace ;
+
         
         int lod = 0;
         while(j < limit && sampleColor.a < 1.0f)
         {
             vec3 worldPos = j * direction + worldPosition;
             vec4 proj = voxViewProjection * vec4(worldPos, 1.0f);
-            
-            float lambda = 8.0f;
+    
+            float lambda = 20.0f;
             float attenuation = (1/(1 + j*lambda));
-            //if(!outOfBox( vec3(proj.xyz) ))
+            if(withinBounds( vec3(proj.xyz) ))
             {
                 proj += 1.0f;
                 proj *= .5f;
 
                 vec4 fromLOD = texture(albedoMipMaps[lod], proj.xyz);
-                sampleColor.a += (1 - sampleColor.a) * fromLOD.a;
+                fromLOD.a = pow((1 -(1 - fromLOD.a)), step * dimensionInverse);
+                sampleColor.a += (1 - sampleColor.a) * fromLOD.a * attenuation;
                 
-                if(sampleColor.a >= 1.0f)
-                {
-                    break;
-                }
+                //the paper mentions to do an attenuation between the samples of the LOD's, I've chosen not to do this
+                //because I think it looks good enough, no need to add more computation.
+                
             }
+            else
+                break;
             
             lod += 1;
             j +=  step ;
             lod = min(lod, 4);
         }
-        sampleColor.a *= float(1.0f)/float(NUM_SAMPLING_RAYS);
-        
+        sampleColor.a *= numSamplingRaysInverse;
         ambient += sampleColor;
     }
 
@@ -114,8 +122,7 @@ void branchlessONB(vec3 n, out mat3 rotation)
 {
     //based off of "Building Orthonormal Basis, Revisited", Pixar Animation Studios
     //https://graphics.pixar.com/library/OrthonormalB/paper.pdf
-    float s = sign(n.z) ;
-    s = s == 0 ? 1 : s;
+    float s = int(n.z >= 0) - int(n.z < 0);
     float a = -1.0f / (s + n.z);
     float b = n.x * n.y * a;
     vec3 b1 = vec3(1.0f + s * n.x * n.x * a, s * b, -s * n.x);
@@ -128,19 +135,7 @@ void branchlessONB(vec3 n, out mat3 rotation)
 
 void main()
 {
-    vec4 voxelSpacePos = voxViewProjection * vec4(worldPosition,1.0f);
-    
-    voxelSpacePos += 1.0f;
-    voxelSpacePos *= .5f;
-    
-    {
-        
-
-        mat3 rotation;
-        branchlessONB(normalFrag, rotation);
-        color = ambientOcclusion(rotation);
-
-    }
-
-
+    mat3 rotation;
+    branchlessONB(normalFrag, rotation);
+    color = ambientOcclusion(rotation);
 }

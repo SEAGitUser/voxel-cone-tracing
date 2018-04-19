@@ -29,6 +29,22 @@ normalMipMaps(_normalMipMaps)
     voxViewProjection = _voxViewProjection;
     
     setupSamplingRays();
+    
+    Texture3D::Commands textureCommands(albedoVoxels);
+    
+    textureCommands.setMinFiltering(GL_LINEAR);
+    textureCommands.setMagFiltering(GL_LINEAR);
+    
+    textureCommands.end();
+    
+    for(std::shared_ptr<Texture3D> vox : albedoMipMaps)
+    {
+        Texture3D::Commands textureCommans(vox.get());
+        textureCommands.setMinFiltering(GL_LINEAR);
+        textureCommands.setMagFiltering(GL_LINEAR);
+        textureCommands.end();
+        
+    }
 }
 
 
@@ -72,7 +88,6 @@ void VoxelConeTracingRT::Render(Scene& scene)
             ++i;
         }
     }
-    
     commands.end();
 }
 
