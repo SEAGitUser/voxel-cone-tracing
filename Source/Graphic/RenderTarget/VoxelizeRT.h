@@ -10,6 +10,8 @@
 
 #include "RenderTarget.h"
 #include "Graphic/Camera/OrthographicCamera.h"
+#include "Graphic/Material/ShaderParameter.h"
+#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Texture2D.h"
 #include "ScreenQuad.h"
 #include <array>
@@ -77,6 +79,7 @@ private:
     std::shared_ptr<FBO_3D> voxelFBO;
     glm::mat4 voxViewProjection;
     ComputeShader downSample;
+    
     
     std::vector< std::shared_ptr<Texture3D> > albedoMipMaps;
     std::vector< std::shared_ptr<Texture3D> > normalMipMaps;

@@ -10,6 +10,7 @@
 
 #include "OpenGL_Includes.h"
 #include "Scene/Scene.h"
+#include "Graphic/Material/ShaderParameter.h"
 
 class FBO;
 class FBO_2D;
@@ -24,11 +25,17 @@ public:
     
     virtual ~RenderTarget(){};
 
+    
+protected:
+    void setLightingParameters(ShaderParameter::ShaderParamsGroup& settings, std::vector<PointLight> &lights);
 private:
     
     
 protected:
     using RenderingQueue = const std::vector<Mesh*> &;
+    
+    static const int MAX_ARGUMENTS = 80;
+    char arguments[MAX_ARGUMENTS ][MAX_ARGUMENTS ];
 
 };
 

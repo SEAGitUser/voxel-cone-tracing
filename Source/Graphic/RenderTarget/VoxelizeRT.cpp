@@ -12,7 +12,6 @@
 #include "Graphic/FBO/FBO_2D.h"
 #include "Graphic/Camera/Camera.h"
 #include "Shape/Points.h"
-#include "Graphic/Material/Voxelization/VoxelizationMaterial.h"
 #include "Graphic/Material/Material.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "Utility/Logger.h"
@@ -123,12 +122,13 @@ void VoxelizeRT::voxelize(Scene& renderScene)
     
     for(GLint i = 0; i < depthFBOs.size(); ++i)
     {
-        
         Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
         Texture2D* albedoTexture = static_cast<Texture2D*>(depthFBOs[i]->getRenderTexture(0));
         Texture2D* normalTexture = static_cast<Texture2D*>(depthFBOs[i]->getRenderTexture(1));
         
         static ShaderParameter::ShaderParamsGroup settings;
+        setLightingParameters(settings, renderScene.pointLights);
+        
         ShaderParameter::Sampler2D normalSampler;
         ShaderParameter::Sampler2D albedoSampler;
         ShaderParameter::Sampler2D depthSampler;
@@ -136,10 +136,11 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         depthSampler.texture = depthTexture;
         albedoSampler.texture = albedoTexture;
         normalSampler.texture = normalTexture;
-        
+
         settings["depthTexture"] = depthSampler;
         settings["albedoTexture"] = albedoSampler;
         settings["normalTexture"] = normalSampler;
+        settings["numberOfLights"] = 1u;
         
         glm::mat4 toWorldSpace = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
         toWorldSpace = glm::inverse(toWorldSpace);
@@ -148,7 +149,6 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         settings["cubeDimensions"] = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
         
         Material::Commands commands(voxMaterial.get());
-        
         commands.uploadParameters(settings);
         
         Points::Commands pointsCommands (points.get());

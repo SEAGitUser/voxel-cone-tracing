@@ -51,21 +51,21 @@ VoxelizationMaterial::~VoxelizationMaterial()
 
 VoxProperties VoxProperties::White()
 {
-    VoxProperties properties;
+    VoxProperties properties = Default();
     properties.diffuseColor = glm::vec3(0.97f, 0.97f, 0.97f);
     return properties;
 }
 
 VoxProperties VoxProperties::Cyan()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor = glm::vec3(0.30f, 0.95f, 0.93f);
     return props;
 }
 
 VoxProperties VoxProperties::Purple()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor = glm::vec3(0.97f, 0.05f, 0.93f);
     return props;
 }
@@ -73,28 +73,28 @@ VoxProperties VoxProperties::Purple()
 
 VoxProperties  VoxProperties ::Red()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor =  glm::vec3(1.0f, 0.26f, 0.27f);
     return props;
 }
 
 VoxProperties VoxProperties::Green()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor =  glm::vec3(0.27f, 1.0f, 0.26f);
     return props;
 }
 
 VoxProperties  VoxProperties::Blue()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor =  glm::vec3(0.35f, 0.38f, 1.0f);
     return props;
 }
 
 VoxProperties VoxProperties::Emissive()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor =  glm::vec3(0.85f, 0.9f, 1.0f);
     props.emissivity = 1.0f;
     return props;
@@ -102,7 +102,7 @@ VoxProperties VoxProperties::Emissive()
 
 VoxProperties VoxProperties::Black()
 {
-    VoxProperties props;
+    VoxProperties props = Default();
     props.diffuseColor = glm::vec3(0.0f, 0.0f, 0.0f);
     props.emissivity = 0.0f;
     

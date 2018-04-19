@@ -328,8 +328,9 @@ void Material::Commands::uploadParameters(ShaderParameter::ShaderParamsGroup &gr
     {
         const GLchar* name = pair.first;
         ShaderParameter setting = pair.second;
+        glError();
         setValue(setting, name);
-        
+        glError();
         textureUnits += (setting.getType() == ShaderParameter::Type::SAMPLER_2D ||
                          setting.getType() == ShaderParameter::Type::SAMPLER_3D ) ? 1:0;
     }

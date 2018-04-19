@@ -20,6 +20,7 @@ uniform mat4 toWorldSpace;
 out float totalSlicesGeom;
 out vec3 normalGeom;
 out vec3 albedoGeom;
+out vec3 worldPositionGeom;
 
 void main(){
     
@@ -57,5 +58,6 @@ void main(){
         
         albedoGeom = texture(albedoTexture, vec2(x,y)).xyz;
         normalGeom = texture(normalTexture, vec2(x,y)).xyz;
+        worldPositionGeom = worldSpacePos.xyz;
     }
 }

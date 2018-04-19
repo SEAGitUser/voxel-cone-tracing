@@ -12,11 +12,13 @@ uniform float farPlane;
 in vec3 normalGeom[];
 in vec3 albedoGeom[];
 in float totalSlicesGeom[];
+in vec3 worldPositionGeom[];
 
 
 out vec3 normalFrag;
 out vec3 colorFrag;
 out float totalSlicesFrag;
+out vec3 worldPositionFrag;
 
 void main(){
     
@@ -37,6 +39,7 @@ void main(){
     normalFrag = normalGeom[0].rgb;
 
     totalSlicesFrag = totalSlicesGeom[0];
+    worldPositionFrag = worldPositionGeom[0];
     
     EmitVertex();
     EndPrimitive();
