@@ -1,5 +1,13 @@
 Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.
 
+<p align="center">
+
+The following is a screenshot of the ambient occlusion cone:
+<img src="https://github.com/Friduric/voxel-cone-tracing/blob/master/Assets/Screenshots/ambient-occlusion.png">
+
+</a>
+
+</p>
 
 Inspired by "Interactive Indirect Illumination Using Voxel Cone Tracing" by Crassin et al.
 
