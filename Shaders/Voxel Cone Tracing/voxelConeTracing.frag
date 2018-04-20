@@ -98,6 +98,7 @@ vec4 ambientOcclusion( mat3 rotation )
                 vec4 fromLOD = texture(albedoMipMaps[lod], proj.xyz);
                 fromLOD.a = pow((1 -(1 - fromLOD.a)), step * dimensionInverse);
                 sampleColor.a += (1 - sampleColor.a) * fromLOD.a * attenuation;
+                sampleColor.a = 1 - sampleColor.a;
                 
                 //the paper mentions to do an attenuation between the samples of the LOD's, I've chosen not to do this
                 //because I think it looks good enough, no need to add more computation.
