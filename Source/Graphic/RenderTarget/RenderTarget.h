@@ -35,7 +35,7 @@ protected:
     using RenderingQueue = const std::vector<Mesh*> &;
     
     static const int MAX_ARGUMENTS = 80;
-    char arguments[MAX_ARGUMENTS ][MAX_ARGUMENTS ];
+    char pointLightArguments[MAX_ARGUMENTS ][MAX_ARGUMENTS ];
 
 };
 

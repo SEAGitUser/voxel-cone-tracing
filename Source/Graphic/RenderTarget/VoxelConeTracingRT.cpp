@@ -34,10 +34,23 @@ normalMipMaps(_normalMipMaps)
     
     textureCommands.setMinFiltering(GL_LINEAR);
     textureCommands.setMagFiltering(GL_LINEAR);
-    
     textureCommands.end();
     
+    Texture3D::Commands normalCommands(normalVoxels);
+    normalCommands.setMinFiltering(GL_LINEAR);
+    normalCommands.setMagFiltering(GL_LINEAR);
+    normalCommands.end();
+    
     for(std::shared_ptr<Texture3D> vox : albedoMipMaps)
+    {
+        Texture3D::Commands textureCommans(vox.get());
+        textureCommands.setMinFiltering(GL_LINEAR);
+        textureCommands.setMagFiltering(GL_LINEAR);
+        textureCommands.end();
+        
+    }
+    
+    for(std::shared_ptr<Texture3D> vox : normalMipMaps)
     {
         Texture3D::Commands textureCommans(vox.get());
         textureCommands.setMinFiltering(GL_LINEAR);
@@ -70,6 +83,7 @@ void VoxelConeTracingRT::Render(Scene& scene)
     uploadRenderingSettings(params, voxConeTracing);
     setMipMapParameters(params);
     setSamplingRayParameters(params);
+    setConeApertureAndVariances(params);
     
     for(Shape* shape: scene.shapes)
     {
@@ -111,7 +125,7 @@ void VoxelConeTracingRT::setupSamplingRays()
 
 void VoxelConeTracingRT::setSamplingRayParameters(ShaderParameter::ShaderParamsGroup &params)
 {
-    for(int i = 0; i < 6; ++i)
+    for(int i = 0; i < SAMPLING_RAYS; ++i)
     {
         sprintf(samplingRayArgs[i], "samplingRays[%d]", i);
         params[samplingRayArgs[i]] = samplingRays[i];
@@ -171,34 +185,34 @@ void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup&
     }
 }
 
-void VoxelConeTracingRT::setLightingParameters(ShaderParameter::ShaderParamsGroup& settings, std::vector<PointLight> &lights)
-{
-    GLuint index = 0;
-    GLuint argumentIndex = 0;
-    for(PointLight &light : lights)
-    {
-        assert(index < MAX_ARGUMENTS);
-
-        sprintf(arguments[argumentIndex], "pointLights[%d].position", index);
-        sprintf(arguments[argumentIndex+1], "pointLights[%d].color", index);
-
-        const GLchar* str = arguments[argumentIndex];
-        settings[str] = light.position;
-        str = arguments[argumentIndex +1];
-        settings[str] = light.color;
-        ++index;
-        argumentIndex += 2;
-    }
-    
-    settings[Material::Commands::NUMBER_OF_LIGHTS_NAME] = (unsigned int)lights.size();
-    
-}
-
 void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup& params, Camera &camera)
 {
     params[Material::Commands::VIEW_MATRIX_NAME] = camera.viewMatrix;
     params[Material::Commands::PROJECTION_MATRIX_NAME] = camera.getProjectionMatrix();
     params[Material::Commands::CAMERA_POSITION_NAME] = camera.position;
+}
+
+
+void VoxelConeTracingRT::setConeApertureAndVariances(ShaderParameter::ShaderParamsGroup& params)
+{
+    static const float PI = 3.14159265359f;
+    static float apertureInDegrees = 0.f;
+    
+    float radians = apertureInDegrees * (PI/180.0f);
+    float initialApertureInRadians = radians;
+    for(int i = 0; i < albedoMipMaps.size(); ++i)
+    {
+        
+        sprintf(coneApertureArgs[i], "coneApertures[%d]", i);
+        params[coneApertureArgs[i]] = initialApertureInRadians;
+        
+        sprintf(coneVariances[i], "coneVariances[%d]", i);
+        float value = cos(initialApertureInRadians);
+        params[coneVariances[i]] = value;
+        
+        initialApertureInRadians += radians;
+        
+    }
 }
 
 void VoxelConeTracingRT::uploadRenderingSettings(ShaderParameter::ShaderParamsGroup& params, std::shared_ptr<VoxelizationConeTracingMaterial> &material )

@@ -19,12 +19,12 @@ void RenderTarget::setLightingParameters(ShaderParameter::ShaderParamsGroup& set
     {
         assert(index < MAX_ARGUMENTS);
         
-        sprintf(arguments[argumentIndex], "pointLights[%d].position", index);
-        sprintf(arguments[argumentIndex+1], "pointLights[%d].color", index);
+        sprintf(pointLightArguments[argumentIndex], "pointLights[%d].position", index);
+        sprintf(pointLightArguments[argumentIndex+1], "pointLights[%d].color", index);
         
-        const GLchar* str = arguments[argumentIndex];
+        const GLchar* str = pointLightArguments[argumentIndex];
         settings[str] = light.position;
-        str = arguments[argumentIndex +1];
+        str = pointLightArguments[argumentIndex +1];
         settings[str] = light.color;
         ++index;
         argumentIndex += 2;

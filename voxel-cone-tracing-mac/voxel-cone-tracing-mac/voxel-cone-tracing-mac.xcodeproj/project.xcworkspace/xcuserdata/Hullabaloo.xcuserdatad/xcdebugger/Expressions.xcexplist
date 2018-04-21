@@ -47,6 +47,14 @@
          contextName = "Primitive::Commands::uploadGPUVertexData():Primitive.cpp">
       </ContextState>
       <ContextState
+         contextName = "VoxelConeTracingRT::setConeApertureParams(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;):VoxelConeTracingRT.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "albedoMipMaps.size()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "::__cxx_global_var_init():Shader.cpp">
          <PersistentStrings>
             <PersistentString
@@ -64,6 +72,14 @@
          contextName = "FBO::InitCommands():FBO.cpp">
       </ContextState>
       <ContextState
+         contextName = "Texture3D::Commands::allocateOnGPU():Texture3D.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "texture-&gt;width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Texture3D::Clear():Texture3D.cpp">
          <PersistentStrings>
             <PersistentString
@@ -78,18 +94,10 @@
                value = "Resource::resourceRoot">
             </PersistentString>
             <PersistentString
-               value = "shaderResourcePath">
-            </PersistentString>
-            <PersistentString
                value = "Shader::shaderResourcePath ">
             </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Texture3D::Commands::allocateOnGPU():Texture3D.cpp">
-         <PersistentStrings>
             <PersistentString
-               value = "texture-&gt;width">
+               value = "shaderResourcePath">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -103,7 +111,7 @@
          contextName = "Material::Commands::setValue(ShaderParameter&amp;, char const*):Material.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "name[0]">
+               value = "name">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

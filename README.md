@@ -2,9 +2,11 @@ Adapting work created by Fredrik Präntare for Mac OS X.  It is still under cons
 
 <p align="center">
 
-The following is a screenshot of the ambient occlusion cone:
+The following is a screenshot of the ambient occlusion:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/ambient-occlusion.png">
 
+The following is a screenshot of the indirect illumination:
+<img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/indirect-illumination.png">
 </a>
 
 </p>
