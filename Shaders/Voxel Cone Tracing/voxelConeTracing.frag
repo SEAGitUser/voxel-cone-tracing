@@ -49,12 +49,18 @@ uniform float   voxelDimensionsInWorldSpace;
 
 uniform vec3    view; //new: make sure is normalized
 uniform vec3    lightPos; //new
-uniform float   coneVariances[NUM_MIP_MAPS]; //new
-uniform float   coneApertures[NUM_MIP_MAPS]; //new
-uniform Material material; //new
+uniform float   coneVariances[NUM_MIP_MAPS];
+uniform uint   numberOfLods;
+
+uniform Material material;
 
 
 float dimensionInverse = 1/voxelDimensionsInWorldSpace;
+float distanceLimit = 10.0f * voxelDimensionsInWorldSpace;
+float distanceBetweenLods = distanceLimit / numberOfLods;
+vec4  albedoLODColors[NUM_MIP_MAPS];
+vec4  normalLODColors[NUM_MIP_MAPS];
+
 
 in vec3 worldPosition;
 in vec3 normalFrag;
@@ -110,73 +116,132 @@ float toksvigFactor(vec3 normal, float s)
     return 1.0f/(1.0f + s * (rlen - 1.0f));
 }
 
-vec3 ambientOcclusion(vec4 projection, uint mipMapIndex, float step, float attenuation, inout vec4 sampleColor)
+vec4 getLODColor(float distance, vec4 lodColors[NUM_MIP_MAPS])
 {
-    vec4 fromLOD = texture(albedoMipMaps[ mipMapIndex ], projection.xyz);
-    fromLOD.a = pow((1 -(1 - fromLOD.a)), step * dimensionInverse);
-    sampleColor.a += (1 - sampleColor.a) * fromLOD.a * attenuation;
-    sampleColor.a = 1 - sampleColor.a;
+    float soFar = distanceLimit;
+    uint lod = numberOfLods - 1u;
+    while(( soFar > distance) && (lod != 0))
+    {
+        soFar -= distanceBetweenLods;
+        --lod;
+    }
     
-    //the paper mentions to do an attenuation between the samples of the LOD's, I've chosen not to do this
-    //because I think it looks good enough, no need to add more computation.
+    vec4 blendedColor = lodColors[lod];
+    if( lod != (numberOfLods - 1u))
+    {
+        float a = (soFar + distance) / distanceBetweenLods;
+        uint lod1 = lod;
+        uint lod2 = lod + 1;
+        blendedColor = mix(lodColors[lod2], lodColors[lod1], a);
+    }
+
+    return blendedColor;
+}
+
+
+void ambientOcclusion(vec3 direction, float j, float step, vec3 worldPos, inout vec4 sampleColor )
+{
+    float lambda = 20.0f;
+
+    vec4 projection = voxViewProjection * vec4(worldPos, 1.0f);
     
-    return fromLOD.xyz;
+    if(withinBounds( vec3(projection.xyz) ))
+    {
+        float attenuation = (1/(1 + j*lambda));
+        vec4 fromLOD = getLODColor(j, albedoLODColors);
+        fromLOD.a = pow((1 -(1 - fromLOD.a)), step * dimensionInverse);
+        sampleColor.a += (1 - sampleColor.a) * fromLOD.a * attenuation;
+        sampleColor.a = 1 - sampleColor.a;
+    }
+    
 }
 
 //section 7 and 8.1 of the paper
-vec3 indirectIllumination(vec3 sampleFromLOD, vec3 geometryNormal, uint rayIndex,
-                          uint mipMapIndex, vec4 projection, vec3 samplingPos)
+vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
 {
-    vec3 avgNormal = texture(normalMipMaps[mipMapIndex], projection.xyz).xyz;
+    vec3 avgNormal =  getLODColor(j, normalLODColors).xyz;// texture(normalMipMaps[mipMapIndex], projection.xyz).xyz;
+    vec3 sampleFromLOD = getLODColor(j, albedoLODColors).xyz;
     vec3 result = vec3(0.0f);
     vec3 fullSizeNormal = normalize(avgNormal.xyz);
-
+    
     float dotProduct = dot(fullSizeNormal, geometryNormal);
     bool normalsFacingEachOther = dotProduct <= 0;
     if( normalsFacingEachOther )
     {
         mat3 normalRotation;
         branchlessONB(fullSizeNormal, normalRotation );
-
+        
         //from here on out, we work on the sampling point space.
         geometryNormal = geometryNormal * normalRotation;
         vec3 worldPosInSampleSpace = worldPosition.xyz - samplingPos.xyz;
         worldPosInSampleSpace = worldPosInSampleSpace * normalRotation ;
-
+        
         vec3 view =  normalize(worldPosInSampleSpace);
         
         //in sampling point space, the normal is always up
         vec3 up = vec3(0.f, 1.0f, 0.0f);
-        float gauss = gaussianLobeDistribution( up * length(avgNormal), coneVariances[mipMapIndex]);
         
-
-
+        //todo: you need to intorpolate variances too
+        float gauss = gaussianLobeDistribution( view, /*coneVariances[mipMapIndex]*/ .8f);
+        
         vec3 lightDirection = view;
         //Blinn Phong
-        // this is equivalent to normalize(view + lightDirection);
+        // this is equivalent to normalize(view + lightDirection); because view = lightDirection
         vec3 h = view;
         float ndoth = clamp(dot(up, h), 0.0f, 1.0f);
         //todo: we need a specular map where this power comes from, for now it is constant
         float s = 800.0f;
         float gloss = toksvigFactor(avgNormal, s);
-
+        
         float p = s * gloss;
         float spec = pow(ndoth, p)* (1 + gloss*s)/(1 + s);
-
+        
         float ndotl = dot(up, lightDirection);
-        float scaleUp = 40.0f;
-        result =  (sampleFromLOD + spec * vec3(1.0f, 1.0f, 1.0f)) * scaleUp * ndotl * gauss;
+        float scaleUp = 40.0f; //this scale wouldn't be necesssary if we were in HDR space
+        result =  (sampleFromLOD ) * scaleUp * ndotl * gauss;
     }
     return result;
+}
+
+vec4 directIllumination(vec4 lightPos, vec4 sampleColor)
+{
+    return vec4(0.0f);
+}
+
+void collectLODColors(vec3 direction)
+{
+    float j = voxelDimensionsInWorldSpace;
+    float step = distanceLimit / 20.0f;
+    uint lod = 0;
+    while(j < distanceLimit && (lod != (numberOfLods) ))
+    {
+        vec3 worldPos = j * direction + worldPosition;
+        vec4 proj = voxViewProjection * vec4(worldPos, 1.0f);
+        
+        if(withinBounds( vec3(proj.xyz) ))
+        {
+            proj += 1.0f;
+            proj *= .5f;
+            
+            albedoLODColors[ lod ] = texture(albedoMipMaps[ lod ], proj.xyz);
+            normalLODColors[ lod ] = texture(normalMipMaps[ lod ], proj.xyz);
+        }
+        else
+            break;
+        lod += 1;
+        j +=  step ;
+        lod = min(lod, (numberOfLods));
+    }
 }
 
 vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
 {
     vec4 ambient = vec4(0.f);
-    
+    float rayWeight = 1.0f/NUM_SAMPLING_RAYS;
     float numSamplingRaysInverse = float(1.0f)/float(NUM_SAMPLING_RAYS);
-    float limit = 8.f * voxelDimensionsInWorldSpace;
-    float step = limit / 5.0f;
+    
+    float step = distanceLimit / 8.0f;
+    
     
     for(uint i = 0; i < NUM_SAMPLING_RAYS; ++i)
     {
@@ -184,40 +249,31 @@ vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
         //typically you would want to normalize because rotating a normal does not guarantee that it remains
         //unit length one.  In this case, I've commented the line below because it doesn't have much of an effect on the final result.
         //direction = normalize(direction) ;
-
+        
         vec4 sampleColor = vec4(0.0f);
-        float j = voxelDimensionsInWorldSpace ;
-
-        uint lod = 0;
-        while(j < limit &&  sampleColor.a < 1.0f)
+        collectLODColors(direction);
+        
+        float j = voxelDimensionsInWorldSpace * 1.5f;
+        float step = distanceLimit / 5.0f;
+    
+        float occlusion = 0.0f;
+        while(j < distanceLimit)
         {
             vec3 worldPos = j * direction + worldPosition;
-            vec4 proj = voxViewProjection * vec4(worldPos, 1.0f);
-    
-            float lambda = 20.0f;
-            float attenuation = (1/(1 + j*lambda));
-            if(withinBounds( vec3(proj.xyz) ))
-            {
-                proj += 1.0f;
-                proj *= .5f;
-                
-                vec3 colorFromLOD =  ambientOcclusion(proj, lod, step, attenuation, sampleColor);
-
-                sampleColor.xyz += indirectIllumination(colorFromLOD, incomingNormal, i, lod, proj, worldPos);
-            }
-            else
-                break;
+            ambientOcclusion(direction, j, step, worldPos, sampleColor);
+            sampleColor.xyz += indirectIllumination(incomingNormal, j, worldPos);
             
-            lod += 1;
-            j +=  step ;
-            lod = min(lod, 5);
+            j += step;
         }
 
-        ambient += sampleColor;
-        ambient.a = 1.0f;
+        
+        ambient.xyz += sampleColor.xyz;
+        ambient.a += sampleColor.a * rayWeight;
     }
-    return ambient;
+    
+    return vec4(ambient.aaa, 1.0f);
 }
+
 
 
 void main()
@@ -226,4 +282,6 @@ void main()
     branchlessONB(normalFrag, rotation);
     vec3 incomingNormal = normalize(normalFrag);
     color = voxelConeTracing(rotation, incomingNormal);
+    //todo: perform direct illumination here
+    
 }

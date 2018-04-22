@@ -160,7 +160,7 @@ void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup&
     
     settings[albedoArgs[index]] = albedoSampler;
     settings[normalArgs[index]] = normalSampler;
-    
+    settings["numberOfLods"] = (GLuint)(albedoMipMaps.size() + 1);
     ++index;
     
     assert(albedoMipMaps.size() == normalMipMaps.size());
@@ -196,15 +196,12 @@ void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup&
 void VoxelConeTracingRT::setConeApertureAndVariances(ShaderParameter::ShaderParamsGroup& params)
 {
     static const float PI = 3.14159265359f;
-    static float apertureInDegrees = 0.f;
+    static float apertureInDegrees = 8.0f;
     
     float radians = apertureInDegrees * (PI/180.0f);
     float initialApertureInRadians = radians;
     for(int i = 0; i < albedoMipMaps.size(); ++i)
     {
-        
-        sprintf(coneApertureArgs[i], "coneApertures[%d]", i);
-        params[coneApertureArgs[i]] = initialApertureInRadians;
         
         sprintf(coneVariances[i], "coneVariances[%d]", i);
         float value = cos(initialApertureInRadians);

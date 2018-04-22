@@ -50,7 +50,6 @@ private:
     char normalArgs[MAX_ARGUMENTS][MAX_ARGUMENTS ];
     char albedoArgs[MAX_ARGUMENTS][MAX_ARGUMENTS];
     char samplingRayArgs[MAX_ARGUMENTS][MAX_ARGUMENTS];
-    char coneApertureArgs[MAX_ARGUMENTS][MAX_ARGUMENTS];
     char coneVariances[MAX_ARGUMENTS][MAX_ARGUMENTS];
     
     std::shared_ptr<VoxelizationConeTracingMaterial> voxConeTracing = nullptr;
