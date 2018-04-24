@@ -55,11 +55,14 @@ uniform uint   numberOfLods;
 uniform Material material;
 
 
-float dimensionInverse = 1/voxelDimensionsInWorldSpace;
-float distanceLimit = 10.0f * voxelDimensionsInWorldSpace;
+float dimensionInverse = 1.0f/voxelDimensionsInWorldSpace;
+float distanceLimit = 15.0f * voxelDimensionsInWorldSpace;
+float oneOverDistanceLimit = 1.0f/distanceLimit;
+float oneOverNumLODs = 1.0f/numberOfLods;
 float distanceBetweenLods = distanceLimit / numberOfLods;
 vec4  albedoLODColors[NUM_MIP_MAPS];
 vec4  normalLODColors[NUM_MIP_MAPS];
+float rayWeight = 1.0f/float(NUM_SAMPLING_RAYS);
 
 
 in vec3 worldPosition;
@@ -118,22 +121,19 @@ float toksvigFactor(vec3 normal, float s)
 
 vec4 getLODColor(float distance, vec4 lodColors[NUM_MIP_MAPS])
 {
-    float soFar = distanceLimit;
-    uint lod = numberOfLods - 1u;
-    while(( soFar > distance) && (lod != 0))
-    {
-        soFar -= distanceBetweenLods;
-        --lod;
-    }
     
-    vec4 blendedColor = lodColors[lod];
-    if( lod != (numberOfLods - 1u))
-    {
-        float a = (soFar + distance) / distanceBetweenLods;
-        uint lod1 = lod;
-        uint lod2 = lod + 1;
-        blendedColor = mix(lodColors[lod2], lodColors[lod1], a);
-    }
+    float travel = distance * oneOverDistanceLimit;
+    
+    float fractional = float(numberOfLods) * travel;
+    uint lod = uint(floor(fractional));
+    
+    fractional = fract(fractional);
+    lod = min(lod, uint(numberOfLods - 1.0));
+    
+    uint next = uint((lod == (numberOfLods-1)));
+    uint lod2 = lod + next;
+    
+    vec4 blendedColor = mix(lodColors[lod], lodColors[lod2], fractional);
 
     return blendedColor;
 }
@@ -141,7 +141,7 @@ vec4 getLODColor(float distance, vec4 lodColors[NUM_MIP_MAPS])
 
 void ambientOcclusion(vec3 direction, float j, float step, vec3 worldPos, inout vec4 sampleColor )
 {
-    float lambda = 20.0f;
+    float lambda = 10.0f;
 
     vec4 projection = voxViewProjection * vec4(worldPos, 1.0f);
     
@@ -156,6 +156,23 @@ void ambientOcclusion(vec3 direction, float j, float step, vec3 worldPos, inout 
     
 }
 
+float getVariance(float distance)
+{
+    float travel = distance * oneOverDistanceLimit;
+    
+    float fractional = float(NUM_MIP_MAPS) * travel;
+    uint lod = uint(floor(fractional));
+    
+    fractional = fract(fractional);
+    lod = min(lod, NUM_MIP_MAPS);
+    
+    uint next = uint((lod == (NUM_MIP_MAPS-1)));
+    uint lod2 = lod + next;
+    
+    float variance = mix(coneVariances[lod], coneVariances[lod2], fractional);
+    return variance;
+}
+
 //section 7 and 8.1 of the paper
 vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
 {
@@ -166,7 +183,7 @@ vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
     
     float dotProduct = dot(fullSizeNormal, geometryNormal);
     bool normalsFacingEachOther = dotProduct <= 0;
-    if( normalsFacingEachOther )
+    //if( normalsFacingEachOther )
     {
         mat3 normalRotation;
         branchlessONB(fullSizeNormal, normalRotation );
@@ -181,8 +198,8 @@ vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
         //in sampling point space, the normal is always up
         vec3 up = vec3(0.f, 1.0f, 0.0f);
         
-        //todo: you need to intorpolate variances too
-        float gauss = gaussianLobeDistribution( view, /*coneVariances[mipMapIndex]*/ .8f);
+        float variance = getVariance(j);
+        float gauss = gaussianLobeDistribution( view, variance);
         
         vec3 lightDirection = view;
         //Blinn Phong
@@ -190,15 +207,14 @@ vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
         vec3 h = view;
         float ndoth = clamp(dot(up, h), 0.0f, 1.0f);
         //todo: we need a specular map where this power comes from, for now it is constant
-        float s = 800.0f;
+        float s = .0005f;
         float gloss = toksvigFactor(avgNormal, s);
         
         float p = s * gloss;
         float spec = pow(ndoth, p)* (1 + gloss*s)/(1 + s);
         
         float ndotl = dot(up, lightDirection);
-        float scaleUp = 40.0f; //this scale wouldn't be necesssary if we were in HDR space
-        result =  (sampleFromLOD ) * scaleUp * ndotl * gauss;
+        result =  (sampleFromLOD + sampleFromLOD * spec)  * ndotl * gloss;
     }
     return result;
 }
@@ -211,7 +227,7 @@ vec4 directIllumination(vec4 lightPos, vec4 sampleColor)
 void collectLODColors(vec3 direction)
 {
     float j = voxelDimensionsInWorldSpace;
-    float step = distanceLimit / 20.0f;
+    float step = distanceLimit / numberOfLods;
     uint lod = 0;
     while(j < distanceLimit && (lod != (numberOfLods) ))
     {
@@ -237,11 +253,7 @@ void collectLODColors(vec3 direction)
 vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
 {
     vec4 ambient = vec4(0.f);
-    float rayWeight = 1.0f/NUM_SAMPLING_RAYS;
-    float numSamplingRaysInverse = float(1.0f)/float(NUM_SAMPLING_RAYS);
-    
-    float step = distanceLimit / 8.0f;
-    
+    float step = distanceLimit / 7.0f;
     
     for(uint i = 0; i < NUM_SAMPLING_RAYS; ++i)
     {
@@ -254,9 +266,7 @@ vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
         collectLODColors(direction);
         
         float j = voxelDimensionsInWorldSpace * 1.5f;
-        float step = distanceLimit / 5.0f;
-    
-        float occlusion = 0.0f;
+
         while(j < distanceLimit)
         {
             vec3 worldPos = j * direction + worldPosition;
@@ -271,7 +281,7 @@ vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
         ambient.a += sampleColor.a * rayWeight;
     }
     
-    return vec4(ambient.aaa, 1.0f);
+    return vec4(ambient.xyz, 1.0f);
 }
 
 

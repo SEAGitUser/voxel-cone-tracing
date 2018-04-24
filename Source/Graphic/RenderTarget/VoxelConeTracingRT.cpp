@@ -83,7 +83,6 @@ void VoxelConeTracingRT::Render(Scene& scene)
     uploadRenderingSettings(params, voxConeTracing);
     setMipMapParameters(params);
     setSamplingRayParameters(params);
-    setConeApertureAndVariances(params);
     
     for(Shape* shape: scene.shapes)
     {
@@ -185,6 +184,7 @@ void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup&
     }
 }
 
+
 void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup& params, Camera &camera)
 {
     params[Material::Commands::VIEW_MATRIX_NAME] = camera.viewMatrix;
@@ -196,7 +196,7 @@ void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup&
 void VoxelConeTracingRT::setConeApertureAndVariances(ShaderParameter::ShaderParamsGroup& params)
 {
     static const float PI = 3.14159265359f;
-    static float apertureInDegrees = 8.0f;
+    static float apertureInDegrees = 3.0f;
     
     float radians = apertureInDegrees * (PI/180.0f);
     float initialApertureInRadians = radians;

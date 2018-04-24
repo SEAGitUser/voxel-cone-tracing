@@ -33,6 +33,7 @@ private:
     void setupSamplingRays();
     void setSamplingRayParameters(ShaderParameter::ShaderParamsGroup& params);
     void setConeApertureAndVariances(ShaderParameter::ShaderParamsGroup& params);
+    void setSamplingWeights(ShaderParameter::ShaderParamsGroup& params);
 
 private:
     
@@ -47,6 +48,8 @@ private:
     glm::vec3 samplingRays[SAMPLING_RAYS];
     
     static const int MAX_ARGUMENTS = 80;
+    
+    char samplingWeightsArgs[MAX_ARGUMENTS][MAX_ARGUMENTS];
     char normalArgs[MAX_ARGUMENTS][MAX_ARGUMENTS ];
     char albedoArgs[MAX_ARGUMENTS][MAX_ARGUMENTS];
     char samplingRayArgs[MAX_ARGUMENTS][MAX_ARGUMENTS];
