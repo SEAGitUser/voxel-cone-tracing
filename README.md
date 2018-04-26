@@ -1,12 +1,19 @@
-Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.
+Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.  Most implemetations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done
+on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
 
 
 Voxel Cone Tracing For Mac OS (OpenGL 4.1)
 --------------
 
 Improvements vs previous implementation:
-* Geometry is no longer bound to a box of size between -1 and 1 in all 3 axis, world can be arbitarily large.
+* Geometry is no longer bound to a box of size between -1 and 1 in all 3 axis, world can be arbitrarily large.
 * Lowered the required OpenGL version from 4.5 to 4.1 ( The voxel paper calls out that OpenGL 4.5 is needed due to extensions used)
+    - Implemented 3D rendering using geometry shaders, previously it was being done with image load/store OpenGL extensions
+    - Implemented interporlation between 3D texture mipmaps in shader code.
+    - Implemented OpenGL functions not found in 4.1:
+        - glClearTexImage
+        - glTexStorage3D
+    - Implemented Mipmapping for 3D textures using compute shaders ( this feature is missing in 4.1)
 * Sturcture of the code has been heavily modified and comparmentalized.
 * Reduced the number of cones from 9 ( 10 if specular highlight was being rendered ) to 5 ( 6 if specular highlight needs rendering)
 
@@ -22,7 +29,7 @@ Things left to do:
     
 * Fredrik in his original implemenation had different cones such refraction and specular, computational resources permitting these could be added here as well
 
-Screen Shots ( indirect illumination exagerated for illustration)
+Screen Shots ( indirect illumination & ambient occlusion exagerated for illustration)
 ------
 
 <p align="center">
