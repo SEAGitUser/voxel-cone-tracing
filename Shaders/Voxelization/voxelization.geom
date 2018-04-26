@@ -33,7 +33,8 @@ void main(){
     
     //scale from [-1, 1] to [0, 1]
     float depth = (gl_Position.z + 1.0f) * .5f;
-    gl_Layer = int(totalSlicesGeom[0] * depth);
+    gl_Layer = int((totalSlicesGeom[0] * depth));
+    //gl_Layer -= 1;
 
     colorFrag = albedoGeom[0].rgb;
     normalFrag = normalGeom[0].rgb;

@@ -16,6 +16,8 @@ uniform sampler2D normalTexture;
 uniform mat4 zPlaneProjection;
 uniform mat4 toWorldSpace;
 
+uniform float voxelSizeInWorldSpace;
+
 
 out float totalSlicesGeom;
 out vec3 normalGeom;
@@ -43,6 +45,9 @@ void main(){
     gl_Position.x = 10000.0f;
     if(depth != 1.0f)
     {
+        albedoGeom = texture(albedoTexture, vec2(x,y)).xyz;
+        normalGeom = texture(normalTexture, vec2(x,y)).xyz;
+        
         vec4 clipSpacePos = vec4(x, y, depth, 1.f );
         
         clipSpacePos.xyz *= 2.0f;
@@ -50,14 +55,13 @@ void main(){
         
         vec4 worldSpacePos = toWorldSpace * clipSpacePos;
         
+        //worldSpacePos.xyz += normalGeom * voxelSizeInWorldSpace;
+        
         //here we are transforming the projections of x y planes into a z plane.
         //in the geometry shader, it is assumed that we are looking the camera using a z plane
         //which plane we pick here depends on the position of the camera when rendering the depth buffer sampled above
         gl_Position =  zPlaneProjection * worldSpacePos;
         
-        
-        albedoGeom = texture(albedoTexture, vec2(x,y)).xyz;
-        normalGeom = texture(normalTexture, vec2(x,y)).xyz;
         worldPositionGeom = worldSpacePos.xyz;
     }
 }

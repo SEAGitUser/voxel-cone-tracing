@@ -22,10 +22,11 @@ Shape()
     
     meshProperties.push_back(VoxProperties::Green());
     meshProperties.push_back(VoxProperties::White()); //bottom
-    meshProperties.push_back(VoxProperties::Purple());//top
+    meshProperties.push_back(VoxProperties::White());//top
     meshProperties.push_back(VoxProperties::Red());
-    meshProperties.push_back(VoxProperties::Blue());
-    meshProperties.push_back(VoxProperties::Cyan());
+    meshProperties.push_back(VoxProperties::White()); //back
+    meshProperties.push_back(VoxProperties::White());
+    
     
     //random boxes inside of the cornell box mesh
     meshes[6]->enabled = false;

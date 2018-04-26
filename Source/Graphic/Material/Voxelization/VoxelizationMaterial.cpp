@@ -52,7 +52,7 @@ VoxelizationMaterial::~VoxelizationMaterial()
 VoxProperties VoxProperties::White()
 {
     VoxProperties properties = Default();
-    properties.diffuseColor = glm::vec3(0.97f, 0.97f, 0.97f);
+    properties.diffuseColor = glm::vec3(0.87f, 0.87f, 0.87f);
     return properties;
 }
 
@@ -66,7 +66,7 @@ VoxProperties VoxProperties::Cyan()
 VoxProperties VoxProperties::Purple()
 {
     VoxProperties props = Default();
-    props.diffuseColor = glm::vec3(0.97f, 0.05f, 0.93f);
+    props.diffuseColor = glm::vec3(0.97f, 0.05f, 0.93f) * .5f;
     return props;
 }
 

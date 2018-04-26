@@ -30,6 +30,6 @@ void RenderTarget::setLightingParameters(ShaderParameter::ShaderParamsGroup& set
         argumentIndex += 2;
     }
     
-    settings[Material::Commands::NUMBER_OF_LIGHTS_NAME] = (unsigned int)lights.size();
+    settings[Material::Commands::NUMBER_OF_LIGHTS_NAME] = (int)lights.size();
     
 }

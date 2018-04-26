@@ -80,7 +80,7 @@ void VoxelConeTracingRT::Render(Scene& scene)
     
     setLightingParameters(params, scene.pointLights);
     setCameraParameters(params, *scene.renderingCamera);
-    uploadRenderingSettings(params, voxConeTracing);
+    //uploadRenderingSettings(params, voxConeTracing);
     setMipMapParameters(params);
     setSamplingRayParameters(params);
     

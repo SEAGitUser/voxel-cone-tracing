@@ -15,6 +15,7 @@ namespace {
 	ShaderParameter * buddhaMaterialSetting;
 	Mesh * buddhaRenderer;
 	Mesh * sphereRenderer;
+    Shape* lightCube;
 }
 
 void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
@@ -33,7 +34,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 
 
 	// Light cube.
-	Shape * lightCube = ObjLoader::loadShapeFromObj("/Assets/Models/sphere.obj");
+	lightCube = ObjLoader::loadShapeFromObj("/Assets/Models/sphere.obj");
 	shapes.push_back(lightCube);
 	for (unsigned int i = 0; i < lightCube->meshes.size(); ++i) {
 		renderers.push_back(((lightCube->meshes[i])));
@@ -41,21 +42,21 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	lightCubeIndex = renderers.size() - 1;
 
     lightCube->defaultVoxProperties = VoxProperties::White();
-	// Buddha.
-	int buddhaIndex = renderers.size();
-	Shape * buddha = ObjLoader::loadShapeFromObj("/Assets/Models/buddha.obj");
-	shapes.push_back(buddha);
-	for (unsigned int i = 0; i < buddha->meshes.size(); ++i) {
-		renderers.push_back(((buddha->meshes[i])));
-	}
+    // Buddha.
+    int buddhaIndex = renderers.size();
+    Shape * buddha = ObjLoader::loadShapeFromObj("/Assets/Models/buddha.obj");
+    shapes.push_back(buddha);
+    for (unsigned int i = 0; i < buddha->meshes.size(); ++i) {
+        renderers.push_back(((buddha->meshes[i])));
+    }
     
-	buddhaRenderer = renderers[buddhaIndex];
-	buddha->transform.scale = glm::vec3(1.8f);
-	buddha->transform.rotation = glm::vec3(0, 2.4, 0);
-	buddha->transform.position = glm::vec3(0, -0.13, 0.05);
-	buddha->transform.updateTransformMatrix();
-	buddhaRenderer->tweakable = true;
-	buddhaRenderer->name = "Buddha";
+    buddhaRenderer = renderers[buddhaIndex];
+    buddha->transform.scale = glm::vec3(1.8f);
+    buddha->transform.rotation = glm::vec3(0, 2.4, 0);
+    buddha->transform.position = glm::vec3(0, -0.13, 0.05);
+    buddha->transform.updateTransformMatrix();
+    buddhaRenderer->tweakable = true;
+    buddhaRenderer->name = "Buddha";
     buddhaRenderer->enabled = true;
 
     buddha->defaultVoxProperties = VoxProperties::White();
@@ -76,7 +77,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
     lightCube->defaultVoxProperties.specularReflectivity = 0.0f;
     lightCube->defaultVoxProperties.diffuseReflectivity = 0.0f;
     
-    renderers[lightCubeIndex]->enabled = false;
+    renderers[lightCubeIndex]->enabled = true;
     
 
     renderers[lightCubeIndex]->name = "light cube";
@@ -87,7 +88,7 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
 	// Lighting.
 	PointLight p;
 	pointLights.push_back(p);
-	pointLights[0].color = glm::vec3(0.63f, 0.47f, 0.51f);
+	pointLights[0].color = glm::vec3(0.63f, 0.63f, 0.63f) * .8f;
 
 	renderingCamera->position = glm::vec3(0.f, .0f, 1.5f);
 }
@@ -97,14 +98,17 @@ void GlassScene::update() {
 
 //    buddhaRenderer->transform.rotation.y = FrameRate::time;
 //
-//    glm::vec3 r = glm::vec3(sinf(float(FrameRate::time * 0.67)), sinf(float(FrameRate::time * 0.78)), cosf(float(FrameRate::time * 0.67)));
+    glm::vec3 r = glm::vec3(sinf(float(FrameRate::time * 0.67)), sinf(float(FrameRate::time * 0.78)), cosf(float(FrameRate::time * 0.67))) * .6f;
 //
 //    renderers[lightCubeIndex]->transform.position = 0.45f * r + 0.20f * r * glm::vec3(1, 0, 1);
 //    renderers[lightCubeIndex]->transform.scale = glm::vec3(0.049f);
 //    renderers[lightCubeIndex]->transform.updateTransformMatrix();
 //
-//    pointLights[0].position = renderers[lightCubeIndex]->transform.position;
-//    renderers[lightCubeIndex]->voxProperties.diffuseColor = pointLights[0].color;
+    pointLights[0].position = r;//glm::vec3(-.3f, .8f, .2f); //r; //renderers[lightCubeIndex]->transform.position;
+    lightCube->transform.position = r;
+    lightCube->transform.scale = glm::vec3(.03f);
+    lightCube->transform.updateTransformMatrix();
+    //lightCube->transform.position = r;
 }
 
 GlassScene::~GlassScene() {
