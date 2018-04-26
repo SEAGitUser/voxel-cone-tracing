@@ -9,6 +9,8 @@ The following is a screenshot of the indirect illumination:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/indirect-illumination.png">
 </a>
 
+The following is a screenshot fo teh full illumination (exagerated for illustration purposes):
+<img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/full-illumination.png">
 </p>
 
 Inspired by "Interactive Indirect Illumination Using Voxel Cone Tracing" by Crassin et al.

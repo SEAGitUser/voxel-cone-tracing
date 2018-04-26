@@ -25,24 +25,18 @@ struct Material {
     float transparency;
 };
 
-struct Settings {
-    bool indirectSpecularLight; // Whether indirect specular light should be rendered or not.
-    bool indirectDiffuseLight; // Whether indirect diffuse light should be rendered or not.
-    bool directLight; // Whether direct light should be rendered or not.
-    bool shadows; // Whether shadows should be rendered or not.
-};
+//struct Settings {
+//    bool indirectSpecularLight; // Whether indirect specular light should be rendered or not.
+//    bool indirectDiffuseLight; // Whether indirect diffuse light should be rendered or not.
+//    bool directLight; // Whether direct light should be rendered or not.
+//    bool shadows; // Whether shadows should be rendered or not.
+//};
 
 uniform PointLight pointLights[MAX_LIGHTS];
 uniform int numberOfLights; // Number of lights currently uploaded.
 uniform vec3 cameraPosition; // World campera position.
 
 uniform vec3    lightPosition;
-//uniform Settings settings;
-//uniform PointLight pointLights[1];
-//uniform int numberOfLights; // Number of lights currently uploaded.
-//uniform vec3 cameraPosition; // World campera position.
-//uniform int state; // Only used for testing / debugging.
-
 
 uniform sampler3D normalMipMaps[NUM_MIP_MAPS];
 uniform sampler3D albedoMipMaps[NUM_MIP_MAPS];
@@ -146,17 +140,16 @@ vec4 getLODColor(float distance, vec4 lodColors[NUM_MIP_MAPS])
     return getLODColor(distance, lodColors, 0u);
 }
 
-
-
 void ambientOcclusion(vec3 direction, float j, float step, vec3 worldPos, inout vec4 sampleColor )
 {
-    float lambda = 10.0f;
+    float lambda = 10.50f;
 
     vec4 projection = voxViewProjection * vec4(worldPos, 1.0f);
     
     if(withinBounds( vec3(projection.xyz) ))
     {
         float attenuation = (1/(1 + j*lambda));
+        attenuation =  10.f * pow(attenuation, 2.0f);
         vec4 fromLOD = getLODColor(j, albedoLODColors);
         fromLOD.a = pow((1 -(1 - fromLOD.a)), step * dimensionInverse);
         sampleColor.a += (1 - sampleColor.a) * fromLOD.a * attenuation;
@@ -185,7 +178,7 @@ float getVariance(float distance)
 //section 7 and 8.1 of the paper
 vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
 {
-    uint minimuLOD = 4u;
+    uint minimuLOD = 3u;
     vec3 avgNormal =  getLODColor(j, normalLODColors, minimuLOD).xyz;
     vec3 sampleFromLOD = getLODColor(j, albedoLODColors, minimuLOD).xyz;
     vec3 result = vec3(0.0f);
@@ -208,8 +201,10 @@ vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
         //in sampling point space, the normal is always up
         vec3 up = vec3(0.f, 1.0f, 0.0f);
         
-        float variance = getVariance(j);
-        float gauss = gaussianLobeDistribution( view, variance);
+        //float variance = getVariance(j);
+        //the paper does have instructions to use gaussian lobe distribution, but this wasn't giving me
+        //visually pleasing results, commented out for this reason, but will leave here for reference
+        //float gauss = gaussianLobeDistribution( view, variance);
         
         vec3 lightDirection = view;
         //Blinn Phong
@@ -259,6 +254,7 @@ vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
 {
     vec4 ambient = vec4(0.f);
     float step = distanceLimit / 6.0f;
+    float ambientStep = distanceLimit /10.0f;
     
     for(uint i = 0; i < NUM_SAMPLING_RAYS; ++i)
     {
@@ -274,23 +270,27 @@ vec4 voxelConeTracing( mat3 rotation,vec3 incomingNormal )
         
         float k = 1.0f;
         int l = 0;
+        float m = voxelDimensionsInWorldSpace + voxelDimensionsInWorldSpace * .5f;
         while(l < 5)
         {
-            vec3 worldPos = j * direction + worldPosition;
-            ambientOcclusion(direction, j, step, worldPos, sampleColor);
+            vec3 worldPos = m * direction + worldPosition;
+            ambientOcclusion(direction, m, ambientStep, worldPos, sampleColor);
+            
+            worldPos = j * direction + worldPosition;
             sampleColor.xyz += indirectIllumination(incomingNormal, j, worldPos) * pow(k, 1.8f);
             
             j += step + pow(j, 4.0f);
             k += 1.2f;
             ++l;
+            m += ambientStep;
+
         }
 
-        
         ambient.xyz += sampleColor.xyz;
         ambient.a += sampleColor.a * rayWeight;
     }
     
-    return vec4(ambient.xyz, 1.0f);
+    return ambient;
 }
 
 vec4 directIllumination(vec4 illumination)
@@ -311,11 +311,10 @@ vec4 directIllumination(vec4 illumination)
         
         float ndotl = clamp( dot(n, l), 0.0f, 1.0f);
         
-        final += (material.diffuseColor + spec * material.diffuseColor) * ndotl * pointLights[0].color;
+        final += (material.diffuseColor * illumination.a + spec * material.diffuseColor) * ndotl * pointLights[0].color;
     }
     
     final.xyz += (illumination.xyz);
-    //final.xyz *= illumination.a;
     return vec4(final, 1.0f);
 }
 
