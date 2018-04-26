@@ -1,5 +1,11 @@
 Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.
 
+
+
+Voxel Cone Tracing For Mac OS (OpenGL 4.1)
+--------------
+
+
 <p align="center">
 
 The following is a screenshot of the ambient occlusion:
