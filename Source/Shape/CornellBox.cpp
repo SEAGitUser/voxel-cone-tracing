@@ -24,7 +24,7 @@ Shape()
     meshProperties.push_back(VoxProperties::White()); //bottom
     meshProperties.push_back(VoxProperties::White());//top
     meshProperties.push_back(VoxProperties::Red());
-    meshProperties.push_back(VoxProperties::White()); //back
+    meshProperties.push_back(VoxProperties::Purple()); //back
     meshProperties.push_back(VoxProperties::White());
     
     
