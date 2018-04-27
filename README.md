@@ -31,6 +31,22 @@ Things left to do:
 * Gamma correction.
 * Get rid of raw pointers and use smart pointers.
 
+
+Build Requirements
+-------
+
+* Project is always developed on the latest Mac OS X build, make sure you are up to date. 
+
+* Install the latest Xcode build, download from the app store: https://itunes.apple.com/us/app/xcode/id497799835?mt=12
+
+* Once you have Xcode, you'll want to install FreeType on your Mac.  This library is used to render text to screen:
+
+    - Download FreeType 2.9: https://sourceforge.net/projects/freetype/files/freetype2/2.9/ and unzip the file. 
+    - In Finder, go to your Downloads folder and double click the freetype-2.8.1.tar.gz file to unpack it into a folder named ‘freetype-2.9.1’. Move that folder now into the src folder you created in your Home folder.
+    - Open Terminal.app, type `cd ~/Downloads/freetype-2.9` and press the return key. Continue with `./configure` and press the return key again. You will see a bunch of text rolling through the Terminal app. 
+    - When it is done, type `make` and press the return key to see more text rolling through.
+    - When it is done, type `sudo make install` and press the return key. Enter your Mac login password, then press the return key again.
+
 Screen Shots
 ------
 
