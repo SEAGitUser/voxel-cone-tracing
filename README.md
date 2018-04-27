@@ -1,7 +1,7 @@
 Adapting work created by Fredrik Präntare for Mac OS X.  Most implemetations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
 
 
-Voxel Cone Tracing For Mac OS (OpenGL 4.1)
+Voxel Cone Tracing For Mac OS X (OpenGL 4.1)
 --------------
 
 Improvements vs previous implementation:
