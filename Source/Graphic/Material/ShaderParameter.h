@@ -37,20 +37,6 @@ public:
         
     };
     
-    struct Sampler2D
-    {
-        Texture2D* texture;
-        Sampler2D():texture(nullptr)
-        {}
-    };
-    
-    struct Sampler3D
-    {
-        Texture3D* texture;
-        Sampler3D():texture(nullptr)
-        {}
-    };
-    
 private
     :
     
@@ -62,8 +48,8 @@ private
         GLfloat   floatValue;
         GLint     intValue;
         GLuint    uintValue;
-        Sampler2D   sampler2D;
-        Sampler3D   sampler3D;
+        Texture2D*   sampler2D;
+        Texture3D*   sampler3D;
         glm::mat4 mat4;
         PointLight pointLight;
         bool     boolean;
@@ -127,13 +113,13 @@ public:
         return value.vector4;
     }
     
-    inline Sampler2D getSampler2DValue()
+    inline Texture2D* getSampler2DValue()
     {
         assert(type == Type::SAMPLER_2D);
         return value.sampler2D;
     }
     
-    inline Sampler3D getSampler3DValue()
+    inline Texture3D* getSampler3DValue()
     {
         assert(type == Type::SAMPLER_3D);
         return value.sampler3D;
@@ -213,11 +199,18 @@ public:
         return *this;
     }
     
-    inline ShaderParameter& operator=(const Sampler2D &sampler)
+    inline ShaderParameter& operator=(Texture2D* sampler)
     {
         type = Type::SAMPLER_2D;
         this->value.sampler2D = sampler;
         
+        return *this;
+    }
+    
+    inline ShaderParameter& operator=(Texture3D* sampler)
+    {
+        type = Type::SAMPLER_3D;
+        this->value.sampler3D = sampler;
         return *this;
     }
     
@@ -276,13 +269,13 @@ public:
         type = Type::FLOAT;
     }
 
-    ShaderParameter(Sampler2D _value)
+    ShaderParameter(Texture2D* _value)
     {
         value.sampler2D = _value;
         type = Type::SAMPLER_2D;
     }
 
-    ShaderParameter(Sampler3D _value)
+    ShaderParameter(Texture3D* _value)
     {
         value.sampler3D = _value;
         type = Type::SAMPLER_3D;

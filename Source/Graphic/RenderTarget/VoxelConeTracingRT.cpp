@@ -147,18 +147,12 @@ void VoxelConeTracingRT::getVoxParameters(ShaderParameter::ShaderParamsGroup &se
 void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup& settings)
 {
     GLint index = 0;
-    
-    ShaderParameter::Sampler3D albedoSampler;
-    ShaderParameter::Sampler3D normalSampler;
-    
-    albedoSampler.texture = albedoVoxels;
-    normalSampler.texture = normalVoxels;
-    
+
     sprintf(albedoArgs[index], "albedoMipMaps[%d]", index);
     sprintf(normalArgs[index] , "normalMipMaps[%d]", index);
     
-    settings[albedoArgs[index]] = albedoSampler;
-    settings[normalArgs[index]] = normalSampler;
+    settings[albedoArgs[index]] = albedoVoxels;
+    settings[normalArgs[index]] = normalVoxels;
     settings["numberOfLods"] = (GLuint)(albedoMipMaps.size() + 1);
     ++index;
     
@@ -171,13 +165,8 @@ void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup&
         
 
         std::shared_ptr<Texture3D> normalVoxels = normalMipMaps[index - 1];
-        albedoSampler.texture = voxels.get();
-        normalSampler.texture = normalVoxels.get();
-        
-        assert(normalSampler.texture != nullptr);
-        assert(albedoSampler.texture != nullptr);
-        settings[albedoArgs[index]] = albedoSampler;
-        settings[normalArgs[index]] = normalSampler;
+        settings[albedoArgs[index]] = voxels.get();
+        settings[normalArgs[index]] = normalVoxels.get();
         
         ++index;
 

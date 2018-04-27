@@ -32,10 +32,7 @@ void VoxelVisualizationRT::Render( Scene& scene )
 {
 
     static ShaderParameter::ShaderParamsGroup group;
-    ShaderParameter::Sampler3D sampler;
-    sampler.texture= voxelTexture;
-    
-    group["texture3D"] = sampler;
+    group["texture3D"] = voxelTexture;
     group["camPosition"] = scene.renderingCamera->position;
     
     glm::mat4 modelView = scene.renderingCamera->viewMatrix * cubeShape->transform.getTransformMatrix();
@@ -45,7 +42,6 @@ void VoxelVisualizationRT::Render( Scene& scene )
     glm::mat4 mvp = scene.renderingCamera->getProjectionMatrix() * modelView;
 
     group["MVP"] = mvp;
-
     
     FBO::Commands commands(FBO_2D::getDefault().get());
     commands.setClearColor();

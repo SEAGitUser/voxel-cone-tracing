@@ -168,14 +168,14 @@ void Material::Commands::setValue(ShaderParameter &setting, const GLchar* name)
             
         case ShaderParameter::Type::SAMPLER_2D:
         {
-            ShaderParameter::Sampler2D sampler = setting.getSampler2DValue();
-            result = SetParameterSampler2D(name, sampler);
+            Texture2D* texture = setting.getSampler2DValue();
+            result = SetParameterSampler2D(name, texture);
             break;
         }
         case ShaderParameter::Type::SAMPLER_3D:
         {
-            ShaderParameter::Sampler3D sampler = setting.getSampler3DValue();
-            result = SetParameterSampler3D(name, sampler);
+            Texture3D* texture = setting.getSampler3DValue();
+            result = SetParameterSampler3D(name, texture);
             break;
         }
         case ShaderParameter::Type::POINT_LIGHT:
@@ -248,15 +248,15 @@ GLint Material::Commands::SetParamatermat4(const GLchar* parameterName, const gl
     return location;
 }
 
-GLint Material::Commands::SetParameterSampler2D(const GLchar* parameterName, const ShaderParameter::Sampler2D& sampler)
+GLint Material::Commands::SetParameterSampler2D(const GLchar* parameterName, Texture2D* texture)
 {
-    GLint result = ActivateTexture2D(parameterName, sampler.texture->GetTextureID() , textureUnits);
+    GLint result = ActivateTexture2D(parameterName, texture->GetTextureID() , textureUnits);
     return result;
 }
 
-GLint Material::Commands::SetParameterSampler3D(const GLchar* parameterName, const ShaderParameter::Sampler3D& sampler)
+GLint Material::Commands::SetParameterSampler3D(const GLchar* parameterName, Texture3D* texture)
 {
-    GLint result = ActivateTexture3D(parameterName, sampler.texture->GetTextureID() , textureUnits);
+    GLint result = ActivateTexture3D(parameterName, texture->GetTextureID() , textureUnits);
     return result;
 }
 

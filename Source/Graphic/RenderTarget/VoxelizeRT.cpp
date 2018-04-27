@@ -131,18 +131,10 @@ void VoxelizeRT::voxelize(Scene& renderScene)
         
         static ShaderParameter::ShaderParamsGroup settings;
         setLightingParameters(settings, renderScene.pointLights);
-        
-        ShaderParameter::Sampler2D normalSampler;
-        ShaderParameter::Sampler2D albedoSampler;
-        ShaderParameter::Sampler2D depthSampler;
-        
-        depthSampler.texture = depthTexture;
-        albedoSampler.texture = albedoTexture;
-        normalSampler.texture = normalTexture;
 
-        settings["depthTexture"] = depthSampler;
-        settings["albedoTexture"] = albedoSampler;
-        settings["normalTexture"] = normalSampler;
+        settings["depthTexture"] = depthTexture;
+        settings["albedoTexture"] = albedoTexture;
+        settings["normalTexture"] = normalTexture;
         settings["numberOfLights"] = 1u;
         
         glm::mat4 toWorldSpace = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
@@ -173,11 +165,7 @@ void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
     static ShaderParameter::ShaderParamsGroup group;
     
     Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getDepthTexture());
-    //Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[layer]->getRenderTexture(1));
-    ShaderParameter::Sampler2D sampler;
-    sampler.texture = depthTexture;
-    
-    group["displayTexture"] = sampler;
+    group["displayTexture"] = depthTexture;
     
     Material::Commands matCommands(textureDisplayMat.get());
     matCommands.uploadParameters(group);
@@ -196,10 +184,10 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
     glm::mat4 MVP = orthoCamera.getProjectionMatrix() * orthoCamera.viewMatrix;
     bool firstRender = true;
     
-    ShaderParameter::Sampler2D sampler;
     Texture2D dummyTexture(true);
-    sampler.texture = firstRender ? &dummyTexture : static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
-    params["depthTexture"] = sampler;
+    Texture2D* texture = firstRender ? &dummyTexture : static_cast<Texture2D*>(depthFBOs[0]->getDepthTexture());
+
+    params["depthTexture"] = texture;
     
     Material::Commands depthPeelingCommands(depthPeelingMat.get());
     for(GLint i = 0; i < depthFBOs.size(); ++i)
@@ -230,8 +218,8 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
         }
         commands.end();
         firstRender = false;
-        sampler.texture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
-        params["depthTexture"] = sampler;
+        texture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
+        params["depthTexture"] = texture;
     }
 }
 

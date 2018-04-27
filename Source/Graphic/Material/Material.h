@@ -37,8 +37,8 @@ public:
         GLint SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
         GLint SetParameterf(const GLchar* parameterName, GLfloat const value);
         GLint SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
-        GLint SetParameterSampler2D(const GLchar* parameterName, const ShaderParameter::Sampler2D& sampler);
-        GLint SetParameterSampler3D(const GLchar* parameterName, const ShaderParameter::Sampler3D& sampler);
+        GLint SetParameterSampler2D(const GLchar* parameterName, Texture2D* sampler);
+        GLint SetParameterSampler3D(const GLchar* parameterName, Texture3D* sampler);
         GLint SetPointLight(const GLchar* parameterName,  const PointLight& light  );
         GLint SetMatrix(const GLchar* parameterName, const glm::mat4& mat);
         GLint SetParameterBool(const GLchar* parameterName, bool value);
