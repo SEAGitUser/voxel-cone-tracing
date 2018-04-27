@@ -41,7 +41,7 @@ The following is a screenshot of the indirect illumination:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/indirect-illumination.png">
 </a>
 
-The following is a screenshot fo teh full illumination:
+The following is a screenshot for the full illumination:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/full-illumination.png">
 </p>
 
