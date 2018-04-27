@@ -1,5 +1,4 @@
-Adapting work created by Fredrik Präntare for Mac OS X.  It is still under construction.  Most implemetations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done
-on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
+Adapting work created by Fredrik Präntare for Mac OS X.  Most implemetations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
 
 
 Voxel Cone Tracing For Mac OS (OpenGL 4.1)
@@ -30,7 +29,7 @@ Things left to do:
 * A fundamental problem with this implementation is that it is not in HDR.  The lighting equations are not restricted to values between 0 and 1, this causes a disconnect between the intention of how color should look like and how it actually displays.
 * Gamma correction.
 
-Screen Shots ( indirect illumination & ambient occlusion exagerated for illustration)
+Screen Shots
 ------
 
 <p align="center">
@@ -42,7 +41,7 @@ The following is a screenshot of the indirect illumination:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/indirect-illumination.png">
 </a>
 
-The following is a screenshot fo teh full illumination (exagerated for illustration purposes):
+The following is a screenshot fo teh full illumination:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/full-illumination.png">
 </p>
 
