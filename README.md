@@ -28,6 +28,7 @@ Things left to do:
 * Fredrik in his original implemenation had different cones such refraction and specular, computational resources permitting these could be added here as well
 * A fundamental problem with this implementation is that it is not in HDR.  The lighting equations are not restricted to values between 0 and 1, this causes a disconnect between the intention of how color should look like and how it actually displays.
 * Gamma correction.
+* Get rid of raw pointers and use smart pointers.
 
 Screen Shots
 ------
