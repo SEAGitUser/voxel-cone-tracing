@@ -23,7 +23,8 @@ Things left to do:
     - Do cone tracing on a smaller texture, then upsample this texture, and through deferred shading color indirect illumination
     - If the scene doesn't change, we shouldn't be updating the mipmaps
     - Use smaller data type sizes for the indirect illumination (i.e.: fixed point vs. floating point)
-    - Ultimately, the algorithm is very expensive, it's likely not possible to make it run in acceptable frame rates for a game on my MacBook Pro 2015 due to inherent drawbacks in the algorithm such as random sampling of 3D textures, this cannot be avoided unless caching is used, but this reduces the dynamic nature of this lighting technique. 
+    - Ultimately, the algorithm is very expensive, it's likely not possible to make it run in acceptable frame rates for a game on my MacBook Pro 2015 due to inherent drawbacks in the algorithm such as random sampling of 3D textures, this cannot be avoided unless caching is used, but this reduces the dynamic nature of this lighting technique.
+    - Run Apple's Performance Tools
     
 * Fredrik in his original implemenation had different cones such refraction and specular, computational resources permitting these could be added here as well
 * A fundamental problem with this implementation is that it is not in HDR.  The lighting equations are not restricted to values between 0 and 1, this causes a disconnect between the intention of how color should look like and how it actually displays.
