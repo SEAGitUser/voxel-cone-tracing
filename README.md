@@ -1,7 +1,7 @@
 Adapting work created by Fredrik Präntare for Mac OS X.  Most implemetations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
 
 
-Voxel Cone Tracing For Mac OS (OpenGL 4.1)
+Voxel Cone Tracing For Mac OS X (OpenGL 4.1)
 --------------
 
 Improvements vs previous implementation:
@@ -23,11 +23,29 @@ Things left to do:
     - Do cone tracing on a smaller texture, then upsample this texture, and through deferred shading color indirect illumination
     - If the scene doesn't change, we shouldn't be updating the mipmaps
     - Use smaller data type sizes for the indirect illumination (i.e.: fixed point vs. floating point)
-    - Ultimately, the algorithm is very expensive, it's likely not possible to make it run in acceptable frame rates for a game on my MacBook Pro 2015 due to inherent drawbacks in the algorithm such as random sampling of 3D textures, this cannot be avoided unless caching is used, but this reduces the dynamic nature of this lighting technique. 
+    - Ultimately, the algorithm is very expensive, it's likely not possible to make it run in acceptable frame rates for a game on my MacBook Pro 2015 due to inherent drawbacks in the algorithm such as random sampling of 3D textures, this cannot be avoided unless caching is used, but this reduces the dynamic nature of this lighting technique.
+    - Run Apple's Performance Tools
     
 * Fredrik in his original implemenation had different cones such refraction and specular, computational resources permitting these could be added here as well
 * A fundamental problem with this implementation is that it is not in HDR.  The lighting equations are not restricted to values between 0 and 1, this causes a disconnect between the intention of how color should look like and how it actually displays.
 * Gamma correction.
+* Get rid of raw pointers and use smart pointers.
+
+
+Build Requirements
+-------
+
+* Project is always developed on the latest Mac OS X build, make sure you are up to date. 
+
+* Install the latest Xcode build, download from the app store: https://itunes.apple.com/us/app/xcode/id497799835?mt=12
+
+* Once you have Xcode, you'll want to install FreeType on your Mac.  This library is used to render text to screen:
+
+    - Download FreeType 2.9: https://sourceforge.net/projects/freetype/files/freetype2/2.9/ and unzip the file. 
+    - In Finder, go to your Downloads folder and double click the freetype-2.8.1.tar.gz file to unpack it into a folder named ‘freetype-2.9.1’. Move that folder now into the src folder you created in your Home folder.
+    - Open Terminal.app, type `cd ~/Downloads/freetype-2.9` and press the return key. Continue with `./configure` and press the return key again. You will see a bunch of text rolling through the Terminal app. 
+    - When it is done, type `make` and press the return key to see more text rolling through.
+    - When it is done, type `sudo make install` and press the return key. Enter your Mac login password, then press the return key again.
 
 Screen Shots
 ------
