@@ -178,7 +178,7 @@ float getVariance(float distance)
 //section 7 and 8.1 of the paper
 vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
 {
-    uint minimuLOD = 3u;
+    uint minimuLOD = 4u;
     vec3 avgNormal =  getLODColor(j, normalLODColors, minimuLOD).xyz;
     vec3 sampleFromLOD = getLODColor(j, albedoLODColors, minimuLOD).xyz;
     vec3 result = vec3(0.0f);
@@ -212,13 +212,13 @@ vec3 indirectIllumination( vec3 geometryNormal,  float j, vec3 samplingPos)
         vec3 h = view;
         float ndoth = clamp(dot(up, h), 0.0f, 1.0f);
         //todo: we need a specular map where this power comes from, for now it is constant
-        float s = .0005f;
+        float s = .005f;
         float gloss = toksvigFactor(avgNormal, s);
         
         float p = s * gloss;
         float spec = pow(ndoth, p)* (1 + gloss*s)/(1 + s);
         
-        float ndotl = dot(up, lightDirection);
+        float ndotl = clamp(dot(up, lightDirection), 0.0f, 1.0f);
         result =  (sampleFromLOD + sampleFromLOD * spec)  * ndotl * gloss ;
     }
     return result;

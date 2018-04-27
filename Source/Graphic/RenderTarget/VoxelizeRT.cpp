@@ -112,6 +112,7 @@ void VoxelizeRT::initDepthPeelingBuffers(Texture::Dimensions& dimensions, Textur
     initDepthBuffer(3, dimensions, properties);
     initDepthBuffer(4, dimensions, properties);
     initDepthBuffer(5, dimensions, properties);
+    initDepthBuffer(6, dimensions, properties);
 }
 
 void VoxelizeRT::voxelize(Scene& renderScene)

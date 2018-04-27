@@ -196,7 +196,7 @@ void VoxelConeTracingRT::setCameraParameters(ShaderParameter::ShaderParamsGroup&
 void VoxelConeTracingRT::setConeApertureAndVariances(ShaderParameter::ShaderParamsGroup& params)
 {
     static const float PI = 3.14159265359f;
-    static float apertureInDegrees = 3.0f;
+    static float apertureInDegrees = .50f;
     
     float radians = apertureInDegrees * (PI/180.0f);
     float initialApertureInRadians = radians;
