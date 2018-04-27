@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Transform.h"
-#include "Utility/External/tiny_obj_loader.h"
+#include "Utility/External/tiny_obj/tiny_obj_loader.h"
 #include "Graphic/Material/Material.h"
 #include "Shape/Transform.h"
 #include "Graphic/Material/Voxelization/VoxelizationMaterial.h"

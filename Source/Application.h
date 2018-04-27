@@ -3,6 +3,10 @@
 #pragma once
 
 #include "Graphic/Graphics.h"
+#include <string>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 class Scene;
 class PointLight;
@@ -75,6 +79,12 @@ private:
 
     std::vector<MeshRenderer*> tweakableRenderers;
     PointLight * tweakablePointLight = nullptr;
+    
+    void initFreeType();
+    FT_Library ft;
+    FT_Face face;
+    
+    void printText(int x, int y, int font, std::string &str);
     
     // --- Other ---
     int previous_state_x, previous_state_z; // For testing.

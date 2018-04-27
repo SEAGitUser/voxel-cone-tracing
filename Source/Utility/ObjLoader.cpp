@@ -19,7 +19,7 @@
 
 
 
-#include "External/tiny_obj_loader.h"
+#include "External/tiny_obj/tiny_obj_loader.h"
 #include "Shape/VertexData.h"
 #include "Shape/Mesh.h"
 

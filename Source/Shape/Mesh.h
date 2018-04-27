@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Primitive.h"
-#include "Utility/External/tiny_obj_loader.h"
+#include "Utility/External/tiny_obj/tiny_obj_loader.h"
 #include "Shape/Transform.h"
 #include "Graphic/Material/Voxelization/VoxelizationConeTracingMaterial.h"
 

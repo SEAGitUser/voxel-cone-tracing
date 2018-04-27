@@ -28,9 +28,21 @@ Application & Application::getInstance() {
 	return application;
 }
 
+
+void Application::initFreeType()
+{
+    int result = FT_Init_FreeType(&ft);
+    assert(result == 0 && "FreeType Library failed to initialize");
+
+    result = FT_New_Face(ft, "/Library/Fonts/Devanagari Sangam MN.ttc", 0, &face);
+    assert(result == 0 && "FreeType font not found");
+    FT_Set_Pixel_Sizes(face, 0, 48);
+    
+}
 void Application::init() {
 	std::cout << "Initialization started." << std::endl;
 
+    initFreeType();
 	// -------------------------------------
 	// Initialize GLFW.
 	// -------------------------------------
@@ -206,6 +218,7 @@ void Application::run()
 		}
 #endif
 
+        
 		// Swap front and back buffers.
 		if (!paused)
             glfwSwapBuffers(currentWindow);

@@ -60,16 +60,16 @@ void Logger::print(glm::vec4& vector)
 
 #else
 
-void Logger::printMatrix(glm::mat4& matrix)
+void Logger::print(glm::mat4& matrix)
 {}
 
-void Logger::printVector(glm::vec2& vector)
+void Logger::print(glm::vec2& vector)
 {}
 
-void Logger::printVector(glm::vec3& vector)
+void Logger::print(glm::vec3& vector)
 {}
 
-void Logger::printVector(glm::vec4& vector)
+void Logger::print(glm::vec4& vector)
 {}
 
 void Logger::print(glm::mat3& matrix)
