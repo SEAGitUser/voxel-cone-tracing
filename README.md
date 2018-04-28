@@ -10,6 +10,7 @@ Voxel Cone Tracing For Mac OS X (OpenGL 4.1)
 --------------
 
 Improvements vs previous implementation:
+* Added Retina support
 * Geometry is no longer bound to a box of size between -1 and 1 in all 3 axis, world can be arbitrarily large.
 * Lowered the required OpenGL version from 4.5 to 4.1 ( The voxel paper calls out OpenGL extensions not supported in 4.1)
     - Implemented 3D rendering using geometry shaders, previously it was being done with image load/store OpenGL extensions not supported in 4.1
