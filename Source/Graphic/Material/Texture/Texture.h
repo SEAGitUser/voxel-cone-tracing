@@ -29,6 +29,8 @@ public:
         virtual void end();
         virtual void enableMipMaps() = 0;
         virtual void allocateOnGPU() = 0;
+        void unpackAlignment(GLuint alignment);
+        
         
         void deleteTexture();
         virtual ~Commands();
@@ -123,6 +125,7 @@ public:
     inline void SetMinFilter(GLuint _minFilter){ minFilter = _minFilter; }
     inline void SetMagFilter(GLuint _magFilter){ magFilter = _magFilter; }
     inline void SetDataType(GLuint _type){ dataType = _type; }
+    inline void SetBuffer(unsigned char* buffer){ textureBuffer = buffer; } 
     
     inline GLint  GetTextureID() const { return textureID; }
     
@@ -132,6 +135,8 @@ public:
     }
     
 protected:
+    
+    unsigned char * textureBuffer = nullptr;
     
     static const GLuint INVALID_TEXTURE = 0;
     static const GLsizei levels = 7;

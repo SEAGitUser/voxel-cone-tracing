@@ -84,5 +84,5 @@ private:
     std::vector< std::shared_ptr<Texture3D> > albedoMipMaps;
     std::vector< std::shared_ptr<Texture3D> > normalMipMaps;
     
-    std::array<std::shared_ptr<FBO_2D>, 7> depthFBOs {nullptr, nullptr, nullptr, nullptr};
+    std::array<std::shared_ptr<FBO_2D>, 5> depthFBOs {nullptr, nullptr, nullptr, nullptr};
 };

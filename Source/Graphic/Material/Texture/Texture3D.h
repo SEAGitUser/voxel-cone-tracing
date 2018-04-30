@@ -63,9 +63,6 @@ public:
     
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
     
-public:
-    unsigned char * textureBuffer = nullptr;
-    
     
 private:
 

@@ -74,7 +74,7 @@ Texture2D::~Texture2D()
 
 
 ///Commands
-Texture2D::Commands::Commands(Texture2D* _texture, GLuint textureUnit):
+Texture2D::Commands::Commands(Texture2D* _texture):
 Texture::Commands(_texture)
 {
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
@@ -85,8 +85,8 @@ Texture::Commands(_texture)
         glGenTextures(1, &texture->textureID);
     }
     
-    assert((GL_TEXTURE0 + textureUnit) < GL_ACTIVE_TEXTURE);
-    glActiveTexture(GL_TEXTURE0 + textureUnit);
+//    assert((GL_TEXTURE0 + textureUnit) < GL_ACTIVE_TEXTURE);
+//    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, texture->textureID);
 }
 
@@ -121,7 +121,7 @@ void Texture2D::Commands::allocateOnGPU()
 {
     static const GLint border = 0;
     GLint format = texture->pixelFormat == GL_DEPTH_COMPONENT32 ? GL_DEPTH_COMPONENT : texture->pixelFormat;
-    glTexImage2D(GL_TEXTURE_2D, 0, texture->pixelFormat, texture->width, texture->height, border, format , texture->dataType , nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, texture->pixelFormat, texture->width, texture->height, border, format , texture->dataType , &texture->textureBuffer[0]);
     glError();
 }
 

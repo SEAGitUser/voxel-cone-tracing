@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B91435372093C6BE00EB828D /* tiny_obj_loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B91435352093C6BE00EB828D /* tiny_obj_loader.cpp */; };
 		B9143AAE2093E31A00EB828D /* libfreetype.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B9143AAD2093E31A00EB828D /* libfreetype.6.dylib */; };
+		B9143AB42094299200EB828D /* TextQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9143AB22094299200EB828D /* TextQuad.cpp */; };
 		B92071512071F737002AB489 /* CornellBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B920714F2071F737002AB489 /* CornellBox.cpp */; };
 		B948EB0620772AB5008A413E /* VoxelConeTracingRT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B948EB0420772AB5008A413E /* VoxelConeTracingRT.cpp */; };
 		B94FF5A4207DE18500501014 /* Compute Shaders in Resources */ = {isa = PBXBuildFile; fileRef = B94FF5A3207DE18500501014 /* Compute Shaders */; };
@@ -91,6 +92,8 @@
 		B9143AA92093E20800EB828D /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.dylib; path = "../../Source/Utility/External/freetype-2.9/objs/libfreetype.6.dylib"; sourceTree = "<group>"; };
 		B9143AAB2093E24400EB828D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../Source/Utility/External/freetype-2.9/objs/libfreetype.a"; sourceTree = "<group>"; };
 		B9143AAD2093E31A00EB828D /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.dylib; path = ../../Libraries/Mac/Debug/libfreetype.6.dylib; sourceTree = "<group>"; };
+		B9143AB22094299200EB828D /* TextQuad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TextQuad.cpp; sourceTree = "<group>"; };
+		B9143AB32094299200EB828D /* TextQuad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextQuad.h; sourceTree = "<group>"; };
 		B920714F2071F737002AB489 /* CornellBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CornellBox.cpp; sourceTree = "<group>"; };
 		B92071502071F737002AB489 /* CornellBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CornellBox.h; sourceTree = "<group>"; };
 		B948EB0420772AB5008A413E /* VoxelConeTracingRT.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelConeTracingRT.cpp; sourceTree = "<group>"; };
@@ -592,6 +595,8 @@
 				B9BEA33D206E267D00D4E6F3 /* ScreenQuad.h */,
 				B920714F2071F737002AB489 /* CornellBox.cpp */,
 				B92071502071F737002AB489 /* CornellBox.h */,
+				B9143AB22094299200EB828D /* TextQuad.cpp */,
+				B9143AB32094299200EB828D /* TextQuad.h */,
 			);
 			path = Shape;
 			sourceTree = "<group>";
@@ -1300,6 +1305,7 @@
 				B98CE6B92027A25D00B45558 /* Application.cpp in Sources */,
 				B98CE6AB2027A25D00B45558 /* Resource.cpp in Sources */,
 				B98CE6B82027A25D00B45558 /* VoxelizeRT.cpp in Sources */,
+				B9143AB42094299200EB828D /* TextQuad.cpp in Sources */,
 				B996F71F205A45C300C8D62D /* Primitive.cpp in Sources */,
 				B91435372093C6BE00EB828D /* tiny_obj_loader.cpp in Sources */,
 				B98CE6AC2027A25D00B45558 /* VoxelizationConeTracingMaterial.cpp in Sources */,

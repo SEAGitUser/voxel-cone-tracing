@@ -45,16 +45,16 @@ void GlassScene::init(unsigned int viewportWidth, unsigned int viewportHeight) {
     lightCube->defaultVoxProperties = VoxProperties::White();
     // Buddha.
     int buddhaIndex = renderers.size();
-    buddha = ObjLoader::loadShapeFromObj("/Assets/Models/buddha.obj");
+    buddha = ObjLoader::loadShapeFromObj("/Assets/Models/dragon.obj");
     shapes.push_back(buddha);
     for (unsigned int i = 0; i < buddha->meshes.size(); ++i) {
         renderers.push_back(((buddha->meshes[i])));
     }
     
     buddhaRenderer = renderers[buddhaIndex];
-    buddha->transform.scale = glm::vec3(1.8f);
+    buddha->transform.scale = glm::vec3(1.6f);
     buddha->transform.rotation = glm::vec3(0, 2.4, 0);
-    buddha->transform.position = glm::vec3(0, -0.13, 0.05);
+    buddha->transform.position = glm::vec3(0, -0.5, 0.05);
     buddha->transform.updateTransformMatrix();
     buddhaRenderer->tweakable = true;
     buddhaRenderer->name = "Buddha";

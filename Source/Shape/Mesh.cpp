@@ -90,7 +90,6 @@ void Mesh::render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Mater
 {
     if(enabled)
     {
-        //commands->uploadParameters(group, scene);
         commands->uploadParameters(group);
         Mesh::Commands meshCommands(this);
         meshCommands.render();

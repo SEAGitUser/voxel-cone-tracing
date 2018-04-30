@@ -3,6 +3,71 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "TextQuad::Commands::uploadGPUVertexSubData():TextQuad.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "textQuad-&gt;vertexData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::Commands(Mesh*):Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "ShaderParameter::operator=(glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;):ShaderParameter.h">
+      </ContextState>
+      <ContextState
+         contextName = "Graphics::init(unsigned int, unsigned int):Graphics.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::render():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshRenderer::setupMeshRenderer():MeshRenderer.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Primitive::Commands::Commands(Primitive*):Primitive.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "TextQuad::loadTextures():TextQuad.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "face-&gt;glyph-&gt;bitmap.rows">
+            </PersistentString>
+            <PersistentString
+               value = "face-&gt;glyph-&gt;bitmap.width">
+            </PersistentString>
+            <PersistentString
+               value = "face-&gt;glyph-&gt;bitmap.buffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::uploadIndexDataToGPU():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshRenderer::renderMesh():MeshRenderer.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "VoxelConeTracingRT::setConeApertureParams(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;):VoxelConeTracingRT.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "albedoMipMaps.size()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Primitive::Commands::initBuffers():Primitive.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Texture2D::Commands::allocateOnGPU():Texture2D.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "texture-&gt;textureBuffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "FBO::Activate():FBO.cpp">
          <PersistentStrings>
             <PersistentString
@@ -11,29 +76,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Mesh::Commands::initBuffers():Mesh.cpp">
+         contextName = "Primitive::Commands::uploadGPUVertexData():Primitive.cpp">
       </ContextState>
       <ContextState
-         contextName = "VoxelizeRT::voxelize(Scene&amp;):VoxelizeRT.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "renderingQueue[i]-&gt;name">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Scene::~Scene():Scene.h">
-         <PersistentStrings>
-            <PersistentString
-               value = "renderingCamera">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Primitive::Commands::Commands(Primitive*):Primitive.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "FBO::Commands::Commands(FBO*):FBO.cpp">
+         contextName = "FBO::InitCommands():FBO.cpp">
       </ContextState>
       <ContextState
          contextName = "FBO::Commands::init(FBO*):FBO.cpp">
@@ -44,13 +90,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Primitive::Commands::uploadGPUVertexData():Primitive.cpp">
+         contextName = "FBO_3D::AddRenderTarget():FBO_3D.cpp">
       </ContextState>
       <ContextState
-         contextName = "VoxelConeTracingRT::setConeApertureParams(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;):VoxelConeTracingRT.cpp">
+         contextName = "Scene::~Scene():Scene.h">
          <PersistentStrings>
             <PersistentString
-               value = "albedoMipMaps.size()">
+               value = "renderingCamera">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -66,10 +112,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MeshRenderer::setupMeshRenderer():MeshRenderer.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "FBO::InitCommands():FBO.cpp">
+         contextName = "Material::Commands::setValue(ShaderParameter&amp;, char const*):Material.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "name">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "Texture3D::Commands::allocateOnGPU():Texture3D.cpp">
@@ -80,55 +128,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Texture3D::Clear():Texture3D.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "levels">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "Material::Commands::uploadParameters(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;):Material.cpp">
       </ContextState>
       <ContextState
-         contextName = "Shader::Shader(char const*, Shader::ShaderType):Shader.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "Resource::resourceRoot">
-            </PersistentString>
-            <PersistentString
-               value = "Shader::shaderResourcePath ">
-            </PersistentString>
-            <PersistentString
-               value = "shaderResourcePath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Mesh::Commands::Commands(Mesh*):Mesh.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "Mesh::Commands::render():Mesh.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "Material::Commands::setValue(ShaderParameter&amp;, char const*):Material.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "name">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "VoxelizeRT::VoxelizeRT():VoxelizeRT.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "Primitive::Commands::initBuffers():Primitive.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "Graphics::init(unsigned int, unsigned int):Graphics.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "FBO_3D::AddRenderTarget():FBO_3D.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "Mesh::Commands::uploadIndexDataToGPU():Mesh.cpp">
+         contextName = "MeshRenderer::reuploadIndexDataToGPU():MeshRenderer.cpp">
       </ContextState>
       <ContextState
          contextName = "VoxelConeTracingRT::setLightingParameters(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;, std::__1::vector&lt;PointLight, std::__1::allocator&lt;PointLight&gt; &gt;&amp;):VoxelConeTracingRT.cpp">
@@ -145,13 +148,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Material::Commands::uploadParameters(std::__1::unordered_map&lt;char const*, ShaderParameter, std::__1::hash&lt;char const*&gt;, std::__1::equal_to&lt;char const*&gt;, std::__1::allocator&lt;std::__1::pair&lt;char const* const, ShaderParameter&gt; &gt; &gt;&amp;):Material.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "ShaderParameter::operator=(glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;):ShaderParameter.h">
-      </ContextState>
-      <ContextState
-         contextName = "MeshRenderer::reuploadIndexDataToGPU():MeshRenderer.cpp">
+         contextName = "FBO::Commands::Commands(FBO*):FBO.cpp">
       </ContextState>
       <ContextState
          contextName = "Material::setValue(ShaderParameter&amp;, char const*):Material.cpp">
@@ -162,7 +159,45 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MeshRenderer::renderMesh():MeshRenderer.cpp">
+         contextName = "Shader::Shader(char const*, Shader::ShaderType):Shader.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "Resource::resourceRoot">
+            </PersistentString>
+            <PersistentString
+               value = "shaderResourcePath">
+            </PersistentString>
+            <PersistentString
+               value = "Shader::shaderResourcePath ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "VoxelizeRT::voxelize(Scene&amp;):VoxelizeRT.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "renderingQueue[i]-&gt;name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Mesh::Commands::initBuffers():Mesh.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Texture3D::Clear():Texture3D.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "levels">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TextQuad::Commands::uploadGPUVertexData():TextQuad.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "textQuad-&gt;vbo">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "Primitive::Commands::uploadGPUIndexData():Primitive.cpp">
@@ -171,6 +206,9 @@
                value = "primitive-&gt;indices">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "VoxelizeRT::VoxelizeRT():VoxelizeRT.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -23,6 +23,7 @@ public:
     {
     public:
         explicit Commands(Primitive* primitive);
+        Commands(){};
         virtual void render();
         virtual void end();
         
@@ -47,9 +48,8 @@ public:
     
     Primitive():vao(0), vbo(0), ebo(0){}
     
-public:
-    bool staticMesh = true;
 protected:
+    bool staticMesh = true;
     GLuint vao;
     GLuint vbo, ebo; // Vertex Buffer Object, Vertex Array Object, Element Buffer Object.
     std::vector<VertexData> vertexData;

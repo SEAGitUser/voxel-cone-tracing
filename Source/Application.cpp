@@ -14,8 +14,9 @@
 #include "Graphic/Graphics.h"
 #include "Graphic/Material/MaterialStore.h"
 #include "Time/FrameRate.h"
+#include "Shape/TextQuad.h"
 
-#define __LOG_INTERVAL 0 /* How often we should log frame rate info to the console. = 0 means don't log. */
+#define __LOG_INTERVAL 1 /* How often we should log frame rate info to the console. = 0 means don't log. */
 #if __LOG_INTERVAL > 0
 constexpr float __LOG_INTERVAL_TIME_GUARD = 1.0f;
 #endif
@@ -28,21 +29,9 @@ Application & Application::getInstance() {
 	return application;
 }
 
-
-void Application::initFreeType()
-{
-    int result = FT_Init_FreeType(&ft);
-    assert(result == 0 && "FreeType Library failed to initialize");
-
-    result = FT_New_Face(ft, "/Library/Fonts/Devanagari Sangam MN.ttc", 0, &face);
-    assert(result == 0 && "FreeType font not found");
-    FT_Set_Pixel_Sizes(face, 0, 48);
-    
-}
 void Application::init() {
 	std::cout << "Initialization started." << std::endl;
 
-    initFreeType();
 	// -------------------------------------
 	// Initialize GLFW.
 	// -------------------------------------
@@ -146,6 +135,9 @@ void Application::init() {
 	glfwSetTime(0);
 
 	std::cout << "Using OpenGL version " << glGetString(GL_VERSION) << std::endl;
+    
+    glm::vec2 dimensions( w, h);
+    text = new TextQuad(dimensions);
 }
 
 
@@ -164,6 +156,7 @@ void Application::run()
 	double timestampLog = 0;
 #endif
 
+    std::string frameRate = "";
 	// Start the update loop.
 	while (!glfwWindowShouldClose(currentWindow) && !exitQueued)
 	{
@@ -219,44 +212,39 @@ void Application::run()
 #endif
 
         
+        // Update frame count.
+        FrameRate::frameCount++;
+        smoothedDeltaTimeAccumulator += FrameRate::deltaTime;
+        
+        // Update smoothed delta time.
+        if (FrameRate::smoothedDeltaTimeFrameCount > 0 && FrameRate::frameCount % FrameRate::smoothedDeltaTimeFrameCount == 0) {
+            FrameRate::smoothedDeltaTime = smoothedDeltaTimeAccumulator / FrameRate::smoothedDeltaTimeFrameCount;
+            smoothedDeltaTimeAccumulator = 0;
+        }
+        
+        glError();
+        
+        char buf[100];
+        float f = floorf(FrameRate::framesPerSecond * 100.0f)/100.0f;
+        static std::string frameRate;
+        
+        std::sprintf(buf, "Frame Rate: %.2f", f);
+        
+        frameRate = buf;
+        glm::vec2 pos(50.0f, 50.0f);
+        text->setScale(.5f);
+        text->print(frameRate, pos);
+        
 		// Swap front and back buffers.
 		if (!paused)
             glfwSwapBuffers(currentWindow);
 
 		// Poll for and process events.
 		glfwPollEvents();
-
-		// Update frame count.
-		FrameRate::frameCount++;
-		smoothedDeltaTimeAccumulator += FrameRate::deltaTime;
-
-		// Update smoothed delta time.
-		if (FrameRate::smoothedDeltaTimeFrameCount > 0 && FrameRate::frameCount % FrameRate::smoothedDeltaTimeFrameCount == 0) {
-			FrameRate::smoothedDeltaTime = smoothedDeltaTimeAccumulator / FrameRate::smoothedDeltaTimeFrameCount;
-			smoothedDeltaTimeAccumulator = 0;
-		}
-
-#if __LOG_INTERVAL > 0
-		{
-			using namespace std;
-			timestampLog += Time::deltaTime;
-			if (Time::frameCount % __LOG_INTERVAL == 0 && timestampLog > __LOG_INTERVAL_TIME_GUARD) {
-				cout << endl;
-				cout << setprecision(8) << fixed << "State: " << state << ", update average time: " << updateCost / __LOG_INTERVAL << ", render average time: " << renderCost / __LOG_INTERVAL << endl;
-				cout << setprecision(1) << fixed << "FPS: " << Time::framesPerSecond << " smoothed " << 1.0f / Time::smoothedDeltaTime << setprecision(4) << ", delta: " << Time::deltaTime << ", frame count: " << Time::frameCount << ", smooth delta: " << Time::smoothedDeltaTime << endl;
-				updateCost = 0;
-				renderCost = 0;
-				cout << flush;
-				timestampLog = 0;
-			}
-		}
-#endif
 	}
 
-	// Clean up and exit.
 	glfwDestroyWindow(currentWindow);
 	glfwTerminate();
-	// TwTerminate();
 	std::cout << "Application has now terminated." << std::endl;
 }
 
@@ -312,6 +300,7 @@ void Application::SetWindowMode(int quadWidth, int quadHeight, bool fullscreen =
 
 Application::~Application() {
 	delete scene;
+    delete text;
 }
 
 Application::Application() : exitQueued(false) {

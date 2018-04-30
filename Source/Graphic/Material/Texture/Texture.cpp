@@ -38,3 +38,8 @@ void Texture::Commands::deleteTexture()
 {
     glDeleteTextures(1, &tex->textureID);
 }
+
+void Texture::Commands::unpackAlignment(GLuint alignment)
+{
+    glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
+}

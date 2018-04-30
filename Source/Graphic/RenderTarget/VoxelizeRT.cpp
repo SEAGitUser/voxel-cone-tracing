@@ -106,13 +106,10 @@ void VoxelizeRT::initDepthBuffer(int index, Texture::Dimensions &dimensions, Tex
 
 void VoxelizeRT::initDepthPeelingBuffers(Texture::Dimensions& dimensions, Texture::Properties& properties)
 {
-    initDepthBuffer(0, dimensions, properties);
-    initDepthBuffer(1, dimensions, properties);
-    initDepthBuffer(2, dimensions, properties);
-    initDepthBuffer(3, dimensions, properties);
-    initDepthBuffer(4, dimensions, properties);
-    initDepthBuffer(5, dimensions, properties);
-    initDepthBuffer(6, dimensions, properties);
+    for(int i = 0; i < depthFBOs.size();++i)
+    {
+        initDepthBuffer(i, dimensions, properties);
+    }
 }
 
 void VoxelizeRT::voxelize(Scene& renderScene)

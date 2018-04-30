@@ -21,7 +21,7 @@ public:
     
     void render(Scene& renderScene, Transform &transform);
     void render(Scene& scene, ShaderParameter::ShaderParamsGroup& group, Material::Commands* commands);
-    void render(ShaderParameter::ShaderParamsGroup& group, Material::Commands& commands);
+    virtual void render(ShaderParameter::ShaderParamsGroup& group, Material::Commands& commands);
     
     Mesh(const tinyobj::shape_t& shape);
     Mesh();
@@ -37,9 +37,9 @@ public:
     
 protected:
     void render();
+    virtual void setupMeshRenderer();
     
 private:
-    void setupMeshRenderer();
     Mesh(Mesh& mesh);
 private:
 	static GLuint idCounter;

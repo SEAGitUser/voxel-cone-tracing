@@ -49,7 +49,6 @@ void Primitive::Commands::uploadGPURenderingData()
 {
     uploadGPUVertexData();
     uploadGPUIndexData();
-    glError();
 }
 
 

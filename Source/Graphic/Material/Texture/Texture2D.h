@@ -14,7 +14,7 @@ public:
     class Commands: public Texture::Commands
     {
     public:
-        Commands(Texture2D* texture, GLuint textureUnit = 0);
+        Commands(Texture2D* texture);
         void setWrapMode(GLuint wrap) override;
         void setMinFiltering(GLuint filter) override;
         void setMagFiltering(GLuint filter) override;

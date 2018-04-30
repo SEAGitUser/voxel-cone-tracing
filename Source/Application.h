@@ -5,9 +5,7 @@
 #include "Graphic/Graphics.h"
 #include <string>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
+class TextQuad;
 class Scene;
 class PointLight;
 class MeshRenderer;
@@ -80,10 +78,6 @@ private:
     std::vector<MeshRenderer*> tweakableRenderers;
     PointLight * tweakablePointLight = nullptr;
     
-    void initFreeType();
-    FT_Library ft;
-    FT_Face face;
-    
     void printText(int x, int y, int font, std::string &str);
     
     // --- Other ---
@@ -92,4 +86,6 @@ private:
     bool initialized = false;
     Application(); // Make sure constructor is private to prevent instantiating outside of singleton pattern.
     static void OnWindowResize(GLFWwindow * window, int quadWidth, int quadHeight);
+    
+    TextQuad* text = nullptr;
 };
