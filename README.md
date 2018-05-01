@@ -28,7 +28,7 @@ Things left to do:
     - Full deferred rendering could be used to speed up frame rates.
     - Do cone tracing on a smaller texture, then upsample this texture, and through deferred shading color indirect illumination
     - If the scene doesn't change, we shouldn't be updating the mipmaps
-    - Use smaller data type sizes for the indirect illumination (i.e.: fixed point vs. floating point)
+    - Use faster data types for the indirect illumination (i.e.: fixed point vs. floating point)
     - Don't update voxel textures every frame, depending on how fast things move, every 3 or 4 frames might be enough.
     - Ultimately, the algorithm is very expensive, it's likely not possible to make it run in acceptable frame rates for a game on my MacBook Pro 2015 due to inherent drawbacks in the algorithm such as unpredictable sampling of 3D textures, this cannot be avoided unless caching is used, but this reduces the dynamic nature of this lighting technique.
     
