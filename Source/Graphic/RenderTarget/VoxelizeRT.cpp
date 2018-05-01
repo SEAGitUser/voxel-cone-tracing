@@ -271,7 +271,7 @@ void VoxelizeRT::Render(Scene& renderScene)
     orthoCamera.updateViewMatrix();
 
     fillUpVoxelTexture(renderScene);
-    
+
 
     //from z plane
     orthoCamera.position = glm::vec3(0.0f, .0f, 1.5f);
@@ -280,7 +280,7 @@ void VoxelizeRT::Render(Scene& renderScene)
     orthoCamera.updateViewMatrix();
 
     fillUpVoxelTexture(renderScene);
-    
+
     //from x plane
     orthoCamera.position = glm::vec3(1.5f, .0f, 0.f);
     orthoCamera.forward =  glm::vec3(-1.0f, 0.0f, .0f);
@@ -288,10 +288,9 @@ void VoxelizeRT::Render(Scene& renderScene)
     orthoCamera.updateViewMatrix();
 
     fillUpVoxelTexture(renderScene);
-    
+
     generateMipMaps();
 
-    glError();
 }
 
 VoxelizeRT::~VoxelizeRT()

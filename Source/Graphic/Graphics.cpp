@@ -54,13 +54,13 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
 {
     voxelizeRenderTarget->Render(renderingScene);
 
-	switch (renderingMode) {
-	case RenderingMode::VOXELIZATION_VISUALIZATION:
+    switch (renderingMode) {
+    case RenderingMode::VOXELIZATION_VISUALIZATION:
         voxVisualizationRT->Render(renderingScene);
-		break;
-	case RenderingMode::VOXEL_CONE_TRACING:
+        break;
+    case RenderingMode::VOXEL_CONE_TRACING:
         voxConeTracingRT->Render(renderingScene);
-		break;
+        break;
     case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_0:
         voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 0);
         break;
@@ -73,7 +73,7 @@ void Graphics::render(Scene & renderingScene, unsigned int viewportWidth, unsign
     case RenderingMode::ORTHOGRAPHIC_DEPTH_BUFFER_LAYER_3:
         voxelizeRenderTarget->presentOrthographicDepth(renderingScene, 3);
         break;
-	}
+    }
     
 }
 

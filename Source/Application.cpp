@@ -99,9 +99,9 @@ void Application::init() {
 	int w, h;
 	glfwGetWindowSize(currentWindow, &w, &h);
 	MaterialStore::getInstance(); // Initialize material store.
-    glError();
+
     graphics.init(w, h);
-    glError();
+
 	glfwSetWindowSizeCallback(currentWindow, Application::OnWindowResize);
 	glfwSwapInterval(DEFAULT_VSYNC); // vSync.
 	std::cout << "[2] : Graphics initialized." << std::endl;

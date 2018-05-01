@@ -319,24 +319,29 @@ void ComputeShader::aquireResources()
         image_objects[i] = element.second;
         ++i;
     }
-    cl_event opengl_get_completion;
-    GLint err = clEnqueueAcquireGLObjects(command_queue, i, image_objects, 0,0, &opengl_get_completion);
-    clWaitForEvents(1, &opengl_get_completion);
+    //removing wait event beause it doesn't seem to have any effect...
+    //cl_event opengl_get_completion;
+    GLint err = clEnqueueAcquireGLObjects(command_queue, i, image_objects, 0,0, /*&opengl_get_completion*/0);
+    //clWaitForEvents(1, &opengl_get_completion);
+    //clReleaseEvent(opengl_get_completion);
     assert(err == CL_SUCCESS);
 }
 
 void ComputeShader::releaseResources()
 {
     int i = 0;
+    cl_image image_objects[MAX_IMAGES];
     for( std::pair<int, cl_image> element : argument_images)
     {
         image_objects[i] = element.second;
         ++i;
     }
-    cl_event opengl_get_completion;
-    int size = (int)argument_images.size();
-    GLint err = clEnqueueReleaseGLObjects(command_queue, size, image_objects, 0,0, &opengl_get_completion);
-    clWaitForEvents(1, &opengl_get_completion);
+    
+    //removing the event wait here because it has no effect on anything... is not necessary.
+    //cl_event opengl_get_completion;
+    GLint err = clEnqueueReleaseGLObjects(command_queue, i, image_objects, 0,0, /*&opengl_get_completion*/ 0);
+    //clWaitForEvents(1, &opengl_get_completion);
+    //clReleaseEvent(opengl_get_completion);
     assert(err == CL_SUCCESS);
 }
 
@@ -359,9 +364,11 @@ void ComputeShader::run()
 ComputeShader::~ComputeShader()
 {
     if(dispatch_queue)
-    {
         dispatch_release(dispatch_queue);
-    }
+    clReleaseProgram(program);
+    clReleaseKernel(kernel);
+    clReleaseCommandQueue(command_queue);
+    clReleaseContext(context);
 }
 
 bool ComputeShader::checkError(cl_int errMsg)
