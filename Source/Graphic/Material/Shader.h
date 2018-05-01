@@ -26,7 +26,7 @@ public:
 	/// <summary> Returns the name of the shader type of this shader. </summary>
 	const std::string GetShaderTypeName() const;
     
-    const GLint ShaderID() const { return shaderID; };
+    const int ShaderID() const { return shaderID; };
     
     /// <summary> Creates and loads a shader from disk. Does not compile it. </summary>
     Shader(const char* _path, ShaderType _type);
@@ -40,7 +40,7 @@ protected:
 	/// <summary> The shader path. </summary>
 	std::string path;
     
-    GLint shaderID;
+    int shaderID;
 
 private:
 	std::string rawShader;

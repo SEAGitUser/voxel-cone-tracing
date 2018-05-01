@@ -84,7 +84,7 @@ void Material::AssembleProgram(
     glLinkProgram(program);
     
     // Check if we succeeded.
-    GLint success;
+    int success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success)
     {
@@ -112,7 +112,7 @@ void Material::Commands::setValue(ShaderParameter &setting, const GLchar* name)
 {
     assert(setting.getType() != ShaderParameter::Type::NONE);
     glError();
-    GLint result = 0;
+    int result = 0;
     //TODO: let's use virtual functions and templates for this instead
     switch (setting.getType())
     {
@@ -148,7 +148,7 @@ void Material::Commands::setValue(ShaderParameter &setting, const GLchar* name)
         }
         case ShaderParameter::Type::INT:
         {
-            GLint value = setting.getIntValue();
+            int value = setting.getIntValue();
             result = SetParameteri(name, value);
             break;
         }
@@ -199,109 +199,109 @@ void Material::Commands::setValue(ShaderParameter &setting, const GLchar* name)
 }
 
 
-GLint Material::Commands::SetParameteri(const GLchar* parameterName, GLint const value)
+int Material::Commands::SetParameteri(const GLchar* parameterName, int const value)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniform1i(location, value);
     return location;
 }
 
-GLint Material::Commands::SetParameterui(const GLchar* parameterName, GLuint const value)
+int Material::Commands::SetParameterui(const GLchar* parameterName, GLuint const value)
 {
     GLuint location = glGetUniformLocation(material->program, parameterName);
     glUniform1ui(location, value);
     return location;
 }
 
-GLint Material::Commands::SetParameterf(const GLchar* parameterName, GLfloat const value)
+int Material::Commands::SetParameterf(const GLchar* parameterName, GLfloat const value)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniform1f(location,(value));
     return location;
 }
 
-GLint Material::Commands::SetParameterv4(const GLchar* parameterName, const glm::vec4 &value)
+int Material::Commands::SetParameterv4(const GLchar* parameterName, const glm::vec4 &value)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniform4fv(location, 1, glm::value_ptr(value));
     return location;
 }
 
-GLint Material::Commands::SetParameterv3(const GLchar *parameterName, const glm::vec3 &value)
+int Material::Commands::SetParameterv3(const GLchar *parameterName, const glm::vec3 &value)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniform3fv(location, 1, glm::value_ptr(value));
     return location;
 }
 
-GLint Material::Commands::SetParameterv2(const GLchar *parameterName, const glm::vec2 &value)
+int Material::Commands::SetParameterv2(const GLchar *parameterName, const glm::vec2 &value)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniform2fv(location, 1, glm::value_ptr(value));
     return location;
 }
 
-GLint Material::Commands::SetParamatermat4(const GLchar* parameterName, const glm::mat4 &value)
+int Material::Commands::SetParamatermat4(const GLchar* parameterName, const glm::mat4 &value)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
     return location;
 }
 
-GLint Material::Commands::SetParameterSampler2D(const GLchar* parameterName, Texture2D* texture)
+int Material::Commands::SetParameterSampler2D(const GLchar* parameterName, Texture2D* texture)
 {
-    GLint result = ActivateTexture2D(parameterName, texture->GetTextureID() , textureUnits);
+    int result = ActivateTexture2D(parameterName, texture->GetTextureID() , textureUnits);
     return result;
 }
 
-GLint Material::Commands::SetParameterSampler3D(const GLchar* parameterName, Texture3D* texture)
+int Material::Commands::SetParameterSampler3D(const GLchar* parameterName, Texture3D* texture)
 {
-    GLint result = ActivateTexture3D(parameterName, texture->GetTextureID() , textureUnits);
+    int result = ActivateTexture3D(parameterName, texture->GetTextureID() , textureUnits);
     return result;
 }
 
 
-GLint Material::Commands::SetPointLight(const GLchar *parameterName, const PointLight &light)
+int Material::Commands::SetPointLight(const GLchar *parameterName, const PointLight &light)
 {
-    GLint location = glGetUniformLocation(material->program, ("pointLights[" + std::to_string(light.index) + "].position").c_str());
+    int location = glGetUniformLocation(material->program, ("pointLights[" + std::to_string(light.index) + "].position").c_str());
     glUniform3fv(location, 1, glm::value_ptr(light.position));
     location = location != -1 ?  glGetUniformLocation(material->program, ("pointLights[" + std::to_string(light.index) + "].color").c_str()) : location;
     glUniform3fv(location, 1, glm::value_ptr(light.color));
     return location;
 }
 
-GLint Material::Commands::ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
+int Material::Commands::ActivateTexture2D(const GLchar* samplerName, const int textureName, const int textureUnit)
 {
     assert(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS > textureUnit);
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, textureName);
-    GLint location = glGetUniformLocation(material->program, samplerName);
+    int location = glGetUniformLocation(material->program, samplerName);
     glUniform1i(location, textureUnit);
     
     return location;
 }
 
-GLint Material::Commands::SetParameterBool(const GLchar *parameterName, bool value)
+int Material::Commands::SetParameterBool(const GLchar *parameterName, bool value)
 {
-    GLint result = glGetUniformLocation(material->program, parameterName);
+    int result = glGetUniformLocation(material->program, parameterName);
     glUniform1i(result, value);
     return result;
 }
 
-GLint Material::Commands::ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit)
+int Material::Commands::ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const int textureUnit)
 {
-    GLint result = ActivateTexture2D(samplerName, texture->GetTextureID(), textureUnit);
+    int result = ActivateTexture2D(samplerName, texture->GetTextureID(), textureUnit);
     return result;
 }
 
-GLint Material::Commands::ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit)
+int Material::Commands::ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const int textureUnit)
 {
-    GLint result = ActivateTexture3D(samplerName, texture->GetTextureID(), textureUnit);
+    int result = ActivateTexture3D(samplerName, texture->GetTextureID(), textureUnit);
     return result;
 }
 
 
-GLint Material::Commands::ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit)
+int Material::Commands::ActivateTexture3D(const GLchar* samplerName, const int textureName, const int textureUnit)
 {
     assert(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS > textureUnit);
     //bind texture to texture unit
@@ -309,14 +309,14 @@ GLint Material::Commands::ActivateTexture3D(const GLchar* samplerName, const GLi
     glBindTexture(GL_TEXTURE_3D, textureName);
     
     //bind shader uniform location to texture unit
-    GLint location = glGetUniformLocation(material->program, samplerName);
+    int location = glGetUniformLocation(material->program, samplerName);
     glUniform1i(location, textureUnit);
     return location;
 }
 
-GLint Material::Commands::SetMatrix(const GLchar* parameterName, const glm::mat4& mat)
+int Material::Commands::SetMatrix(const GLchar* parameterName, const glm::mat4& mat)
 {
-    GLint location = glGetUniformLocation(material->program, parameterName);
+    int location = glGetUniformLocation(material->program, parameterName);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
     return location;
 }

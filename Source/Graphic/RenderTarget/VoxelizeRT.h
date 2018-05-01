@@ -28,7 +28,7 @@ class VoxelizeRT : public RenderTarget
 {
 public:
     VoxelizeRT(GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth );
-    void presentOrthographicDepth( Scene& scene, GLint layer);
+    void presentOrthographicDepth( Scene& scene, int layer);
     
     virtual void Render( Scene& scene ) override;
     virtual ~VoxelizeRT();
@@ -57,16 +57,16 @@ private:
     bool regenerateMipmapQueued = true;
     bool automaticallyVoxelize = true;
     bool voxelizationQueued = true;
-    GLint voxelizationSparsity = 1; // Number of ticks between mipmap generation.
-    GLint ticksSinceLastVoxelization = voxelizationSparsity;
+    int voxelizationSparsity = 1; // Number of ticks between mipmap generation.
+    int ticksSinceLastVoxelization = voxelizationSparsity;
     
     
     //state variables we will be modifying
-    GLint colorMask[4];
+    int colorMask[4];
     GLboolean cullFace;
     GLboolean depthTest;
     GLboolean blend;
-    GLint frameBuffer;
+    int frameBuffer;
 
     std::shared_ptr<Material> positionsMaterial = nullptr;
     std::shared_ptr<Points> points = nullptr;

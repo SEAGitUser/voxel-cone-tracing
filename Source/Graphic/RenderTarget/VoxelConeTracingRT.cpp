@@ -92,7 +92,7 @@ void VoxelConeTracingRT::Render(Scene& scene)
         Material::Commands commands(voxConeTracing.get());
         params[Material::Commands::MODEL_MATRIX_NAME] = trans;
 
-        GLint i = 0;
+        int i = 0;
         for(Mesh* mesh : shape->meshes)
         {
             VoxProperties prop = i < shape->meshProperties.size()  ? shape->meshProperties[i] : shape->defaultVoxProperties;
@@ -146,7 +146,7 @@ void VoxelConeTracingRT::getVoxParameters(ShaderParameter::ShaderParamsGroup &se
 
 void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup& settings)
 {
-    GLint index = 0;
+    int index = 0;
 
     sprintf(albedoArgs[index], "albedoMipMaps[%d]", index);
     sprintf(normalArgs[index] , "normalMipMaps[%d]", index);

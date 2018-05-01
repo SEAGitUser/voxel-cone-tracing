@@ -30,23 +30,23 @@ public:
     public:
         Commands(Material* material);
         
-        GLint SetParameteri(const GLchar* parameterName, GLint const value);
-        GLint SetParameterui(const GLchar* parameterName, GLuint const value);
-        GLint SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
-        GLint SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
-        GLint SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
-        GLint SetParameterf(const GLchar* parameterName, GLfloat const value);
-        GLint SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
-        GLint SetParameterSampler2D(const GLchar* parameterName, Texture2D* sampler);
-        GLint SetParameterSampler3D(const GLchar* parameterName, Texture3D* sampler);
-        GLint SetPointLight(const GLchar* parameterName,  const PointLight& light  );
-        GLint SetMatrix(const GLchar* parameterName, const glm::mat4& mat);
-        GLint SetParameterBool(const GLchar* parameterName, bool value);
+        int SetParameteri(const GLchar* parameterName, int const value);
+        int SetParameterui(const GLchar* parameterName, GLuint const value);
+        int SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
+        int SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
+        int SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
+        int SetParameterf(const GLchar* parameterName, GLfloat const value);
+        int SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
+        int SetParameterSampler2D(const GLchar* parameterName, Texture2D* sampler);
+        int SetParameterSampler3D(const GLchar* parameterName, Texture3D* sampler);
+        int SetPointLight(const GLchar* parameterName,  const PointLight& light  );
+        int SetMatrix(const GLchar* parameterName, const glm::mat4& mat);
+        int SetParameterBool(const GLchar* parameterName, bool value);
         
-        GLint ActivateTexture2D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
-        GLint ActivateTexture3D(const GLchar* samplerName, const GLint textureName, const GLint textureUnit);
-        GLint ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const GLint textureUnit);
-        GLint ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const GLint textureUnit);
+        int ActivateTexture2D(const GLchar* samplerName, const int textureName, const int textureUnit);
+        int ActivateTexture3D(const GLchar* samplerName, const int textureName, const int textureUnit);
+        int ActivateTexture2D(const GLchar* samplerName, const Texture2D* texture, const int textureUnit);
+        int ActivateTexture3D(const GLchar* samplerName, const Texture3D* texture, const int textureUnit);
 
         void uploadParameters(ShaderParameter::ShaderParamsGroup& settingsGroup);
         

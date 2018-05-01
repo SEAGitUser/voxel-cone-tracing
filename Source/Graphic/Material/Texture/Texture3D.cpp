@@ -80,14 +80,14 @@ void Texture3D::Commands::glClearTexImage(GLuint texture_id, GLuint levels, GLen
     GLuint tempHeight = texture->height;
     GLuint tempDepth = texture->depth;
     
-    for (GLint i = 0; i < levels; i++)
+    for (int i = 0; i < levels; i++)
     {
         
         glTexSubImage3D(GL_TEXTURE_3D, i, 0, 0, 0, tempWidth, tempHeight, tempDepth, texture->pixelFormat, texture->dataType, data);
         
-        tempWidth = std::max(1, (GLint)(tempWidth >> 1));
-        tempHeight = std::max(1, (GLint)(tempHeight >> 1));
-        tempDepth = std::max(1, (GLint)(tempDepth >> 1));
+        tempWidth = std::max(1, (int)(tempWidth >> 1));
+        tempHeight = std::max(1, (int)(tempHeight >> 1));
+        tempDepth = std::max(1, (int)(tempDepth >> 1));
     }
 }
 void Texture3D::Commands::glTexStorage3D(    GLenum target,
@@ -107,9 +107,9 @@ void Texture3D::Commands::glTexStorage3D(    GLenum target,
     {
         GLuint dataType = GL_FLOAT;
         glTexImage3D(target, i, internalformat, tempWidth, tempHeight, tempDepth, 0, texture->pixelFormat, dataType, NULL);
-        tempWidth = std::max(1, (GLint)(tempWidth >> 1));
-        tempHeight = std::max(1, (GLint)(tempHeight >> 1));
-        tempDepth = std::max(1, (GLint)(tempDepth >> 1));
+        tempWidth = std::max(1, (int)(tempWidth >> 1));
+        tempHeight = std::max(1, (int)(tempHeight >> 1));
+        tempDepth = std::max(1, (int)(tempDepth >> 1));
     }
     glError();
 }
@@ -136,7 +136,7 @@ void Texture3D::Commands::allocateOnGPU()
 {
     glError();
     glTexStorage3D(GL_TEXTURE_3D, levels, texture->pixelFormat);
-    GLint level = 0, border = 0;
+    int level = 0, border = 0;
     glTexImage3D(GL_TEXTURE_3D, level, texture->internalFormat, texture->width, texture->height, texture->depth, border, texture->pixelFormat, texture->dataType, &texture->textureBuffer[0]);
     glError();
 }

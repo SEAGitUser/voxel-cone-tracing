@@ -34,7 +34,7 @@ Texture* FBO_2D::addRenderTarget()
     FBO_2D::Commands commands(this);
 
     Texture2D *target = new Texture2D();
-    GLint targetID = FBO::setupRenderTarget(target);
+    int targetID = FBO::setupRenderTarget(target);
     renderTextures.push_back(target);
 
     commands.setupTargetsForRendering();
@@ -95,7 +95,7 @@ void FBO_2D::Commands::allocateOnGPU(Texture::Dimensions& dimensions)
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo2d->rbo);
 }
 
-void FBO_2D::Commands::addDepthTarget(GLint targetID)
+void FBO_2D::Commands::addDepthTarget(int targetID)
 {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, targetID, 0);
 }

@@ -17,7 +17,7 @@ public:
         Commands(FBO* fbo);
         virtual ~Commands();
         
-        void setViewport(GLint width, GLint height);
+        void setViewport(int width, int height);
         void getPreviousViewportSize();
         
         void backFaceCulling(bool value);
@@ -46,9 +46,9 @@ public:
         Commands(const Commands& rhs);
         FBO& operator=(Commands& rhs);
         
-        GLint previousViewportWidth;
-        GLint previousViewportHeight;
-        GLint previousFBO;
+        int previousViewportWidth;
+        int previousViewportHeight;
+        int previousFBO;
 
     };
     
@@ -69,7 +69,7 @@ public:
     }
     
     
-    inline          GLint getFrameBufferID();
+    inline          int getFrameBufferID();
     inline const    Texture::Dimensions& getDimensions();
     inline          Texture* getRenderTexture(GLuint index);
     inline Commands& getCommands();
@@ -84,8 +84,8 @@ public:
     
 protected:
     
-    static const GLint MAX_RENDER_TARGETS = 15;
-    static const GLint INVALID_FRAME_BUFFER = -1;
+    static const int MAX_RENDER_TARGETS = 15;
+    static const int INVALID_FRAME_BUFFER = -1;
     static const GLuint DEFAULT_FRAMEBUFFER = 0;
     
     //keep the variable frameBuffer protected as it guarantees that the only classes that can create
@@ -94,7 +94,7 @@ protected:
     GLuint  frameBuffer, rbo;
     
     std::vector<Texture*> renderTextures;
-    GLint setupRenderTarget(Texture* target);
+    int setupRenderTarget(Texture* target);
     
 };
 

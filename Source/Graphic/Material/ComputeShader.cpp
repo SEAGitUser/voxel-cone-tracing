@@ -129,11 +129,11 @@ bool ComputeShader::init()
 }
 
 
-GLint ComputeShader::printDeviceInfo(cl_device_id device)
+int ComputeShader::printDeviceInfo(cl_device_id device)
 {
     GLchar name[128];
     GLchar vendor[128];
-    GLint computeUnits = 0;
+    int computeUnits = 0;
     
     clGetDeviceInfo(device, CL_DEVICE_NAME, 128, name, NULL);
     clGetDeviceInfo(device, CL_DEVICE_VENDOR, 128, vendor, NULL);
@@ -259,51 +259,51 @@ cl_kernel ComputeShader::setupComputeKernel(const char *const _path, const char 
 
 void ComputeShader::setArgument(int index, int value)
 {
-    GLint error = clSetKernelArg(kernel, index, sizeof(value), &value);
+    int error = clSetKernelArg(kernel, index, sizeof(value), &value);
     if(error != CL_SUCCESS)
         std::cout << "parameter " << index << " for method " << methodName << " has failed" << std::endl;
 }
 
 void ComputeShader::setArgument(int index, float value )
 {
-    GLint error = clSetKernelArg(kernel, index, sizeof(value), &value);
+    int error = clSetKernelArg(kernel, index, sizeof(value), &value);
     if(error != CL_SUCCESS)
         std::cout << "parameter " << index << " for method " << methodName << " has failed" << std::endl;
 }
 
-void ComputeShader::addTexture(GLint textureID, GLint textureType)
+void ComputeShader::addTexture(int textureID, int textureType)
 {
     if(images.count(textureID) == 0)
     {
-        GLint error;
+        int error;
         cl_image image = clCreateFromGLTexture(context, textureType, GL_TEXTURE_3D, 0, textureID, &error);
         assert(error == CL_SUCCESS);
         images[textureID] = image;
     }
 }
-GLint ComputeShader::setReadImage3DArgument(int index, int textureID)
+int ComputeShader::setReadImage3DArgument(int index, int textureID)
 {
 
     addTexture(textureID, CL_MEM_READ_ONLY);
     
     argument_images[index] =images[textureID];
-    GLint error = clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
+    int error = clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
     return error;
 }
 
-GLint ComputeShader::setWriteImage3DArgument(int index, int textureID)
+int ComputeShader::setWriteImage3DArgument(int index, int textureID)
 {
     addTexture(textureID, CL_MEM_WRITE_ONLY);
     argument_images[index] = images[textureID];
-    GLint error = clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
+    int error = clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
     return error;
 }
 
-GLint ComputeShader::setReadWriteImage3DArgument(int index, int textureID)
+int ComputeShader::setReadWriteImage3DArgument(int index, int textureID)
 {
     addTexture(textureID, CL_MEM_READ_WRITE);
     argument_images[index] = images[textureID];
-    GLint error =  clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
+    int error =  clSetKernelArg(kernel, index, sizeof(cl_image), &images[textureID]);
     return error;
 }
 
@@ -321,7 +321,7 @@ void ComputeShader::aquireResources()
     }
     //removing wait event beause it doesn't seem to have any effect...
     //cl_event opengl_get_completion;
-    GLint err = clEnqueueAcquireGLObjects(command_queue, i, image_objects, 0,0, /*&opengl_get_completion*/0);
+    int err = clEnqueueAcquireGLObjects(command_queue, i, image_objects, 0,0, /*&opengl_get_completion*/0);
     //clWaitForEvents(1, &opengl_get_completion);
     //clReleaseEvent(opengl_get_completion);
     assert(err == CL_SUCCESS);
@@ -339,7 +339,7 @@ void ComputeShader::releaseResources()
     
     //removing the event wait here because it has no effect on anything... is not necessary.
     //cl_event opengl_get_completion;
-    GLint err = clEnqueueReleaseGLObjects(command_queue, i, image_objects, 0,0, /*&opengl_get_completion*/ 0);
+    int err = clEnqueueReleaseGLObjects(command_queue, i, image_objects, 0,0, /*&opengl_get_completion*/ 0);
     //clWaitForEvents(1, &opengl_get_completion);
     //clReleaseEvent(opengl_get_completion);
     assert(err == CL_SUCCESS);
@@ -351,7 +351,7 @@ void ComputeShader::run()
     
     cl_event kernel_completion;
 
-    GLint error = clEnqueueNDRangeKernel(command_queue, kernel, dimensions, NULL, globalWorkSize, nullptr, 0, NULL, &kernel_completion);
+    int error = clEnqueueNDRangeKernel(command_queue, kernel, dimensions, NULL, globalWorkSize, nullptr, 0, NULL, &kernel_completion);
     checkError(error);
     error = clWaitForEvents(1, &kernel_completion);
     error |= clReleaseEvent(kernel_completion);

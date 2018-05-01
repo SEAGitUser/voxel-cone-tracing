@@ -46,7 +46,7 @@ private
         glm::vec3 vector3;
         glm::vec2 vector2;
         GLfloat   floatValue;
-        GLint     intValue;
+        int     intValue;
         GLuint    uintValue;
         Texture2D*   sampler2D;
         Texture3D*   sampler3D;
@@ -78,7 +78,7 @@ public:
     {
         
     }
-    inline GLint getIntValue()
+    inline int getIntValue()
     {
         assert(type == Type::INT);
         return value.intValue;
@@ -183,7 +183,7 @@ public:
         return *this;
     }
     
-    inline ShaderParameter& operator=(const GLint &value)
+    inline ShaderParameter& operator=(const int &value)
     {
         type = Type::INT;
         this->value.intValue = value;
@@ -252,7 +252,7 @@ public:
         type = Type::VEC2;
     }
     
-    ShaderParameter(GLint _value)
+    ShaderParameter(int _value)
     {
         value.intValue = _value;
         type = Type::INT;

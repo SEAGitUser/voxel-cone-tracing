@@ -8,7 +8,7 @@ Texture2D::Texture2D(
 	const std::string _shaderTextureName,
 	const std::string &_path,
 	const bool generateMipmaps,
-	GLint _forceChannels)
+	int _forceChannels)
 : shaderTextureSamplerName(_shaderTextureName),
 Texture(_path, 0,0)
 {
@@ -119,8 +119,8 @@ void Texture2D::Commands::enableMipMaps()
 
 void Texture2D::Commands::allocateOnGPU()
 {
-    static const GLint border = 0;
-    GLint format = texture->pixelFormat == GL_DEPTH_COMPONENT32 ? GL_DEPTH_COMPONENT : texture->pixelFormat;
+    static const int border = 0;
+    int format = texture->pixelFormat == GL_DEPTH_COMPONENT32 ? GL_DEPTH_COMPONENT : texture->pixelFormat;
     glTexImage2D(GL_TEXTURE_2D, 0, texture->pixelFormat, texture->width, texture->height, border, format , texture->dataType , &texture->textureBuffer[0]);
     glError();
 }
@@ -151,9 +151,9 @@ void Texture2D::Commands::glClearTexImage(    GLuint textureID,
 {
     //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
     
-    GLint tempWidth = texture->width;
-    GLint tempHeight = texture->height;
-    for (GLint i = 0; i < levels; i++)
+    int tempWidth = texture->width;
+    int tempHeight = texture->height;
+    for (int i = 0; i < levels; i++)
     {
         //TODO: lots of memory here, good enough for now. the number 16384 is  as big as the driver can handle on the mac
         static std::vector<GLubyte> emptyData(16384 * 16384  *4 * sizeof(GLfloat), 0);

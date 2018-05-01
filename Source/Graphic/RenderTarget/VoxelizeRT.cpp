@@ -120,7 +120,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
     voxelCommands.enableBlend(false);
     voxelCommands.backFaceCulling(true);
     
-    for(GLint i = 0; i < depthFBOs.size(); ++i)
+    for(int i = 0; i < depthFBOs.size(); ++i)
     {
         Texture2D* depthTexture = static_cast<Texture2D*>(depthFBOs[i]->getDepthTexture());
         Texture2D* albedoTexture = static_cast<Texture2D*>(depthFBOs[i]->getRenderTexture(0));
@@ -151,7 +151,7 @@ void VoxelizeRT::voxelize(Scene& renderScene)
 
 }
 
-void VoxelizeRT::presentOrthographicDepth(Scene &scene,  GLint layer)
+void VoxelizeRT::presentOrthographicDepth(Scene &scene,  int layer)
 {
     FBO::Commands fboCommands(FBO_2D::getDefault().get());
     
@@ -187,7 +187,7 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
     params["depthTexture"] = texture;
     
     Material::Commands depthPeelingCommands(depthPeelingMat.get());
-    for(GLint i = 0; i < depthFBOs.size(); ++i)
+    for(int i = 0; i < depthFBOs.size(); ++i)
     {
         params["firstRender"]  = firstRender ? 1 : 0;
         FBO::Commands commands(depthFBOs[i].get());
@@ -202,7 +202,7 @@ void VoxelizeRT::generateDepthPeelingMaps(Scene& renderScene)
             params["MVP"] = MVP *shape->transform.getTransformMatrix();
             size_t numberOfProperties = shape->getMeshProperties().size();
 
-            GLint i = 0;
+            int i = 0;
             for(Mesh* mesh : shape->meshes)
             {
                 glError();
@@ -239,7 +239,7 @@ void VoxelizeRT::generateMipMaps()
         if( dimensions == 0) break;
         
         std::shared_ptr<Texture3D> normalMipMap = normalMipMaps[i];
-        GLint error = downSample.setReadWriteImage3DArgument(0, currentAlbedoTexture->GetTextureID());
+        int error = downSample.setReadWriteImage3DArgument(0, currentAlbedoTexture->GetTextureID());
         error |= downSample.setReadWriteImage3DArgument(1, currentNormalTexture->GetTextureID());
         
         error |= downSample.setReadWriteImage3DArgument(2, albedoMipMap->GetTextureID());

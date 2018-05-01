@@ -28,7 +28,7 @@ public:
     public:
         Commands(FBO_2D* fbo);
         void allocateOnGPU(Texture::Dimensions &dimensions);
-        void addDepthTarget(GLint targetID);
+        void addDepthTarget(int targetID);
         void deleteFrameBuffer();
         
         ~Commands() override;

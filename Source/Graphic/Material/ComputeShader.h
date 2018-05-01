@@ -23,9 +23,9 @@ public:
     
     void setArgument(int index, int value);
     void setArgument(int index, float value );
-    GLint setWriteImage3DArgument(int index, int textureID);
-    GLint setReadImage3DArgument(int index, int textureID);
-    GLint setReadWriteImage3DArgument(int index, int textureID);
+    int setWriteImage3DArgument(int index, int textureID);
+    int setReadImage3DArgument(int index, int textureID);
+    int setReadWriteImage3DArgument(int index, int textureID);
     
     void setWriteImage2DArgument(int index, int textureID);
     void setReadImage2DArgument(int index, int textureID);
@@ -43,7 +43,7 @@ protected:
     
     void aquireResources();
     void releaseResources();
-    void addTexture(GLint textureID, GLint textureType);
+    void addTexture(int textureID, int textureType);
     
     inline const dispatch_queue_t getDispatchQueue(){ return dispatch_queue; };
     inline const CGLShareGroupObj getShareGroupObj(){ return shareGroup; };
@@ -60,7 +60,7 @@ private:
     cl_device_id device_id;
     
     
-    GLint printDeviceInfo(cl_device_id device);
+    int printDeviceInfo(cl_device_id device);
     bool obtainGPUDevice();
     bool obtainCPUDevice();
     void buildProgram(const char* source, const char* options = nullptr);

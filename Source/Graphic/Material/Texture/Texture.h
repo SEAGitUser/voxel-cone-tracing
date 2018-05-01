@@ -51,7 +51,7 @@ public:
 #endif
         
     protected:
-        GLint previousTexture;
+        int previousTexture;
     private:
 
         static GLuint activeTexture;
@@ -127,7 +127,7 @@ public:
     inline void SetDataType(GLuint _type){ dataType = _type; }
     inline void SetBuffer(unsigned char* buffer){ textureBuffer = buffer; } 
     
-    inline GLint  GetTextureID() const { return textureID; }
+    inline int  GetTextureID() const { return textureID; }
     
     ~Texture()
     {

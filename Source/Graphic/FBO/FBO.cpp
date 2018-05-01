@@ -5,7 +5,7 @@
 #include "OpenGL_Includes.h"
 
 
-GLint FBO::setupRenderTarget(Texture* target)
+int FBO::setupRenderTarget(Texture* target)
 {
     target->SetWrap(textureProperties.wrap);
     
@@ -60,7 +60,7 @@ void FBO::Commands::init(FBO* _fbo)
 
     if(fbo->renderTextures.size() > 0)
     {
-        for(GLint i = 0; i < fbo->renderTextures.size(); ++i)
+        for(int i = 0; i < fbo->renderTextures.size(); ++i)
         {
             colorAttachment[i] = GL_COLOR_ATTACHMENT0 + i;
         }
@@ -75,7 +75,7 @@ void FBO::Commands::init(FBO* _fbo)
 
     setViewport(fbo->dimensions.width, fbo->dimensions.height);
 }
-void FBO::Commands::setViewport(GLint width, GLint height)
+void FBO::Commands::setViewport(int width, int height)
 {
      glViewport(0, 0, width, height);
     
@@ -83,7 +83,7 @@ void FBO::Commands::setViewport(GLint width, GLint height)
 
 void FBO::Commands::getPreviousViewportSize()
 {
-    GLint dims[4];
+    int dims[4];
     glGetIntegerv(GL_VIEWPORT, dims);
     previousViewportWidth = dims[2];
     previousViewportHeight = dims[3];
@@ -169,9 +169,9 @@ void FBO::Commands::setupTargetsForRendering(bool threeDimensions)
     GLuint dimensions = threeDimensions ? GL_TEXTURE_3D :GL_TEXTURE_2D ;
     if(fbo->renderTextures.size() > 0)
     {
-        GLint size = fbo->renderTextures.size();
+        int size = fbo->renderTextures.size();
         
-        for(GLint i = 0; i < size; ++i)
+        for(int i = 0; i < size; ++i)
         {
             colorAttachment[i] = GL_COLOR_ATTACHMENT0 + i;
             if(!threeDimensions)

@@ -37,7 +37,7 @@ public:
     
     struct Sampler2D
     {
-        GLint textureUnit;
+        int textureUnit;
         Texture2D* texture;
         Sampler2D():textureUnit(0),texture(nullptr)
         {}
@@ -45,7 +45,7 @@ public:
     
     struct Sampler3D
     {
-        GLint textureUnit;
+        int textureUnit;
         Texture3D* texture;
         Sampler3D():textureUnit(0), texture(nullptr)
         {}
@@ -60,7 +60,7 @@ private
         glm::vec3 vector3;
         glm::vec2 vector2;
         GLfloat   floatValue;
-        GLint     intValue;
+        int     intValue;
         Sampler2D   sampler2D;
         Sampler3D   sampler3D;
         glm::mat4 mat4;
@@ -90,7 +90,7 @@ public:
     {
         
     }
-    inline GLint getIntValue()
+    inline int getIntValue()
     {
         assert(type == Type::INT);
         return value.intValue;
@@ -184,7 +184,7 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const GLint &value)
+    inline MaterialSetting& operator=(const int &value)
     {
         type = Type::INT;
         this->value.intValue = value;
@@ -231,7 +231,7 @@ public:
         type = Type::VEC2;
     }
     
-    MaterialSetting(GLint _value)
+    MaterialSetting(int _value)
     {
         value.intValue = _value;
         type = Type::INT;
