@@ -36,6 +36,7 @@ Things left to do:
 * A fundamental problem with this implementation is that it is not in HDR.  The lighting equations are not restricted to values between 0 and 1, this causes a disconnect between the intention of how color should look like and how it actually displays.
 * Gamma correction.
 * Get rid of raw pointers and use smart pointers.
+* I did not implement the Octree mentioned in the paper due to its complexity, and also because I think this would kill performance even more.  Instead, I like the approach taken by James MacLaren as described here: https://www.gamasutra.com/view/news/286023/Graphics_Deep_Dive_Cascaded_voxel_cone_tracing_in_The_Tomorrow_Children.php
 
 
 Build Requirements
