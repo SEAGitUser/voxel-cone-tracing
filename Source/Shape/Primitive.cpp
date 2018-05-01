@@ -40,7 +40,7 @@ void Primitive::Commands::uploadGPUIndexData()
     if(primitive->indices.size() != 0)
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, primitive->ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, primitive->indices.size() * sizeof(GLuint), primitive->indices.data(), primitive->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, primitive->indices.size() * sizeof(unsigned int), primitive->indices.data(), primitive->staticMesh ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
     }
 
 }

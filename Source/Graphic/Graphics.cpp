@@ -32,7 +32,7 @@
 // ----------------------
 // Rendering pipeline.
 // ----------------------
-void Graphics::init(GLuint viewportWidth, GLuint viewportHeight)
+void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
 {
     cubeShape = nullptr;
     

@@ -14,7 +14,7 @@
 #include "glm/glm.hpp"
 #include "Utility/Logger.h"
 
-constexpr GLuint VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS = 64u;
+constexpr unsigned int VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS = 64u;
 
 VoxelizationMaterial::VoxelizationMaterial(const GLchar* _name, const ShaderSharedPtr vertexShader,
                                            const ShaderSharedPtr fragmentShader, const ShaderSharedPtr geometryShader):

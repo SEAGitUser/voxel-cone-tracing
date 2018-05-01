@@ -19,7 +19,7 @@ class ComputeShader : public Resource
 {
 public:
     
-    ComputeShader(const char* path, const char* methodName, glm::vec3 globalWorkSize, GLuint dimensions);
+    ComputeShader(const char* path, const char* methodName, glm::vec3 globalWorkSize, unsigned int dimensions);
     
     void setArgument(int index, int value);
     void setArgument(int index, float value );
@@ -78,7 +78,7 @@ protected:
     static const int MAX_IMAGES = 9;
     cl_image image_objects[MAX_IMAGES];
     
-    GLuint dimensions;
+    unsigned int dimensions;
     
     const char* methodName = nullptr;
     

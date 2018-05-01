@@ -13,8 +13,8 @@
 
 void RenderTarget::setLightingParameters(ShaderParameter::ShaderParamsGroup& settings, std::vector<PointLight> &lights)
 {
-    GLuint index = 0;
-    GLuint argumentIndex = 0;
+    unsigned int index = 0;
+    unsigned int argumentIndex = 0;
     for(PointLight &light : lights)
     {
         assert(index < MAX_ARGUMENTS);

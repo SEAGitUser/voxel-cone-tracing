@@ -32,7 +32,7 @@ public:
     Shader(const char* _path, ShaderType _type);
     
     /// <summary> Compiles the shader. Returns the OpenGL shader ID. </summary>
-    GLuint compile();
+    unsigned int compile();
 
     
     ~Shader();

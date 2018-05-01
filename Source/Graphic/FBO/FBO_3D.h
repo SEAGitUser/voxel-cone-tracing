@@ -40,7 +40,7 @@ public:
     virtual Texture* addRenderTarget() override;
 private:
 
-    GLuint generateAttachment(GLuint w, GLuint h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
+    unsigned int generateAttachment(unsigned int w, unsigned int h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
 };
 
 

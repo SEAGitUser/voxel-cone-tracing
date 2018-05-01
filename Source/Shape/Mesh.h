@@ -42,5 +42,5 @@ protected:
 private:
     Mesh(Mesh& mesh);
 private:
-	static GLuint idCounter;
+	static unsigned int idCounter;
 };

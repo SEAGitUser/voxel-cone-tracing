@@ -60,7 +60,7 @@ downSample("downsize.cl", "downsample",
 
 void VoxelizeRT::initMipMaps(Texture::Properties &properties)
 {
-    GLuint downDimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+    unsigned int downDimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
     assert( downDimensions % 2 == 0);
     downDimensions = downDimensions >> 1;
     while(downDimensions)
@@ -231,7 +231,7 @@ void VoxelizeRT::generateMipMaps()
     Texture3D* currentAlbedoTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(0));
     Texture3D* currentNormalTexture = static_cast<Texture3D*>(voxelFBO->getRenderTexture(1));
     
-    GLuint dimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+    unsigned int dimensions = VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
     int i = 0;
     for( std::shared_ptr<Texture3D> albedoMipMap : albedoMipMaps)
     {

@@ -15,9 +15,9 @@ public:
     {
     public:
         Commands(Texture2D* texture);
-        void setWrapMode(GLuint wrap) override;
-        void setMinFiltering(GLuint filter) override;
-        void setMagFiltering(GLuint filter) override;
+        void setWrapMode(unsigned int wrap) override;
+        void setMinFiltering(unsigned int filter) override;
+        void setMagFiltering(unsigned int filter) override;
         void generateMipmaps() override;
         void enableMipMaps() override;
         void allocateOnGPU() override;
@@ -29,8 +29,8 @@ public:
     private:
         
 #if __APPLE__
-        void glClearTexImage(GLuint texture,
-                        GLuint levels,
+        void glClearTexImage(unsigned int texture,
+                        unsigned int levels,
                         GLenum format,
                         GLenum type,
                         const void * data) override;

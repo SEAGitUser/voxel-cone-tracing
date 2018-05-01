@@ -31,7 +31,7 @@ public:
         virtual void destroyBuffers();
         
         static const int POSITION_LOCATION = 0;
-        static const GLuint NORMALS_LOCATION = 1;
+        static const unsigned int NORMALS_LOCATION = 1;
         static const int TEXTURE_LOCATION = 2;
         
         virtual void uploadGPUVertexData();
@@ -50,9 +50,9 @@ public:
     
 protected:
     bool staticMesh = true;
-    GLuint vao;
-    GLuint vbo, ebo; // Vertex Buffer Object, Vertex Array Object, Element Buffer Object.
+    unsigned int vao;
+    unsigned int vbo, ebo; // Vertex Buffer Object, Vertex Array Object, Element Buffer Object.
     std::vector<VertexData> vertexData;
-    std::vector<GLuint> indices;
+    std::vector<unsigned int> indices;
 
 };

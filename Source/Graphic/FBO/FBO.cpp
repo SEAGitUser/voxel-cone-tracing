@@ -56,7 +56,7 @@ void FBO::Commands::init(FBO* _fbo)
     fbo = _fbo;
     glBindFramebuffer(GL_FRAMEBUFFER, fbo->frameBuffer);
 
-    GLuint colorAttachment[50];
+    unsigned int colorAttachment[50];
 
     if(fbo->renderTextures.size() > 0)
     {
@@ -164,9 +164,9 @@ void FBO::Commands::blendSrcAlphaOneMinusSrcAlpha()
 
 void FBO::Commands::setupTargetsForRendering(bool threeDimensions)
 {
-    GLuint colorAttachment[50];
+    unsigned int colorAttachment[50];
     
-    GLuint dimensions = threeDimensions ? GL_TEXTURE_3D :GL_TEXTURE_2D ;
+    unsigned int dimensions = threeDimensions ? GL_TEXTURE_3D :GL_TEXTURE_2D ;
     if(fbo->renderTextures.size() > 0)
     {
         int size = fbo->renderTextures.size();

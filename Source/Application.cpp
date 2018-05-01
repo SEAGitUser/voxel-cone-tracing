@@ -79,7 +79,7 @@ void Application::init() {
 		return;
 	}
 
-	std::vector<std::pair<GLuint, std::string>> requiredGLEWExtensions = {
+	std::vector<std::pair<unsigned int, std::string>> requiredGLEWExtensions = {
 		{ GLEW_ARB_shader_image_load_store,		"ARB_shader_image_load_store"},
 		{ GLEW_VERSION_4_5,						"GLEW_VERSION_4_5 (OpenGL 4.5)"},
 		{ GL_ARB_multisample,					"GLFW MSAA" }

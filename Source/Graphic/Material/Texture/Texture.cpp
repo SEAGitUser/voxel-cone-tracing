@@ -8,7 +8,7 @@
 
 #include "Texture.h"
 
-GLuint Texture::Commands::activeTexture = 0;
+unsigned int Texture::Commands::activeTexture = 0;
 
 Texture::Commands::Commands(Texture* texture):
 previousTexture(0)
@@ -39,7 +39,7 @@ void Texture::Commands::deleteTexture()
     glDeleteTextures(1, &tex->textureID);
 }
 
-void Texture::Commands::unpackAlignment(GLuint alignment)
+void Texture::Commands::unpackAlignment(unsigned int alignment)
 {
     glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
 }

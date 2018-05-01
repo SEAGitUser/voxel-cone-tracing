@@ -60,7 +60,7 @@ void TextQuad::loadTextures()
     
     for(GLubyte c = 0; c < 128; c++)
     {
-        GLuint result = FT_Load_Char(face, c , FT_LOAD_RENDER);
+        unsigned int result = FT_Load_Char(face, c , FT_LOAD_RENDER);
         assert(result == 0);
         
         Texture2D* texture = new Texture2D(true);
@@ -80,7 +80,7 @@ void TextQuad::loadTextures()
             texture,
             glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            static_cast<GLuint>(face->glyph->advance.x)
+            static_cast<unsigned int>(face->glyph->advance.x)
         };
         
 

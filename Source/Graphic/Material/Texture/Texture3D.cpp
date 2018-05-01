@@ -23,7 +23,7 @@ Texture3D::Texture3D():
 }
 
 
-Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const GLuint _width, const GLuint _height, const GLuint _depth, const GLboolean generateMipmaps, GLuint _internalFormat) :
+Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const unsigned int _width, const unsigned int _height, const unsigned int _depth, const GLboolean generateMipmaps, unsigned int _internalFormat) :
 	Texture("", _width, _height), depth(_depth), internalFormat(_internalFormat)
 {
     SaveTextureState(GL_FALSE, GL_FALSE);
@@ -72,13 +72,13 @@ Texture::Commands(_texture)
 
 #ifdef __APPLE__
 
-void Texture3D::Commands::glClearTexImage(GLuint texture_id, GLuint levels, GLenum format, GLenum type, const void *data)
+void Texture3D::Commands::glClearTexImage(unsigned int texture_id, unsigned int levels, GLenum format, GLenum type, const void *data)
 {
     //based off of https://stackoverflow.com/questions/7195130/how-to-efficiently-initialize-texture-with-zeroes
     
-    GLuint tempWidth = texture->width;
-    GLuint tempHeight = texture->height;
-    GLuint tempDepth = texture->depth;
+    unsigned int tempWidth = texture->width;
+    unsigned int tempHeight = texture->height;
+    unsigned int tempDepth = texture->depth;
     
     for (int i = 0; i < levels; i++)
     {
@@ -96,16 +96,16 @@ void Texture3D::Commands::glTexStorage3D(    GLenum target,
 {
     //based off of https://www.khronos.org/opengl/wiki/GLAPI/glTexStorage3D
     
-    GLuint tempWidth = texture->width;
-    GLuint tempHeight = texture->height;
-    GLuint tempDepth = texture->depth;
+    unsigned int tempWidth = texture->width;
+    unsigned int tempHeight = texture->height;
+    unsigned int tempDepth = texture->depth;
     
     assert(target == GL_TEXTURE_3D || target == GL_PROXY_TEXTURE_3D && "update implementation of glTexStorate3D to support the texture target");
     
     glError();
     for (GLsizei i = 0; i < levels; i++)
     {
-        GLuint dataType = GL_FLOAT;
+        unsigned int dataType = GL_FLOAT;
         glTexImage3D(target, i, internalformat, tempWidth, tempHeight, tempDepth, 0, texture->pixelFormat, dataType, NULL);
         tempWidth = std::max(1, (int)(tempWidth >> 1));
         tempHeight = std::max(1, (int)(tempHeight >> 1));
@@ -115,19 +115,19 @@ void Texture3D::Commands::glTexStorage3D(    GLenum target,
 }
 #endif
 
-void Texture3D::Commands::setWrapMode(GLuint wrap)
+void Texture3D::Commands::setWrapMode(unsigned int wrap)
 {
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrap);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap);
 }
 
-void Texture3D::Commands::setMinFiltering(GLuint filter)
+void Texture3D::Commands::setMinFiltering(unsigned int filter)
 {
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, filter);
 }
 
-void Texture3D::Commands::setMagFiltering(GLuint filter)
+void Texture3D::Commands::setMagFiltering(unsigned int filter)
 {
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, filter);
 }

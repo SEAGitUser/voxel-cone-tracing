@@ -91,18 +91,18 @@ Texture::Commands(_texture)
 }
 
 
-void Texture2D::Commands::setWrapMode(GLuint wrap)
+void Texture2D::Commands::setWrapMode(unsigned int wrap)
 {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
 }
 
-void Texture2D::Commands::setMagFiltering(GLuint filter)
+void Texture2D::Commands::setMagFiltering(unsigned int filter)
 {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 }
 
-void Texture2D::Commands::setMinFiltering(GLuint filter)
+void Texture2D::Commands::setMinFiltering(unsigned int filter)
 {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 }
@@ -143,8 +143,8 @@ void Texture2D::Commands::end()
 
 #if __APPLE__
 
-void Texture2D::Commands::glClearTexImage(    GLuint textureID,
-                                GLuint levels,
+void Texture2D::Commands::glClearTexImage(    unsigned int textureID,
+                                unsigned int levels,
                                 GLenum format,
                                 GLenum type,
                                 const void * data)

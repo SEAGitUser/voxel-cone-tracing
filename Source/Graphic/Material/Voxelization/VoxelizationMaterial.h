@@ -106,7 +106,7 @@ private:
     
 public:
     static const std::vector<GLfloat> initTextureBuffer;
-    static const GLuint VOXEL_TEXTURE_DIMENSIONS; //must be a power of two
+    static const unsigned int VOXEL_TEXTURE_DIMENSIONS; //must be a power of two
     
 };
 

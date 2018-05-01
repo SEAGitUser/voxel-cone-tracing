@@ -31,7 +31,7 @@ public:
         Commands(Material* material);
         
         int SetParameteri(const GLchar* parameterName, int const value);
-        int SetParameterui(const GLchar* parameterName, GLuint const value);
+        int SetParameterui(const GLchar* parameterName, unsigned int const value);
         int SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
         int SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
         int SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
@@ -66,7 +66,7 @@ public:
     private:
         Material* material = nullptr;
         
-        GLuint textureUnits;
+        unsigned int textureUnits;
     };
     
 	Material(const GLchar *_name,
@@ -104,7 +104,7 @@ protected:
 
     
     /// <summary> The actual OpenGL / GLSL program identifier. </summary>
-    GLuint program;
+    unsigned int program;
 
 public:
 

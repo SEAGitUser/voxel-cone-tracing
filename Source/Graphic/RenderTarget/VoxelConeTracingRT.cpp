@@ -153,7 +153,7 @@ void VoxelConeTracingRT::setMipMapParameters(ShaderParameter::ShaderParamsGroup&
     
     settings[albedoArgs[index]] = albedoVoxels;
     settings[normalArgs[index]] = normalVoxels;
-    settings["numberOfLods"] = (GLuint)(albedoMipMaps.size() + 1);
+    settings["numberOfLods"] = (unsigned int)(albedoMipMaps.size() + 1);
     ++index;
     
     assert(albedoMipMaps.size() == normalMipMaps.size());

@@ -9,7 +9,7 @@
 
 const std::string Shader::shaderResourcePath =  "/Shaders/";
 
-GLuint Shader::compile() {
+unsigned int Shader::compile() {
 	// Create and compile shader.
     
 	shaderID = glCreateShader(static_cast<int>(shaderType));

@@ -40,7 +40,7 @@ public:
 	};
 
 	/// <summary> Initializes rendering. </summary>
-	virtual void init(GLuint viewportWidth, GLuint viewportHeight); // Called pre-render once per run.
+	virtual void init(unsigned int viewportWidth, unsigned int viewportHeight); // Called pre-render once per run.
 
 	/// <sumamry> Renders a scene using a given rendering mode. </summary>
 	virtual void render(

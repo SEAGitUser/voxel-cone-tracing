@@ -21,7 +21,7 @@ const std::string ComputeShader::computeShaderResourcePath =  "/Compute Shaders/
 static const char* SEPARATOR = "----------------\n";
 
 ComputeShader::ComputeShader(const char* path, const char* methodName,
-                             glm::vec3 _globalWorkSize, GLuint _dimensions):
+                             glm::vec3 _globalWorkSize, unsigned int _dimensions):
 dispatch_queue(0),
 device_id(0)
 {

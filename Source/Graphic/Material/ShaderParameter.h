@@ -47,7 +47,7 @@ private
         glm::vec2 vector2;
         GLfloat   floatValue;
         int     intValue;
-        GLuint    uintValue;
+        unsigned int    uintValue;
         Texture2D*   sampler2D;
         Texture3D*   sampler3D;
         glm::mat4 mat4;
@@ -84,7 +84,7 @@ public:
         return value.intValue;
     }
     
-    inline GLuint getUnsignedInt()
+    inline unsigned int getUnsignedInt()
     {
         assert(type == Type::UINT);
         return value.uintValue;
@@ -191,7 +191,7 @@ public:
         return *this;
     }
 
-    inline ShaderParameter& operator=(const GLuint &value)
+    inline ShaderParameter& operator=(const unsigned int &value)
     {
         type = Type::UINT;
         this->value.intValue = value;
@@ -257,7 +257,7 @@ public:
         value.intValue = _value;
         type = Type::INT;
     }
-    ShaderParameter(GLuint _value)
+    ShaderParameter(unsigned int _value)
     {
         value.uintValue = _value;
         type = Type::UINT;

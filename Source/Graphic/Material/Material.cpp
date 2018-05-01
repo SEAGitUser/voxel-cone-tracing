@@ -47,7 +47,7 @@ void Material::AssembleProgram(
     assert(vertexShader != nullptr);
     assert(fragmentShader != nullptr);
     
-    GLuint vertexShaderID, fragmentShaderID, geometryShaderID, tessEvaluationShaderID, tessControlShaderID;
+    unsigned int vertexShaderID, fragmentShaderID, geometryShaderID, tessEvaluationShaderID, tessControlShaderID;
     program = glCreateProgram();
     
     // Vertex shader.
@@ -161,7 +161,7 @@ void Material::Commands::setValue(ShaderParameter &setting, const GLchar* name)
             
         case ShaderParameter::Type::UINT:
         {
-            GLuint value = setting.getUnsignedInt();
+            unsigned int value = setting.getUnsignedInt();
             result = SetParameterui(name, value);
             break;
         }
@@ -206,9 +206,9 @@ int Material::Commands::SetParameteri(const GLchar* parameterName, int const val
     return location;
 }
 
-int Material::Commands::SetParameterui(const GLchar* parameterName, GLuint const value)
+int Material::Commands::SetParameterui(const GLchar* parameterName, unsigned int const value)
 {
-    GLuint location = glGetUniformLocation(material->program, parameterName);
+    unsigned int location = glGetUniformLocation(material->program, parameterName);
     glUniform1ui(location, value);
     return location;
 }

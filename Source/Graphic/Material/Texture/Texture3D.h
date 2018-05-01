@@ -15,9 +15,9 @@ public:
     {
     public:
         explicit Commands(Texture3D* texture);
-        void setWrapMode(GLuint mode) override;
-        void setMinFiltering(GLuint filter) override;
-        void setMagFiltering(GLuint filter) override;
+        void setWrapMode(unsigned int mode) override;
+        void setMinFiltering(unsigned int filter) override;
+        void setMagFiltering(unsigned int filter) override;
         void enableMipMaps() override;
         void generateMipmaps() override;
         void allocateOnGPU() override;
@@ -37,8 +37,8 @@ public:
                                 GLenum internalformat);
         
         
-        virtual void glClearTexImage(    GLuint texture,
-                             GLuint levels,
+        virtual void glClearTexImage(    unsigned int texture,
+                             unsigned int levels,
                              GLenum format,
                              GLenum type,
                              const void * data) override;
@@ -50,16 +50,16 @@ public:
     
 	Texture3D(
 		const std::vector<GLfloat> & textureBuffer,
-		const GLuint width, const GLuint height, const GLuint depth,
+		const unsigned int width, const unsigned int height, const unsigned int depth,
 		const GLboolean generateMipmaps = GL_TRUE,
-        GLuint internalFormat = GL_RGBA32F
+        unsigned int internalFormat = GL_RGBA32F
 	);
     
     Texture3D();
     ~Texture3D();
     
-    inline void SetInternalFormat(GLuint value){ internalFormat = value; }
-    inline void SetDepth(GLuint value){ depth = value; }
+    inline void SetInternalFormat(unsigned int value){ internalFormat = value; }
+    inline void SetDepth(unsigned int value){ depth = value; }
     
     virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
     
@@ -67,8 +67,8 @@ public:
 private:
 
     
-    GLuint depth;
-    GLuint internalFormat;
+    unsigned int depth;
+    unsigned int internalFormat;
     //TODO: THIS ARRAY IS USED TO CLEAR MEMORY, WILL NOT BE NEEDED IN OPENGL 4.4 AND ABOVE
     //ANOTHER WAY TO DO THIS IN 4.1 IS TO USE OPENCL.  I WILL IMPLEMENT THIS IN A MEMORY PASS.
     

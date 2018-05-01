@@ -26,11 +26,11 @@ public:
         Points* points = nullptr;
     };
     
-    Points(GLuint count);
+    Points(unsigned int count);
     ~Points();
     
 private:
     
-    GLuint count;
+    unsigned int count;
 };
 

@@ -10,7 +10,7 @@
 
 
 
-Points::Points(GLuint _count):
+Points::Points(unsigned int _count):
 count(_count)
 {
     indices.reserve(1);
