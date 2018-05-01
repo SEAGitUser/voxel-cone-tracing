@@ -35,7 +35,7 @@ public:
         int SetParameterv4(const GLchar* parameterName, const glm::vec4 &value);
         int SetParameterv3(const GLchar* parameterName, const glm::vec3 & value);
         int SetParameterv2(const GLchar* parameterName, const glm::vec2 & value);
-        int SetParameterf(const GLchar* parameterName, GLfloat const value);
+        int SetParameterf(const GLchar* parameterName, float const value);
         int SetParamatermat4(const GLchar *parameterName, const glm::mat4 &value);
         int SetParameterSampler2D(const GLchar* parameterName, Texture2D* sampler);
         int SetParameterSampler3D(const GLchar* parameterName, Texture3D* sampler);

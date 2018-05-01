@@ -1,6 +1,6 @@
 #include "PerspectiveCamera.h"
 
-PerspectiveCamera::PerspectiveCamera(GLfloat _fov, GLfloat _aspect, GLfloat _near, GLfloat _far)
+PerspectiveCamera::PerspectiveCamera(float _fov, float _aspect, float _near, float _far)
 	: Camera(_fov, _aspect, _near, _far)
 {
     projectionMatrix =glm::perspective(fov, aspect, near, far);

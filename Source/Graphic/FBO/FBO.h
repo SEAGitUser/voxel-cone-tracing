@@ -29,7 +29,7 @@ public:
         void enableAdditiveBlending();
         void blendSrcAlphaOneMinusSrcAlpha();
         void setClearColor(glm::vec4 color = glm::vec4(0.0f));
-        void setDetphClearValue(GLfloat value = 0.0f);
+        void setDetphClearValue(float value = 0.0f);
         void clearRenderTarget();
         void end();
         void setupTargetsForRendering(bool threeDimensions = false);

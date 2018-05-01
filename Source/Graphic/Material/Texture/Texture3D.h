@@ -49,7 +49,7 @@ public:
     
     
 	Texture3D(
-		const std::vector<GLfloat> & textureBuffer,
+		const std::vector<float> & textureBuffer,
 		const unsigned int width, const unsigned int height, const unsigned int depth,
 		const bool generateMipmaps = GL_TRUE,
         unsigned int internalFormat = GL_RGBA32F
@@ -73,6 +73,6 @@ private:
     //ANOTHER WAY TO DO THIS IN 4.1 IS TO USE OPENCL.  I WILL IMPLEMENT THIS IN A MEMORY PASS.
     
 #if __APPLE__
-	static std::vector<GLfloat> clearData;
+	static std::vector<float> clearData;
 #endif
 };

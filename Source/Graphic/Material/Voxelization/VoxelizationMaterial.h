@@ -27,12 +27,12 @@ public:
     public:
         glm::vec3 diffuseColor = glm::vec3(1.0f, 0.412f, 0.706f);
         glm::vec3 specularColor = glm::vec3(1.0f);
-        GLfloat diffuseReflectivity = 2.0f;
-        GLfloat specularReflectivity = 1.0f;
-        GLfloat specularDiffusion = 0.0f;
-        GLfloat emissivity = 0.0f;
-        GLfloat transparency = 0.0f;
-        GLfloat refractiveIndex = 1.4f;
+        float diffuseReflectivity = 2.0f;
+        float specularReflectivity = 1.0f;
+        float specularDiffusion = 0.0f;
+        float emissivity = 0.0f;
+        float transparency = 0.0f;
+        float refractiveIndex = 1.4f;
     
         
         inline VoxProperties()
@@ -105,7 +105,7 @@ private:
     VoxelizationMaterial();
     
 public:
-    static const std::vector<GLfloat> initTextureBuffer;
+    static const std::vector<float> initTextureBuffer;
     static const unsigned int VOXEL_TEXTURE_DIMENSIONS; //must be a power of two
     
 };

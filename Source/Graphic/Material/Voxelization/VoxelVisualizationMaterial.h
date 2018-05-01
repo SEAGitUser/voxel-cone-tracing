@@ -19,7 +19,7 @@ public:
     struct VisualizationArgs
     {
         glm::mat4 modelview;
-        GLfloat focalLength;
+        float focalLength;
         glm::vec2 windowSize;
         glm::vec3 rayOrigin;
         

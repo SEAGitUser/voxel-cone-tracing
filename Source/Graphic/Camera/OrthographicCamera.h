@@ -11,16 +11,16 @@ public:
     //check out "Real-Time Rendering, Third Edition", section 4.6
 	OrthographicCamera();
 
-    OrthographicCamera(GLfloat viewSpaceWidth, GLfloat viewSpaceHeight, GLfloat viewSpaceDepth);
+    OrthographicCamera(float viewSpaceWidth, float viewSpaceHeight, float viewSpaceDepth);
     
-    inline GLfloat getLeft(){ return left;}
-    inline GLfloat getRigth(){ return right;}
-    inline GLfloat getBottom(){ return bottom; }
-    inline GLfloat getTop(){ return top; }
+    inline float getLeft(){ return left;}
+    inline float getRigth(){ return right;}
+    inline float getBottom(){ return bottom; }
+    inline float getTop(){ return top; }
     
 private:
-    GLfloat left;
-    GLfloat right;
-    GLfloat bottom;
-    GLfloat top;
+    float left;
+    float right;
+    float bottom;
+    float top;
 };

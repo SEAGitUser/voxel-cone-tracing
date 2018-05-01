@@ -142,7 +142,7 @@ void Material::Commands::setValue(ShaderParameter &setting, const GLchar* name)
         }
         case ShaderParameter::Type::FLOAT:
         {
-            GLfloat value = setting.getFloatValue();
+            float value = setting.getFloatValue();
             result = SetParameterf(name, value);
             break;
         }
@@ -213,7 +213,7 @@ int Material::Commands::SetParameterui(const GLchar* parameterName, unsigned int
     return location;
 }
 
-int Material::Commands::SetParameterf(const GLchar* parameterName, GLfloat const value)
+int Material::Commands::SetParameterf(const GLchar* parameterName, float const value)
 {
     int location = glGetUniformLocation(material->program, parameterName);
     glUniform1f(location,(value));

@@ -102,8 +102,8 @@ void TextQuad::updateVertices( Character& ch, glm::vec2& position)
     vertexData.clear();
     indices.clear();
     
-    GLfloat w = ch.Size.x * scale;
-    GLfloat h = ch.Size.y * scale;
+    float w = ch.Size.x * scale;
+    float h = ch.Size.y * scale;
     
     data.position = glm::vec3(xpos, ypos + h, 0.0f);
     data.texCoord = glm::vec2(0.0f, 0.0f);

@@ -36,7 +36,7 @@ void Graphics::init(unsigned int viewportWidth, unsigned int viewportHeight)
 {
     cubeShape = nullptr;
     
-    GLfloat const worldCubeDimensions = 10.0f;
+    float const worldCubeDimensions = 10.0f;
     voxelizeRenderTarget = new VoxelizeRT(worldCubeDimensions, worldCubeDimensions,worldCubeDimensions);
 
     Texture3D* albedoVoxels = static_cast<Texture3D*>(voxelizeRenderTarget->getFBO()->getRenderTexture(0));

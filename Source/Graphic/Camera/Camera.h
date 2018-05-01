@@ -22,11 +22,11 @@ public:
 	inline glm::vec3 front() { return glm::normalize(forward); }
 
     
-    inline GLfloat getFov() const {return fov;}
-    inline GLfloat getAspectRatio() const { return aspect;}
-    inline GLfloat getNear() const {return near;}
-    inline GLfloat getFar() const {return far;}
-    inline GLfloat getFocalLength() const {return focalLength;}
+    inline float getFov() const {return fov;}
+    inline float getAspectRatio() const { return aspect;}
+    inline float getNear() const {return near;}
+    inline float getFar() const {return far;}
+    inline float getFocalLength() const {return focalLength;}
     
 protected:
     Camera(glm::mat4 _projectionMatrix) : projectionMatrix(_projectionMatrix),
@@ -38,7 +38,7 @@ protected:
     {
     }
     
-    Camera(GLfloat _fov, GLfloat _aspect, GLfloat _near, GLfloat _far) :
+    Camera(float _fov, float _aspect, float _near, float _far) :
         projectionMatrix(glm::mat4(1)),
         fov(_fov),
         aspect(_aspect),
@@ -49,9 +49,9 @@ protected:
     }
     
     glm::mat4 projectionMatrix;
-    GLfloat fov;
-    GLfloat aspect;
-    GLfloat near;
-    GLfloat far;
-    GLfloat focalLength;
+    float fov;
+    float aspect;
+    float near;
+    float far;
+    float focalLength;
 };

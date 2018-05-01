@@ -156,7 +156,7 @@ void Texture2D::Commands::glClearTexImage(    unsigned int textureID,
     for (int i = 0; i < levels; i++)
     {
         //TODO: lots of memory here, good enough for now. the number 16384 is  as big as the driver can handle on the mac
-        static std::vector<GLubyte> emptyData(16384 * 16384  *4 * sizeof(GLfloat), 0);
+        static std::vector<GLubyte> emptyData(16384 * 16384  *4 * sizeof(float), 0);
         
         glTexSubImage2D(GL_TEXTURE_2D, i, 0, 0, tempWidth, tempHeight, texture->pixelFormat, texture->dataType, &emptyData[0]);
         

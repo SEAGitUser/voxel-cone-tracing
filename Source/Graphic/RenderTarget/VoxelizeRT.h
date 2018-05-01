@@ -27,7 +27,7 @@ class Texture3D;
 class VoxelizeRT : public RenderTarget
 {
 public:
-    VoxelizeRT(GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth );
+    VoxelizeRT(float worldSpaceWidth, float worldSpaceHeight, float worldSpaceDepth );
     void presentOrthographicDepth( Scene& scene, int layer);
     
     virtual void Render( Scene& scene ) override;

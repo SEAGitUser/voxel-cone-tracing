@@ -59,7 +59,7 @@ private
         glm::vec4 vector4;
         glm::vec3 vector3;
         glm::vec2 vector2;
-        GLfloat   floatValue;
+        float   floatValue;
         int     intValue;
         Sampler2D   sampler2D;
         Sampler3D   sampler3D;
@@ -96,7 +96,7 @@ public:
         return value.intValue;
     }
     
-    inline GLfloat getFloatValue()
+    inline float getFloatValue()
     {
         assert(type == Type::FLOAT);
         return value.floatValue;
@@ -152,7 +152,7 @@ public:
         return *this;
     }
     
-    inline MaterialSetting& operator=(const GLfloat &value)
+    inline MaterialSetting& operator=(const float &value)
     {
         type = Type::FLOAT;
         this->value.floatValue = value;
@@ -237,7 +237,7 @@ public:
         type = Type::INT;
     }
     
-    MaterialSetting(GLfloat _value)
+    MaterialSetting(float _value)
     {
         value.floatValue= _value;
         type = Type::FLOAT;

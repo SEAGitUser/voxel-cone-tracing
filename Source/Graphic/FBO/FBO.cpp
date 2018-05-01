@@ -151,7 +151,7 @@ void FBO::Commands::setClearColor(glm::vec4 color)
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-void FBO::Commands::setDetphClearValue(GLfloat depth)
+void FBO::Commands::setDetphClearValue(float depth)
 {
     glClearDepth(depth);
 }

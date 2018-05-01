@@ -22,7 +22,7 @@
 
 const float VoxelizeRT::VOXELS_WORLD_SCALE = 3.5f;
 
-VoxelizeRT::VoxelizeRT( GLfloat worldSpaceWidth, GLfloat worldSpaceHeight, GLfloat worldSpaceDepth ):
+VoxelizeRT::VoxelizeRT( float worldSpaceWidth, float worldSpaceHeight, float worldSpaceDepth ):
 downSample("downsize.cl", "downsample",
            glm::vec3(VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS, VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS, VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS), 3)
 {

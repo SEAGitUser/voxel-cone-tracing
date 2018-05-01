@@ -23,12 +23,12 @@ public:
     
     inline void diffuseColor(glm::vec3 _diffuseColor){ defaultVoxProperties.diffuseColor = _diffuseColor;}
     inline void specularColor(glm::vec3 _specularColor){ defaultVoxProperties.specularColor = _specularColor;}
-    inline void diffuseReflectivity(GLfloat _diffuseReflectivity ){ defaultVoxProperties.diffuseReflectivity = _diffuseReflectivity;}
-    inline void specularReflectivity(GLfloat _specularReflectivity ){ defaultVoxProperties.specularReflectivity = _specularReflectivity;}
-    inline void specularDiffusion(GLfloat _specularDiffusion ){ defaultVoxProperties.specularDiffusion = _specularDiffusion; }
-    inline void emissivity(GLfloat _emissivity ){ defaultVoxProperties.emissivity = _emissivity; }
-    inline void transparency(GLfloat _transparency ){ defaultVoxProperties.transparency = _transparency; }
-    inline void refractiveIndex(GLfloat _refractiveIndex ){ defaultVoxProperties.refractiveIndex = _refractiveIndex; }
+    inline void diffuseReflectivity(float _diffuseReflectivity ){ defaultVoxProperties.diffuseReflectivity = _diffuseReflectivity;}
+    inline void specularReflectivity(float _specularReflectivity ){ defaultVoxProperties.specularReflectivity = _specularReflectivity;}
+    inline void specularDiffusion(float _specularDiffusion ){ defaultVoxProperties.specularDiffusion = _specularDiffusion; }
+    inline void emissivity(float _emissivity ){ defaultVoxProperties.emissivity = _emissivity; }
+    inline void transparency(float _transparency ){ defaultVoxProperties.transparency = _transparency; }
+    inline void refractiveIndex(float _refractiveIndex ){ defaultVoxProperties.refractiveIndex = _refractiveIndex; }
     
     inline const std::vector<VoxProperties>& getMeshProperties( ) const { return meshProperties ;}
     VoxelizationMaterial::VoxProperties defaultVoxProperties = VoxProperties::Default();;

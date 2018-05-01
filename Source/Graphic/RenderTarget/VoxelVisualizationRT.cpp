@@ -37,7 +37,7 @@ void VoxelVisualizationRT::Render( Scene& scene )
     
     glm::mat4 modelView = scene.renderingCamera->viewMatrix * cubeShape->transform.getTransformMatrix();
     group["M"] = cubeShape->transform.getTransformMatrix();
-    group["stepSize"] = 1.0f/(GLfloat)VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
+    group["stepSize"] = 1.0f/(float)VoxelizationMaterial::VOXEL_TEXTURE_DIMENSIONS;
     
     glm::mat4 mvp = scene.renderingCamera->getProjectionMatrix() * modelView;
 
