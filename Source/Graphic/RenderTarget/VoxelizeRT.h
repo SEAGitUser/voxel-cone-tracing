@@ -63,9 +63,9 @@ private:
     
     //state variables we will be modifying
     int colorMask[4];
-    GLboolean cullFace;
-    GLboolean depthTest;
-    GLboolean blend;
+    bool cullFace;
+    bool depthTest;
+    bool blend;
     int frameBuffer;
 
     std::shared_ptr<Material> positionsMaterial = nullptr;

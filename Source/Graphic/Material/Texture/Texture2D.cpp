@@ -14,7 +14,7 @@ Texture(_path, 0,0)
 {
 }
 
-void Texture2D::SaveTextureState( GLboolean generateMipmaps, GLboolean loadTexture)
+void Texture2D::SaveTextureState( bool generateMipmaps, bool loadTexture)
 {
     Texture2D::Commands commands(this);
     commands.setWrapMode(wrap);

@@ -48,7 +48,7 @@ public:
     ~Texture2D();
     
     ///<summary> This saves the texture state in the GPU using the platform's graphics library based on arguments passed in setter functions and constructor arguments </summary>
-    void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
+    void SaveTextureState(bool generateMipmaps = false, bool loadTexture = GL_FALSE) override;
     
 private:
     std::string shaderTextureSamplerName;

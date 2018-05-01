@@ -23,14 +23,14 @@ Texture3D::Texture3D():
 }
 
 
-Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const unsigned int _width, const unsigned int _height, const unsigned int _depth, const GLboolean generateMipmaps, unsigned int _internalFormat) :
+Texture3D::Texture3D(const std::vector<GLfloat> & textureBuffer, const unsigned int _width, const unsigned int _height, const unsigned int _depth, const bool generateMipmaps, unsigned int _internalFormat) :
 	Texture("", _width, _height), depth(_depth), internalFormat(_internalFormat)
 {
     SaveTextureState(GL_FALSE, GL_FALSE);
 }
 
 
-void Texture3D::SaveTextureState(GLboolean generateMipmaps, GLboolean loadTexture)
+void Texture3D::SaveTextureState(bool generateMipmaps, bool loadTexture)
 {
 
     Texture3D::Commands commands (this);

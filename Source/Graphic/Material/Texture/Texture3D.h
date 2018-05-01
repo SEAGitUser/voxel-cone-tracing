@@ -51,7 +51,7 @@ public:
 	Texture3D(
 		const std::vector<GLfloat> & textureBuffer,
 		const unsigned int width, const unsigned int height, const unsigned int depth,
-		const GLboolean generateMipmaps = GL_TRUE,
+		const bool generateMipmaps = GL_TRUE,
         unsigned int internalFormat = GL_RGBA32F
 	);
     
@@ -61,7 +61,7 @@ public:
     inline void SetInternalFormat(unsigned int value){ internalFormat = value; }
     inline void SetDepth(unsigned int value){ depth = value; }
     
-    virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) override;
+    virtual void SaveTextureState(bool generateMipmaps = false, bool loadTexture = GL_FALSE) override;
     
     
 private:

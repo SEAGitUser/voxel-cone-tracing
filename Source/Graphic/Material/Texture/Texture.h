@@ -116,7 +116,7 @@ public:
         
     }
     ///<summary> This saves the texture state in the GPU using the platform's graphics library based on arguments passed in setter functions and constructor arguments </summary>
-    virtual void SaveTextureState(GLboolean generateMipmaps = false, GLboolean loadTexture = GL_FALSE) = 0;
+    virtual void SaveTextureState(bool generateMipmaps = false, bool loadTexture = GL_FALSE) = 0;
     
     inline void SetWrap(unsigned int _wrap){ wrap = _wrap; }
     inline void SetPixelFormat(unsigned int _format){ pixelFormat = _format; }
@@ -143,7 +143,7 @@ protected:
     
     unsigned int width, height, channels;
     const std::string path;
-    GLboolean forceChannels;
+    bool forceChannels;
     
     unsigned int textureID;
     

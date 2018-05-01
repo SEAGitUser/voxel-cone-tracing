@@ -53,7 +53,7 @@ public:
     
 private:
     
-    unsigned int generateAttachment(unsigned int w, unsigned int h, GLboolean depth, GLboolean stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
+    unsigned int generateAttachment(unsigned int w, unsigned int h, bool depth, bool stencil, GLenum magFilter, GLenum minFilter, GLenum wrap);
     void getPreviousViewportDimensions();
     
 private:
