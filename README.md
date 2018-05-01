@@ -70,6 +70,10 @@ The following is a screenshot for the full illumination:
 <img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/full-illumination.png">
 </p>
 
+The following is a screenshot for the full illumination:
+<img src="https://github.com/phonowiz/voxel-cone-tracing/blob/master/Assets/Screenshots/full-illumination-2.png">
+</p>
+
 Inspired by "Interactive Indirect Illumination Using Voxel Cone Tracing" by Crassin et al.
 
 (Cyril Crassin, Fabrice Neyret, Miguel Saintz, Simon Green and Elmar Eisemann)
