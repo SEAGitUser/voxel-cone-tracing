@@ -1,10 +1,10 @@
-Adapting work created by Fredrik Präntare for Mac OS X.  Most implemetations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
+Adapting work created by Fredrik Präntare for Mac OS X.  Most implementations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
 
 Purpose
 ----------
-I started this project to create platform in which I can develop demos of different research topics and display my results visually. Game engines certainly are great tools in which this could also be done, however, they are designed to do "the heavy lifting" so that game developers concentrate of content creation, I belive this limits exposure I'd like to have to different technologies and software topics.
+I started this project to create platform in which I can develop demos of different research topics and display my results visually. Game engines certainly are great tools in which this could also be done, however, they are designed to do "the heavy lifting" so that game developers concentrate of content creation, I believe this limits exposure I'd like to have to different technologies and software topics.
 
-For me, what matters is not necessarily the end result, but rather the journey and the lessons you learn as you come up with ideas that may prove to be right or wrong.  It is my opinion that the best way to grow is to constantly seek the unknown, and get comfortable at being unconfortable.
+For me, what matters is not necessarily the end result, but rather the journey and the lessons you learn as you come up with ideas that may prove to be right or wrong.  It is my opinion that the best way to grow is to constantly seek the unknown, and get comfortable at being uncomfortable.
 
 Voxel Cone Tracing For Mac OS X (OpenGL 4.1)
 --------------
@@ -14,12 +14,12 @@ Improvements vs previous implementation:
 * Geometry is no longer bound to a box of size between -1 and 1 in all 3 axis, world can be arbitrarily large.
 * Lowered the required OpenGL version from 4.5 to 4.1 ( The voxel paper calls out OpenGL extensions not supported in 4.1)
     - Implemented 3D rendering using geometry shaders, previously it was being done with image load/store OpenGL extensions not supported in 4.1
-    - Implemented interporlation between 3D texture mipmaps in shader code.
+    - Implemented interpolation between 3D texture mipmaps in shader code.
     - Implemented OpenGL functions not found in 4.1:
         - glClearTexImage
         - glTexStorage3D
     - Implemented Mipmapping for 3D textures using compute shaders ( this feature is missing in 4.1)
-* Sturcture of the code has been heavily modified and comparmentalized.
+* Structure of the code has been heavily modified and compartmentalized.
 * Re-wrote the voxel cone tracing shader to reduced the number of cones from 9 ( 10 if specular highlight was being rendered ) to 5 ( 6 if specular highlight needs rendering).  As it was originally written, it couldn't be ran on my Mac due to prohibitive performance. 
 
 Things left to do:
@@ -32,7 +32,7 @@ Things left to do:
     - Don't update voxel textures every frame, depending on how fast things move, every 3 or 4 frames might be enough.
     - Ultimately, the algorithm is very expensive, it's likely not possible to make it run in acceptable frame rates for a game on my MacBook Pro 2015 due to inherent drawbacks in the algorithm such as unpredictable sampling of 3D textures, this cannot be avoided unless caching is used, but this reduces the dynamic nature of this lighting technique.
     
-* Fredrik in his original implemenation had different cones such refraction and specular, computational resources permitting these could be added here as well
+* Fredrik in his original implementation had different cones such refraction and specular, computational resources permitting these could be added here as well
 * A fundamental problem with this implementation is that it is not in HDR.  The lighting equations are not restricted to values between 0 and 1, this causes a disconnect between the intention of how color should look like and how it actually displays.
 * Gamma correction.
 * Get rid of raw pointers and use smart pointers.
@@ -49,7 +49,7 @@ Build Requirements
 * Once you have Xcode, you'll want to install FreeType on your Mac.  This library is used to render text to screen:
 
     - Download FreeType 2.9: https://sourceforge.net/projects/freetype/files/freetype2/2.9/ and unzip the file. 
-    - In Finder, go to your Downloads folder and double click the freetype-2.8.1.tar.gz file to unpack it into a folder named ‘freetype-2.9.1’. Move that folder now into the src folder you created in your Home folder.
+    - In Finder, go to your Downloads folder and double click the freetype-2.8.1.tar.gz file to unpack it into a folder named freetype-2.9.1. Move that folder now into the src folder you created in your Home folder.
     - Open Terminal.app, type `cd ~/Downloads/freetype-2.9` and press the return key. Continue with `./configure` and press the return key again. You will see a bunch of text rolling through the Terminal app. 
     - When it is done, type `make` and press the return key to see more text rolling through.
     - When it is done, type `sudo make install` and press the return key. Enter your Mac login password, then press the return key again.
