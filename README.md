@@ -1,4 +1,11 @@
-Adapting work created by Fredrik Präntare for Mac OS X.  Most implementations found on the internet use OpenGL 4.2 and OpenGL 4.5 and are also done on Windows.  I've decided to implement this algorithm for Mac OS using OpenGL 4.1.  This is the version that Apple supports.
+
+OpenGL will be retired from MacOS
+---------------
+I started this project before the announcment that OpenGL will be depricated from MacOS, as a result, I have abandoned it, please check my Vulkan implementation here:
+
+https://github.com/phonowiz/vulkan-gui-test/blob/master/README.md
+
+
 
 Purpose
 ----------
